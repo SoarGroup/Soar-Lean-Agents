@@ -1,0 +1,3 @@
+pushd water-jug-hierarchy-chunk
+source water-jug-hierarchy-chunk_source.soar
+popd

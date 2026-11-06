@@ -1,0 +1,373 @@
+# A player who can complete a line with one placement or one move.
+
+sp {morris*elaborate*threat*place*east*1
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*east*1
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c1> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c2> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*east*2
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*east*2
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c2> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*east*3
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*east*3
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    (<c3> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c2> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*south*1
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*south*1
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c1> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c2> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*south*2
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*south*2
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c2> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*south*3
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*south*3
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    (<c3> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c2> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southeast*1
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southeast*1
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c1> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c2> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southeast*2
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southeast*2
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c2> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southeast*3
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southeast*3
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    (<c3> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c2> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southwest*1
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southwest*1
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner empty)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c1> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c2> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southwest*2
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southwest*2
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    (<c2> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c3> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*place*southwest*3
+(state <s> ^name three-mens-morris ^placing <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    -->
+    (<s> ^threat <p> +)
+}
+
+sp {morris*elaborate*threat*move*southwest*3
+(state <s> ^name three-mens-morris ^moving <p>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner empty)
+    (<c3> ^adj <cz>)
+    (<s> ^occ <oz>)
+    (<oz> ^pos { <> <c1> <> <c2> <cz> } ^owner <p>)
+    -->
+    (<s> ^threat <p> +)
+}

@@ -1,0 +1,15 @@
+# Derives ^placing / ^moving for the player to move.
+
+sp {morris*elaborate*phase*moving
+(state <s> ^name three-mens-morris ^turn <p> ^player <pl>)
+    (<pl> ^name <p> ^remaining 0)
+    -->
+    (<s> ^moving <p> +)
+}
+
+sp {morris*elaborate*phase*placing
+(state <s> ^name three-mens-morris ^turn <p> ^player <pl>)
+    (<pl> ^name <p> ^remaining > 0)
+    -->
+    (<s> ^placing <p> +)
+}

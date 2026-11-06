@@ -1,0 +1,42 @@
+# Movement phase: propose, apply and monitor the operator that moves a piece to an adjacent empty cell.
+
+sp {morris*propose*move
+(state <s> ^name three-mens-morris ^turn <p> ^moving <p> -^winner <w> -^draw yes -^tried-tied-operator <t>)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner <p>)
+    (<c1> ^adj <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner empty)
+    -->
+    (<s> ^operator <op> +)
+    (<op> ^name move + ^player <p> + ^from <o1> + ^to <o2> +)
+}
+
+sp {morris*apply*move*cell
+(state <s> ^name three-mens-morris ^operator <op>)
+    (<op> ^name move ^player <p> ^from <o1> ^to <o2>)
+    (<o1> ^owner <p>)
+    (<o2> ^owner empty)
+    -->
+    (<o1> ^owner <p> - ^owner empty +)
+    (<o2> ^owner empty - ^owner <p> +)
+}
+
+sp {morris*apply*move*book
+(state <s> ^name three-mens-morris ^operator <op> ^turn <p> ^plies <n> ^player <pl>)
+    (<op> ^name move ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    -->
+    (<s> ^turn <q> + ^turn <p> - ^plies (+ <n> 1) + ^plies <n> -)
+}
+
+sp {morris*monitor*move
+    (state <s> ^superstate nil ^name three-mens-morris ^operator <op>)
+    (<op> ^name move ^player <p> ^from <o1> ^to <o2>)
+    (<o1> ^pos <c1>)
+    (<c1> ^id <a>)
+    (<o2> ^pos <c2>)
+    (<c2> ^id <b>)
+    -->
+    (write (crlf) <p> | moves | <a> | -> | <b>)
+}

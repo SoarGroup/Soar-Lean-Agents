@@ -1,0 +1,11 @@
+# Tells the selection space how to copy the state for look-ahead.
+
+sp {morris*elaborate*problem-space
+    (state <s> ^name three-mens-morris)
+    -->
+    (<s> ^problem-space <p> +)
+    (<p> ^name three-mens-morris + ^default-state-copy yes + ^all-attributes-at-level one +
+         ^two-level-attributes occ + ^two-level-attributes player +
+         ^dont-copy geometry + ^dont-copy winner + ^dont-copy threat + ^dont-copy draw +
+         ^dont-copy stage1 + ^dont-copy stage2 + ^dont-copy moving + ^dont-copy placing +)
+}

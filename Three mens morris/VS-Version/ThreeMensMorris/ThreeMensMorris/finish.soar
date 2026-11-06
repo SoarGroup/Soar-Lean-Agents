@@ -1,0 +1,25 @@
+# Halts with the winner or a draw.
+
+sp {morris*propose*finish
+    (state <s> ^superstate nil ^name three-mens-morris)
+    (<s> ^{ << winner draw >> <k> } <w>)
+    -->
+    (<s> ^operator <o> +)
+    (<o> ^name finish + ^kind <k> + ^what <w> +)
+}
+
+sp {morris*apply*finish*winner
+    (state <s> ^superstate nil ^operator <o>)
+    (<o> ^name finish ^kind winner ^what <w>)
+    -->
+    (write (crlf) |WINNER: | <w>)
+    (halt)
+}
+
+sp {morris*apply*finish*draw
+    (state <s> ^superstate nil ^operator <o>)
+    (<o> ^name finish ^kind draw)
+    -->
+    (write (crlf) |DRAW|)
+    (halt)
+}

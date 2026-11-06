@@ -1,0 +1,7 @@
+# A draw after 30 plies.
+
+sp {morris*elaborate*draw
+(state <s> ^name three-mens-morris ^plies >= 30 -^winner <w>)
+    -->
+    (<s> ^draw yes +)
+}

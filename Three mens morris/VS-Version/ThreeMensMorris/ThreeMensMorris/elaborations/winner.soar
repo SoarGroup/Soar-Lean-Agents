@@ -1,0 +1,69 @@
+# Three in a row along any of the four directions, or a player with no legal move.
+
+sp {morris*elaborate*winner*east
+(state <s> ^name three-mens-morris)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner { <> empty <p> })
+    (<c1> ^east <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^east <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^winner <p> +)
+}
+
+sp {morris*elaborate*winner*south
+(state <s> ^name three-mens-morris)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner { <> empty <p> })
+    (<c1> ^south <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^south <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^winner <p> +)
+}
+
+sp {morris*elaborate*winner*southeast
+(state <s> ^name three-mens-morris)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner { <> empty <p> })
+    (<c1> ^southeast <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southeast <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^winner <p> +)
+}
+
+sp {morris*elaborate*winner*southwest
+(state <s> ^name three-mens-morris)
+    (<s> ^occ <o1>)
+    (<o1> ^pos <c1> ^owner { <> empty <p> })
+    (<c1> ^southwest <c2>)
+    (<s> ^occ <o2>)
+    (<o2> ^pos <c2> ^owner <p>)
+    (<c2> ^southwest <c3>)
+    (<s> ^occ <o3>)
+    (<o3> ^pos <c3> ^owner <p>)
+    -->
+    (<s> ^winner <p> +)
+}
+
+sp {morris*elaborate*winner*blocked
+(state <s> ^name three-mens-morris ^turn <p> ^player <pl>)
+    (<pl> ^name <p> ^remaining 0 ^opponent <q>)
+   -{ (<s> ^occ <o2>)
+      (<o2> ^pos <c2> ^owner <p>)
+      (<c2> ^adj <c3>)
+      (<s> ^occ <o3>)
+      (<o3> ^pos <c3> ^owner empty) }
+    -->
+    (<s> ^winner <q> +)
+}

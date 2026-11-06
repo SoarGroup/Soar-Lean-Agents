@@ -1,0 +1,36 @@
+# Placement phase: propose, apply and monitor the operator that puts a piece on an empty cell.
+
+sp {morris*propose*place
+(state <s> ^name three-mens-morris ^turn <p> ^placing <p> -^winner <w> -^draw yes -^tried-tied-operator <t>)
+    (<s> ^occ <o>)
+    (<o> ^owner empty)
+    -->
+    (<s> ^operator <op> +)
+    (<op> ^name place + ^player <p> + ^occ <o> +)
+}
+
+sp {morris*apply*place*cell
+(state <s> ^name three-mens-morris ^operator <op>)
+    (<op> ^name place ^player <p> ^occ <o>)
+    (<o> ^owner empty)
+    -->
+    (<o> ^owner <p> + ^owner empty -)
+}
+
+sp {morris*apply*place*book
+(state <s> ^name three-mens-morris ^operator <op> ^turn <p> ^plies <n> ^player <pl>)
+    (<op> ^name place ^player <p>)
+    (<pl> ^name <p> ^opponent <q> ^remaining <r>)
+    -->
+    (<s> ^turn <q> + ^turn <p> - ^plies (+ <n> 1) + ^plies <n> -)
+    (<pl> ^remaining (- <r> 1) + ^remaining <r> -)
+}
+
+sp {morris*monitor*place
+    (state <s> ^superstate nil ^name three-mens-morris ^operator <op>)
+    (<op> ^name place ^player <p> ^occ <o>)
+    (<o> ^pos <c>)
+    (<c> ^id <n>)
+    -->
+    (write (crlf) <p> | places | <n>)
+}

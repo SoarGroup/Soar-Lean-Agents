@@ -1,0 +1,26 @@
+# Choices not determined by the English (water-jug-review.md)
+
+- schema.types name: chose object type `"jug"`, the same as the state attribute `jug`; the review only says "each `jug` object" and "some `jug`", and never names the type separately.
+- schema.stateAttrs: one attribute `jug` (`.obj "jug"`, `multi := true`), with no other state attributes; the review names no others, and R8/A5 say the last-operator record and step markers are not in `schema`.
+- schema attribute order: `volume`, `contents`, `free`, the order the review lists them in.
+- schema key: `key := some "volume"` in all nine variants, because the review says all variants share one schema and the key is `volume`, though it brings up the key only for look-ahead.
+- schema multi/derived flags: `volume` and `contents` single-valued and not derived; `free` single-valued and derived. The review says "integer attributes" but never says single-valued.
+- init attribute order in each ObjPat: `("volume", _), ("contents", _)`, and the 3-litre jug before the 5-litre jug, following the review's wording.
+- fill/empty parameter: parameter name `jug` of type `jug`, read from `fill(jug)` / `empty(jug)`.
+- empty apply case: `guard := []`. The review says "one case" but, unlike for `fill`, does not say "no case guard".
+- pour propose guard order: `.distinct "from" "to"`, then `to.free > 0`, then `from.contents > 0`, the order of the review's sentence.
+- pour case 1 RHS shape: `.sub (.get "from" "contents") (.get "to" "free")` and `.get "to" "volume"`; effect order is from, then to, as written.
+- pour case 2 RHS shape: `.add (.get "to" "contents") (.get "from" "contents")`; operand order as written (`to.contents + from.contents`).
+- pour case guards: case 1 is `.cmp "from" "contents" .gt (.get "to" "free")` and case 2 is `.cmp "from" "contents" .le (.get "to" "free")`, with `from.contents` on the left (as written).
+- operator order in `ops`: `fill`, `empty`, `pour`, the order of section 2; the review does not give the list order.
+- operator impl for empty/pour: `.atomic`, written out explicitly. This matches the default, so it makes no structural difference.
+- goal vals order: `[("volume", 3), ("contents", 1)]`, as written.
+- StatePat `full` / `emptyBoth` / `goalPat`: object patterns ordered 3-litre jug then 5-litre jug, each `[volume, contents]`; `ty := "jug"`.
+- rl rewards order: `[(emptyBoth, -1), (goalPat, 1)]`, as in the table.
+- `alternate` heuristic grouping: the review gives only a value table, not how the `Heur` entries are grouped. I grouped by table row and by runs of equal value: `none`→{fill,empty,pour} equal; `pour`→{fill,empty} equal; `pour`→{pour} worst; {fill,empty}→{fill,empty} worst; {fill,empty}→{pour} best. Other groupings that check also accepts are equally consistent with the text (for example merging `none` and `pour` for fill/empty equal, or putting best before worst as the prose "prefer a pour and avoid another fill or empty" suggests).
+- `alternate` list order and cand order inside entries: table column order (fill, empty, pour), with rows in the order none, pour, fill-or-empty.
+- `water-jug-look-ahead` avoidValue: left at the default `none` (written `.lookahead []`), as the table writes it.
+- learning `.rl 100 500` and `.chunkRl [] 100 500`: taken literally from the table; rate and discount ×1000 agree with "rate 0.1, discount 0.5".
+- `.chunk ["contents", "volume"]` singleton order: as written (contents, volume).
+- hierarchical: `.steps ["pick-up", "fill-jug", "put-down"]`; the step operators themselves are not modelled, since the DSL has no place for them and the review (R15) says they are not given.
+- Build: `lake build` failed at first because the lakefile's `lean_lib Agent` expects a root module `Agent.lean` that did not exist (Reformalized itself built). I added `/home/claude/blind/rt/Agent.lean` containing only `import Agent.DSL`, without touching the lakefile or Agent/DSL.lean.

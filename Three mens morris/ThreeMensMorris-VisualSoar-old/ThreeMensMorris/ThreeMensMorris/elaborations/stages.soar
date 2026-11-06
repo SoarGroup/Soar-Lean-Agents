@@ -1,0 +1,15 @@
+# Markers that order evaluation after the elaborations have quiesced.
+
+sp {morris*elaborate*stage1
+(state <s> ^name three-mens-morris ^turn <q> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    -->
+    (<s> ^stage1 yes +)
+}
+
+sp {morris*elaborate*stage2
+(state <s> ^name three-mens-morris ^stage1 yes)
+    -->
+    (<s> ^stage2 yes +)
+}

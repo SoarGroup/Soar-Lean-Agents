@@ -1,0 +1,908 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0088)https://web.eecs.umich.edu/~soar/sitemaker/projects/visualsoar/usersman/UsersManual.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Visual Soar User's Manual</title>
+
+<meta content="MSHTML 5.00.2920.0" name="GENERATOR"><style>.f1l1o3bf{font-family:Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif, Arial;font-style:normal;font-weight:400}.f1l1o3bf button, .f1l1o3bf input, .f1l1o3bf textarea{font-family:inherit}</style></head>
+<body bgcolor="white" text="black" data-new-gr-c-s-check-loaded="14.1343.0" data-gr-ext-installed="">
+<h1>Visual Soar User's Manual</h1>
+<h2>What is Visual Soar?</h2>
+<p>Visual Soar is a development environment for Soar applications. It is written 
+in Java which means in order to run Visual Soar you must have a Java Runtime 
+Environment installed.</p>
+<h2>What does Visual Soar do?</h2>
+<p>Visual Soar contains tools that directly support many Soar related 
+programming tasks. For example, creation of the operator heirarchy, maintence of 
+the source tree, along with support for templates. In addition, upon supplying 
+Visual Soar with information about what you expect to be in working memory, 
+Visual Soar can check to make sure your productions are consistent, and in some 
+cases complete attribute or values for you.</p>
+<h2>Key Components</h2><img src="./Visual Soar User's Manual_files/visualsoar.jpg"> 
+<p>The three key components of Visual Soar are the operator window, rule editor, 
+and data map. The operator window displays the heirarchy of operators you have 
+in your system. The rule editor allows you to edit and manipulate rules for the 
+operators. The data map displays the all possible structures that might exist in 
+working memory when the rules are supposed to fire.</p><!--------------------------------- Operator Window ---------------------------------->
+<h2>Operator Window</h2><img src="./Visual Soar User's Manual_files/operatorwindow.jpg"> 
+<p>The operator window is where you define the structure of your system. It 
+directly supports subgoaling and a heirarchy of operators. Here is where you 
+directly manipulate the logical structure of your system. Entities that exist in 
+this system are: </p>
+<ul>
+  <li>The root 
+  </li><li>Operators 
+  </li><li>Files 
+  </li><li>Folders </li></ul>
+<p>The root, the basis of the project, and will be named the same thing as what 
+you called your project. You can add suboperators to the root, and access the 
+top-state view of the data map from the root.</p>
+<p>Operators come in three flavors: high-level, low-level, and linked. 
+High-level operators are ones that produce a substate and have suboperators. 
+Low-level operators produce no substate. Linked operators are operators with the 
+same name as another high-level operator in the system, and produce the same 
+substate. Every type of operator has an associated rule file where productions 
+associated with that operator are saved. High-level operators also have an 
+associated view of the data map where the suboperator productions will be 
+checked against.</p>
+<p>Files aid organization. Files are where you place things that are to be read 
+into the system, but are not productions, productions that are not assciated 
+with any operator, and productions that relate to state rather than operators 
+(elaborations) among others. The only place where user's can add file entities 
+is under the elaborations folder. An elaborations file is automatically created 
+for you under a high-level operator. If you do not want the file parsed by a 
+<b>Check All Productions Command</b>, start the name of the file with an "_". 
+Note, this will also work for operators.</p>
+<p>Folders are also organizational aids. There are always two, 
+<b>elaborations</b> and <b>all</b>. <b>All</b> is a place to put operators that 
+don't belong in any particular place in heirarchy because they can fire in all 
+states. <b>Elaborations</b> is a folder that contain files with productions that 
+relate to the top-state, fire in all possible states, or other productions that 
+do not fit well within the hierarchy.</p><!----------------------------------------------- Rule Editor ------------------------------>
+<h2>Rule Editor</h2><img src="./Visual Soar User's Manual_files/ruleeditor.jpg"> 
+<p>The rule editor allows you to edit the actual productions associated with 
+operator or file. It provides basic text editing facilities. It also allows for 
+template insertion along with a tab-completion type facility called "soar 
+complete" which will complete some attribute or values for you.</p><!----------------------------------------------- Data Map --------------------------------->
+<h2>Data Map</h2><img src="./Visual Soar User's Manual_files/datamap.jpg"> 
+<p>The data map provides a way to enter information about what you expect to be 
+in working memory when a production fires. It is supposed to represent the 
+superset of all things that can be in working memory. Visual Soar uses this 
+information to make sure your productions are consistent with this data map. The 
+data map also uses type information to make sure values have the right type.
+</p><p>
+</p><p>The different value types you can create in the data map are:</p>
+<ul>
+  <li>Identifiers 
+  </li><li>Enumerations 
+  </li><li>Integers 
+  </li><li>Floats 
+  </li><li>Strings </li></ul>
+<p>An identifier is equivalent to a soar identifier and can have a value.</p>
+<p>An enumeration is usually an enumeration of strings that represent possible 
+values for that attribute.</p>
+<p>An integer is an integer number that is either ranged or not.</p>
+<p>A float is a floating point number that is either ranged or not.</p>
+<p>A string can be basically anything besides an identifier.</p>
+<p>Note on mixed types: sometimes attributes have mixed-type values. You can 
+simulate that by creating more than one attribute-value with the same attribute 
+name but different value types.</p><!----------------------------------------- Creating A Tank Agent ------------------->
+<h2>A Run Through</h2>
+<p>To see how these components interact in the creation of a real system, we 
+will be creating a wandering agent for Tank Soar.</p>
+<h3>Creating a new agent:</h3>
+<p>The first thing to do to create your agent is select <b>New Project...</b> 
+from the <b>File</b> menu (or hit <b>ctrl n</b>). A new agent dialog will come 
+up; type in the name of your agent. I'm going to call mine <b>Alphonse</b>. Then 
+either browse or type in your agent's path. Since I have tanksoar installed in 
+my c:\temp\tank\TankSoar24\ directory, I chose 
+<b>c:\temp\tank\TankSoar24\agents</b> for my agent's path. Then hit <b>New</b> 
+to create the agent. 
+</p><p>The operator window opens with our new agent. By default Visual Soar creates 
+two folders: <b>all</b>, and <b>elaborations</b>. Along with the _firstload 
+file, which will be the first file to load. The <b>all</b> folder is used to 
+create operators that don't fit within the operator hierarchy and the 
+elaboration folder is used to add elaborations that are either associated with 
+the top-state or common to all states. 
+</p><p>Next, we will open the data map for our top-state, so right-click on the root 
+node of the operator window, which in my case is <b>Alphonse</b> and select 
+<b>Open DataMap</b> from the context menu. 
+</p><p>The DataMap window opens in the right view pane. Now, we will add common 
+attribute-values. Expand the <b>io</b> attribute. You should see 
+<b>input-link</b> and <b>output-link</b>. Right-click on <b>input-link</b>. A 
+context menu will come up asking you what attribute-values you want to add. 
+Select <b>Add Identifier...</b>. In the dialog, type in for the attribute name: 
+<b>blocked</b> and hit <b>Ok</b>. You should now see the attribute 
+<b>blocked</b> hanging off the <b>input-link</b>. You might need to expand the 
+input-link to see it. You now have the basics of adding attribute values to the 
+data map. Something to note, attribute-values can be linked, that is a new 
+attribute is created but it points to the same value as another attribute. 
+Attributes can be linked by ctrl-shift dragging attribute-values to the new 
+desired parent in the data map (this also works across different views/windows 
+of the data map). If a link is made to a primitive WME (anything besides an 
+identifier) it's behavior is the same as making an independent copy. However, if 
+a link is made to an identifier, the name of the link and original node will be 
+independent, but their children will be shared. </p><!-- IMG src="sampledm.png"-->
+<h4>A datamap with the io link entered</h4>
+<p>When Visual Soar created your project, it created some productions to set up 
+the type of task decomposition that Visual Soar supports. These productions 
+create a top-state link on all states. Name the substate the same thing as the 
+selected superstate operator. The last thing they do is name the top-state the 
+same thing as your project name. New data map views are created assuming these 
+productions exist. So you probably shouldn't modify them. These productions are 
+found in the <b>elaborations</b> folder. They are in the <b>_all</b> and 
+<b>top-state</b> files. When you right-click on <b>_all</b> and select <b>Open 
+Rules</b> You should see a rule editor open with the following productions: 
+</p><code><pre>sp {elaborate*state*name
+   (state &lt;s&gt; ^superstate.operator.name &lt;name&gt;)
+--&gt;
+   (&lt;s&gt; ^name &lt;name&gt;)
+}
+
+sp {elaborate*state*top-state
+   (state &lt;s&gt; ^superstate.top-state &lt;ts&gt;)
+--&gt;
+   (&lt;s&gt; ^top-state &lt;ts&gt;)
+}
+</pre></code>
+<p>The <i>elaborate*state*name</i> production copies the operator name from the 
+superstate down to the substate. The <i>elaborate*state*top-state</i> similarly 
+copies down the <b>top-state</b> link. You can now close the rule editor.</p>
+<p>You might want to open the top-state file also, in this file you will find 
+the following productions: </p><code><pre>sp {elaborate*top-state*name
+   (state &lt;s&gt; ^superstate nil)
+--&gt;
+   (&lt;s&gt; ^name Alphonse)
+}
+
+sp {elaborate*top-state*top-state
+   (state &lt;s&gt; ^name Alphonse)
+--&gt;
+   (&lt;s&gt; ^top-state &lt;s&gt;)
+}
+</pre></code>
+<p>The <i>elaborate*top-state*name</i> names the top-state the same as our 
+project name. The <i>elaborate*top-state*top-state</i> production makes the 
+initial link from the top-state to itself so that the 
+<i>elaborate*state*top-state</i> will work.</p>
+<h3>Setting up general application:</h3>
+<p>Re-open the <b>_all</b> rule file. Our tank will be using a general io 
+mechanism. In order for this to work we need to enter the following productions 
+in the <b>_all</b> rule window. </p><code><pre>sp {apply*operator*create-action-command
+   (state &lt;s&gt; ^operator &lt;o&gt;
+              ^top-state.io.output-link &lt;ol&gt;)
+   (&lt;o&gt; ^actions &lt;act&gt;)
+   (&lt;act&gt; ^&lt;att&gt; &lt;value&gt;)
+--&gt;
+   (&lt;ol&gt; ^&lt;att&gt; &lt;value&gt;)
+}
+
+sp {apply*operator*remove-command
+   (state &lt;s&gt; ^operator &lt;o&gt;
+	      ^top-state.io.output-link &lt;ol&gt;)
+   (&lt;ol&gt; ^&lt;att&gt; &lt;value&gt;)
+   (&lt;value&gt; ^status complete)
+--&gt;
+   (&lt;ol&gt; ^&lt;att&gt; &lt;value&gt; -)
+}
+</pre></code>
+<p>The <i>apply*operator*create-action-command</i> production copies the actions 
+off an operator and places them on the output-link through the top-state. (Note 
+that the tutorial does this by copying a link to io to all substates and copying 
+items to that. I feel that going through the top-state is a more general way of 
+dealing with the problem and only slightly more verbose. But the big advantage 
+is that it is the way that Visual Soar directly supports so it saves you some 
+work manipulating the data map.) The <i>apply*operator*remove-command</i> checks 
+the output-link for any completed commands and frees up their memory.</p>
+<h3>Specifing behavior of the tank - a wandering tank</h3>
+<p>Now that we have some ground rules set, we are ready to start specifying 
+behavior for our tank. For this example, we will just build a wandering tank. So 
+first thing we need to do is create a operator, so we right-click on 
+<b>Alphonse</b> in the operator window and select <b>Add a Suboperator...</b> 
+from the context menu, for the operator name type in <b>wander</b>. 
+</p><p>Now wander is in our operator hierarchy, so right click on <b>wander</b> and 
+select <b>Open Rules</b>. 
+</p><p>Since all our tank is going to do is wander, we will make that the only 
+proposal. 
+</p><p>Note: only proposals for operator wander go into the wander operator file. 
+These rules must match against the top-state. </p><code><pre>sp {propose*wander
+   (state &lt;s&gt; ^name Alphonse)
+--&gt;
+   (&lt;s&gt; ^operator &lt;o&gt;)
+   (&lt;o&gt; ^name wander)
+}
+</pre></code>
+<p>You can check this production against the data map to see if there are any 
+mistakes. </p>
+<h4>Specifying behavior for wander</h4>
+<p>Since wander is a high-level goal, we need to decide exactly what is 
+wandering. I decided on the following behavior: </p>
+<ol>
+  <li>if either the radar or shields are on turn them off 
+  </li><li>move in a straight line if possible 
+  </li><li>if the tank can't move in a straight line then turn left or right 
+  whichever is open 
+  </li><li>if neither left or right is open then turn around, by turning left 
+</li></ol>
+<p>Each one of these will be its own operator: </p>
+<ol>
+  <li>powerdown 
+  </li><li>move 
+  </li><li>turn 
+  </li><li>turn-around </li></ol>
+<p>So right click on wander and select <b>Add a Suboperator...</b> from the 
+context menu, and type in <b>powerdown</b>. Now do the same for <b>move</b>, 
+<b>turn</b> and <b>turn-around</b>. 
+</p><p>Next, we need to set up the DataMap for wander, since wander has suboperators 
+it also has a DataMap, so right-click on <b>wander</b> and select <b>Open 
+DataMap</b> and tile it with the top-state DataMap named Alphonse. 
+</p><p>Since these are low-level operators, and they will perform actions using our 
+generalized application rules. We will need to create an actions attribute 
+underneath each operator in the <b>wander</b> data map. To do this, expand 
+<b>top-state</b> and <b>io</b>, ctrl-shift drag the <b>output-link</b> to one of 
+the <b>operator</b> attributes in the <b>wander</b> DataMap. Now, 
+<b>operator</b> has an attribute named <b>output-link</b>, right-click on 
+<b>output-link</b>, select <b>Rename...</b> from the context menu and type 
+<b>actions</b> into the input dialog box. Link this attribute value (ctlr-shift 
+drag) to the rest of the operators.</p>
+<p>Our concern in wandering is that we don't want to use any power. Visual Soar 
+created an elaborations file, because <b>wander</b> is a subgoal. So open this 
+<b>elaborations</b> file, and type in the following production </p><code><pre>sp {wander*elaborate*using-power
+   (state &lt;s&gt; ^name wander
+              ^top-state.io.input-link &lt;il&gt;)
+   (&lt;il&gt; ^&lt;&lt; radar-status shield-status &gt;&gt; on)
+--&gt;
+   (&lt;s&gt; ^using-power true)
+}
+</pre></code>
+<p>Now, add <b>^using-power true</b> to the <b>wander</b> DataMap. 
+</p><p>Now we know if we are using power, so close <b>elaborations</b>, open 
+<b>powerdown</b> and type in the following production: </p><code><pre>sp {wander*propse*powerdown
+   (state &lt;s&gt; ^name wander
+              ^using-power)
+--&gt;
+   (&lt;s&gt; ^operator &lt;o&gt;)
+   (&lt;o&gt; ^name powerdown)
+   (&lt;o&gt; ^actions &lt;a&gt;)
+   (&lt;a&gt; ^radar.switch off
+        ^shields.switch off)
+}
+</pre></code>
+<p>open <b>move</b>'s rule file and type in </p><code><pre>sp {wander*propose*move
+   (state &lt;s&gt; ^name wander
+             -^using-power
+              ^top-state.io.input-link.blocked.forward no)
+--&gt;
+   (&lt;s&gt; ^operator &lt;o&gt;)
+   (&lt;o&gt; ^name move)
+   (&lt;o&gt; ^actions &lt;a&gt;)
+   (&lt;a&gt; ^move.direction forward)
+}
+</pre></code>
+<p>similarly, for <b>turn</b> type in </p><code><pre>sp {wander*propose*turn
+   (state &lt;s&gt; ^name wander
+             -^using-power
+              ^top-state.io.input-link.blocked &lt;b&gt;)
+   (&lt;b&gt; ^forward yes
+        ^{ &lt;&lt; left right &gt;&gt; &lt;dir&gt; } no)
+--&gt;
+   (&lt;s&gt; ^operator &lt;o&gt; + =)
+   (&lt;o&gt; ^name turn
+        ^actions.rotate.direction &lt;dir&gt;)
+}
+</pre></code>
+<p>Finally, for <b>turn-around</b> type in </p><code><pre>sp {wander*propose*turn-around
+   (state &lt;s&gt; ^name wander
+             -^using-power
+              ^top-state.io.input-link.blocked &lt;b&gt;)
+   (&lt;b&gt; ^forward yes ^left yes ^right yes)
+--&gt;
+   (&lt;s&gt; ^operator &lt;o&gt;)
+   (&lt;o&gt; ^name turn-around
+        ^actions.rotate.direction left)
+}
+</pre></code>
+<p>Now we have finished our wandering Tank Agent. To be able to load our agent 
+into TankSoar you must save it at least once. <b>Alphonse</b> is now able to be 
+loaded into Tank Soar environment at <b>Alphonse.soar</b>. </p>
+</body><div id="aiFabShadowRoot" data-fab-type="react" style="opacity: 1;"><template shadowrootmode="open"><div id="fab-react-root"><div class="fab-root"><div class="acrobat-button-container " style="bottom: 36px;"><div class="acrobat-button " role="button" aria-label="Get summaries and key insights using AI Assistant"><button class="close-btn  "><svg class="close-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_8552_7892" maskUnits="userSpaceOnUse" x="0" y="0" width="14" height="14" style="mask-type: alpha;"><path d="M7.82482 7.00034L10.6374 4.18778C10.7893 4.03592 10.7893 3.78969 10.6374 3.63783L10.3625 3.36292C10.2106 3.21106 9.96446 3.21106 9.81255 3.36292L6.99995 6.17548L4.18734 3.36292C4.03543 3.21106 3.78933 3.21106 3.63743 3.36292L3.36247 3.63783C3.21056 3.78969 3.21056 4.03592 3.36247 4.18778L6.17507 7.00034L3.36247 9.81295C3.21056 9.96481 3.21056 10.2111 3.36247 10.3629L3.63743 10.6378C3.78933 10.7897 4.03543 10.7897 4.18734 10.6378L6.99995 7.82526L9.81255 10.6378C9.96446 10.7897 10.2106 10.7897 10.3625 10.6378L10.6374 10.3629C10.7893 10.2111 10.7893 9.96481 10.6374 9.81295L7.82482 7.00034Z" fill="#222222"></path></mask><g mask="url(#mask0_8552_7892)"><rect width="14" height="14"></rect></g></svg><svg class="burger-icon" width="21" height="17" viewBox="0 0 21 17" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_12188_28876" maskUnits="userSpaceOnUse" x="3" y="3" width="15" height="14" style="mask-type: alpha;"><path d="M15.1285 12.8008H6.37852C6.08867 12.8008 5.85352 13.0359 5.85352 13.3258C5.85352 13.6156 6.08867 13.8508 6.37852 13.8508H15.1285C15.4184 13.8508 15.6535 13.6156 15.6535 13.3258C15.6535 13.0359 15.4184 12.8008 15.1285 12.8008Z" fill="#292929"></path><path d="M6.37852 6.85078H15.1285C15.4184 6.85078 15.6535 6.61562 15.6535 6.32578C15.6535 6.03594 15.4184 5.80078 15.1285 5.80078H6.37852C6.08867 5.80078 5.85352 6.03594 5.85352 6.32578C5.85352 6.61562 6.08867 6.85078 6.37852 6.85078Z" fill="#292929"></path><path d="M15.1285 9.30078H6.37852C6.08867 9.30078 5.85352 9.53594 5.85352 9.82578C5.85352 10.1156 6.08867 10.3508 6.37852 10.3508H15.1285C15.4184 10.3508 15.6535 10.1156 15.6535 9.82578C15.6535 9.53594 15.4184 9.30078 15.1285 9.30078Z" fill="#292929"></path></mask><g mask="url(#mask0_12188_28876)"><rect x="3.75391" y="3" width="14" height="14" fill="#464646"></rect></g></svg></button><div class="icon-container" role="button" tabindex="0" aria-label="Open AI Assistant"><svg id="ImportedIcons" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" class="fab-svg-icon"><path d="m6.21661,16.39534c-1.35034,2.23499-2.67933,3.64758-3.45616,3.64758-.12795.00539-.25276-.04056-.34667-.12762-.14818-.12483-.21629-.32065-.17758-.5105.14764-.80079,1.68628-1.95576,3.98041-3.00946Zm6.49075-3.19656c-.57993.12528-1.1792.27056-1.78689.43544-.4366.11893-.87951.24862-1.32255.38729.23541-.4949.4515-.98554.6398-1.452.24831-.6159.48156-1.232.69564-1.83456.18831.30354.38304.59839.58195.88207.39375.56092.81787,1.09736,1.19205,1.58176Zm-2.99822-10.63684c.08814-.18001.26644-.29855.46653-.31016.51149,0,.62276.63358.62276,1.1638-.06787,1.25011-.29293,2.48669-.66988,3.68055-.85816-2.33642-.73831-3.97319-.41942-4.53419h.00001Zm9.60883,12.20974c-.13359.4402-.56725.71808-1.023.6555-.15594-.00061-.3112-.02054-.46224-.05933-1.07834-.28263-2.07953-.80363-2.92976-1.5246.71719-.11267,1.44198-.17001,2.16797-.17149.48402-.00813.96771.03017,1.44442.11438.43447.09244.92449.33873.80261.98554Zm1.45515-1.0537c-1.01837-.83309-2.33117-1.21735-3.63802-1.06487-.98482.00983-1.96732.09739-2.93836.26187-.62354-.62512-1.19003-1.30467-1.69272-2.03054-.38314-.54455-.73672-1.10931-1.05923-1.69182.54287-1.57384.85986-3.2167.94151-4.87953,0-1.49369-.57564-3.09087-2.19132-3.09087-.56296.01952-1.07528.33036-1.35261.82066-.68906,1.2165-.41298,3.72002.68705,6.26756-.38306,1.17041-.80046,2.31007-1.31196,3.57265-.43687,1.08123-.93191,2.13803-1.48293,3.16579-1.64775.68213-5.15115,2.33642-5.48494,4.16456-.10306.53569.0783,1.08658.47942,1.45629.39145.35044.90217.53779,1.42737.5236,2.10998,0,4.21366-3.003,5.63044-5.58789.80461-.2816,1.62641-.53671,2.44391-.759.8967-.24407,1.76345-.44427,2.58082-.594,1.39014,1.39224,3.25004,2.21523,5.21531,2.30773,1.36751,0,1.87887-.60942,2.06516-1.122.20733-.5893.08589-1.24438-.3189-1.72019Z" fill="var(--iconRed, #d31510)" fill-rule="evenodd"></path></svg></div></div><div class="tooltip-text fab-home-tooltip "><svg class="fab-home-tooltip-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><path d="m6.21661,16.39534c-1.35034,2.23499-2.67933,3.64758-3.45616,3.64758-.12795.00539-.25276-.04056-.34667-.12762-.14818-.12483-.21629-.32065-.17758-.5105.14764-.80079,1.68628-1.95576,3.98041-3.00946Zm6.49075-3.19656c-.57993.12528-1.1792.27056-1.78689.43544-.4366.11893-.87951.24862-1.32255.38729.23541-.4949.4515-.98554.6398-1.452.24831-.6159.48156-1.232.69564-1.83456.18831.30354.38304.59839.58195.88207.39375.56092.81787,1.09736,1.19205,1.58176Zm-2.99822-10.63684c.08814-.18001.26644-.29855.46653-.31016.51149,0,.62276.63358.62276,1.1638-.06787,1.25011-.29293,2.48669-.66988,3.68055-.85816-2.33642-.73831-3.97319-.41942-4.53419h.00001Zm9.60883,12.20974c-.13359.4402-.56725.71808-1.023.6555-.15594-.00061-.3112-.02054-.46224-.05933-1.07834-.28263-2.07953-.80363-2.92976-1.5246.71719-.11267,1.44198-.17001,2.16797-.17149.48402-.00813.96771.03017,1.44442.11438.43447.09244.92449.33873.80261.98554Zm1.45515-1.0537c-1.01837-.83309-2.33117-1.21735-3.63802-1.06487-.98482.00983-1.96732.09739-2.93836.26187-.62354-.62512-1.19003-1.30467-1.69272-2.03054-.38314-.54455-.73672-1.10931-1.05923-1.69182.54287-1.57384.85986-3.2167.94151-4.87953,0-1.49369-.57564-3.09087-2.19132-3.09087-.56296.01952-1.07528.33036-1.35261.82066-.68906,1.2165-.41298,3.72002.68705,6.26756-.38306,1.17041-.80046,2.31007-1.31196,3.57265-.43687,1.08123-.93191,2.13803-1.48293,3.16579-1.64775.68213-5.15115,2.33642-5.48494,4.16456-.10306.53569.0783,1.08658.47942,1.45629.39145.35044.90217.53779,1.42737.5236,2.10998,0,4.21366-3.003,5.63044-5.58789.80461-.2816,1.62641-.53671,2.44391-.759.8967-.24407,1.76345-.44427,2.58082-.594,1.39014,1.39224,3.25004,2.21523,5.21531,2.30773,1.36751,0,1.87887-.60942,2.06516-1.122.20733-.5893.08589-1.24438-.3189-1.72019Z" fill="#D6373F" fill-rule="evenodd"></path></svg><span class="tooltip-text-content">Check out Acrobat's new home in your browser</span></div><div class="draggable-handle "><svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.60039 13.0699C5.26313 13.0699 5.80039 12.5327 5.80039 11.8699C5.80039 11.2072 5.26313 10.6699 4.60039 10.6699C3.93765 10.6699 3.40039 11.2072 3.40039 11.8699C3.40039 12.5327 3.93765 13.0699 4.60039 13.0699Z" fill="#292929"></path><path d="M4.60039 8.27109C5.26313 8.27109 5.80039 7.73384 5.80039 7.07109C5.80039 6.40835 5.26313 5.87109 4.60039 5.87109C3.93765 5.87109 3.40039 6.40835 3.40039 7.07109C3.40039 7.73384 3.93765 8.27109 4.60039 8.27109Z" fill="#292929"></path><path d="M4.60039 3.47031C5.26313 3.47031 5.80039 2.93305 5.80039 2.27031C5.80039 1.60757 5.26313 1.07031 4.60039 1.07031C3.93765 1.07031 3.40039 1.60757 3.40039 2.27031C3.40039 2.93305 3.93765 3.47031 4.60039 3.47031Z" fill="#292929"></path><path d="M9.4002 13.0699C10.0629 13.0699 10.6002 12.5327 10.6002 11.8699C10.6002 11.2072 10.0629 10.6699 9.4002 10.6699C8.73745 10.6699 8.2002 11.2072 8.2002 11.8699C8.2002 12.5327 8.73745 13.0699 9.4002 13.0699Z" fill="#292929"></path><path d="M9.4002 8.27109C10.0629 8.27109 10.6002 7.73384 10.6002 7.07109C10.6002 6.40835 10.0629 5.87109 9.4002 5.87109C8.73745 5.87109 8.2002 6.40835 8.2002 7.07109C8.2002 7.73384 8.73745 8.27109 9.4002 8.27109Z" fill="#292929"></path><path d="M9.4002 3.47031C10.0629 3.47031 10.6002 2.93305 10.6002 2.27031C10.6002 1.60757 10.0629 1.07031 9.4002 1.07031C8.73745 1.07031 8.2002 1.60757 8.2002 2.27031C8.2002 2.93305 8.73745 3.47031 9.4002 3.47031Z" fill="#292929"></path></svg></div></div></div></div><style>
+    .acrobat-button-container {
+        position: fixed;
+        right: 0;
+        bottom: 36px;
+        z-index: 2147483646;
+        visibility: visible !important;
+        pointer-events: all;
+        opacity: 1;
+        display: flex;
+        align-items: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    @media print {
+        .acrobat-button-container {
+            display: none !important;
+        }
+    }
+
+    .acrobat-button {
+        position: relative;
+        background: white;
+        display: flex;
+        align-items: center;
+        pointer-events: all;
+        touch-action: none;
+        box-shadow: 0px 2px 8px 0px #00000029;
+        height: 34px;
+        width: 34px;
+        border: 1px solid transparent;
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+        background-image: linear-gradient(white, white),
+                        linear-gradient(95.85deg, #D73220 0%, #D92361 33%, #7155FA 100%);
+        border-radius: 18px;
+        justify-content: right;
+        margin-right: var(--fab-margin-right, 28px);
+        overflow: hidden;
+    }
+
+    .acrobat-button-container-transparent {
+        opacity: 0.4 !important;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .acrobat-button-container-transparent:hover,
+    .acrobat-button-container-transparent:focus,
+    .acrobat-button-container-transparent:active {
+        opacity: 1;
+    }
+
+    .acrobat-button > svg {
+        flex-shrink: 0;
+        margin: 4px 5px 5px 5px;
+        width: 22px;
+        height: 22px;
+        pointer-events: none;
+        fill: #b40000;
+    }
+    .acrobat-button:has(.close-btn.open),
+    .expand-acrobat-button {
+        width: 64px;
+    }
+
+    .disabled {
+        background: #B1B1B1;
+    }
+
+    .tooltip-text {
+        width: 160px;
+        visibility: hidden;
+        opacity: 0;
+        background-color: #FFFFFF;
+        color: #292929;
+        border-radius: 7px;
+        padding: 4px 1px 5px 9px;
+        position: absolute;
+        z-index: 1;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 10px;
+        transition: opacity 0.3s, visibility 0s linear 2s;
+        font-size: 12px;
+        line-height: 15px;
+        font-family: 'adobe-clean', Adobe Clean, sans-serif;
+        filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.12));
+    }
+
+    .tooltip-text::after {
+       content: '';
+       position: absolute;
+       top: 50%;
+       left: 100%;
+       transform: translateY(-50%);
+       border-width: 6px;
+       border-style: solid;
+       border-color: transparent transparent transparent #fff;
+    }
+
+    .show-tooltip {
+        visibility: visible;
+        opacity: 1;
+        line-height: 1.5;
+        font-family: 'adobe-clean', Adobe Clean, sans-serif;
+        transition: opacity 0.3s;
+        transition-delay: 500ms;
+    }
+
+    .close-btn {
+        position: relative;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-btn svg {
+        fill: #464646;
+    }
+
+    .close-btn.showCloseButton {
+        opacity: 1;
+        display: flex;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        padding: 2px;
+    }
+
+    .fab-view-settings-dialog {
+        display: none;
+        position: absolute;
+        bottom: 40px;
+        z-index: 1;
+    }
+
+    .close-btn:hover {
+        background: #E6E6E6;
+        border-radius: 50%; /* Keep original circular hover */
+        cursor: pointer;
+    }
+
+    .fab-view-settings-dialog.showDialog {
+        display: block;
+    }
+    .close-btn .burger-icon {
+        display: inline;
+        margin-bottom: 2px;
+    }
+    .close-btn .close-icon {
+        display: none;
+    }
+    .close-btn.open .burger-icon {
+        display: none;
+    }
+    .close-btn.open .close-icon {
+        display: inline;
+    }
+    .tooltip-text .tooltip-text-content {
+        font-weight: bold;
+    }
+    .tooltip-text .tooltip-sub-text-text {
+        font-style: italic;
+        font-size: 11px;
+    }
+
+    /* Home tooltip FTE — icon + layout overrides */
+    .fab-home-tooltip {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 183px;
+        border-radius: 8px;
+        padding: 6px 8px 8px 12px;
+        font-family: 'adobe-clean', Adobe Clean, sans-serif;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.08), 0px 1px 2px rgba(0,0,0,0.04), 0px 0px 1px rgba(0,0,0,0.08), 0px 3px 5px rgba(116,23,208,0.07);
+    }
+    .fab-home-tooltip .tooltip-text-content {
+        font-family: 'adobe-clean', Adobe Clean, sans-serif;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        color: #292929;
+        white-space: normal;
+        word-wrap: break-word;
+        width: 145px;
+    }
+    .fab-home-tooltip-icon {
+        flex-shrink: 0;
+        display: block;
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Icon container styles - replaces iframe */
+    .icon-container {
+        width: 33px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: grab;
+        pointer-events: all;
+        flex-shrink: 0;
+        background: transparent;
+        border: none;
+    }
+
+    .icon-container:active {
+        cursor: grabbing;
+    }
+
+    .fab-svg-icon {
+        width: 22px;
+        height: 22px;
+        padding: 5px 5px 5px 6px;
+        pointer-events: none;
+        fill: #b40000;
+    }
+
+    .draggable-handle {
+        display: none;
+        position: absolute;
+        right: var(--drag-handle-right, 12px);
+        cursor: grab;
+    }
+    .draggable-handle-visible {
+        display: flex;
+    }
+
+    /* Font face declarations - for proper font loading in Shadow DOM */
+    @font-face {
+        font-family: 'adobe-clean';
+        font-weight: 400;
+        src: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Regular.otf') format('opentype');
+    }
+    @font-face {
+        font-family: 'adobe-clean';
+        font-weight: 700;
+        src: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Bold.otf') format('opentype');
+    }
+    @font-face {
+        font-family: 'AdobeClean-Regular';
+        src: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Regular.otf') format('opentype');
+    }
+    @font-face {
+        font-family: 'AdobeClean-Bold';
+        src: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Bold.otf') format('opentype');
+    }
+    body {
+        font-family: 'AdobeClean-Regular', adobe-clean, "Adobe Clean", sans-serif;
+    }
+
+    .dialog-container {
+        width: 166px;
+        background-color: #ffffff;
+        border-radius: 4px;
+        border: 1px solid #B1B1B1;
+        box-shadow: 0px 1px 4px 0px #00000026;
+        z-index: 1000;
+        padding: 4px;
+        position: relative;
+        margin: 4px 0px;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu .menu_item {
+        cursor: pointer;
+        font-family: 'AdobeClean-Regular', adobe-clean, "Adobe Clean", sans-serif;
+        align-content: center;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18.2px;
+        text-align: left;
+        color: #222222;
+        padding: 0px 12px;
+        height: 32px;
+        width: 140px;
+    }
+
+    .menu .menu_item:hover {
+        background-color: #eaeaea;
+    }
+
+    .preferences {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18.2px;
+        text-align: left;
+        color: #464646;
+    }
+
+    .divider {
+        border-top: 1px solid #E6E6E6;
+    }
+
+    /* React-specific wrappers - minimal */
+    .fab-root {
+        font-family: 'adobe-clean', Adobe Clean, sans-serif;
+        /* FAB is UI chrome, not page content — exclude from host page select-all/copy */
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    button.close-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10; /* Ensure clickable above all other elements */
+        pointer-events: auto;
+    }
+
+    /* FAB Action Pills - From Figma Design */
+    .fab-pills-container {
+        position: absolute;
+        bottom: 42px; /* FAB height (34px) + gap (8px) = 42px */
+        right: var(--fab-margin-right, 28px);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-end;
+        width: 142px;
+        z-index: 1;
+    }
+
+    .fab-pills-container.pills-below {
+        bottom: auto;
+        top: 42px; /* Same gap when positioned below */
+    }
+
+    /* Nudge variant (challenger) — all pills take dynamic width instead of fixed 142px */
+    .fab-pills-container.nudge-variant .fab-pill-button {
+        width: auto;
+    }
+
+    .fab-pills-container.nudge-variant .fab-pill-label {
+        white-space: nowrap;
+    }
+
+    /* Extend hover area using ::after pseudo-element - doesn't affect visual layout */
+    .fab-pills-container::after {
+        content: '';
+        position: absolute;
+        top: 100%; /* Start right after the pills content */
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: transparent;
+        pointer-events: auto;
+    }
+
+    .fab-pills-container.pills-below::after {
+        top: auto;
+        bottom: 100%; /* Start right before the pills when positioned below */
+    }
+
+    /* FTE Header - First Time Experience (56px with close button) */
+    .fab-fte-header {
+        position: relative;
+        width: 142px;
+        min-height: 56px;
+        background: #FFFFFF;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08), 0px 2px 6px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+    }
+
+    .fab-fte-background {
+        position: absolute;
+        left: -13px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 183.33px;
+        height: 126.82px;
+        background: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/images/fab-header-background.svg') no-repeat center;
+        background-size: cover;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .fab-fte-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 2;
+        color: #222222;
+        padding: 0;
+    }
+
+    .fab-fte-close:hover {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+    }
+
+    .fab-fte-close svg {
+        width: 8px;
+        height: 8px;
+    }
+
+    .fab-fte-text {
+        position: relative;
+        width: 102px;
+        font-family: 'AdobeClean-Bold', adobe-clean, sans-serif;
+        font-weight: 400; /* Use Bold font file directly, not synthetic bold */
+        font-size: 12px;
+        line-height: 16px;
+        color: #222222; /* Figma spec color */
+        z-index: 1;
+        white-space: normal;
+        word-wrap: break-word;
+        margin-left: 16px;
+        margin-right: auto;
+        box-sizing: border-box;
+        -webkit-font-smoothing: subpixel-antialiased; /* Better font rendering */
+        -moz-osx-font-smoothing: auto;
+    }
+
+    /* Hover Header - Normal state (24px without close button) */
+    .fab-hover-header {
+        position: relative;
+        width: 142px;
+        min-height: 24px;
+        background: #FFFFFF; /* White background to show the colorful SVG and text */
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08), 0px 2px 6px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .fab-hover-background {
+        position: absolute;
+        left: -27px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 212.63px;
+        height: 147.09px;
+        background: url('chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/images/fab-header-background.svg') no-repeat center;
+        background-size: cover;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .fab-hover-text {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'AdobeClean-Bold', adobe-clean, sans-serif;
+        font-weight: 400; /* Use Bold font file directly, not synthetic bold */
+        font-size: 12px;
+        line-height: 15px;
+        color: #222222; /* Figma spec color */
+        z-index: 1;
+        white-space: normal;
+        padding: 4px 9px;
+        box-sizing: border-box;
+        -webkit-font-smoothing: subpixel-antialiased; /* Better font rendering */
+        -moz-osx-font-smoothing: auto;
+    }
+
+    /* Individual Pill Buttons */
+    .fab-pill-button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        width: 142px;
+        min-height: 24px; /* Min height, allows growth with content */
+        background: #FFFFFF;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.08), 0px 2px 6px 0px rgba(0, 0, 0, 0.04), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.2s ease;
+        overflow: visible;
+    }
+
+   .fab-pill-contextual-ring-wrapper {
+        position: relative;
+        display: inline-block;
+        padding: 1px;
+        border-radius: 13px;
+        overflow: hidden;
+    }
+
+    .fab-pill-contextual-ring-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        z-index: -1;
+        background: conic-gradient(from 180deg at 50% 50%,
+            #7155FA 0deg,
+            #7155FA 54deg,
+            #D92361 108deg,
+            #D73220 180deg,
+            #FFFFFF 180deg,
+            #FFFFFF 360deg);
+        animation: fab-contextual-pill-ring-rotate 3s linear infinite;
+    }
+
+    @keyframes fab-contextual-pill-ring-rotate {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .fab-pill-button:hover {
+        background: #D5D5D5;
+    }
+
+    .fab-pill-button:hover .fab-pill-label,
+    .fab-pill-button:hover .fab-pill-icon {
+        color: #000000; /* Hover state color from Figma Alias/content/neutral/hover */
+    }
+
+    .fab-pill-button:active {
+        background: #F4F4F4;
+    }
+
+    .fab-pill-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 7px 4px 10px; /* Exact Figma specs: top right bottom left */
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    .fab-pill-icon img {
+        width: 16px;
+        height: 16px;
+        display: block;
+        flex-shrink: 0;
+        /* SVG icons with currentColor fill will inherit color from parent */
+        filter: brightness(0) saturate(100%) invert(13%) sepia(0%) saturate(0%) hue-rotate(196deg) brightness(97%) contrast(97%); /* #222222 */
+    }
+
+    .fab-pill-button:hover .fab-pill-icon img {
+        filter: brightness(0) saturate(100%); /* #000000 on hover */
+    }
+
+    .fab-pill-label {
+        display: flex;
+        align-items: center;
+        font-family: 'AdobeClean-Bold', adobe-clean, sans-serif;
+        font-weight: 400; /* Use Bold font file directly, not synthetic bold */
+        font-size: 12px;
+        line-height: 15px; /* 1.252 * 12px = 15.024px */
+        color: #222222; /* Default text color from Figma Alias/content/neutral/default */
+        padding: 4px 9px 5px 0; /* Reduced right padding to prevent wrapping */
+        text-align: left;
+        white-space: normal; /* Allow text wrapping for multi-line content */
+        box-sizing: border-box;
+        flex: 1;
+        overflow: visible;
+        -webkit-font-smoothing: subpixel-antialiased; /* Better font rendering */
+        -moz-osx-font-smoothing: auto;
+    }
+</style></template></div><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>

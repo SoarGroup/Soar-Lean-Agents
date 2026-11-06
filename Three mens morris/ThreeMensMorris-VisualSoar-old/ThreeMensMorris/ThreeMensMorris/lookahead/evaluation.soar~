@@ -1,0 +1,51 @@
+# Evaluation of a look-ahead state for the selection space.
+
+sp {morris*evaluate*win
+(state <s> ^name three-mens-morris ^quiescence t ^turn <q> ^desired <d> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    (<s> ^winner <p>)
+    -->
+    (<s> ^numeric-value 100 +)
+}
+
+sp {morris*evaluate*lose
+(state <s> ^name three-mens-morris ^quiescence t ^turn <q> ^desired <d> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    (<s> ^winner <q>)
+    -->
+    (<s> ^numeric-value -100 +)
+}
+
+sp {morris*evaluate*opponent-threat
+(state <s> ^name three-mens-morris ^quiescence t ^turn <q> ^desired <d> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    (<s> ^threat <q> -^winner <w>)
+    -->
+    (<s> ^numeric-value -100 +)
+}
+
+sp {morris*evaluate*centre
+(state <s> ^name three-mens-morris ^quiescence t ^turn <q> ^desired <d> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    (<s> ^stage2 yes -^winner <w> -^threat <q> ^occ <oc>)
+    (<oc> ^pos <cc> ^owner <p>)
+    (<cc> ^centre yes)
+    -->
+    (<s> ^numeric-value 2 +)
+}
+
+sp {morris*evaluate*other
+(state <s> ^name three-mens-morris ^quiescence t ^turn <q> ^desired <d> ^look-ahead-operator <lo> ^player <pl>)
+    (<lo> ^player <p>)
+    (<pl> ^name <p> ^opponent <q>)
+    (<s> ^stage2 yes -^winner <w> -^threat <q>)
+   -{ (<s> ^occ <oc>)
+      (<oc> ^pos <cc> ^owner <p>)
+      (<cc> ^centre yes) }
+    -->
+    (<s> ^numeric-value 0 +)
+}

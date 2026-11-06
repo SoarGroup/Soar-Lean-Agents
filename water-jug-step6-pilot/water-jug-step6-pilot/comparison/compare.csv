@@ -1,0 +1,19 @@
+regenerated,original,"original (20 seeds, 500 decisions)",regenerated (same seeds)
+water-jug,water-jug V2,19/20 solved; median 103 ops (min 7); chunks 0.0,19/20 solved; median 103 ops (min 7); chunks 0.0
+water-jug,water-jug V3,19/20 solved; median 103 ops (min 7); chunks 0.0,19/20 solved; median 103 ops (min 7); chunks 0.0
+water-jug,FunctionalTests_testWaterJug V1,19/20 solved; median 102 ops (min 6); chunks 0.0,19/20 solved; median 103 ops (min 7); chunks 0.0
+water-jug-rl,water-jug-RL V1,18/20 solved; median 103.0 ops (min 12); chunks 0.0,18/20 solved; median 118.0 ops (min 12); chunks 0.0
+water-jug-tie,water-jug-tie V1,20/20 solved; median 13.0 ops (min 5); chunks 0.0,20/20 solved; median 13.0 ops (min 5); chunks 0.0
+water-jug-tie-chunk,water-jug-tie V3,20/20 solved; median 14.0 ops (min 5); chunks 5.0,20/20 solved; median 14.0 ops (min 5); chunks 5.0
+water-jug-tie-chunk,ChunkingDemoTests_Demo_Water_Jug_Tie V1,20/20 solved; median 14.0 ops (min 5); chunks 5.0,20/20 solved; median 14.0 ops (min 5); chunks 5.0
+water-jug-hierarchy,water-jug-hierarchy V2,12/20 solved; median 70.0 ops (min 7); chunks 0.0,12/20 solved; median 70.0 ops (min 7); chunks 0.0
+water-jug-hierarchy,FunctionalTests_testWaterJugHierarchy V1,12/20 solved; median 70.0 ops (min 7); chunks 0.0,12/20 solved; median 70.0 ops (min 7); chunks 0.0
+water-jug-hierarchy-chunk,water-jug-hierarchy V3,19/20 solved; median 103 ops (min 7); chunks 3.0,19/20 solved; median 103 ops (min 7); chunks 1.0
+water-jug-hierarchy-chunk,water-jug-hierarchy V4,19/20 solved; median 103 ops (min 7); chunks 3.0,19/20 solved; median 103 ops (min 7); chunks 1.0
+water-jug-hierarchy-chunk,ChunkingDemoTests_Demo_Water_Jug_Hierarchy V1,19/20 solved; median 103 ops (min 7); chunks 3.0,19/20 solved; median 103 ops (min 7); chunks 1.0
+water-jug-look-ahead,water-jug-look-ahead V2,2/11 solved; median 7.0 ops (min 7); chunks 188,9/20 solved; median 7 ops (min 7); chunks 108.0
+water-jug-look-ahead,water-jug-look-ahead V3,11/20 solved; median 7 ops (min 5); chunks 50.0,9/20 solved; median 7 ops (min 7); chunks 108.0
+water-jug-look-ahead,water-jug-look-ahead V4,15/20 solved; median 9 ops (min 5); chunks 18.5,9/20 solved; median 7 ops (min 7); chunks 108.0
+water-jug-look-ahead,ChunkingDemoTests_Demo_Water_Jug_Look_Ahead V1,10/20 solved; median 7.0 ops (min 5); chunks 12.0,9/20 solved; median 7 ops (min 7); chunks 108.0
+water-jug-look-ahead-failure-states,water-jug-look-ahead-failure-states V1,20/20 solved; median 6.0 ops (min 5); chunks 46.5,19/20 solved; median 7 ops (min 5); chunks 58.0
+water-jug-look-ahead-rl,water-jug-look-ahead-RL V1,10/20 solved; median 22.5 ops (min 5); chunks 40.5,14/20 solved; median 66.5 ops (min 5); chunks 30.0

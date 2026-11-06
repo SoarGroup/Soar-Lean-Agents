@@ -1,0 +1,38 @@
+# Initial state: the board geometry, the two players and the nine occupancy objects.
+
+sp {morris*propose*initialize
+    (state <s> ^superstate nil -^name <n>)
+    -->
+    (<s> ^operator <o> +)
+    (<o> ^name initialize-morris +)
+}
+
+sp {morris*apply*initialize
+    (state <s> ^operator <op>)
+    (<op> ^name initialize-morris)
+    -->
+    (<s> ^name three-mens-morris + ^turn X + ^plies 0 + ^desired <d> + ^geometry <g> +
+         ^player <px> + ^player <po> + ^occ <o0> + ^occ <o1> + ^occ <o2> + ^occ <o3> + ^occ <o4> + ^occ <o5> + ^occ <o6> + ^occ <o7> + ^occ <o8> +)
+    (<d> ^name win + ^better higher +)
+    (<g> ^cell <c0> + ^cell <c1> + ^cell <c2> + ^cell <c3> + ^cell <c4> + ^cell <c5> + ^cell <c6> + ^cell <c7> + ^cell <c8> + )
+    (<px> ^name X + ^opponent O + ^remaining 3 +)
+    (<po> ^name O + ^opponent X + ^remaining 3 +)
+    (<c0> ^id 0 + ^x 0 + ^y 0 + ^east <c1> + ^south <c3> + ^southeast <c4> + ^adj <c1> + ^adj <c3> + ^adj <c4> +)
+    (<c1> ^id 1 + ^x 1 + ^y 0 + ^east <c2> + ^south <c4> + ^southeast <c5> + ^southwest <c3> + ^adj <c0> + ^adj <c2> + ^adj <c4> +)
+    (<c2> ^id 2 + ^x 2 + ^y 0 + ^south <c5> + ^southwest <c4> + ^adj <c1> + ^adj <c4> + ^adj <c5> +)
+    (<c3> ^id 3 + ^x 0 + ^y 1 + ^east <c4> + ^south <c6> + ^southeast <c7> + ^adj <c0> + ^adj <c4> + ^adj <c6> +)
+    (<c4> ^id 4 + ^x 1 + ^y 1 + ^east <c5> + ^south <c7> + ^southeast <c8> + ^southwest <c6> + ^adj <c0> + ^adj <c1> + ^adj <c2> + ^adj <c3> + ^adj <c5> + ^adj <c6> + ^adj <c7> + ^adj <c8> + ^centre yes +)
+    (<c5> ^id 5 + ^x 2 + ^y 1 + ^south <c8> + ^southwest <c7> + ^adj <c2> + ^adj <c4> + ^adj <c8> +)
+    (<c6> ^id 6 + ^x 0 + ^y 2 + ^east <c7> + ^adj <c3> + ^adj <c4> + ^adj <c7> +)
+    (<c7> ^id 7 + ^x 1 + ^y 2 + ^east <c8> + ^adj <c4> + ^adj <c6> + ^adj <c8> +)
+    (<c8> ^id 8 + ^x 2 + ^y 2 + ^adj <c4> + ^adj <c5> + ^adj <c7> +)
+    (<o0> ^pos <c0> + ^owner empty +)
+    (<o1> ^pos <c1> + ^owner empty +)
+    (<o2> ^pos <c2> + ^owner empty +)
+    (<o3> ^pos <c3> + ^owner empty +)
+    (<o4> ^pos <c4> + ^owner empty +)
+    (<o5> ^pos <c5> + ^owner empty +)
+    (<o6> ^pos <c6> + ^owner empty +)
+    (<o7> ^pos <c7> + ^owner empty +)
+    (<o8> ^pos <c8> + ^owner empty +)
+}

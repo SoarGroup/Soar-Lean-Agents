@@ -1,0 +1,508 @@
+{
+  "datamap": {
+    "rootId": "state",
+    "vertices": [
+      {
+        "id": "cell",
+        "outEdges": [
+          {
+            "comment": "cells a piece may move to",
+            "name": "adj",
+            "toId": "cell"
+          },
+          {
+            "comment": "the middle cell",
+            "name": "centre",
+            "toId": "e-yes"
+          },
+          {
+            "name": "east",
+            "toId": "cell"
+          },
+          {
+            "comment": "0..8, row by row",
+            "name": "id",
+            "toId": "i-int"
+          },
+          {
+            "name": "south",
+            "toId": "cell"
+          },
+          {
+            "name": "southeast",
+            "toId": "cell"
+          },
+          {
+            "name": "southwest",
+            "toId": "cell"
+          },
+          {
+            "name": "x",
+            "toId": "i-int"
+          },
+          {
+            "name": "y",
+            "toId": "i-int"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "desired",
+        "outEdges": [
+          {
+            "name": "better",
+            "toId": "e-higher"
+          },
+          {
+            "name": "name",
+            "toId": "e-win"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "choices": [
+          "draw",
+          "geometry",
+          "moving",
+          "placing",
+          "stage1",
+          "stage2",
+          "threat",
+          "winner"
+        ],
+        "id": "e-dc",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "higher"
+        ],
+        "id": "e-higher",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "draw",
+          "winner"
+        ],
+        "id": "e-kind",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "three-mens-morris"
+        ],
+        "id": "e-name",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "nil"
+        ],
+        "id": "e-nil",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "one"
+        ],
+        "id": "e-one",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "finish",
+          "initialize-morris",
+          "move",
+          "place"
+        ],
+        "id": "e-opname",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "O",
+          "X",
+          "empty"
+        ],
+        "id": "e-owner",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "t"
+        ],
+        "id": "e-t",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "occ",
+          "player"
+        ],
+        "id": "e-two",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "win"
+        ],
+        "id": "e-win",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "O",
+          "X"
+        ],
+        "id": "e-xo",
+        "type": "ENUMERATION"
+      },
+      {
+        "choices": [
+          "yes"
+        ],
+        "id": "e-yes",
+        "type": "ENUMERATION"
+      },
+      {
+        "id": "geometry",
+        "outEdges": [
+          {
+            "comment": "nine cells",
+            "name": "cell",
+            "toId": "cell"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "i-int",
+        "type": "INTEGER"
+      },
+      {
+        "id": "occ",
+        "outEdges": [
+          {
+            "name": "owner",
+            "toId": "e-owner"
+          },
+          {
+            "comment": "pointer to the shared cell",
+            "name": "pos",
+            "toId": "cell"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "operator",
+        "outEdges": [
+          {
+            "comment": "move: the source",
+            "name": "from",
+            "toId": "occ"
+          },
+          {
+            "comment": "finish",
+            "name": "kind",
+            "toId": "e-kind"
+          },
+          {
+            "name": "name",
+            "toId": "e-opname"
+          },
+          {
+            "comment": "place: the target",
+            "name": "occ",
+            "toId": "occ"
+          },
+          {
+            "name": "player",
+            "toId": "e-xo"
+          },
+          {
+            "comment": "move: the target",
+            "name": "to",
+            "toId": "occ"
+          },
+          {
+            "comment": "finish",
+            "name": "what",
+            "toId": "e-xo"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "player",
+        "outEdges": [
+          {
+            "name": "name",
+            "toId": "e-xo"
+          },
+          {
+            "name": "opponent",
+            "toId": "e-xo"
+          },
+          {
+            "comment": "pieces still to place",
+            "name": "remaining",
+            "toId": "i-int"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "pspace",
+        "outEdges": [
+          {
+            "name": "all-attributes-at-level",
+            "toId": "e-one"
+          },
+          {
+            "name": "default-state-copy",
+            "toId": "e-yes"
+          },
+          {
+            "name": "dont-copy",
+            "toId": "e-dc"
+          },
+          {
+            "name": "name",
+            "toId": "e-name"
+          },
+          {
+            "name": "two-level-attributes",
+            "toId": "e-two"
+          }
+        ],
+        "type": "SOAR_ID"
+      },
+      {
+        "id": "state",
+        "outEdges": [
+          {
+            "name": "desired",
+            "toId": "desired"
+          },
+          {
+            "name": "draw",
+            "toId": "e-yes"
+          },
+          {
+            "comment": "static board; shared by pointer, never copied",
+            "name": "geometry",
+            "toId": "geometry"
+          },
+          {
+            "comment": "selection space",
+            "name": "look-ahead-operator",
+            "toId": "operator"
+          },
+          {
+            "comment": "this player is moving pieces",
+            "name": "moving",
+            "toId": "e-xo"
+          },
+          {
+            "name": "name",
+            "toId": "e-name"
+          },
+          {
+            "comment": "evaluation of a look-ahead state",
+            "name": "numeric-value",
+            "toId": "i-int"
+          },
+          {
+            "comment": "nine occupancy objects, one per cell",
+            "name": "occ",
+            "toId": "occ"
+          },
+          {
+            "name": "operator",
+            "toId": "operator"
+          },
+          {
+            "comment": "this player is still placing pieces",
+            "name": "placing",
+            "toId": "e-xo"
+          },
+          {
+            "comment": "two players, X and O",
+            "name": "player",
+            "toId": "player"
+          },
+          {
+            "comment": "moves made so far",
+            "name": "plies",
+            "toId": "i-int"
+          },
+          {
+            "comment": "tells the selection space how to copy the state",
+            "name": "problem-space",
+            "toId": "pspace"
+          },
+          {
+            "comment": "set by the architecture",
+            "name": "quiescence",
+            "toId": "e-t"
+          },
+          {
+            "comment": "ordering marker",
+            "name": "stage1",
+            "toId": "e-yes"
+          },
+          {
+            "comment": "ordering marker",
+            "name": "stage2",
+            "toId": "e-yes"
+          },
+          {
+            "comment": "nil on the top state",
+            "name": "superstate",
+            "toId": "e-nil"
+          },
+          {
+            "comment": "this player can complete a line next",
+            "name": "threat",
+            "toId": "e-xo"
+          },
+          {
+            "comment": "selection space",
+            "name": "tried-tied-operator",
+            "toId": "operator"
+          },
+          {
+            "comment": "player to move",
+            "name": "turn",
+            "toId": "e-xo"
+          },
+          {
+            "comment": "selection space",
+            "name": "untried-tied-operator",
+            "toId": "operator"
+          },
+          {
+            "name": "winner",
+            "toId": "e-xo"
+          }
+        ],
+        "type": "SOAR_ID"
+      }
+    ]
+  },
+  "layout": {
+    "folder": "ThreeMensMorris",
+    "id": "root",
+    "name": "ThreeMensMorris",
+    "type": "OPERATOR_ROOT",
+    "children": [
+      {
+        "file": "_firstload.soar",
+        "id": "n001",
+        "name": "_firstload",
+        "type": "FILE"
+      },
+      {
+        "folder": "elaborations",
+        "id": "n010",
+        "name": "elaborations",
+        "type": "FOLDER",
+        "children": [
+          {
+            "file": "draw.soar",
+            "id": "n007",
+            "name": "draw",
+            "type": "FILE"
+          },
+          {
+            "file": "phases.soar",
+            "id": "n005",
+            "name": "phases",
+            "type": "FILE"
+          },
+          {
+            "file": "problem-space.soar",
+            "id": "n004",
+            "name": "problem-space",
+            "type": "FILE"
+          },
+          {
+            "file": "stages.soar",
+            "id": "n009",
+            "name": "stages",
+            "type": "FILE"
+          },
+          {
+            "file": "threats.soar",
+            "id": "n008",
+            "name": "threats",
+            "type": "FILE"
+          },
+          {
+            "file": "winner.soar",
+            "id": "n006",
+            "name": "winner",
+            "type": "FILE"
+          }
+        ]
+      },
+      {
+        "folder": "lookahead",
+        "id": "n012",
+        "name": "lookahead",
+        "type": "FOLDER",
+        "children": [
+          {
+            "file": "evaluation.soar",
+            "id": "n011",
+            "name": "evaluation",
+            "type": "FILE"
+          }
+        ]
+      },
+      {
+        "folder": "selection",
+        "id": "n003",
+        "name": "selection",
+        "type": "FOLDER",
+        "children": [
+          {
+            "file": "selection.soar",
+            "id": "n002",
+            "name": "selection",
+            "type": "FILE"
+          }
+        ]
+      },
+      {
+        "file": "finish.soar",
+        "id": "n016",
+        "name": "finish",
+        "type": "OPERATOR"
+      },
+      {
+        "file": "initialize-morris.soar",
+        "id": "n013",
+        "name": "initialize-morris",
+        "type": "OPERATOR"
+      },
+      {
+        "file": "move.soar",
+        "id": "n015",
+        "name": "move",
+        "type": "OPERATOR"
+      },
+      {
+        "file": "place.soar",
+        "id": "n014",
+        "name": "place",
+        "type": "OPERATOR"
+      }
+    ]
+  },
+  "version": "6"
+}

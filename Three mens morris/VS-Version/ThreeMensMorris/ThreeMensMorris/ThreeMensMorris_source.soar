@@ -1,0 +1,14 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+pushd lookahead
+source lookahead_source.soar
+popd
+pushd selection
+source selection_source.soar
+popd
+source finish.soar
+source initialize-morris.soar
+source move.soar
+source place.soar

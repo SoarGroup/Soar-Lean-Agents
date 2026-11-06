@@ -1,0 +1,4 @@
+# Load file for ThreeMensMorris: source this file in the Soar debugger or with soar-lean.
+pushd ThreeMensMorris
+source ThreeMensMorris_source.soar
+popd
