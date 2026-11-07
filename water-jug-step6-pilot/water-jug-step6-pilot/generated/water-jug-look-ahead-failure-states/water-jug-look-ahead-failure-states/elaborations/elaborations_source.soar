@@ -1,5 +1,0 @@
-source derived.soar
-source goal.soar
-source problem-space.soar
-source ancestors.soar
-source state-evaluation.soar
