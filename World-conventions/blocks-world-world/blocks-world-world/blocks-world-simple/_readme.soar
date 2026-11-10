@@ -1,0 +1,25 @@
+# This project contains a version of blocks world.
+# All actions are "internal" using P10 to change the state when an operator is selected.
+# 
+# Uses two operator evaluation rules (P6 & P7)
+#  These are sufficient to eliminate all search
+# 
+#Changes to original blocks world code as described in the Soar book:
+# 1. Use ^name blocks-world on state 
+# 2. Add initialization rules and goal detection rules that can be uncommented for
+#    using 4 or 5 blocks.
+
+# 3. Uses ^world pointer to hold all task state information
+# 4. Modified to use desireds.desired and on relations
+# 5. Uses object-handles
+
+# Change made to blocks-world to enable look ahead:
+# 1. Add to elaborations/top-state: blocks-world*elaborate*problem-space
+# 2. Change elaborations/detect-success: blocks-world*elaborate*state*success
+#    so it marks the state with success - this will be used in look-ahead
+
+#  To guarantee it will find the shortest solution, includes rules 
+#  that maintain the last move (last-moved-block) and then avoiding operators that move the same block twice
+#  in a row. Also includes rules for counting number of moves.
+
+# copy - true/false not yes no

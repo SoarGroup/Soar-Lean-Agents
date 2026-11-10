@@ -1,0 +1,265 @@
+## Missionaries and cannibals
+## Written from the English description only.
+##
+## Description:
+##   Three missionaries and three cannibals are on one bank of a river. They
+##   have a boat that holds at most two people, and it cannot cross empty. Get
+##   all six people to the other bank. If at any time the cannibals on either
+##   bank outnumber the missionaries on that bank, the cannibals will eat those
+##   missionaries; cannibals alone on a bank, with no missionaries there, are
+##   harmless. How can everyone cross safely?
+##
+## Method: breadth-first search in working memory.
+## A node is a situation: missionaries (^m) and cannibals (^c) on the starting
+## (left) bank, and the side the boat is on. Each node elaborates its candidate
+## crossings (1 or 2 people in the boat); a candidate is legal if the counts are
+## possible and neither bank has missionaries outnumbered. An expand operator
+## adds a legal candidate as a new node unless that situation already exists;
+## shallower nodes are expanded first, so the first solution found is a
+## shortest one. The solution path is then printed from the start.
+
+### Initialization
+
+sp {propose*initialize-missionaries-cannibals
+   (state <s> ^superstate nil
+             -^name)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name initialize-missionaries-cannibals)
+}
+
+sp {apply*initialize-missionaries-cannibals
+   (state <s> ^operator.name initialize-missionaries-cannibals)
+-->
+   (<s> ^name missionaries-cannibals
+        ^total 3
+        ^boat-load <b1> <b2> <b3> <b4> <b5>
+        ^node <n0>)
+   # Every load of one or two people (the boat never crosses empty).
+   (<b1> ^m 1 ^c 0)
+   (<b2> ^m 2 ^c 0)
+   (<b3> ^m 0 ^c 1)
+   (<b4> ^m 0 ^c 2)
+   (<b5> ^m 1 ^c 1)
+   (<n0> ^m 3 ^c 3 ^boat left ^depth 0)
+}
+
+### Candidate crossings from each node
+
+sp {missionaries-cannibals*elaborate*candidate*from-left
+   (state <s> ^name missionaries-cannibals
+              ^node <n>
+              ^boat-load <l>)
+   (<n> ^m <m> ^c <c> ^boat left)
+   (<l> ^m <dm> ^c <dc>)
+-->
+   (<n> ^candidate <k>)
+   (<k> ^m (- <m> <dm>) ^c (- <c> <dc>) ^boat right ^load <l>)
+}
+
+sp {missionaries-cannibals*elaborate*candidate*from-right
+   (state <s> ^name missionaries-cannibals
+              ^node <n>
+              ^boat-load <l>)
+   (<n> ^m <m> ^c <c> ^boat right)
+   (<l> ^m <dm> ^c <dc>)
+-->
+   (<n> ^candidate <k>)
+   (<k> ^m (+ <m> <dm>) ^c (+ <c> <dc>) ^boat left ^load <l>)
+}
+
+# The people in the boat must be on the bank it leaves from.
+sp {missionaries-cannibals*elaborate*candidate*possible
+   (state <s> ^name missionaries-cannibals
+              ^total <t>
+              ^node.candidate <k>)
+   (<k> ^m { >= 0 <= <t> }
+        ^c { >= 0 <= <t> })
+-->
+   (<k> ^possible true)
+}
+
+# Left bank is safe if it has no missionaries, or at least as many
+# missionaries as cannibals.
+sp {missionaries-cannibals*elaborate*candidate*left-safe*no-missionaries
+   (state <s> ^name missionaries-cannibals
+              ^node.candidate <k>)
+   (<k> ^m 0)
+-->
+   (<k> ^left-safe true)
+}
+
+sp {missionaries-cannibals*elaborate*candidate*left-safe*not-outnumbered
+   (state <s> ^name missionaries-cannibals
+              ^node.candidate <k>)
+   (<k> ^m <m>
+        ^c <= <m>)
+-->
+   (<k> ^left-safe true)
+}
+
+# Right bank holds total - m missionaries and total - c cannibals; it is safe
+# if it has no missionaries (m = total) or total - m >= total - c, i.e. c >= m.
+sp {missionaries-cannibals*elaborate*candidate*right-safe*no-missionaries
+   (state <s> ^name missionaries-cannibals
+              ^total <t>
+              ^node.candidate <k>)
+   (<k> ^m <t>)
+-->
+   (<k> ^right-safe true)
+}
+
+sp {missionaries-cannibals*elaborate*candidate*right-safe*not-outnumbered
+   (state <s> ^name missionaries-cannibals
+              ^node.candidate <k>)
+   (<k> ^m <m>
+        ^c >= <m>)
+-->
+   (<k> ^right-safe true)
+}
+
+sp {missionaries-cannibals*elaborate*candidate*legal
+   (state <s> ^name missionaries-cannibals
+              ^node.candidate <k>)
+   (<k> ^possible true
+        ^left-safe true
+        ^right-safe true)
+-->
+   (<k> ^legal true)
+}
+
+### Goal: everyone on the other bank
+
+sp {missionaries-cannibals*elaborate*solved
+   (state <s> ^name missionaries-cannibals
+              ^node <n>)
+   (<n> ^m 0 ^c 0 ^boat right)
+-->
+   (<s> ^solved <n>)
+}
+
+### Search: expand a legal candidate into a new node
+
+sp {missionaries-cannibals*propose*expand
+   (state <s> ^name missionaries-cannibals
+             -^solved
+              ^node <n>)
+   (<n> ^depth <d>
+        ^candidate <k>)
+   (<k> ^legal true
+        ^m <m> ^c <c> ^boat <b>)
+  -{(<s> ^node <x>)
+    (<x> ^m <m> ^c <c> ^boat <b>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name expand
+        ^node <n>
+        ^candidate <k>
+        ^depth <d>)
+}
+
+# Breadth first: expand shallower nodes first.
+sp {missionaries-cannibals*compare*expand*shallower
+   (state <s> ^name missionaries-cannibals
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name expand ^depth <d>)
+   (<o2> ^name expand ^depth > <d>)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {apply*expand
+   (state <s> ^operator <o>)
+   (<o> ^name expand
+        ^node <n>
+        ^candidate <k>
+        ^depth <d>)
+   (<k> ^m <m> ^c <c> ^boat <b> ^load <l>)
+-->
+   (<s> ^node <new>)
+   (<new> ^m <m> ^c <c> ^boat <b>
+          ^depth (+ <d> 1)
+          ^parent <n>
+          ^load <l>)
+}
+
+### Report the solution path from the start
+
+sp {missionaries-cannibals*elaborate*on-path*goal
+   (state <s> ^name missionaries-cannibals
+              ^solved <n>)
+-->
+   (<n> ^on-path true)
+}
+
+sp {missionaries-cannibals*elaborate*on-path*parent
+   (state <s> ^name missionaries-cannibals
+              ^node <n>)
+   (<n> ^on-path true
+        ^parent <p>)
+-->
+   (<p> ^on-path true)
+}
+
+sp {missionaries-cannibals*propose*report-step
+   (state <s> ^name missionaries-cannibals
+              ^solved
+             -^reported
+              ^node <n>)
+   (<n> ^on-path true
+        ^depth <d>
+        ^parent <p>
+       -^printed true)
+   (<p> -^parent)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name report-step
+        ^node <n>)
+}
+
+sp {missionaries-cannibals*propose*report-step*next
+   (state <s> ^name missionaries-cannibals
+              ^solved
+             -^reported
+              ^node <n>)
+   (<n> ^on-path true
+        ^parent <p>
+       -^printed true)
+   (<p> ^printed true)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name report-step
+        ^node <n>)
+}
+
+sp {apply*report-step
+   (state <s> ^operator <o>
+              ^total <t>)
+   (<o> ^name report-step
+        ^node <n>)
+   (<n> ^depth <d>
+        ^m <m> ^c <c> ^boat <b>
+        ^load <l>)
+   (<l> ^m <dm> ^c <dc>)
+-->
+   (<n> ^printed true)
+   (write |Crossing | <d> |: boat carries | <dm> |M | <dc> |C to the | <b> | bank.   Left bank: | <m> |M | <c> |C   Right bank: | (- <t> <m>) |M | (- <t> <c>) |C| (crlf))
+}
+
+sp {missionaries-cannibals*propose*finish
+   (state <s> ^name missionaries-cannibals
+              ^solved <n>)
+   (<n> ^printed true ^depth <d>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name finish ^crossings <d>)
+}
+
+sp {apply*finish
+   (state <s> ^operator <o>)
+   (<o> ^name finish ^crossings <d>)
+-->
+   (write |Everyone has crossed safely in | <d> | crossings.| (crlf))
+   (halt)
+}

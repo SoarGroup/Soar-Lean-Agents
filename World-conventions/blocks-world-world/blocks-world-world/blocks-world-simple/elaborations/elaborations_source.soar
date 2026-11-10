@@ -1,0 +1,7 @@
+source achieved.soar
+source block-in-place.soar
+source clear.soar
+source flag-initialization.soar
+source monitor.soar
+source problem-space.soar
+source search-control.soar

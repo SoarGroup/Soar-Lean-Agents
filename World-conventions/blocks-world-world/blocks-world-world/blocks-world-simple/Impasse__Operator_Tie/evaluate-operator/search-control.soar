@@ -1,0 +1,10 @@
+
+sp {blocks-world*select-operator*reject*move-block*twice
+   (state <s> ^problem-space.name moving-block
+              ^superstate.operator.name evaluate-operator
+              ^operator <o> +
+              ^world.last-moved-block <mb>)
+   (<o> ^argument1 <mb>)
+-->
+ #  (write (crlf) |Reject moving | <mb> | because we just moved it and we are in an evaluation so can't be optimal.|)
+   (<s> ^operator <o> -)}

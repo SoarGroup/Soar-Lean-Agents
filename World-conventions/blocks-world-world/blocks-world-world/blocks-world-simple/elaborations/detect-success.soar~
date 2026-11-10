@@ -1,0 +1,13 @@
+##If all on relations achieved
+##then
+##   write Goal Achieved and
+##   halt
+#
+sp {halt*achieved-desireds
+   (state <s>  ^superstate nil
+               ^desireds <desireds>)
+   (<desireds> ^desired-count <count>
+               ^achieved-desireds-count <count>)
+-->
+   (write (crlf) |Goal Achieved.|)
+   (halt)}

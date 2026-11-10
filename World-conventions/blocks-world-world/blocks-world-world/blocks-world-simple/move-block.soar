@@ -1,0 +1,76 @@
+###
+### MOVE-BLOCK
+###
+
+##blocks-world*propose*operator*move-block
+##If the state has problem space move-single-unit-block and
+##   there is a block and
+##   that block is clear and
+##   there is a second object that is clear and
+##   the block is not on the table and being moved to the table
+##then
+##   create a move-block operator to
+##      move the block on to the second object and
+##   create an acceptable preference for that operator
+ 
+sp {blocks-world*propose*move-block
+   (state <s> ^problem-space.name move-block   
+              ^world <world>)
+   (<world> ^objects <objects>
+            ^clear <object1> <object2>)
+   (<objects> ^object <object1>
+                      <object2>)
+   (<object1> ^type block
+              ^object-handle <object-handle>)
+   (<object2> ^object-handle <> <object-handle>)
+  -{(<world> ^on <on>)
+    (<on> ^argument1 <object1>
+          ^argument2 <object2>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-block
+        ^task-operator true
+        ^pre-conditions-satisfied true     
+        ^argument1 <object1>   # block being moved
+        ^argument2 <object2>)} # destination
+
+##blocks-world*apply*move-block*internal
+##If an operator is selected for moving a block onto object and
+##   that block is on a second object
+##then
+##   add that the block is on the first object and
+##   delete that the block is on the second object
+                  
+sp {apply*move-block*internal
+   (state <s> ^operator <o>
+              ^world.on <on>)
+   (<on> ^argument1 <mblock>
+         ^argument2 { <> <tblock> <object> })
+   (<o> ^argument1 <mblock>
+        ^argument2 <tblock>
+        ^pre-conditions-satisfied true)    # Added   11/4/2019
+-->
+   (<on> ^argument2 <tblock>
+         ^argument2 <object> -)}
+
+
+sp {blocks-world*apply*operator*remember*moved-block
+   (state <s> ^flags.remember-last-move true
+              ^operator <o1>
+              ^world <w>)
+   (<w> -^last-moved-block <mb>)
+   (<o1> ^name move-block
+         ^argument1 <mb>)
+-->
+   (<w> ^last-moved-block <mb>)
+}
+
+sp {blocks-world*apply*operator*forget*moved-block
+   (state <s>  ^flags.remember-last-move true
+               ^operator <o>
+               ^world <w>)
+   (<w> ^last-moved-block <mb>)
+   (<o> ^name move-block
+        ^argument1 <> <mb>)
+-->
+   (<w> ^last-moved-block <mb> -)}

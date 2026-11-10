@@ -1,0 +1,14 @@
+##blocks-world**monitor*move-block
+##If move-block is selected
+##then
+##   print out the id of the operator, 
+##     the moving block and the destination
+
+sp {blocks-world*monitor*move-block
+   (state <s> ^flags.monitor true
+              ^operator <o>)
+   (<o> ^name move-block
+        ^argument1.object-handle <m>
+        ^argument2.object-handle <d>)
+-->
+   (write (crlf)| Apply | <o> |: move-block(| <m> |,|<d> |)|)}

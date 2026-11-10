@@ -1,0 +1,31 @@
+# Classic 5 block blocks world
+# Modified from the Soar Book
+# John E. Laird
+# University of Michigan
+# 11/2/2019
+
+# Soar version 9.6.5
+# Updated 10/15/2026
+
+# In this formulation, clear is computed as an elaboration
+# (in elaborations/clear). The table is always clear
+
+## Modified to work with ^world.
+
+# should all be in agent-world
+#production optimize-attribute above 10
+
+# contains all of the rules required for simple lookahead, iterative deepending. 
+# does not contain rules for the hierarchical implementation
+
+pushd ../../default-world
+source agent-world.soar -v
+source simple.soar -v
+#source selection-world.soar -v
+#source selection-iterative-deepening.soar -v
+popd
+
+chunk only
+
+chunk add-osk on
+srand 1

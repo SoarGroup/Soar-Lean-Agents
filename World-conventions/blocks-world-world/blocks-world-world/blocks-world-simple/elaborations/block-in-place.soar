@@ -1,0 +1,27 @@
+sp {move-block*elaborate*block-in-place*on*block-places
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired.on <on-desired>
+              ^world <world>)
+   (<world> ^on <on-world>
+            ^block-in-place <argument2>)
+   (<on-desired> ^argument1 <argument1>
+                 ^argument2 <argument2>)
+   (<on-world> ^argument1 <argument1>
+               ^argument2 <argument2>)
+-->
+   (<world> ^block-in-place <argument1>)
+}
+
+sp {move-block*elaborate*block-in-place*on*block-places*table
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired.on <on-desired>
+              ^world <world>)
+   (<world> ^on <on-world>)
+   (<on-desired> ^argument1 <argument1>
+                 ^argument2 <argument2>)
+   (<on-world> ^argument1 <argument1>
+               ^argument2 <argument2>)
+   (<argument2> ^type table)
+-->
+   (<world> ^block-in-place <argument1>)
+}

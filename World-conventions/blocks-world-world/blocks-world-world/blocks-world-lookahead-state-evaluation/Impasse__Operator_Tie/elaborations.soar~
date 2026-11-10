@@ -1,0 +1,49 @@
+### These evaluations are used to direct the search.
+###  Just another example of how to encode evaluation knowledge in Soar.
+#
+#sp {evaluate-operator*evaluate*c*outplace
+#   :interrupt
+#   (state <s> ^name evaluate-operator
+#              ^tried-tied-operator
+#              ^inplace-object.name table
+#              ^outplace-object.name C
+#              ^ontop <o1> <o2> <o3>)
+#   (<o1> ^top-block.name B
+#         ^bottom-block.name <x>)
+#   (<o2> ^top-block.name A
+#         ^bottom-block.name <y>)
+#   (<o3> ^top-block.name C
+#         ^bottom-block.name <z>)
+#-->
+#   (<s> ^expected-value 0.0)}
+#               
+#sp {evaluate-operator*evaluate*c*inplace
+#   :interrupt
+#   (state <s> ^name evaluate-operator
+#              ^tried-tied-operator
+#              ^inplace-object.name C
+#              ^outplace-object.name B
+#              ^ontop <o1>)
+#   (<o1> ^top-block.name A
+#         ^bottom-block.name <x>)
+#-->
+#   (<s> ^expected-value .3)}
+#
+#
+#sp {evaluate-operator*evaluate*cb*inplace
+#   (state <s> ^name evaluate-operator
+#              ^tried-tied-operator
+#              ^inplace-object.name C
+#              ^inplace-object.name B
+#              ^outplace-object.name A)
+#-->
+#   (<s> ^expected-value .6)}
+#
+#sp {evaluate-operator*evaluate*cba*inplace
+#   (state <s> ^name evaluate-operator
+#              ^tried-tied-operator
+#              ^inplace-object.name C
+#              ^inplace-object.name B
+#              ^inplace-object.name A)
+#-->
+#   (<s> ^expected-value 1.0)}

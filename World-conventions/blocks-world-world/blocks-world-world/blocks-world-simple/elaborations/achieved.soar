@@ -1,0 +1,28 @@
+## Detects when a ^on desired is achieved/not achieved
+
+sp {blocks-world*elaborate*desireds*achieved*on
+   (state <s> ^desireds <desireds>
+              ^world.on <on2>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^on <on1>)
+   (<on1> ^argument1.object-handle <object-handle>
+          ^argument2.object-handle <container-handle>)
+   (<on2> ^argument1.object-handle <object-handle>
+          ^argument2.object-handle <container-handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+sp {blocks-world*elaborate*desireds*unachieved*on
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^on <on1>)
+   (<on1> ^argument1.object-handle <object-handle>
+          ^argument2.object-handle <container-handle>)
+  -{(<s> ^world.on <on2>)
+    (<on2> ^argument1.object-handle <object-handle>
+           ^argument2.object-handle <container-handle>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+

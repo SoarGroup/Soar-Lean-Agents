@@ -1,0 +1,31 @@
+## Table always clear
+
+sp {move-block*elaborate*state*clear-table
+   (state <s> ^problem-space.name move-block
+              ^world <world>)
+   (<world> ^objects.object <object>)
+   (<object> ^type table)
+-->
+   (<world> ^clear <object>)
+}
+
+## block that is not covered is clear
+sp {move-block*elaborate*state*clear
+   (state <s> ^problem-space.name move-block
+              ^world <world>)
+   (<world> ^objects.object <object>
+           -^on.argument2 <object>)  
+-->
+   (<world> ^clear <object>)
+}
+
+## block that is not covered is clear
+sp {move-block*elaborate*state*clear*false
+   (state <s> ^problem-space.name move-block
+              ^world <world>)
+   (<world> ^objects.object <object>
+            ^on.argument2 <object>)  
+   (<object> -^type table)
+-->
+   (<world> ^not-clear <object>)
+}

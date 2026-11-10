@@ -1,0 +1,50 @@
+
+## P6*evaluate*move-block*best*move-block-to-table
+## If the state has problem space move-single-unit-block and
+##   an operator is proposed to move a block to the table and
+##   that block is not in-place and
+##   that block is not on the table
+##then
+##   create a best preference of the operator
+##   and create an indifferent preference so avoid ties when > three blocks
+
+sp {move-block**evaluate*move-block*best*move-block-to-table
+   (state <s> ^flags.task-search-control true 
+              ^problem-space.name move-block              
+              ^operator <op1> +)
+   (<op1> ^name move-block
+          ^argument2.type block)
+-->
+   (<s> ^operator <op1> <)}
+
+##blocks-worl*evaluate*move-block*better*move-to-goal
+##If an operator is proposed to move a block onto a second block and
+##   that second block is in-place and
+##   in the desired state the block is on the second block 
+##then
+##   create a preference that the operator is best
+
+sp {move-block*evaluate*move-block*better*move-to-goal
+   (state <s> ^flags.task-search-control true
+              ^problem-space.name move-block
+              ^world.block-in-place <argument2>
+              ^desireds.unachieved.on <don>
+              ^operator <op1> +)
+   (<don> ^argument1 <argument1>
+          ^argument2 <argument2>)
+   (<op1> ^argument1 <argument1>
+          ^argument2 <argument2>)
+-->
+   (<s> ^operator <op1> >)}
+
+## otherwise pick randomly
+
+sp {blocks-world*select*move-block
+   (state <s> ^flags.task-search-control true 
+              ^problem-space.name move-block
+              ^operator <op1> +)
+   (<op1> ^name move-block)
+-->
+   (<s> ^operator <op1> =)
+}
+

@@ -1,0 +1,258 @@
+## Three wizards (the king's white-spot puzzle)
+## Written from the English description only.
+##
+## Description:
+##   A king wants to find out which of his three wizards is the wisest. He
+##   seats them in a circle where each can see and hear the others. He tells
+##   them that he will paste a white or a black spot on each one's forehead,
+##   and that at least one of the spots will be white. No one can see his own
+##   spot. In fact, he pastes a white spot on all three. He then promises his
+##   favor to the first wizard who can say what color his own spot is. For a
+##   while no one speaks. Then one wizard announces that his spot is white.
+##   How does he know?
+##
+## Method: possible-worlds reasoning about common knowledge.
+## A world assigns white or black to each wizard's spot. A wizard cannot see
+## his own spot, so in a world he cannot tell it apart from the world that
+## differs only in his own spot. He knows his color in a world if that other
+## world has been ruled out. Each public event rules out worlds:
+##   - the king's statement rules out the world with no white spot;
+##   - each round of silence rules out every world in which some wizard
+##     would already have known his color (he would have spoken).
+## When a wizard knows his color in the actual world, he announces it.
+
+### Initialization: three wizards, all given white spots by the king
+
+sp {propose*initialize-wizards
+   (state <s> ^superstate nil
+             -^name)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name initialize-wizards)
+}
+
+sp {apply*initialize-wizards
+   (state <s> ^operator.name initialize-wizards)
+-->
+   (<s> ^name wizards
+        ^color white black
+        ^wizard <w1> <w2> <w3>
+        ^round 0)
+   (<w1> ^number 1 ^actual-spot white)
+   (<w2> ^number 2 ^actual-spot white)
+   (<w3> ^number 3 ^actual-spot white)
+}
+
+### Create the possible worlds: every assignment of white/black to the three spots
+
+sp {wizards*propose*create-world
+   (state <s> ^name wizards
+              ^wizard <wa> <wb> <wc>
+              ^color <c1> ^color <c2> ^color <c3>)
+   (<wa> ^number 1)
+   (<wb> ^number 2)
+   (<wc> ^number 3)
+  -{(<s> ^world <w>)
+    (<w> ^spot <x> <y> <z>)
+    (<x> ^wizard <wa> ^color <c1>)
+    (<y> ^wizard <wb> ^color <c2>)
+    (<z> ^wizard <wc> ^color <c3>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name create-world
+        ^colors <cs>)
+   (<cs> ^c1 <c1> ^c2 <c2> ^c3 <c3>)
+}
+
+sp {apply*create-world
+   (state <s> ^operator <o>
+              ^wizard <wa> <wb> <wc>)
+   (<o> ^name create-world
+        ^colors <cs>)
+   (<cs> ^c1 <c1> ^c2 <c2> ^c3 <c3>)
+   (<wa> ^number 1)
+   (<wb> ^number 2)
+   (<wc> ^number 3)
+-->
+   (<s> ^world <w>)
+   (<w> ^spot <x> <y> <z>
+        ^label (concat <c1> |-| <c2> |-| <c3>))
+   (<x> ^wizard <wa> ^color <c1>)
+   (<y> ^wizard <wb> ^color <c2>)
+   (<z> ^wizard <wc> ^color <c3>)
+}
+
+### World elaborations
+
+# A world is the actual one if every spot has the color the king pasted.
+sp {wizards*elaborate*world*not-actual
+   (state <s> ^name wizards
+              ^world <w>)
+   (<w> ^spot <x>)
+   (<x> ^wizard <wz> ^color <c>)
+   (<wz> ^actual-spot <> <c>)
+-->
+   (<w> ^not-actual true)
+}
+
+sp {wizards*elaborate*world*actual
+   (state <s> ^name wizards
+              ^world <w>)
+   (<w> -^not-actual true)
+-->
+   (<w> ^actual true)
+}
+
+sp {wizards*elaborate*world*has-white
+   (state <s> ^name wizards
+              ^world <w>)
+   (<w> ^spot.color white)
+-->
+   (<w> ^has-white true)
+}
+
+# In world <w>, wizard <i> is uncertain if another live world agrees on the
+# two spots he can see but differs on his own.
+sp {wizards*elaborate*world*uncertain
+   (state <s> ^name wizards
+              ^wizard <i>
+              ^wizard { <j> <> <i> }
+              ^wizard { <k> <> <i> <> <j> }
+              ^world <w>
+              ^world { <w2> <> <w> })
+   (<w> -^eliminated true
+         ^spot <wi> <wj> <wk>)
+   (<wi> ^wizard <i> ^color <ci>)
+   (<wj> ^wizard <j> ^color <cj>)
+   (<wk> ^wizard <k> ^color <ck>)
+   (<w2> -^eliminated true
+          ^spot <vi> <vj> <vk>)
+   (<vi> ^wizard <i> ^color <> <ci>)
+   (<vj> ^wizard <j> ^color <cj>)
+   (<vk> ^wizard <k> ^color <ck>)
+-->
+   (<w> ^uncertain <i>)
+}
+
+# Otherwise he knows his own color in that world.
+sp {wizards*elaborate*world*knows
+   (state <s> ^name wizards
+              ^wizard <i>
+              ^world <w>)
+   (<w> -^eliminated true
+         ^spot <wi>
+        -^uncertain <i>)
+   (<wi> ^wizard <i>)
+-->
+   (<w> ^knows <i>)
+}
+
+### The king's statement: at least one spot is white
+
+sp {wizards*propose*king-announces
+   (state <s> ^name wizards
+             -^king-announced true)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name king-announces)
+}
+
+sp {wizards*compare*create-world*king-announces
+   (state <s> ^name wizards
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name create-world)
+   (<o2> ^name king-announces)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {apply*king-announces
+   (state <s> ^operator.name king-announces)
+-->
+   (<s> ^king-announced true)
+   (write |King: at least one of your spots is white.| (crlf))
+}
+
+sp {apply*king-announces*eliminate
+   (state <s> ^operator.name king-announces
+              ^world <w>)
+   (<w> -^has-white true
+         ^label <l>)
+-->
+   (<w> ^eliminated true)
+   (write |  ruled out | <l> (crlf))
+}
+
+### A round of silence: no wizard speaks, so every world in which some wizard
+### would have known his color is ruled out.
+
+sp {wizards*propose*nobody-speaks
+   (state <s> ^name wizards
+              ^king-announced true
+              ^round <r>
+              ^world <a>
+              ^world <w>)
+   (<a> ^actual true
+       -^knows)
+   (<w> ^knows)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name nobody-speaks
+        ^round <r>)
+}
+
+sp {apply*nobody-speaks
+   (state <s> ^operator <o>
+              ^round <r>)
+   (<o> ^name nobody-speaks
+        ^round <r>)
+-->
+   (<s> ^round <r> -
+        ^round (+ <r> 1))
+   (write |Round | (+ <r> 1) |: no one speaks.| (crlf))
+}
+
+sp {apply*nobody-speaks*eliminate
+   (state <s> ^operator <o>
+              ^round <r>
+              ^world <w>)
+   (<o> ^name nobody-speaks
+        ^round <r>)
+   (<w> ^knows <i>
+        ^label <l>)
+   (<i> ^number <n>)
+-->
+   (<w> ^eliminated true)
+   (write |  ruled out | <l> |: wizard | <n> | would have known his spot| (crlf))
+}
+
+### A wizard who knows his color in the actual world announces it.
+
+sp {wizards*propose*announce
+   (state <s> ^name wizards
+              ^king-announced true
+              ^world <a>)
+   (<a> ^actual true
+        ^knows <i>
+        ^spot <x>)
+   (<x> ^wizard <i> ^color <c>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name announce
+        ^wizard <i>
+        ^color <c>)
+}
+
+sp {apply*announce
+   (state <s> ^operator <o>
+              ^round <r>)
+   (<o> ^name announce
+        ^wizard <i>
+        ^color <c>)
+   (<i> ^number <n>)
+-->
+   (write |Wizard | <n> |: my spot is | <c> |.| (crlf))
+   (write |  (after | <r> | rounds of silence, every world in which my spot is black has been ruled out)| (crlf))
+   (halt)
+}

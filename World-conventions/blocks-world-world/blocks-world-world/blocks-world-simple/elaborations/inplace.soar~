@@ -1,0 +1,34 @@
+##P3*elaborate*table*inplace
+##If there is the table
+##then
+##   the table is inplace
+
+sp {P3*elaborate*object-on-table
+   (state <s> ^name blocks-world
+              ^world <world>)
+   (<world> ^object <table>)
+   (<table> ^object-handle table)
+-->
+   (<world> ^inplace-object <table>)
+}
+
+##P4*elaborate*block*in-place
+##If there is a object that is inplace and
+##   there is a block on that object and
+##   the block is on the object in the desired state
+##then
+##   the block is in-place
+
+sp {P4*elaborate*object-on-inplace
+   (state <s> ^name blocks-world
+              ^world <world>
+              ^desired.on <on-d>)
+   (<world> ^on <on-s>
+            ^inplace-object <blockB>)
+   (<on-s> ^argument2 <blockB>
+              ^argument1 <blockA>)
+   (<on-d> ^argument1 <blockA>
+              ^argument2 <blockB>)
+-->
+   (<world> ^inplace-object <blockA>)
+}

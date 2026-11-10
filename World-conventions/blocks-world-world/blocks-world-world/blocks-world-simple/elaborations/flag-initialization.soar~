@@ -1,0 +1,19 @@
+# additional flags in agent-world/elaborations/flag-initialization.soar
+sp {blocks-world*elaborate*flags
+   (state <s> ^name blocks-world
+              ^type state
+              ^superstate nil)
+-->
+   (<s> ^flags <flags>)
+   (<flags> ^desired-preferences false         # Uses the desired preferences in operator desireds in its actions (preconditions). If false, more look-ahead planning.
+            ^gps-desired-ordering false        # Uses preferences to rank desireds - similar to table of connections is GPS. If false, more look-ahead planning.
+            ^task-search-control true         # false: 
+            ^rl false                         # If true reinforement learning is used. Not recently tested.
+            ^iterative-step tie-impasse       # tie-impasse/operator - if impasse, an iterative step is when there is a tie-impasse. if operator, it is when a task operator is applied.
+            ^init-evaluation-depth unachieved-desireds #one - uses unacheived-desireds - 1 as initial evaluation depth
+            ^mea-operator-selection false      # If true use means-ends analysis to propose operators instead of pure forward search (preconditions satisfied). Not kept up to date. Always true.
+            ^use-timers true                  # false/true. True recommended. If false, only use iterative deepening depth, which is problematic if iterative-step is tie-impasse. If true, use timers on actions in look-ahead search. .
+            ^monitor true  
+            ^remember-last-move true
+           )
+}

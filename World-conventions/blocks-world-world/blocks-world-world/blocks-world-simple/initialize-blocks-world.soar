@@ -1,0 +1,140 @@
+###
+### Initialize the state
+###
+
+sp {blocks-world*propose*initialize-blocks-world
+   (state <s> ^superstate nil
+              ^world <world>
+             -^name blocks-world)
+-->
+   (<s> ^operator <o> +, >)
+   (<o> ^name initialize-blocks-world
+        ^task-operator false)
+}
+
+## Modify the following rule to change the initial state or the goal.
+## It is necessary for the initial state and the desired state to share the same
+## identifiers for the objects (<blockA>, <blockB>, <blockC>, <table>) because of
+## the way the goal is detected (in elaborations/detect-success).
+## For simplicity, differs slightly from the book: use name blocks-world instead of problem-space.object-handle ...
+#
+#For five blocks
+sp {blocks-world*apply*initialize
+   (state <s> ^operator.name initialize-blocks-world
+              ^world <world>)
+   (<world> ^objects <objects>)
+-->
+   (<s> ^name blocks-world
+        ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3> <desired4> <desired5>
+               ^desired-count 5)
+   (<world> ^on <on1> <on2> <on3> <on4> <on5>)
+   (<objects> ^object <blockA> <blockB> <blockC> <blockD> <blockE> <table>)
+   (<on1> ^argument1 <blockC>
+          ^argument2 <blockA>)
+   (<on2> ^argument1 <blockA>
+          ^argument2 <table>)
+   (<on3> ^argument1 <blockB>
+          ^argument2 <blockE>)
+   (<on4> ^argument1 <blockD>
+          ^argument2 <table>)
+   (<on5> ^argument1 <blockE>
+          ^argument2 <blockD>)
+   (<blockA> ^object-handle A
+             ^anchored true
+             ^type block)
+   (<blockB> ^object-handle B
+             ^anchored true
+             ^type block)
+   (<blockC> ^object-handle C
+             ^anchored true
+             ^type block)
+   (<blockD> ^object-handle D
+             ^anchored true
+             ^type block)
+   (<blockE> ^object-handle E
+             ^anchored true
+             ^type block)
+   (<table> ^object-handle table
+            ^anchored true
+            ^type table)
+   (write (crlf) |Five Blocks World - just move blocks.|)
+   (write (crlf) |Initial state has A on table, B on E, C on A, D on the Table, E on D.|)
+   (<desired1> ^on <don1>)
+   (<desired2> ^on <don2>)
+   (<desired3> ^on <don3>)
+   (<desired4> ^on <don4>)
+   (<desired5> ^on <don5>)
+   (<don1> ^argument1 <blockA>
+           ^argument2 <blockB>)
+   (<don2> ^argument1 <blockB>
+           ^argument2 <blockC>)
+   (<don3> ^argument1 <blockC>
+           ^argument2 <blockD>)
+   (<don4> ^argument1 <blockD>
+           ^argument2 <blockE>)
+   (<don5> ^argument1 <blockE>
+           ^argument2 <table>)
+   (write (crlf) |The goal is to get A on B on C on D on E on the table.|)
+   (write (crlf) |All moves determined by search control.|)}
+#
+#sp {blocks-world*apply*initialize
+#   (state <s> ^operator.name initialize-blocks-world
+#              ^world <world>)
+#   (<world> ^objects <objects>)
+#-->
+#   (<s> ^name blocks-world
+#        ^desireds <desireds>)
+#   (<desireds> ^desired <desired1> <desired2> <desired3> <desired4> <desired5>
+#               ^desired-count 5)
+#   (<world> ^on <on1> <on2> <on3> <on4> <on5>)
+#   (<objects> ^object <blockA> <blockB> <blockC> <blockD> <blockE> <table>)
+#   (<on1> ^argument1 <blockA>
+#          ^argument2 <blockC>)
+#   (<on2> ^argument1 <blockC>
+#          ^argument2 <table>)
+#   (<on3> ^argument1 <blockB>
+#          ^argument2 <blockE>)
+#   (<on4> ^argument1 <blockD>
+#          ^argument2 <table>)
+#   (<on5> ^argument1 <blockE>
+#          ^argument2 <blockD>)
+#   (<blockA> ^object-handle A
+#             ^anchored true
+#             ^type block)
+#   (<blockB> ^object-handle B
+#             ^anchored true
+#             ^type block)
+#   (<blockC> ^object-handle C
+#             ^anchored true
+#             ^type block)
+#   (<blockD> ^object-handle D
+#             ^anchored true
+#             ^type block)
+#   (<blockE> ^object-handle E
+#             ^anchored true
+#             ^type block)
+#   (<table> ^object-handle table
+#            ^anchored true
+#            ^type table)
+#   (write (crlf) |Five Blocks World - just move blocks.|)
+#   (write (crlf) |Initial state has A on C, B on E, C on table, D on the Table, E on D.|)
+#   (<desired1> ^on <don1>)
+#   (<desired2> ^on <don2>)
+#   (<desired3> ^on <don3>)
+#   (<desired4> ^on <don4>)
+#   (<desired5> ^on <don5>)
+#   (<don1> ^argument1 <blockA>
+#           ^argument2 <blockB>)
+#   (<don2> ^argument1 <blockB>
+#           ^argument2 <blockC>)
+#   (<don3> ^argument1 <blockC>
+#           ^argument2 <blockD>)
+#   (<don4> ^argument1 <blockD>
+#           ^argument2 <blockE>)
+#   (<don5> ^argument1 <blockE>
+#           ^argument2 <table>)
+#   (write (crlf) |The goal is to get A on B on C on D on E on the table.|)
+#   (write (crlf) |A on C causes problems with simple MEA search control.|)}
+#
+#
