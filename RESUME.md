@@ -1,4 +1,37 @@
-# Resume: world-conventions defect review (stopped 8 Nov 2026, 21:00)
+# Resume: Soar-Lean-Agents (updated 10 Nov 2026)
+
+## Status (10 Nov 2026)
+
+Work since the defect review (9 Nov), all delivered in this folder:
+
+- **Blind round trip, 68 tasks** (Soar -> English -> Soar, standard and world conventions), plus
+  direct conversions of the original Soar code to both conventions: STEP6/Blind-Round-Trip-68.xlsx,
+  STEP6/blind-round-trip-68.zip. Summary (original / standard / world / world-no-environment /
+  direct-standard / direct-world): episode-1 successes 168/167/170/171/168/170; median decisions
+  102/114/272/102/126/102. Task-rule counts exclude blocks-world-hrl-3level.
+- **Artists-and-managers** in the world framework (artists-world.zip) with iterative deepening;
+  `^iterative-step operator` mode was rerun. It does not return shortest plans (open).
+- **Five-houses (zebra) puzzle** encoded under the world conventions (zebra-world.zip).
+- **Library findings:** Library-Findings.docx, 47 findings (17 high, 20 medium, 10 low), by
+  component. The Library findings sheet in Blind-Round-Trip-68.xlsx holds only the first 9 added;
+  the zebra findings are in the document and the zebra README only.
+- **Conventions:** VisualSoar-Project-Conventions.docx (37 conventions for representing Soar agents
+  on the VisualSoar project structure). World conventions: World-Conventions.xlsx, Slides/.
+- **Deck:** Slides/From-English-to-Soar-CIC.pptx (37 slides, with page numbers), plus the single-topic
+  slide files in Slides/.
+
+## Next steps (from the Next steps slide)
+
+1. Address the 17 high-priority library findings, starting with the selection-world attribute
+   copying and the iterative-deepening guard (once per operator, not once per state).
+2. Retest Blocks World optimality with the fixed libraries (carried over from 9 Nov).
+3. Add the remaining findings to the spreadsheet's Library findings sheet.
+4. Ratify one convention set (world conventions plus the VisualSoar project conventions).
+5. Test the pipeline on tasks that were not written for it.
+
+---- Earlier status, kept as written ----
+
+## Resume: world-conventions defect review (stopped 8 Nov 2026, 21:00)
 
 Defects are taken in order of severity, high first. JL edits the original library rules; Claude
 re-checks them in Soar and soar-lean.
