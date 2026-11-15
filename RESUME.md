@@ -34,4 +34,4 @@ The earlier resume (10 Nov 2026) is in `OLD/RESUME.md`; its next steps (library 
 6. **worldcheck** encodes the conventions of 10 and 11 November; it does not yet know `^flag-override`, relation objects for one-argument relations, rule names or `$` on handles.
 7. **Generation from English** under the world conventions covers the Water Jug family only; the 14 step 6 families (`Tasks/STEP6`) use the older conventions and libraries.
 8. **Ratify** the world conventions (World-Conventions-v5.xlsx and the VisualSoar project conventions) with CIC reviewers.
-9. **Decks** in `Slides/` and the draft manual (`Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`) predate the current layout and library v2.30.
+9. **Decks** in `Slides/` and predate the current layout and library v2.30. The draft manual (`Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`) is current for v2.30, has six Parts and includes the former setup guide, external-environment chapter and Water Jug example.

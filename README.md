@@ -4,7 +4,7 @@ Soar agents created from English -> Lean -> Soar, with the shared Soar library t
 
 Start here:
 - `RESUME.md`: current status and next steps of the English-to-Soar and library work.
-- `Soar/docs/English-to-Soar-Setup.docx`: how to set up Claude, Soar and a session to generate a Soar agent from English.
+- `Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`: the manual, which includes how to set up Claude, Soar and a session to generate a Soar agent from English (Chapter 6), how to interface to an external environment (Chapter 7) and a worked Water Jug example (Appendices I to K).
 - `Soar/soar-library/`: the Soar library every project loads (v2.30, 15 November 2026).
 - `CMC/cmcsoar-release-2026-11-14.zip`: the Lean specifications of the CMC and of Soar (see `RELEASE.md` inside it); `STATUS.md` here is a copy of its status file.
 - `Slides/From-English-to-Soar-CIC.pptx`: the main deck.
@@ -33,7 +33,7 @@ Each library release is a numbered zip in `Soar-library-dev/releases` (`soar-lib
 ### `Soar/`
 Using Soar and the shared library. `Soar/README.md` lists the contents.
 - `soar-library/`: the shared library (v2.30). Projects: soar-base, selection-world (with iterative deepening), agent-world, object-world, thor-soar and thor-tasks, each a VisualSoar project with its datamap; `tools/` holds the build scripts (parser, datamaps, chunker).
-- `docs/`: `English-to-Soar-Setup.docx` (the setup guide), `Soar-Lean-Agents-Manual-draft-v1.docx` (draft developer manual), `Visual Soar User's Manual.html`.
+- `docs/`: `Soar-Lean-Agents-Manual-draft-v1.docx` (draft manual; it supersedes the former setup guide `English-to-Soar-Setup.docx`), `Visual Soar User's Manual.html`.
 - `bugs/`: `Soar-9.6.5-Kernel-Defects.docx` (defects found in the Soar 9.6.5 kernel, with their status in 9.6.6) and `soar-dollar-bugs.zip` (two defects with `$`: repro programs, code locations, proposed fixes).
 - `lean-spec/`: `Soar-on-CMC-Lean.docx` (and `.pdf`), `Soar-Lean-map.xlsx` (copies of those in the Lean release's `doc/`), `SOAR-LEAN-CONTEXT.md` (the release's `CLAUDE.md`; rename to `CLAUDE.md` to have it loaded), `Value of Lean Soar.docx`.
 
