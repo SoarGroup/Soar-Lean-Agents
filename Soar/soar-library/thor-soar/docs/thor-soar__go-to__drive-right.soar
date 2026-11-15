@@ -1,0 +1,22 @@
+#
+#sp {goto*SNC*thor-soar*propose*drive-right
+#   (state <s> ^attribute state
+#              ^impasse no-change
+#              ^superstate <ss>)
+#   (<ss> ^impasse no-change
+#         ^attribute operator
+#         ^superstate <sss>)
+#   (<sss> ^operator <operator>)
+#   (<operator> ^name go-to
+#               ^argument1 <object>)
+#   (<object> ^object-handle <object-handle>
+#             ^in-view true)
+#-->
+#   (<s> ^operator <operator2> + =)
+#   (<operator2> ^name drive-right
+#                ^pre-conditions-satisfied true
+#                ^task-operator true
+#                ^action-handle drive-backward
+#                ^argument1 .3
+#                ^argument-count 1)
+#}

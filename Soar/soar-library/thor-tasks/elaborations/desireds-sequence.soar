@@ -1,0 +1,80 @@
+## desireds-sequence.soar -- thor-tasks: 2 elaborations.
+
+## Elaborate desired make-toast-on-plate-then-plate-on-countertop -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-on-plate-then-plate-on-countertop
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-then-on-plate-then-plate-on-countertop)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired-count 1
+               ^world-context.objects.object <object-bread>
+               ^next-desireds <desireds2>)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<desireds2> ^desired.on <on2>
+                ^desired-count 1
+                ^world-context.objects.object <object-plate> <object-counter>
+                ^next-desireds <desireds3>)
+   (<object-counter> ^object-handle |unanchored-counter-handle|
+                     ^anchored false
+                     ^class countertop)
+   (<on2> ^argument1 <argument1x>
+          ^argument2 <argument2x>)
+   (<argument1x> ^object-handle |unanchored-plate-handle|)
+   (<argument2x> ^object-handle |unanchored-counter-handle|)
+   (<desireds3> ^desired.on <on1>
+                ^desired-count 1
+                ^world-context.objects.object <object-bread2> <object-plate>)
+   (<object-plate> ^class plate
+                   ^object-handle |unanchored-plate-handle|
+                   ^anchored false)
+   (<object-bread2> ^class breadsliced
+                    ^object-handle |unanchored-bread-handle2|
+                    ^anchored false)
+   (<on1> ^argument1 <argument1>
+          ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-bread-handle2|)
+   (<argument2> ^object-handle |unanchored-plate-handle|)
+}
+
+## Elaborate desired put-potato-in-cabinet-then-close-cabinet-then-get-potato -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*put-potato-in-cabinet-then-close-cabinet-then-get-potato
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-potato-in-cabinet-then-close-cabinet-then-get-potato)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1
+               ^world-context.objects.object <object-potato> <object-fridge>
+               ^next-desireds <desireds2>)
+   (<object-potato> ^object-handle |unanchored-potato-handle|
+                    ^anchored false
+                    ^class potato)
+   (<object-fridge> ^object-handle |unanchored-fridge-handle|
+                    ^anchored false
+                    ^class microwave)
+   (<desired> ^in <in>)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-potato-handle|)
+   (<argument2> ^object-handle |unanchored-fridge-handle|)
+   (<desireds2> ^desired.object <desired2>
+                ^desired-count 1
+                ^world-context.objects.object <object-fridge>
+                ^next-desireds <desireds3>)
+   (<desired2> ^object-handle |unanchored-fridge-handle|
+              ^open false)
+   (<desireds3> ^desired.holding-object.object-handle |unanchored-potato-handle|
+               ^desired-count 1
+               ^world-context.objects.object <object-potato>)
+}

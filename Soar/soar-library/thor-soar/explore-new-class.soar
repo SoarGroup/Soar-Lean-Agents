@@ -1,0 +1,93 @@
+## explore-new-class.soar -- thor-soar: 1 proposal, 2 compares, 2 applications.
+
+## Propose explore-new-class.
+sp {explore*propose*explore-new-class
+    :default
+   (state <s> ^name thor-soar
+              ^flags.explore true
+              ^explore-structure <es>
+              ^scene.objects.object <object>)
+   (<object> ^reachable true
+             ^class { <> soapbottle <> houseplant <> floor <class-handle> })
+   (<es> ^classes <classes>
+        -^current-class)
+  -{(<classes> ^class <class>)
+    (<class> ^complete true
+             ^class-handle <class-handle>)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-new-class
+         ^argument1 <class-handle>
+         ^argument-count 1
+         ^task-operator true
+         ^explore-operator true
+         ^desireds <desireds2>)
+   (<desireds2> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^world-context <world-context>)
+   (<desired-object1> ^reachable true
+                      ^object-handle (concat |Undefined-object-| <class-handle>)
+                      ^anchored false)
+   (<world-context> ^objects.object <scene-location-object>)
+   (<scene-location-object> ^object-handle (concat |Undefined-object-| <class-handle>)
+                            ^class <class-handle>
+                            ^anchored false)
+}
+
+## Preference for explore-new-class.
+sp {thor-soar*compare*explore-new-class
+    :default
+   (state <s> ^name
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^explore-operator true)
+   (<op2> -^explore-operator true
+          -^task-operator false
+          -^name smem-query)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for explore-new-class2.
+sp {thor-soar*compare*explore-new-class2
+    :default
+   (state <s> ^name
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^sub-name go-to-untested-class)
+   (<op2> -^name << go-to explore-new-class explore-test-action-success-undo >>
+           ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply explore-new-class -> sets class, class-handle, complete.
+sp {apply*explore-new-class*add-class
+    :default
+   (state <s> ^operator <op>
+              ^explore-structure <es>)
+   (<es> ^classes <classes>)
+  -(<classes> ^class.class-handle <class-handle>)
+   (<op> ^name explore-new-class
+         ^argument1 <class-handle>)
+-->
+   (<classes> ^class <class>)
+   (<class> ^class-handle <class-handle>
+            ^complete false)
+}
+
+## Apply explore-new-class -> sets current-class.
+sp {apply*explore-new-class
+    :default
+   (state <s> ^operator <op>
+              ^explore-structure <es>)
+   (<es> ^classes.class <class>)
+   (<class> ^class-handle <class-handle>
+            ^complete false)
+   (<op> ^name explore-new-class
+         ^pre-conditions-satisfied true
+         ^argument-count 1
+         ^argument1 <class-handle>)
+-->
+   (<es> ^current-class <class>)
+}

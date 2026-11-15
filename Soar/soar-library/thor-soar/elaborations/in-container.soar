@@ -1,0 +1,103 @@
+## in-container.soar -- thor-soar: 5 elaborations.
+
+## Elaborate in-container -> sets in, argument1, argument2 ....
+## Don't need to test if hide-in-container-objects because if true, the contained object won't be in the scene
+sp {elaborate*in-container
+    :default
+   (state <s> ^superstate nil
+             -^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^object-handle <object-handle>
+                       ^derived-from-input.contains-object-handle <contained-object-handle>
+                       ^receptacle true)
+   (<contained-object> ^object-handle <contained-object-handle>
+                       ^class <class>)
+-->
+   (<scene> ^in <in>)
+   (<in> ^argument1 <contained-object>
+         ^argument2 <container-object>
+         ^argument1-class <class>)
+}
+
+## Elaborate in-container picked-up -> sets in, argument1, argument2 ....
+sp {elaborate*in-container*picked-up
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^world.holding-object <container-object>
+             -^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^object-handle <object-handle>
+                       ^contains-object-handle <contained-object-handle>
+                       ^receptacle true)
+   (<contained-object> ^object-handle <contained-object-handle>
+                       ^class <class>)
+  -{(<scene> ^in <inx>)
+    (<inx> ^argument1 <contained-object>
+           ^argument2 <container-object>)}
+-->
+   (<scene> ^in <in>)
+   (<in> ^argument1 <contained-object>
+         ^argument2 <container-object>
+         ^argument1-class <class>
+         ^held true)
+}
+
+## Elaborate in-container put-down -> sets in.
+sp {elaborate*in-container*put-down
+   :o-support
+    :default
+   (state <s> ^superstate nil
+             -^world.holding-object.object-handle <object-handle>
+             -^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^in <in>)
+   (<in> ^argument2.object-handle <object-handle>
+         ^held true)
+-->
+   (<scene> ^in <in> -)
+}
+
+## Elaborate in-container frustum true -> sets in, argument1, argument2 ....
+## Should include the negation but for some reason it doesn't work with it.
+## possibly changes some random decision to have more options and I don't
+sp {elaborate*in-container*frustum*true
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^object-handle <container-object-handle>
+                       ^derived-from-input.contains-object-handle <contained-object-handle>
+                       ^receptacle true)
+   (<contained-object> ^object-handle <contained-object-handle>
+                       ^class <class>)
+  -{(<scene> ^in <inx>)
+    (<inx> ^argument1.object-handle <contained-object-handle>
+           ^argument2.object-handle <container-object-handle>)}
+-->
+   (<scene> ^in <in>)
+   (<in> ^argument1 <contained-object>
+         ^argument2 <container-object>
+         ^argument1-class <class>)
+}
+
+## Elaborate in-container remove frustum true -> sets in.
+sp {elaborate*in-container*remove*frustum*true
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^in <in>)
+   (<in> ^argument1 <contained-object>)
+   (<scene> ^holding-object <contained-object>)
+-->
+   (<scene> ^in <in> -)
+}

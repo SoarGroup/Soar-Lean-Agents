@@ -1,0 +1,12 @@
+## Impasse__Operator_Tie__evaluate-operator__finish-future-event.soar -- thor-soar: 1 compare.
+
+## Preference for go-to finish-future.
+sp {agent-world*compare*go-to*finish-future
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name go-to)
+   (<op2> ^name finish-future-event)
+-->
+   (<s> ^operator <op1> > <op2>)
+}

@@ -1,0 +1,64 @@
+## aspiration.soar -- selection-world: 3 applications, 1 compare.
+## Adaptive aspiration (satisficing). Set ^flags.aspiration <level> (a cost) to accept the first success that costs no more than the level.
+## When an iteration ends without an acceptable success, the level rises by ^flags.aspiration-step (default 1) and the search continues.
+## Lower is better only (cost metric); not used when the task states ^better higher.
+
+## ---- operator application ----
+
+## Apply init-current-evaluation-depth -> sets aspiration-level from the flag.
+sp {selection-world*apply*init-current-evaluation-depth*aspiration-level
+   :default
+   (state <s> ^top-selection true
+              ^flags.aspiration <level>
+              ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth)
+-->
+   (<s> ^aspiration-level <level>)}
+
+## Apply increment-current-evaluation-depth (depth iteration) -> relaxes the aspiration level when no success is acceptable.
+sp {selection-world*apply*increment-current-evaluation-depth*aspiration*relax
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step operator
+              ^flags.aspiration-step <step>
+              ^aspiration-level <level>)
+  -{(<s> ^evaluation <evaluation>)
+    (<evaluation> ^symbolic-value success
+                  ^numeric-value { <= <level> <> no-value })}
+-->
+   (log 1 (crlf) |Aspiration level: | (+ <level> <step>))
+   (<s> ^aspiration-level (+ <level> <step>) <level> -)}
+
+## Apply increment-current-evaluation-depth (cost-cap iteration) -> relaxes the level once the cap has reached it.
+sp {selection-world*apply*increment-current-evaluation-depth*aspiration*relax*cost-cap
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step cost
+              ^flags.aspiration-step <step>
+              ^aspiration-level <level>
+              ^cost-cap >= <level>)
+  -{(<s> ^evaluation <evaluation>)
+    (<evaluation> ^symbolic-value success
+                  ^numeric-value { <= <level> <> no-value })}
+-->
+   (log 1 (crlf) |Aspiration level: | (+ <level> <step>))
+   (<s> ^aspiration-level (+ <level> <step>) <level> -)}
+
+## ---- evaluate / compare ----
+
+## Preference for selection acceptable-success-best: a success within the aspiration level is selected without waiting for other branches.
+sp {selection-world*compare*selection*acceptable-success-best
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^aspiration-level <level>
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better higher)
+   (<evaluation> ^super-operator <x>
+                 ^symbolic-value success
+                 ^numeric-value { <= <level> <> no-value }
+                 ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> >)}

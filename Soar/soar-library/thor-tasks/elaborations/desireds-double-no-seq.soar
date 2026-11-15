@@ -1,0 +1,329 @@
+## desireds-double-no-seq.soar -- thor-tasks: 10 elaborations.
+
+## Elaborate desired break-mug-put-apple-in-sink -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*break-mug-put-apple-in-sink
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection break-mug-put-apple-in-sink)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired <desired>
+               ^desired-count 2
+               ^world-context.objects.object <object-mug> <object-apple> <object-sinkbasin>)
+   (<object1> ^broken true
+              ^object-handle |unanchored-mug-handle1|)
+   (<object-apple> ^class apple
+                   ^object-handle |unanchored-apple-handle1|
+                   ^anchored false)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-mug-handle1|
+                 ^anchored false)
+   (<object-sinkbasin> ^object-handle |unanchored-sinkbasin-handle1|
+                       ^anchored false
+                       ^class sinkbasin)
+   (<desired> ^in <in>)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-apple-handle1|)
+   (<argument2> ^object-handle |unanchored-sinkbasin-handle1|)
+}
+
+## Elaborate desired break-mug-lightswitch-off -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*break-mug-lightswitch-off
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection break-mug-lightswitch-off)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-mug> <object-lightswitch>)
+   (<object1> ^broken true
+              ^object-handle |unanchored-mug-handle1|)
+   (<object2> ^activated false
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-mug-handle1|
+                 ^anchored false)
+}
+
+## Elaborate desired lightswitch-off-put-potato-on-plate -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*lightswitch-off-put-potato-on-plate
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection lightswitch-off-put-potato-on-plate)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired <desired1>
+               ^desired-count 2
+               ^world-context.objects.object <object-lightswitch> <object-potato> <object-plate>)
+   (<object1> ^activated false
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-potato> ^object-handle |unanchored-potato-handle1|
+                    ^anchored false
+                    ^class potato)
+   (<object-plate> ^object-handle |unanchored-plate-handle1|
+                   ^anchored false
+                   ^class plate)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-potato-handle1|)
+   (<argument2> ^object-handle |unanchored-plate-handle1|)
+}
+
+## Elaborate desired lightswitch-off-put-carrot-on-plate -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*lightswitch-off-put-carrot-on-plate
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection lightswitch-off-put-carrot-on-plate)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired <desired1>
+               ^desired-count 2
+               ^world-context.objects.object <object-lightswitch> <object-carrot> <object-plate>)
+   (<object1> ^activated false
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-carrot> ^object-handle |unanchored-carrot-handle1|
+                    ^anchored false
+                    ^class carrot)
+   (<object-plate> ^object-handle |unanchored-plate-handle1|
+                   ^anchored false
+                   ^class plate)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-carrot-handle1|)
+   (<argument2> ^object-handle |unanchored-plate-handle1|)
+}
+
+## Elaborate desired fill-mug-put-apple-in-sink -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*fill-mug-put-apple-in-sink
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection fill-mug-put-apple-in-sink)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired <desired>
+               ^desired-count 2
+               ^world-context.objects.object <object-mug> <object-apple> <object-sinkbasin>)
+   (<object1> ^liquid-contents water
+              ^object-handle |unanchored-mug-handle1|)
+   (<object-apple> ^class apple
+                   ^object-handle |unanchored-apple-handle1|
+                   ^anchored false)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-mug-handle1|
+                 ^anchored false)
+   (<object-sinkbasin> ^object-handle |unanchored-sinkbasin-handle1|
+                       ^anchored false
+                       ^class sinkbasin)
+   (<desired> ^in <in>)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-apple-handle1|)
+   (<argument2> ^object-handle |unanchored-sinkbasin-handle1|)
+}
+
+## Elaborate desired slice-apple potato-in-microwave -> sets desireds, desired, world-context ....
+## Slice a apple
+sp {elaborate*thor-soar*desired*slice-apple*potato-in-microwave
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-apple-potato-in-microwave)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^world-context.objects.object <object-apple> <object-potato> <object-microwave>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class applesliced
+              ^object-handle |unanchored-apple-handle|)
+   (<object-apple> ^class applesliced
+                    ^object-handle |unanchored-apple-handle|
+                    ^anchored false)
+   (<object-potato> ^object-handle |unanchored-potato-handle|
+                    ^anchored false
+                    ^class potato)
+   (<object-microwave> ^object-handle |unanchored-microwave-handle|
+                     ^anchored false
+                     ^class microwave)
+   (<desired2> ^in <in>)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-potato-handle|)
+   (<argument2> ^object-handle |unanchored-microwave-handle|)
+}
+
+## Elaborate desired break-mug-lightswitch-off-put-apple-in-sink -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*break-mug-lightswitch-off-put-apple-in-sink
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection break-mug-lightswitch-off-put-apple-in-sink)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired <desired>
+               ^desired-count 3
+               ^world-context.objects.object <object-mug> <object-apple> <object-sinkbasin> <object-lightswitch>)
+   (<object1> ^broken true
+              ^object-handle |unanchored-mug-handle1|)
+   (<object2> ^activated false
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<object-apple> ^class apple
+                   ^object-handle |unanchored-apple-handle1|
+                   ^anchored false)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-mug-handle1|
+                 ^anchored false)
+   (<object-sinkbasin> ^object-handle |unanchored-sinkbasin-handle1|
+                       ^anchored false
+                       ^class sinkbasin)
+   (<desired> ^in <in>)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-apple-handle1|)
+   (<argument2> ^object-handle |unanchored-sinkbasin-handle1|)
+}
+
+## Elaborate desired slice-apple-potato-in-microwave-mug-in-sink -> sets desireds, desired, world-context ....
+sp {elaborate*thor-soar*desired*slice-apple-potato-in-microwave-mug-in-sink
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-apple-potato-in-microwave-mug-in-sink)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3>
+               ^world-context.objects.object <object-mug> <object-potato> <object-microwave> <object-apple> <object-sinkbasin>
+               ^desired-count 3)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class applesliced
+              ^object-handle |unanchored-apple-handle1|)
+   (<object-apple> ^class applesliced
+                   ^object-handle |unanchored-apple-handle1|
+                   ^anchored false)
+   (<object-potato> ^object-handle |unanchored-potato-handle|
+                    ^anchored false
+                    ^class potato)
+   (<object-microwave> ^object-handle |unanchored-microwave-handle|
+                     ^anchored false
+                     ^class microwave)
+   (<desired2> ^in <in1>)
+   (<in1> ^argument1 <argument1x>
+         ^argument2 <argument2x>)
+   (<argument1x> ^object-handle |unanchored-potato-handle|)
+   (<argument2x> ^object-handle |unanchored-microwave-handle|)
+   (<object-mug> ^class mug
+                   ^object-handle |unanchored-mug-handle1|
+                   ^anchored false)
+   (<object-sinkbasin> ^object-handle |unanchored-sinkbasin-handle1|
+                       ^anchored false
+                       ^class sinkbasin)
+   (<desired3> ^in <in2>)
+   (<in2> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-mug-handle1|)
+   (<argument2> ^object-handle |unanchored-sinkbasin-handle1|)
+}
+
+## Elaborate desired slice-apple-lightswitch-on-potato-on-plate -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*slice-apple-lightswitch-on-potato-on-plate
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-apple-lightswitch-on-potato-on-plate)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired <desired1>
+               ^desired-count 3
+               ^world-context.objects.object <object-lightswitch> <object-potato> <object-plate> <object-apple>)
+   (<object1> ^sliced true
+              ^class applesliced
+              ^object-handle |unanchored-apple-handle|)
+   (<object-apple> ^class applesliced
+                   ^object-handle |unanchored-apple-handle|
+                   ^anchored false)
+   (<object2> ^activated true
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<object-potato> ^object-handle |unanchored-potato-handle1|
+                    ^anchored false
+                    ^class potato)
+   (<object-plate> ^object-handle |unanchored-plate-handle1|
+                   ^anchored false
+                   ^class plate)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-potato-handle1|)
+   (<argument2> ^object-handle |unanchored-plate-handle1|)
+}
+
+## Elaborate desired slice-apple-lightswitch-on-carrot-on-plate -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*slice-apple-lightswitch-on-carrot-on-plate
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-apple-lightswitch-on-carrot-on-plate)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired <desired1>
+               ^desired-count 3
+               ^world-context.objects.object <object-lightswitch> <object-carrot> <object-plate> <object-apple>)
+   (<object1> ^sliced true
+              ^class applesliced
+              ^object-handle |unanchored-apple-handle|)
+   (<object-apple> ^class applesliced
+                   ^object-handle |unanchored-apple-handle|
+                   ^anchored false)
+   (<object2> ^activated true
+              ^object-handle |unanchored-lightswitch-handle1|)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+   (<object-carrot> ^object-handle |unanchored-carrot-handle1|
+                    ^anchored false
+                    ^class carrot)
+   (<object-plate> ^object-handle |unanchored-plate-handle1|
+                   ^anchored false
+                   ^class plate)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-carrot-handle1|)
+   (<argument2> ^object-handle |unanchored-plate-handle1|)
+}

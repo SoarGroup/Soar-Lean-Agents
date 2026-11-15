@@ -1,0 +1,37 @@
+## elaborations.soar -- selection-world: 1 elaboration, 1 application.
+
+## ---- elaborations ----
+
+## Elaborate selection pass-back-success -> sets symbo.
+## Dangerous rule - for success test can lead to non-optimal path being learned
+## this is the conservative version
+sp {selection-world*elaborate*selection*pass-back-success
+   :default
+   (state <s> ^selection-superstate.operator <sso>
+              ^evaluation <evaluation>)
+   (<evaluation> ^symbolic-value << required-success >>) # partial-success success >>)
+   (<sso> ^name evaluate-operator
+          ^evaluation <evaluation2>
+          ^super-operator.name <name>)
+   (<evaluation2> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation2> ^symbolic-value partial-success)}
+
+## ---- operator application ----
+
+## Apply selection -> sets numeric-val.
+sp {selection-world*apply*selection*evaluate-operator*all-operators-no-value
+   :default
+   (state <s> ^selection-superstate <sss>
+              ^operator <operator>
+             -^not-all-operators-evaluated
+             -^found-value
+              ^quiescence t
+              ^choices multiple)
+   (<sss> ^name selection
+          ^operator <sso>)
+   (<sso> ^name evaluate-operator
+          ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^numeric-value no-value)}

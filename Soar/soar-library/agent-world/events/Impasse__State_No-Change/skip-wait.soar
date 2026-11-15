@@ -1,0 +1,50 @@
+## skip-wait.soar -- agent-world: 1 proposal, 1 compare, 1 application.
+
+## ---- operator proposal ----
+
+## Propose skip-wait.
+sp {agent-world*propose*state-no-change*skip-wait
+   :default
+   (state <s> ^attribute state
+              ^choices none
+              ^quiescence t
+              ^world <world>)
+   (<world> ^real true
+            ^future-event <future-event>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name skip-wait
+         ^future-event <future-event>)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for Impasse State No-Change skip-wait wait.
+## If multiple, handle them in order of completion - soonest first
+sp {agent-world*compare*state-no-change*skip-wait*wait
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name skip-wait
+          ^future-event.completion-time <ct>)
+   (<op2> ^name skip-wait
+          ^future-event.completion-time > <ct>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply skip-wait -> sets manipulate-time, command, ms.
+sp {agent-world*apply*skip-wait
+   :default
+   (state <s> ^operator <op>
+              ^io.input-link.time.ms <current-time>
+              ^io.output-link <output>)
+   (<op> ^name skip-wait
+         ^future-event.completion-time <completion-time>)
+-->
+   (<output> ^manipulate-time <mt>)
+   (<mt> ^command advance-time
+         ^ms (+ (- <completion-time> <current-time>) 200))
+}

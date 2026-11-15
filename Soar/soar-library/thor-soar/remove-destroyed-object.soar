@@ -1,0 +1,69 @@
+## remove-destroyed-object.soar -- thor-soar: 1 proposal, 1 compare, 3 applications.
+
+## Propose remove-destroyed-object.
+## If an egg is broken or a potato is sliced for example
+sp {thor-soar*propose*remove-destroyed-object
+    :default
+   (state <s> ^superstate nil
+              ^io.input-link.objects <io-objects>
+              ^scene.objects.object <object>)
+   (<object> ^derived-from-input <dfi>
+             ^object-handle <object-handle>)
+  -(<io-objects> ^object <dfi>)
+   (<io-objects> ^object.origin-object-handle <object-handle>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name remove-destroyed-object
+         ^task-operator false
+         ^argument1 <object>)
+}
+
+## Preference for prefer remove-destroyed-object over task-operator.
+## Operators
+## Prefer remove-destroyed-object over task operators
+sp {thor-soar*prefer*remove-destroyed-object*over*task-operator
+    :default
+   (state <s> ^operator <operator1> +
+              ^operator <operator2> +)
+   (<operator1> ^name remove-destroyed-object)
+   (<operator2> ^task-handle <task-handle>)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## Apply remove-destroyed-object -> sets object.
+sp {apply*remove-destroyed-object*scene
+    :default
+   (state <s> ^operator <op>
+              ^scene.objects <objects>)
+   (<op> ^name remove-destroyed-object
+         ^argument1 <object>)
+   (<objects> ^object <object>)
+-->
+   (<objects> ^object <object> -)
+}
+
+## Apply remove-destroyed-object -> sets object.
+sp {apply*remove-destroyed-object*world
+    :default
+   (state <s> ^operator <op>
+              ^world.objects <objects>)
+   (<op> ^name remove-destroyed-object
+         ^argument1.object-handle <object-handle>)
+   (<objects> ^object <object>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<objects> ^object <object> -)
+}
+
+## Apply remove-destroyed-object -> sets failed-grounding.
+sp {apply*remove-destroyed-object*failed*find-object
+    :default
+   (state <s> ^operator <op>
+              ^desireds.desired.object <object>)
+   (<op> ^name remove-destroyed-object
+         ^argument1.object-handle <object-handle>)
+   (<object> ^failed-grounding true)
+-->
+   (<object> ^failed-grounding true -)
+}

@@ -1,0 +1,279 @@
+## scan-room.soar -- thor-soar: 5 proposals, 2 compares, 6 applications.
+
+## Propose scan-room.
+## Scan room if  view-frustum true don't know anything about object
+## should use explore receptacles first if it is known to be not a receptacle so it could be hiding in one.
+sp {thor-soar*propose*scan-room*object-unanchored*no-class
+    :default
+   (state <s> ^world.real true
+              ^flags.view-frustum true  # should only be an issue if the view-frustum is enabled - nothing should be hiddent from the agent.
+              ^top-state <top-state>
+              ^desireds.desired.info.anchored-object <anchored-object>)
+   (<top-state> ^io.input-link.self.pose <pose>)
+   (<pose> ^x <x>
+           ^y <y>)
+   (<anchored-object> ^object-handle <object-handle>)
+  -{(<top-state> ^scene.objects.object <anchored-objectx>)  # object is not known at all
+    (<anchored-objectx> ^anchored true
+                        ^object-handle <object-handle>)}
+  -{(<top-state> ^scan-record <scan-record>)
+    (<scan-record> ^x <x>
+                   ^y <y>
+                   ^complete true)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name scan-room
+         ^task-operator false
+         ^scan-record <sr>)
+   (<sr> ^x <x>
+         ^y <y>
+         ^scanned-90 false)
+}
+
+## Propose scan-room.
+sp {thor-soar*propose*scan-room*object-anchored*class
+    :default
+   (state <s> ^world.real true
+              ^flags.view-frustum true  # should only be an issue if the view-frustum is enabled - nothing should be hiddent from the agent.
+              ^top-state <top-state>
+              ^desireds.desired.info.unanchored-object <unanchored-object>)
+   (<top-state> ^io.input-link.self.pose <pose>)
+   (<pose> ^x <x>
+           ^y <y>)
+   (<unanchored-object> ^object-handle <object-handle>
+                        ^anchored false
+                        ^class <class>)
+  -{(<top-state> ^scene.objects.object <anchored-objectx>)  # object is not known at all
+    (<anchored-objectx> ^anchored true
+                        ^class <class>)}
+  -{(<top-state> ^scan-record <scan-record>)
+    (<scan-record> ^x <x>
+                   ^y <y>
+                   ^complete true)}
+  -(<s> ^flags.smem-retrieve true               ### don't look for a sliced object
+        ^constants.transformations.<class>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name scan-room
+         ^task-operator false
+         ^scan-record <sr>)
+   (<sr> ^x <x>
+         ^y <y>
+         ^scanned-90 false)
+}
+
+## Propose scan-room.
+sp {thor-soar*propose*scan-room*object-anchored*no-class
+    :default
+   (state <s> ^world.real true
+              ^flags.view-frustum true  # should only be an issue if the view-frustum is enabled - nothing should be hiddent from the agent.
+              ^top-state <top-state>
+              ^desireds.desired.info.unanchored-object <unanchored-object>)
+   (<top-state> ^io.input-link.self.pose <pose>)
+   (<pose> ^x <x>
+           ^y <y>)
+   (<unanchored-object> ^object-handle <object-handle>
+                       # ^anchored false
+                       -^class <class>)
+  -{(<top-state> ^scene.objects.object <object>)
+    (<object> ^anchored true
+              ^object-handle <object-handle>)}
+  -{(<top-state> ^scan-record <scan-record>)
+    (<scan-record> ^x <x>
+                   ^y <y>
+                   ^complete true)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name scan-room
+         ^task-operator false
+         ^scan-record <sr>)
+   (<sr> ^x <x>
+         ^y <y>
+         ^scanned-90 false)
+}
+
+## Propose scan-room.
+sp {thor-soar*propose*scan-room*explore-receptacles
+    :default
+   (state <s> ^world.real true
+              ^flags.view-frustum true  # should only be an issue if the view-frustum is enabled - nothing should be hiddent from the agent.
+               ^flags.explore-receptacles true
+              ^top-state <top-state>
+             -^superstate.operator.name scan-room)
+   (<top-state> ^io.input-link.self.pose <pose>)
+   (<pose> ^x <x>
+           ^y <y>)
+  -{(<top-state> ^scan-record <scan-record>)
+    (<scan-record> ^complete true)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name scan-room
+         ^task-operator false
+         ^scan-record <sr>)
+   (<sr> ^x <x>
+         ^y <y>
+         ^scanned-90 false)
+}
+
+## Propose scan-room.
+sp {thor-soar*propose*scan-room*no-x-y-z
+    :default
+   (state <s> ^world.real true
+              ^superstate.operator <operator>
+              ^flags.view-frustum true  # should only be an issue if the view-frustum is enabled - nothing should be hiddent from the agent.
+              ^top-state <top-state>
+             -^superstate.operator.name scan-room)
+   (<operator> ^name go-to
+              -^argument1.x)
+   (<top-state> ^io.input-link.self.pose <pose>)
+   (<pose> ^x <x>
+           ^y <y>)
+  -{(<top-state> ^scan-record <scan-record>)
+    (<scan-record> ^complete true)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name scan-room
+         ^task-operator false
+         ^scan-record <sr>)
+   (<sr> ^x <x>
+         ^y <y>
+         ^scanned-90 false)
+}
+
+## Preference for scan-room search-closed-receptacles.
+sp {thor-soar*compare*scan-room*search-closed-receptacles
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name scan-room)
+   (<op2> ^name << search-closed-receptacles explore-in-receptacle-object explore-receptacles >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for scan-room smem-query.
+sp {thor-soar*compare*scan-room*smem-query
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name scan-room)
+   (<op2> ^name smem-query)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply scan-room -> sets scan-record.
+sp {apply*scan-room*clean-up
+    :default
+   (state <s> ^top-state <top-state>
+              ^operator <op>)
+   (<op> ^name scan-room
+         ^scan-record <rs>)
+   (<top-state> ^scan-record <sr>
+                ^io.input-link.self.pose <pose>)
+  -(<pose> ^x <x>
+           ^y <y>)
+   (<sr> ^x <x>
+         ^y <y>)
+-->
+   (<top-state> ^scan-record <rs> -)
+}
+
+## Apply scan-room -> sets scan-record.
+sp {apply*scan-room-90
+    :default
+   (state <s> ^top-state <top-state>
+              ^quiescence t
+              ^operator <op>)
+   (<op> ^name scan-room
+         ^scan-record <rs>)
+-->
+   (<top-state> ^scan-record <rs>)
+}
+
+## Apply turn -> sets scanned-90, scanned-180.
+sp {apply*scan-room*turn-90
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^top-state.scan-record <rs>)
+#   (<op> ^name scan-room
+#         ^scan-record <rs>)
+   (<rs> ^scanned-90 false
+        -^complete true)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name turn
+         ^status success)
+-->
+   (<rs> ^scanned-90 false -
+                     true
+         ^scanned-180 false)
+}
+
+## Apply turn -> sets scanned-180, scanned-270.
+sp {apply*scan-room*turn-180
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^top-state.scan-record <rs>)
+#   (<op> ^name scan-room
+#         ^scan-record <rs>)
+   (<rs> ^scanned-180 false
+        -^complete true)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name turn
+         ^status success)
+-->
+   (<rs> ^scanned-180 false -
+                      true
+         ^scanned-270 false)
+}
+
+## Apply turn -> sets scanned-270, scanned-360, x ....
+sp {apply*scan-room*turn-270
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^top-state.scan-record <rs>
+              ^io.input-link.self.pose <pose>)
+#   (<op> ^name scan-room
+#         ^scan-record <rs>)
+   (<rs> ^scanned-270 false
+        -^complete true)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name turn
+         ^status success)
+   (<pose> ^x <x>
+           ^y <y>)
+-->
+   (<rs> ^scanned-270 false -
+                      true
+         ^scanned-360 false
+         ^x <x>
+         ^y <y>
+                      )#      ^complete true) # no need to do 360 - 270 should see everything
+}
+
+## Apply turn -> sets complete, scanned-270, x ....
+sp {apply*scan-room*turn-360
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^top-state.scan-record <rs>
+              ^io.input-link.self.pose <pose>)
+#   (<op> ^name scan-room
+#         ^scan-record <rs>)
+   (<rs> ^scanned-360 false
+        -^complete true)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name turn
+         ^status success)
+   (<pose> ^x <x>
+           ^y <y>)
+-->
+   (<rs> ^complete true
+         ^scanned-270 false -
+                      true
+         ^x <x>
+         ^y <y>)
+}

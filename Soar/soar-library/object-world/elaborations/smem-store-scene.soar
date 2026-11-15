@@ -1,0 +1,15 @@
+## smem-store-scene.soar -- object-world: 1 elaboration.
+
+## Elaborate store-scene smem recur -> sets store.
+## Recursive store all substructure including objects
+sp {object-world*elaborate*store-scene*smem*recur
+   :default
+   (state <s> ^smem.command <cmd>)
+   (<cmd> ^store <something>)
+   (<something> ^{ <> duplicate-of <> info <> future-event <> derived-from-input <attr>}
+                   { <=> <cmd> <child-that-is-sym>}) # (same type as something you know is a symbol, not a constant)
+  -(<child-that-is-sym> ^smem-stored true)
+-->
+   (<cmd> ^store <child-that-is-sym>)
+   (log 1  |@|)
+}

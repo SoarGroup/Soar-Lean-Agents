@@ -1,0 +1,17 @@
+## turn-270.soar -- thor-soar: 1 proposal.
+
+## Propose turn-270.
+sp {scan-room*propose*turn-270
+    :default
+   (state <s> ^name scan-room
+             ^scan-record.scanned-270 false)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name turn-270
+         ^task-operator true
+         ^action-handle turn
+         ^argument-count 2
+         ^argument1 right
+         ^argument2 90.0
+         ^pre-conditions-satisfied true)
+}

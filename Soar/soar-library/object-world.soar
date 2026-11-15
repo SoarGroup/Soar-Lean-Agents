@@ -1,0 +1,3 @@
+pushd object-world
+source object-world_source.soar
+popd

@@ -1,0 +1,27 @@
+## init-remaining-operators.soar -- selection-world: 1 proposal, 1 application.
+
+## ---- operator proposal ----
+
+## Propose init-remaining-operators.
+sp {selection-world*propose*selection*init-remaining-operators
+   :default
+   (state <s> ^name selection
+             -^remaining-operators
+              ^item-count <item-count>)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name init-remaining-operators
+               ^value <item-count>)
+}
+
+## ---- operator application ----
+
+## Apply init-remaining-operators -> sets remaining-operator.
+sp {selection-world*apply*init-remaining-operators
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name init-remaining-operators
+               ^value <item-count>)
+-->
+   (<s> ^remaining-operators <item-count>)
+}

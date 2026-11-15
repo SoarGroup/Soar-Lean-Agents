@@ -1,0 +1,362 @@
+## elaborations.soar -- selection-world: 6 elaborations, 13 compares.
+
+## ---- elaborations ----
+
+## Elaborate selection current-evaluate-depth -> sets current-evaluation-depth.
+sp {selection-world*elaborate*selection*current-evaluate-depth
+   :default
+   (state <s>  ^name selection
+               ^superstate.current-evaluation-depth <current-evaluation-depth>)
+-->
+   (<s> ^current-evaluation-depth <current-evaluation-depth>)
+}
+
+## Elaborate selection monitor depth.
+sp {selection-world*elaborate*selection*monitor*depth
+   :default
+   (state <s> ^top-selection true
+              ^name selection
+              ^current-evaluation-depth <current-evaluation-depth>
+              ^remaining-operators <remaining-operators>)
+   (<current-evaluation-depth> ^value <value>)
+-->
+   (write (crlf) |Depth: | <current-evaluation-depth> |: | <value> | remaining, | <remaining-operators>)
+}
+
+## Elaborate selection minimum numeric-value.
+sp {selection-world*elaborate*selection*minimum*numeric-value
+   :default
+   (state <s> ^name selection
+              ^evaluation.numeric-value { <v> <> no-value }
+              ^current-evaluation-depth <ced>
+             -^minimum-numeric-value < <v>
+             -^evaluation.numeric-value { < <v> <> no-value })
+-->
+   (log 1 (crlf) |Pick minimum-numeric-value: | <v> | to | <s>)
+   (<s> ^minimum-numeric-value <v>)}
+
+## Elaborate selection minimum numeric-value pass-down.
+sp {selection-world*elaborate*selection*minimum*numeric-value*pass-down
+   :default
+   (state <s> ^name selection
+              ^selection-superstate.minimum-numeric-value <v>)
+-->
+   (log 1 (crlf) |Pass down minimum-numeric-value: | <v> | to | <s>)
+   (<s> ^minimum-numeric-value <v>
+        ^passed-down-minimum <v>)}
+
+## Elaborate selection minimum numeric-value remove-invalid-minimum-numeric-value -> sets mi.
+sp {selection-world*elaborate*selection*minimum*numeric-value*remove-invalid-minimum-numeric-value
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^minimum-numeric-value <v>
+              ^evaluation.numeric-value { < <v> <> no-value <lower-value>})
+-->
+   (log 1 (crlf) |Remove out-of-date minimum-numeric-value: | <v> | for | <s> | lower-value | <lower-value>)
+   (<s> ^minimum-numeric-value <v> -)}
+
+## Elaborate selection minimum numeric-value remove-invalid-minimum-numeric-value2 -> sets mi.
+sp {selection-world*elaborate*selection*minimum*numeric-value*remove-invalid-minimum-numeric-value2
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^minimum-numeric-value <v>
+              ^minimum-numeric-value { < <v> <lower-value>})
+-->
+   (log 1 (crlf) |Remove old minimum-numeric-value: | <v> | for | <s> | lower-value | <lower-value>)
+   (<s> ^minimum-numeric-value <v> -)}
+
+## ---- evaluate / compare ----
+
+## Preference for selection same-symbolic-evaluations-are-indifferent task-operators.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*task-operators
+   :default
+   (state <s> ^name selection
+              ^remaining-operators 0
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value { <> success <> partial-success <> depth-exceeded <> exhaustion-failure <> depth-exhaustion <v> }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value <v>
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent success no-better.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*success*no-better
+   :default
+   (state <s> ^name selection
+              ^remaining-operators 0
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+   (<evaluation1> ^closed true)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent no-eval.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval
+   :default
+   (state <s> ^name selection
+             -^item-no-evaluation true
+              ^remaining-operators 1
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value { <> partial-success <> depth-exceeded <> exhaustion-failure <> depth-exhaustion <v> }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value <v>
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection reject high-estimated-total-cost (optimize true only).
+## A branch whose cost bound exceeds the best numeric value found so far cannot improve on it.
+sp {selection-world*compare*selection*reject*high-estimated-total-cost
+   :default
+   (state <s> ^name selection
+              ^flags.optimize true
+              ^minimum-numeric-value <mnv>
+              ^superstate <superstate>
+              -^superstate.desireds.better higher
+              ^evaluation <evaluation>)
+   (<evaluation> ^super-operator <operator>
+                 ^estimated-total-cost { <cost> > <mnv> })
+-->
+   (log 1 (crlf) |Reject: | <operator> | ^estimated-total-cost | <cost> | greater than minimum value: | <mnv>)
+   (<superstate> ^operator <operator> -)}
+
+## Preference for selection lower-estimated-total-cost-better (optimize true).
+## Only when the task supplies ^estimated-remaining-cost: without one the bound is just the clock or path cost, a valid lower bound but a poor
+## ordering signal (it favours branches that leave unattended work pending; measured suboptimal on scheduling with unattended jobs).
+## Nested selections only: at the top level a depth-exceeded set means "search deeper", not "choose". A candidate without an evaluation has no
+## preference against the others, so the choice is made only once every candidate is evaluated.
+## A depth-exceeded branch reports the bound of the leaf its look-ahead reached. The look-ahead follows the best-evaluated child, so
+## preferring the child with the lower bound makes the reported bound the minimum over the leaves (an admissible lower bound for the branch).
+sp {selection-world*compare*selection*lower-estimated-total-cost-better
+   :default
+   (state <s> ^name selection
+              ^selection-superstate <selection-superstate>
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>
+                 ^world.estimated-remaining-cost <anyrem>)
+  -(<desireds> ^better higher)
+   (<e1> ^super-operator <x>
+         ^symbolic-value depth-exceeded
+         ^estimated-total-cost <c1>
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exceeded
+         ^estimated-total-cost > <c1>
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-better-than-depth-exceeded (cost metric, optimize false).
+## The cheapest path at the first successful depth wins; deeper branches are not explored.
+sp {selection-world*compare*selection*success-better-than-depth-exceeded
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize false
+              ^flags.iterative-step << operator tie-impasse >>
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <> no-value <c> }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exceeded
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-within-cap-better-than-depth-exceeded (iterative-step cost, optimize false).
+## Only a success inside the current cost cap dominates: a more expensive success may be beaten by a path not yet reached.
+sp {selection-world*compare*selection*success-within-cap-better-than-depth-exceeded
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize false
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better higher)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <= <cap> <> no-value <c> }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exceeded
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-dominates-bound (cost metric, optimize true).
+## A success whose cost does not exceed a depth-exceeded branch's cost bound dominates that branch.
+sp {selection-world*compare*selection*success-dominates-cost-bound
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better higher)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <> no-value <c> }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exceeded
+         ^estimated-total-cost >= <c>
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection lower-bound-better-than-success (cost metric, optimize true; nested selections).
+## A depth-exceeded branch whose cost bound is below a success's cost may hold a cheaper path, so the look-ahead follows it and reports its bound.
+## Not at the top level: there a depth-exceeded branch means "search deeper", not "choose".
+sp {selection-world*compare*selection*lower-bound-better-than-success
+   :default
+   (state <s> ^name selection
+              ^selection-superstate <selection-superstate>
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better higher)
+   (<e1> ^super-operator <x>
+         ^symbolic-value depth-exceeded
+         ^estimated-total-cost <bound>
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value success
+         ^numeric-value { > <bound> <> no-value }
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection lower-cost-success-better (cost metric, optimize true).
+## A success's numeric value is its path cost; the cheaper success is better. The other success must be closed (lower-bound.soar):
+## nothing cheaper than the best value found can lie below it.
+sp {selection-world*compare*selection*lower-cost-success-better
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <c> <> no-value }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value success
+         ^numeric-value { > <c> <> no-value }
+         ^desireds.duplicate-of <desireds>
+         ^closed true)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-better-than-depth-exhaustion (cost metric, optimize true): nothing below it was cut off.
+## A depth-exhaustion evaluation found no success within the depth; a success dominates it unless a branch below it was cut off at a cost
+## below the success's cost. Without these two rules the two stay tied and the choice is random.
+sp {selection-world*compare*selection*success-better-than-depth-exhaustion*no-bound
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value <> no-value
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exhaustion
+         ^lower-bound none
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-better-than-depth-exhaustion (cost metric, optimize true): its cut-off bound is not below the success's cost.
+sp {selection-world*compare*selection*success-better-than-depth-exhaustion*bound
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <c> <> no-value }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exhaustion
+         ^lower-bound >= <c>
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection bounded-depth-exhaustion-better-than-success (cost metric, optimize true; nested selections).
+## A depth-exhaustion branch with a cut-off bound below a success's cost may hold a cheaper path, as for a depth-exceeded branch.
+sp {selection-world*compare*selection*bounded-depth-exhaustion-better-than-success
+   :default
+   (state <s> ^name selection
+              ^selection-superstate <selection-superstate>
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize true
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value depth-exhaustion
+         ^lower-bound { <bound> <> none }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value success
+         ^numeric-value { > <bound> <> no-value }
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}

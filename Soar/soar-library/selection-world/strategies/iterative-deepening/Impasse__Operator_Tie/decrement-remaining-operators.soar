@@ -1,0 +1,61 @@
+## decrement-remaining-operators.soar -- selection-world: 2 proposals, 1 compare, 1 application.
+
+## ---- operator proposal ----
+
+## Propose decrement-remai.
+sp {selection-world*propose*selection*decrement-remaining-operators
+   :default
+   (state <s> ^name selection
+              ^current-evaluation-depth.value <value>
+              ^remaining-operators { <remaining-operators> > 0 }
+              ^evaluation <evaluation>)
+   (<evaluation> ^current-evaluation-depth.value <value>
+                 ^remaining-operators <remaining-operators>
+                 ^value true)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name decrement-remaining-operators)
+}
+
+## Propose decrement-remai.
+sp {selection-world*propose*selection*decrement-remaining-operators*symbolic
+   :default
+   (state <s> ^name selection
+              ^current-evaluation-depth.value <value>
+              ^remaining-operators <remaining-operators>
+              ^evaluation <evaluation>)
+   (<evaluation> ^current-evaluation-depth.value <= <value>
+                 ^remaining-operators <remaining-operators>
+                 ^value true
+                 ^symbolic-value success)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name decrement-remaining-operators)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for selection decrement-remaining-operators.
+sp {selection-world*compare*selection*decrement-remaining-operators
+   :default
+   (state <s> ^name selection
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name decrement-remaining-operators)
+   (<op2> ^name increment-current-evaluation-depth)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply decrement-remaining-operators -> sets remaining-operators.
+sp {selection-world*apply*decrement-remaining-operators
+   :default
+   (state <s> ^operator <operator>
+              ^remaining-operators <remaining-operators>)
+   (<operator> ^name decrement-remaining-operators)
+-->
+   (<s> ^remaining-operators (- <remaining-operators> 1)
+                             <remaining-operators> -)
+}

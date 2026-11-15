@@ -1,0 +1,37 @@
+## smem.soar -- object-world: 3 elaborations.
+
+## Elaborate smem clean-up retrieve -> sets retriev.
+sp {object-world*elaborate*smem*clean-up*retrieve
+   :default
+   :o-support
+   (state <s> ^smem <smem>)
+   (<smem> ^result.<< success failure >> <q>
+           ^command <command>)
+   (<command> ^retrieve <retrieve> )
+-->
+   (<command> ^retrieve <retrieve>  -)
+}
+
+## Elaborate smem clean-up query -> sets q.
+sp {object-world*elaborate*smem*clean-up*query
+   :default
+   :o-support
+   (state <s> ^smem <smem>)
+   (<smem> ^result. << success failure >>
+           ^command <command>)
+   (<command> ^query <query> )
+-->
+   (<command> ^query <query>  -)
+}
+
+## Elaborate smem clean-up store.
+sp {object-world*elaborate*smem*clean-up*store
+   :default
+   :o-support
+   (state <s> ^smem <smem>)
+   (<smem> ^command <command>
+           ^result.success <store>)
+   (<command> ^store <store>)
+-->
+   (<command> ^store <store> -)
+}

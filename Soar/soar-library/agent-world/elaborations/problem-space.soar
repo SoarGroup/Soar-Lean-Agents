@@ -1,0 +1,29 @@
+## problem-space.soar -- agent-world: 3 elaborations.
+
+## Elaborate problem-space internal -> sets internal-act.
+sp {agent-world*elaborate*problem-space*internal
+   :default
+   (state <s> ^problem-space <problem-space>
+             -^superstate.internal-actions true
+             -^name evaluate-operator)
+-->
+   (<problem-space> ^internal-actions false)
+}
+
+## Elaborate problem-space internal evaluate-operator -> sets internal-ac.
+sp {agent-world*elaborate*problem-space*internal*evaluate-operator
+   :default
+   (state <s> ^problem-space <problem-space>
+              ^name evaluate-operator)
+-->
+   (<problem-space> ^internal-actions true)
+}
+
+## Elaborate problem-space internal true -> sets internal-ac.
+sp {agent-world*elaborate*problem-space*internal*true
+   :default
+   (state <s> ^problem-space <problem-space>
+              ^superstate.internal-actions true)
+-->
+   (<problem-space> ^internal-actions true)
+}

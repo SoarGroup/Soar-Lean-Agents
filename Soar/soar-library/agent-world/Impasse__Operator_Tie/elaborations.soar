@@ -1,0 +1,48 @@
+## elaborations.soar -- agent-world: 1 elaboration, 2 compares.
+
+## ---- elaborations ----
+
+## Elaborate selection select constraint-failure-print-out -> sets send-message, type, sentence.
+sp {agent-world*elaborate*selection*select*constraint-failure-print-out
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>
+                 ^real true
+                 ^io.output-link <output-link>)
+   (<evaluation1> ^symbolic-value constraint-failure
+                  ^failure-string <failure-string>
+                  ^desireds.duplicate-of <desireds>
+                  ^super-operator.name <operator-name>)
+-->
+   (<output-link> ^send-message <send-message>)
+   (<send-message> ^type say-sentence
+                   ^sentence (concat <operator-name> |: | <failure-string>))
+}
+
+## ---- evaluate / compare ----
+
+## Preference for selection evaluate force-conflict worse.
+sp {agent-world*compare*selection*evaluate*force-conflict*worse
+   :default
+   (state <s> ^name selection
+              ^operator <o> +)
+   (<o> ^name evaluate-operator
+        ^super-operator.name force-conflict)
+-->
+   (<s> ^operator <o> < )}
+
+## Preference for selection select constraint-failure-becomes-reject.
+## Constraint-failure
+sp {agent-world*compare*selection*select*constraint-failure-becomes-reject
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^symbolic-value constraint-failure
+                  ^desireds.duplicate-of <desireds>
+                  ^super-operator <operator1>)
+-->
+   (<superstate> ^operator <operator1> -)}

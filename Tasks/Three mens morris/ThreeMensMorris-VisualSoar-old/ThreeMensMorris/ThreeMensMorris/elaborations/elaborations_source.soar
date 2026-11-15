@@ -1,6 +1,0 @@
-source problem-space.soar
-source phases.soar
-source winner.soar
-source draw.soar
-source threats.soar
-source stages.soar

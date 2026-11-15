@@ -1,0 +1,149 @@
+## elaborations.soar -- thor-soar: 9 elaborations.
+
+## Elaborate evaluate-operator state look-adhead-operator duplicate close-open-go -> sets duplicate-look-ahead-operator.
+## BUG!
+## Close-container and open-container
+sp {evaluate-operator*elaborate*state*look-adhead-operator*duplicate*close-open-go
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name { << break-object clean-object close-container dirty-object  empty-object go-to get-object open-container slice-object turn-off turn-on toast >> <name> }
+               ^argument1.object-handle <object-handle>)
+   (<look-ahead-operator> ^name <name>
+                          ^argument1.object-handle <object-handle>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-adhead-operator duplicate close-find1 -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-adhead-operator*duplicate*close-find1
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name find-object
+               ^argument1.object-handle <object-handle>)
+   (<look-ahead-operator> ^name find-object
+                          ^argument1.object-handle <object-handle>
+                         -^argument2)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate two-arguments -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*two-arguments
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name { << discard put-on put-in store cook cook-stove cook-microwave make-coffee >> <name> }
+               ^argument2.object-handle <container-object-handle>
+               ^argument1.object-handle <object-handle>)
+   (<look-ahead-operator> ^name <name>
+                          ^argument2.object-handle <container-object-handle>
+                          ^argument1.object-handle <object-handle>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate two-arguments find-object -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*two-arguments*find-object
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name find-object
+               ^argument2.object-handle <container-object-handle>
+               ^argument1 <object1>)
+   (<object1> ^object-handle <unbound-object-handle2>)
+   (<look-ahead-operator> ^name find-object
+                          ^argument2.object-handle <container-object-handle>
+                          ^argument1 <object1x>)
+   (<object1x> ^object-handle <unbound-object-handle2>)
+  -{(<s> ^operator { < <operator> <operator2> } +)
+   (<operator2> ^name find-object
+               ^argument2.object-handle <container-object-handle>
+               ^argument1 <object2>)
+   (<object2> ^object-handle <unbound-object-handle2>)}
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate two-arguments argument1-ungrounded -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*two-arguments*argument1-ungrounded
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name { << discard put-on put-in store cook cook-stove cook-microwave make-coffee >> <name> }
+               ^desireds.world-context.objects.object <unbound-object>
+               ^argument1.object-handle <unbound-object-handle1>
+               ^argument2.object-handle <container-object-handle>)
+   (<unbound-object> ^class <class> ##
+                     ^object-handle <unbound-object-handle1>)
+   (<look-ahead-operator> ^name <name>
+                          ^desireds.world-context.objects.object <unbound-object2>
+                          ^argument1.object-handle <object-handle2>
+                          ^argument2.object-handle <container-object-handle>)
+   (<unbound-object2> ^class <class>
+                      ^object-handle <unbound-object-handle2>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate two-arguments argument1-ungrounded2 -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*two-arguments*argument1-ungrounded2
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name { << discard put-on put-in store cook cook-stove cook-microwave make-coffee >> <name> }
+               ^argument1.anchored true
+               ^argument2.object-handle <container-object-handle>)
+   (<look-ahead-operator> ^name <name>
+                         -^argument1.anchored true
+                          ^argument2.object-handle <container-object-handle>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate fill-object -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*fill-object
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name fill-object
+               ^argument1.object-handle <not-filled-object-handle>
+               ^argument2 <liquid>)
+   (<look-ahead-operator> ^name fill-object
+                          ^argument1.object-handle <not-filled-object-handle>
+                          ^argument2 <liquid>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator state look-ahead-operator duplicate finish-future-event -> sets duplicate-look-ahead-operator.
+sp {evaluate-operator*elaborate*state*look-ahead-operator*duplicate*finish-future-event
+   :default
+   (state <s> ^name evaluate-operator
+             -^applied-lookahead true
+              ^operator <operator> +
+              ^look-ahead-operator <look-ahead-operator>)
+   (<operator> ^name finish-future-event
+               ^future-event.duplicate-of <fe>)
+   (<look-ahead-operator> ^name finish-future-event
+                          ^future-event <fe>)
+-->
+   (<s> ^duplicate-look-ahead-operator <operator>)}
+
+## Elaborate evaluate-operator world initialize-room -> sets room-name.
+sp {evaluate-operator*elaborate*world*initialize-room
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <world>)
+   (<world> ^room-name <room>)
+-->
+   (<new-world> ^room-name <room>)}

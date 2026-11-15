@@ -1,0 +1,68 @@
+## smem-copy-retrieved-object.soar -- thor-soar: 2 proposals, 1 compare, 2 applications.
+
+## Propose smem-copy-retrieved-object.
+sp {propose*smem-copy-retrieved-object*grasp
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.smem-retrieve true
+              ^retrieved-object <object>)
+   (<object> -^graspable true)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name smem-copy-retrieved-object
+         ^argument1 <new-object>
+         ^argument2 <object>)
+}
+
+## Propose smem-copy-retrieved-object.
+sp {propose*smem-copy-retrieved-object*lightswitch
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.smem-retrieve true
+              ^retrieved-object <object>)
+   (<object>  ^class lightswitch)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name smem-copy-retrieved-object
+         ^argument1 <new-object>
+         ^argument2 <object>)
+}
+
+## Preference for smem-copy-retrieved-object.
+sp {thor-soar*compare*smem-copy-retrieved-object
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name smem-copy-retrieved-object)
+   (<op2> ^name << search-smem search-closed-receptacles scan-room >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply smem-copy-retrieved-object -> sets object, memory-retrieved, anchored.
+sp {apply*smem-copy-retrieved-object
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene.objects <scene-objects>)
+   (<op> ^name smem-copy-retrieved-object
+         ^argument1 <new-object>)
+-->
+   (<scene-objects> ^object <new-object>)
+   (<new-object> ^memory-retrieved true
+                 ^anchored true)
+}
+
+## Apply smem-copy-retrieved-object -> sets retrieved-object.
+sp {apply*smem-copy-retrieved-object*copy
+    :default
+   (state <s> ^operator <op>
+              ^retrieved-object <object>
+              ^external-top-state.scene.objects.object <new-object>)
+   (<op> ^name smem-copy-retrieved-object
+         ^argument1 <new-object>
+         ^argument2 <object>)
+   (<object> ^{ <> smem-stored <> derived-from-input <> contains-object-handle <> visible <> reachable  <> in-view <> anchored  <> accessible  <> confirmed <attribute> } <value>)
+-->
+   (<s> ^retrieved-object <object> -)
+   (<new-object> ^<attribute> <value>)
+}

@@ -1,0 +1,48 @@
+#########################################
+## _epmem-flags
+## Created 2024/01/13
+#########################################
+
+epmem --set append on
+epmem -e
+epmem --set database file
+epmem -s learning on
+epmem --set trigger dc
+epmem --set timers three
+epmem --stats time
+epmem --set phase output
+epmem --set graph-match on
+epmem --set path c:\temp
+
+#Epmem structure - just for reference
+#print R150
+#(R150 ^cue-size 4 ^graph-match 0 ^match-cardinality 1 ^match-score 1.000000
+#       ^memory-id 157 ^normalized-match-score 0.250000 ^present-id 158
+#       ^retrieved R152 ^success Q1)
+#print R152
+#(R152 ^clusters C290 ^initial-content I166 ^name drone-soar ^pass-number 2
+#       ^processed-ais-data P3 ^superstate nil ^targets T4 ^type state)
+
+# State features we want to be in episodes should not be included in this list
+epmem --set exclusions constants
+epmem --set exclusions flags
+epmem --set exclusions io
+epmem --set exclusions reward-link
+epmem --set exclusions smem
+epmem --set exclusions top-state 
+epmem --set exclusions svs
+epmem --set exclusions external-top-state 
+epmem --set exclusions attends 
+epmem --set exclusions type
+epmem --set exclusions superstate
+#epmem --set exclusions operator
+
+epmem --set exclusions smem-query
+epmem --set exclusions smem
+epmem --set exclusions smem-storage-structure
+epmem --set exclusions thor-soar-classes
+epmem --set exclusions super-desireds
+epmem --set exclusions scene
+#epmem --set exclusions desireds
+
+epmem --init

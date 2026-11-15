@@ -1,0 +1,3 @@
+pushd agent-world
+source agent-world_source.soar
+popd

@@ -1,0 +1,40 @@
+# Bug 2: $ inside a conjunctive test that also holds a relational test. Soar crashes (segmentation fault)
+# when it builds the justification for the result.
+sp {propose*initialize
+   (state <s> ^superstate nil -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize)}
+
+sp {apply*initialize
+   (state <s> ^operator.name initialize)
+-->
+   (<s> ^name test ^objects <os>)
+   (<os> ^object <a> <b>)
+   (<a> ^handle A)
+   (<b> ^handle B)}
+
+# Two operators with no preferences between them: a tie impasse.
+sp {propose*pick
+   (state <s> ^name test ^objects.object.handle <h>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name pick ^handle <h>)}
+
+
+# In the tie substate: a pair of distinct objects.
+sp {result*conjunctive-relational-dollar
+   (state <ss> ^superstate <s>)
+   (<s> ^objects <os>)
+   (<os> ^object <a> <b>)
+   (<a> ^handle <ha>)
+   (<b> ^handle { <> <ha> $ <hb> })
+-->
+   (<s> ^pair <p>)
+   (<p> ^first <ha> ^second <hb>)}
+
+sp {halt
+   (state <s> ^name test ^pair)
+-->
+   (write |Bug 2 rule fired| (crlf))
+   (halt)}

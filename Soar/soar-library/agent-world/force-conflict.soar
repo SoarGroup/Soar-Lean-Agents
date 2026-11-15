@@ -1,0 +1,173 @@
+## force-conflict.soar -- agent-world: 4 elaborations, 2 proposals, 3 compares, 3 applications.
+
+## ---- elaborations ----
+
+## Elaborate desired-verify -> sets verify.
+sp {agent-world*elaborate*desired-verify
+   :default
+   (state <s>
+              ^real true
+              ^superstate nil
+              ^flags.verify { <> false <verify> }
+              ^desireds <desireds>)
+   (<desireds> -^object-state-desireds true
+               -^verify-done true)
+-->
+   (<desireds> ^verify <verify>)}
+
+## Elaborate desired-verify be-careful -> sets verify.
+sp {agent-world*elaborate*desired-verify*be-careful
+   :default
+   :o-support
+   (state <s>
+              ^real true
+              ^superstate nil
+              ^io.input-link.language.sentence.complete-sentence |Be careful.|
+              ^desireds <desireds>)
+-->
+   (<desireds> ^verify true)
+}
+
+## Elaborate desired-verify be-careful desired -> sets verify, desireds.
+sp {agent-world*elaborate*desired-verify*be-careful*desired
+   :default
+   :o-support
+   (state <s>
+              ^real true
+              ^superstate nil
+              ^desireds <desireds> { <> <desireds> <desireds2> })
+   (<desireds2> ^desired.action be-careful)
+-->
+   (<desireds> ^verify true)
+   (<s> ^desireds <desireds2> -)
+}
+
+## Elaborate desired-verify be-careful safety -> sets verify, desireds.
+sp {agent-world*elaborate*desired-verify*be-careful*safety
+   :default
+   :o-support
+   (state <s>
+              ^real true
+              ^superstate nil
+              ^desireds <desireds> { <> <desireds> <desireds2> })
+   (<desireds2> ^desired.safety ensure)
+-->
+   (<desireds> ^verify true)
+   (<s> ^desireds <desireds2> -)
+}
+
+## ---- operator proposal ----
+
+## Propose force-conflict.
+sp {agent-world*propose*force-conflict
+   :default
+   (state <s> ^superstate nil
+              ^real true
+              ^desireds.verify true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name force-conflict
+         ^task-operator true)
+}
+
+## Propose force-conflict.
+sp {agent-world*propose*force-conflict*external-action
+   :default
+   (state <s>
+              ^quiescence t
+              ^real true
+              ^desireds.verify external-action)
+-->
+   (<s> ^operator <op> +, <)
+   (<op> ^name force-conflict
+         ^task-operator true)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for force-conflict next-desireds.
+sp {agent-world*compare*force-conflict*next-desireds
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name next-desireds)
+   (<op2> ^name force-conflict)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for force-conflict external-action.
+sp {agent-world*compare*force-conflict*external-action
+   :default
+   (state <s>
+              ^desireds.verify external-action
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name force-conflict)
+   (<op2> ^name <> force-conflict
+          ^task-operator true
+          ^action-handle)
+-->
+   (<s> ^operator <op1> < <op2>
+        ^operator <op1> > <op2>)
+}
+
+## Preference for force-conflict not-external-action.
+sp {agent-world*compare*force-conflict*not-external-action
+   :default
+   (state <s>
+              ^desireds.verify external-action
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name force-conflict)
+   (<op2> ^name <> force-conflict
+          ^task-operator true
+         -^action-handle)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## ---- operator application ----
+
+## Apply task-operator remove force-conflict -> sets verify-done, verify.
+sp {agent-world*apply*task-operator*remove*force-conflict
+   :default
+   (state <s>
+              ^quiescence t
+              ^real true
+              ^desireds <desireds>
+              ^operator <operator>)
+   (<desireds> ^verify <verify>)
+   (<operator> ^pre-conditions-satisfied true
+               ^task-operator true)
+-->
+   (<desireds> ^verify-done true
+               ^verify <verify> -)}
+
+## Apply force-conflict -> sets report-test-result.
+## If this operator ever gets selected and applied, something has gone wrong and there is a constraint failure
+sp {agent-world*apply*force-conflict*interrupt
+   :default
+   (state <s>
+              ^real true
+              ^io.output-link <output-link>
+              ^desireds.verify true
+              ^operator.name force-conflict)
+-->
+   (<output-link> ^report-test-result.result failure)
+   (log 1 | Constraint Failure.|)
+}
+
+## Apply force-conflict -> sets verify.
+sp {agent-world*apply*force-conflict*remove*force-conflict
+   :default
+   (state <s>
+              ^quiescence t
+              ^real true
+              ^desireds <desireds>
+              ^operator <operator>)
+   (<desireds> ^verify <verify>)
+   (<operator> ^name force-conflict)
+-->
+   (<desireds> ^verify <verify> -)
+}

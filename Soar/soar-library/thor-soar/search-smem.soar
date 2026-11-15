@@ -1,0 +1,80 @@
+## search-smem.soar -- thor-soar: 1 proposal, 3 applications.
+
+## Propose search-smem.
+sp {thor-soar*propose*search-smem*object*class
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.smem-retrieve true
+              ^desireds.desired <desired>
+             -^smem-query)
+   (<desired> ^info <dinfo>)
+   (<dinfo> ^unanchored-object.class <class>)  # object that is unanchored to be replaced
+  -{(<s> ^world.objects.object <world-object>)    # real-object
+    (<world-object> ^anchored true
+                    ^class <class>)}
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name search-smem
+               ^super-desired <desired>
+               ^argument1 <dinfo>)
+}
+
+## Apply search-smem -> sets smem-query, cue, copy-destination ....
+## retrieves the object and its in relation
+## should it retrieve just the object (but that is insufficient to know where it is)
+sp {apply*search-smem*only-object
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^objects <objects>
+            ^anchored-world true)
+   (<op> ^name search-smem
+         ^argument1.unanchored-object <object>) # unanchored object
+  (<object> ^class <class>)
+-->
+   (<s> ^smem-query <query>)
+   (<query> ^cue.class <class>
+            ^copy-destination <objects>
+            ^depth 3
+            ^copy-name object)
+}
+
+## Apply search-smem -> sets smem-query, cue, copy-destination ....
+sp {apply*search-smem*in-object
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<op> ^name search-smem
+         ^argument1.unanchored-object <object>) # unanchored object
+   (<object> ^class <class>)
+   (<world> ^anchored-world true)
+-->
+   (<s> ^smem-query <query>)
+   (<query> ^cue <cue>
+            ^copy-destination <world>
+            ^depth 5
+            ^copy-name in)
+   (<cue> ^type relation
+          ^argument1-class <class>
+          ^relation in)
+}
+
+## Apply search-smem -> sets smem-query, cue, copy-destination ....
+sp {apply*search-smem*in-object2
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<op> ^name search-smem
+         ^argument2.unanchored-object <object>) # unanchored object
+   (<object> ^class <class>)
+   (<world> ^anchored-world true)
+-->
+   (<s> ^smem-query <query>)
+   (<query> ^cue <cue>
+            ^copy-destination <world>
+            ^depth 5
+            ^copy-name in)
+   (<cue> ^type relation
+          ^argument1-class <class>
+          ^relation in)
+}

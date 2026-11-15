@@ -1,0 +1,30 @@
+#########################################
+## _chunk-flags
+## Created 2024/01/13
+#########################################
+# two steps
+chunk allow-local-negations on
+chunk add-osk on
+#chunk always
+chunk flagged # (force-learn <s>) unflagged (dont-learn <s>)
+soar max-goal-depth 100
+#chunk stats
+#w 0
+w 1
+#w -C # chunking issue
+#w -c # chunks fire
+#trace -L 1  # print names of chunks as they are learned
+#Turn on explanation
+#explain all on
+#explain justifications on
+
+# List all valid chunks to examine
+#explain list-chunks
+
+# Choose one of the chunks to explain
+#explain chunk 821
+# explain ? for documentation
+#ctf chunks51.soar p -fc
+
+chunk only
+#chunk never

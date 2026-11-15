@@ -1,0 +1,16 @@
+## controlled-by.soar -- thor-soar: 1 elaboration.
+
+## Elaborate controlled-by -> sets controlled-by, argument1, argument2.
+sp {elaborate*controlled-by
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>)
+   (<scene> ^objects.object <controller-object>
+                            <controlled-object>)
+   (<controller-object> ^controls-object-handle <burner-object-handle>)
+   (<controlled-object> ^object-handle <burner-object-handle>)
+-->
+   (<scene> ^controlled-by <cb>)
+   (<cb> ^argument1 <controlled-object>
+         ^argument2 <controller-object>)
+}

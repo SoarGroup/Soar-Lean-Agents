@@ -1,0 +1,144 @@
+#
+#sp {thor-soar*propose*detect-illegal-desired*on*not-surface
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^on.argument2.object-handle <object-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^surface true
+#              ^object-handle <object-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired on a non-surface.|
+#         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*in
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^in.argument2.object-handle <object-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^receptacle true
+#              ^object-handle <object-handle>)
+#   (<desired> ^in <on>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired in a non-container.|
+#         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*cooked
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^object <desired-object>)
+#   (<desired-object> ^cook-state cooked
+#                     ^object-handle <cooked-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^cookable true
+#              ^object-handle <cooked-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired cooking a non-cookable object.|
+#         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*broken
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^object <desired-object>)
+#   (<desired-object> ^broken true
+#                     ^object-handle <cooked-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^breakable true
+#              ^object-handle <cooked-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired breaking a non-breakable object.|
+#         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*dirty
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^object <desired-object>)
+#   (<desired-object> ^dirty
+#                     ^object-handle <cooked-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^dirtyable true
+#              ^object-handle <cooked-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired dirty/clean a non-dirtyable object.|
+#         ^argument2 <desired>)}
+##
+##sp {thor-soar*propose*detect-illegal-desired*slice
+##   (state <s> ^name thor-soar
+##              ^desireds <desireds>)
+##   (<desireds> -^illegal-desired <desired>
+##                ^desired.object <desired-object>)
+##   (<desired-object> ^sliced
+##                     ^object-handle <cooked-handle>)
+##   (<s> ^world.objects.object <object>)
+##   (<object> -^sliceable true
+##              ^object-handle <cooked-handle>)
+##-->
+##   (<s> ^operator <op> !)
+##   (<op> ^name detect-illegal-desired
+##         ^argument1 |Desired slicing a non-sliceable object.|
+##         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*fillable
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^object <desired-object>)
+#   (<desired-object> ^liquid
+#                     ^object-handle <cooked-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^fillable true
+#              ^object-handle <cooked-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired filling a non-fillable object.|
+#         ^argument2 <desired>)}
+#
+#sp {thor-soar*propose*detect-illegal-desired*activate
+#   (state <s> ^name thor-soar
+#              ^desireds <desireds>)
+#   (<desireds> -^illegal-desired <desired>
+#                ^desired <desired>)
+#   (<desired> ^object <desired-object>)
+#   (<desired-object> ^activated
+#                     ^object-handle <cooked-handle>)
+#   (<s> ^world.objects.object <object>)
+#   (<object> -^activatable true
+#              ^object-handle <cooked-handle>)
+#-->
+#   (<s> ^operator <op> !)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 |Desired activating a non-activatable object.|
+#         ^argument2 <desired>)}
+#
+#sp {apply*detect-illegal-desired
+#   (state <s> ^operator <op>
+#              ^desireds <desireds>)
+#   (<op> ^name detect-illegal-desired
+#         ^argument1 <comment>
+#         ^argument2 <desired>)
+#-->
+#   (log 1 (crlf) |Invalid Desired!!! Interrupting execution.| (crlf) <comment>)
+#   (<desireds> ^illegal-desired <desired>)
+#   (interrupt)
+#}

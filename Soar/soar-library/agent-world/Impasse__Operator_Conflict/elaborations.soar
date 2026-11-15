@@ -1,0 +1,10 @@
+## elaborations.soar -- agent-world: 1 application.
+
+## Apply Impasse Operator Conflict state.
+sp {agent-world*apply*operator-conflict*state
+   :default
+   (state <s> ^impasse conflict)
+-->
+   (log 1 (crlf)|***Conflict Impasse***|)
+   (interrupt)
+}

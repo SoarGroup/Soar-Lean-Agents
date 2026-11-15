@@ -1,0 +1,17 @@
+## elaborations.soar -- selection-world: 1 compare.
+
+## Preference for default select reject conflict.
+sp {selection-world*compare*default*select*reject*conflict
+   "Reject an object if it leads to a conflict that can not be resolved."
+   :default
+   (state <s3> ^attribute state
+               ^choices none
+               ^superstate <s2>
+               ^quiescence t)
+   (<s2> ^impasse conflict
+         ^superstate <state1>
+         ^item <operator>
+         ^quiescence t)
+   (<state1> ^operator <operator> +)
+-->
+   (<state1> ^operator <operator> -)}

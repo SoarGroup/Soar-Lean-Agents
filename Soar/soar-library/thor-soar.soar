@@ -1,0 +1,3 @@
+pushd thor-soar
+source thor-soar_source.soar
+popd

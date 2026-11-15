@@ -1,0 +1,29 @@
+## clean-dishwasher.soar -- thor-soar: 1 proposal.
+
+## Propose clean-dishwasher.
+## MEA Selection
+sp {thor-soar*propose*clean-dishwasher*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+             -^world.future-event.argument2.object-handle dishwasher
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <dish-washer>)
+   (<desireds> ^desired <desired1>
+               ^unachieved <desired1>
+               ^unachieved-desireds true)
+   (<desired1> ^dishes-clean true)
+   (<dish-washer> ^class dishwasher
+                  ^activated false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name clean-dishwasher
+               ^task-operator true
+               ^pre-conditions-satisfied true
+               ^super-desired <desired1>
+               ^argument1 <dish-washer>
+               ^argument-count 1
+               ^activate-machine true)
+}

@@ -1,0 +1,95 @@
+#########################################
+## monitor-desireds
+## Created 2024/06/02
+#########################################
+#
+#sp {agent-world*monitor*new-desired
+#   :default
+#   (state <s> ^desireds.desired.object <object>)
+#   (<object> ^{ <> object-handle <desired-attribute> } <desired-value>
+#             ^object-handle <handle>)
+#-->
+#   (log 1 (crlf) |Desired | <desired-attribute> |: | <desired-value>)
+#}
+#
+#sp {agent-world*monitor*new-desired*container
+#   :default
+#   (state <s> ^desireds.desired <d>)
+#   (<d> ^in <in>)
+#   (<in> ^argument1.object-handle <object-handle>
+#         ^argument2.object-handle <container-handle>)
+#-->
+#   (log 1 (crlf) |Desired | <object-handle> | in container | <container-handle>)
+#}
+#
+#sp {agent-world*monitor*new-desired*location
+#   :default
+#   (state <s> ^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^unachieved <d>)
+#   (<d> ^on <on>)
+#   (<on> ^argument1.object-handle <object-handle>
+#         ^argument2.object-handle <location-handle>)
+#-->
+#   (log 1 (crlf) |Desired | <object-handle> | on location | <location-handle>)
+#}
+#
+#sp {agent-world*monitor*new-desired*controlled-by
+#   :default
+#   (state <s> ^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^unachieved <d>)
+#   (<d> ^controlled-by <controlled-by>)
+#   (<controlled-by> ^argument1.object-handle <object-handle>
+#                    ^argument2.object-handle <location-handle>)
+#-->
+#   (log 1 (crlf) |Desired | <object-handle> | controlled-by | <location-handle>)
+#}
+
+##### Achieved
+#sp {agent-world*monitor*desired*achieved
+#   :default
+#   (state <s> ^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^achieved <d>)
+#   (<d> ^object.<desired-attribute> <desired-value>)
+#-->
+#   (log 1 (crlf) |**** Achieved **** | <desired-attribute> |: | <desired-value>)
+#}
+#
+#sp {agent-world*monitor*desired*achieved*container
+#   :default
+#   (state <s> ^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^achieved <d>)
+#   (<d> ^in <in>)
+#   (<in> ^argument1.object-handle <object-handle>
+#         ^argument2.object-handle <container-handle>)
+#-->
+#   (log 1 (crlf) |**** Achieved **** | <object-handle> | in container | <container-handle>)
+#}
+#
+#sp {agent-world*monitor*desired*achieved*location
+#   :default
+#   (state <s>^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^achieved <d>)
+#   (<d> ^on <on>)
+#   (<on> ^argument1.object-handle <object-handle>
+#         ^argument2.object-handle <location-handle>)
+#-->
+#   (log 1 (crlf) |**** Achieved **** | <object-handle> | in location | <location-handle>)
+#}
+#
+#sp {agent-world*monitor*desired*achieved*controlled-by
+#   :default
+#   (state <s> ^desireds <desireds>)
+#   (<desireds> ^desired <d>
+#               ^achieved <d>)
+#   (<d> ^controlled-by <controlled-by>)
+#   (<controlled-by> ^argument1.object-handle <object-handle>
+#                    ^argument2.object-handle <location-handle>)
+#-->
+#   (log 1 (crlf) |**** Achieved **** | <object-handle> | controlled-by | <location-handle>)
+#}
+

@@ -1,0 +1,52 @@
+# agent-world
+#
+# The desired-state machinery. A task creates a ^world and ^desireds; this project detects when desireds are 
+# achieved, proposes/applies the generic operators around them (output to an environment or internal 
+# application), halts on success, and supports look-ahead by copying the world into substates. Optionally also 
+# time and future events (events/).
+#
+# Requires: soar-base, selection-world.
+# Loaded by: soar-library.soar
+#
+# Contents (rules per file)
+#      9  _flags.soar: Flags convention: creates ^flags, copies ^flag-override values into it, and gives defaults to the flags agent-world reads.
+#     12  external-operator-application.soar: Turns a selected task operator into an output-link perform-action command and records completion. Contains Thor-specific action cases; to be redesigned (action table).
+#     12  force-conflict.soar: Proposes a force-conflict operator at the top state so a constraint failure surfaces as an operator conflict; selecting it means something went wrong.
+#     11  goal-completed.soar: Marks the task achieved, logs it, reports success on the output link in testing mode, interrupts on a no-change wait when desireds come from elaborations.
+#      2  initialize-agent-world.soar: Operator that creates the ^world structure and agent-world state; a task's own initialize-<task> operator follows it.
+#      1  Impasse__Operator_Conflict/elaborations.soar: Operator conflict impasse handling.
+#      3  Impasse__Operator_Tie/elaborations.soar: Tie impasse: forcing ties among agent-world operators, constraint-failure handling.
+#      2  Impasse__Operator_Tie/evaluate-operator.soar: Agent-world additions to the evaluate-operator operator.
+#      4  Impasse__Operator_Tie/evaluate-operator/cutoff-search.soar: Search cutoff in evaluation (noted in the source as not very helpful).
+#     21  Impasse__Operator_Tie/evaluate-operator/elaborations.soar: Adapters between agent-world operators and selection-world evaluation (what to copy, how achievement is passed back).
+#     11  elaborations/_all.soar: Elaborations for many states and substates, for example the pointer from a substate to the top state.
+#     34  elaborations/achieved-desired-operators.soar: The same for desireds attached to operators (^desireds on a task operator).
+#     39  elaborations/achieved-desireds.soar: Detects when each desired (object properties, relations, disjunctions, abstract properties) is achieved in the world and maintains ^achieved/^unachieved.
+#      4  elaborations/internal-actions.soar: Tasks with no external environment: all operators are applied internally.
+#      4  elaborations/monitor-operator.soar: Trace output for operator arguments.
+#      3  elaborations/output.soar: Copies the actions structure to the output link.
+#      3  elaborations/problem-space.soar: Problem-space name and agent-world flag elaborations.
+#      1  elaborations/reward.soar: Reward elaborations (not updated).
+#     14  elaborations/search-control.soar: Search-control preferences among operators.
+#      2  elaborations/super-desireds.soar: Copies super-desireds down into substates.
+#      1  elaborations/time.soar: Time elaboration.
+#      5  generic-operator/elaborations.soar: Elaborates an operator-implementation substate with the super-operator attributes, including the name.
+#      2  generic-operator/failure.soar: Failure handling for generic operators.
+#      5  goal-completed/clean-up-topstate.soar: Removes desireds and learning events and marks the segment satisfied when desireds come from language.
+#     21  events/: Optional time and event machinery: scheduled future events, waiting, skipping ahead and dispatching agent events. Comment the events line out of agent-world_source.soar to run without it.
+#
+# Events: events/ is sourced by agent-world_source.soar behind a comment; remove it to run without time/events.
+#
+# Datamap
+#   agent-world.vsa.json holds this project's state attributes plus those of the projects it requires.
+#   Top-state attributes owned by this project: ^attends, ^effect-desireds, ^environment, ^events, ^external-top-state, ^failure, ^initial-in-relations, ^interaction-stack, ^reward-link, ^scene, ^smem, ^smem-storage-structure, ^super-desired, ^super-desireds
+#   Single source: datamaps/library-datamap.json (each edge tagged with its owning project). Regenerate the
+#   project files with: python3 tools/datamaps.py <this-directory> --assemble
+#
+# Flags read: agent-mode, desired-preferences, desireds-source, explore, gps-desired-ordering, rl, smem-store, cost-metric, min-step-cost, cost-weight, heuristic-weight, verify
+# Flags written: (none recorded)
+# Hooks: not yet defined (see the refactoring proposal, Section 4); this file will list them.
+# Conventions: every rule is :default; no rule name is defined twice among the sourced files; do not excise rules to override them.
+# Notes: docs/ holds comment-only notes from the old projects (not sourced).
+
+# generated by build.py

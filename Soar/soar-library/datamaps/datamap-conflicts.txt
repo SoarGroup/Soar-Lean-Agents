@@ -1,0 +1,61 @@
+Type disagreements between the old datamaps (agent-world was the base; SW=selection-world, ID=iterative-deepening, T=thor-soar).
+Resolution rules: STRING vs ENUMERATION -> STRING (open set of symbols); INTEGER vs FLOAT -> FLOAT; SOAR_ID vs a constant type -> SOAR_ID
+(an attribute that has children in one datamap is an identifier there; the other datamap used it with a constant value, e.g. ^superstate nil).
+
+Decided by JEL on 13 Nov 2026:
+  world.abstract-property: STRING (its value names an attribute; rule achieved-desired*abstract-property)
+  desireds.achieved: SOAR_ID (pointer to an achieved desired; the ^achieved true comment in _firstload is stale)
+  ^argument1 to ^argument4 (operator, desireds, world, scene, retrieved-in, io.output-link.perform-action): SOAR_ID. A few Thor operators (turn, fill, scene-update) use constant arguments; the datamap cannot show both.
+  attends.attend: STRING (the value is an object handle); children removed
+  scene-copy: dropped (no rule creates or tests it)
+  disjunction: SOAR_ID, the same structure as desireds.desired (it points to another desired)
+  duplicate-of: SOAR_ID (points to the original)
+  future-event: SOAR_ID
+  holding-object: SOAR_ID, the object structure (world.objects.object); the old ^holding-object none value is gone. The input-link self.arm.holding-object handle stays a STRING.
+  instance-of: STRING (a constant such as object-argument); children removed
+  last-operator: dropped (no rule uses it)
+  mobile: ENUMERATION true/false
+  next and superstate: two entries each, a SOAR_ID and an additional ENUMERATION nil (end of chain; top state)
+  task: SOAR_ID
+  time (io.input-link): SOAR_ID with child ms; the Thor world-level ^time constant is a different attribute on a different parent
+  top-segment: two entries, a SOAR_ID and an additional ENUMERATION nil
+  visible: ENUMERATION true/false
+
+Resolved by rule (34 distinct):
+  ^accessible: STRING vs ENUMERATION (SW) -> STRING
+  ^accessible: STRING vs ENUMERATION (T) -> STRING x3
+  ^action-handle: STRING vs ENUMERATION (T) -> STRING x2
+  ^action: STRING vs ENUMERATION (T) -> STRING
+  ^agent-mode: STRING vs ENUMERATION (T) -> STRING
+  ^argument1: ENUMERATION vs FLOAT (T) -> STRING
+  ^argument1: FLOAT vs STRING (T) -> STRING
+  ^argument1: STRING vs ENUMERATION (T) -> STRING
+  ^attend-all: STRING vs ENUMERATION (T) -> STRING
+  ^class: STRING vs ENUMERATION (T) -> STRING x3
+  ^command: STRING vs ENUMERATION (T) -> STRING
+  ^desired-preferences: STRING vs ENUMERATION (T) -> STRING
+  ^desireds-source: STRING vs ENUMERATION (T) -> STRING
+  ^discarded: STRING vs ENUMERATION (T) -> STRING
+  ^equal: STRING vs ENUMERATION (T) -> STRING
+  ^gps-desired-ordering: STRING vs ENUMERATION (T) -> STRING
+  ^holding-object: STRING vs ENUMERATION (T) -> STRING
+  ^init-evaluation-depth: STRING vs ENUMERATION (T) -> STRING
+  ^mass: INTEGER vs FLOAT (T) -> FLOAT
+  ^name: STRING vs ENUMERATION (ID) -> STRING
+  ^name: STRING vs ENUMERATION (SW) -> STRING
+  ^name: STRING vs ENUMERATION (T) -> STRING x5
+  ^object-handle: STRING vs ENUMERATION (T) -> STRING x6
+  ^relation: STRING vs ENUMERATION (T) -> STRING
+  ^rl: STRING vs ENUMERATION (T) -> STRING
+  ^selection-value: INTEGER vs STRING (T) -> STRING
+  ^status: STRING vs ENUMERATION (T) -> STRING x2
+  ^value: INTEGER vs STRING (T) -> STRING
+  ^verify: STRING vs ENUMERATION (T) -> STRING x2
+  ^x: INTEGER vs FLOAT (SW) -> FLOAT
+  ^x: INTEGER vs FLOAT (T) -> FLOAT
+  ^y: INTEGER vs FLOAT (SW) -> FLOAT
+  ^y: INTEGER vs FLOAT (T) -> FLOAT
+  ^z: INTEGER vs FLOAT (T) -> FLOAT
+
+Id vs constant still to review (0 distinct entries):
+

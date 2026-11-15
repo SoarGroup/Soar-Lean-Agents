@@ -1,0 +1,446 @@
+## attended-objects.soar -- thor-soar: 27 elaborations.
+
+## Elaborate attend desired origin-object -> sets attend.
+sp {thor-soar*elaborate*attend*desired*origin-object
+    :default
+   (state <s> ^desireds.desired.object.object-handle <handle>
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^origin-object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced >>
+             ^object-handle <new-handle>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <new-handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <new-handle>)
+}
+
+## Elaborate attend desireds -> sets attend.
+sp {thor-soar*elaborate*attend*desireds
+    :default
+   (state <s> ^desireds.desired.object <object>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced >>
+            -^anchored false)
+   -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+   -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desireds-list holding -> sets attend.
+sp {thor-soar*elaborate*attend*desireds-list*holding
+    :default
+   (state <s> ^desireds.desireds-list.desired.object <object>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced >>
+            -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desireds relation world1 -> sets attend.
+sp {thor-soar*elaborate*attend*desireds*relation*world1
+    :default
+   (state <s> ^world <world>
+              ^quiescence t
+              ^external-top-state <external-top-state>)
+   (<external-top-state> ^attends <attends>
+                         ^scene.objects.object <object-scene>)
+   (<world> ^objects.object <object>
+            ^anchored-world false)
+   (<object> ^class { <> floor <class> })
+   (<object-scene> ^object-handle <handle>
+                   ^class <class>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desireds relation world2 -> sets attend.
+sp {thor-soar*elaborate*attend*desireds*relation*world2
+    :default
+   (state <s> ^world <world>
+              ^quiescence t
+              ^external-top-state <external-top-state>)
+   (<external-top-state> ^attends <attends>
+                         ^scene.objects.object <object-scene>)
+   (<world> ^<< on in >>.<< argument1 argument2 >> <object>
+            ^anchored-world true)
+   (<object> ^object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced floor >>
+            -^anchored false)
+   (<object-scene> ^object-handle <handle>
+                  -^class << potatoSliced carrotsliced applesliced floor >>)
+  -(<world> ^objects.object.object-handle <handle>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desireds object world2 -> sets attend.
+sp {thor-soar*elaborate*attend*desireds*object*world2
+    :default
+   (state <s> ^world <world>
+              ^quiescence t
+              ^external-top-state <external-top-state>)
+   (<external-top-state> ^attends <attends>)
+   (<world> ^objects.object <object>
+           -^anchored-world true)
+   (<external-top-state> ^scene.objects.object <object-scene>)
+   (<object> ^object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced floor >>
+            -^anchored false)
+   (<object-scene> ^object-handle <handle>)
+  -(<world> ^objects.object.object-handle <handle>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desireds desired-on-in -> sets attend.
+sp {thor-soar*elaborate*attend*desireds*desired-on-in
+    :default
+   (state <s> ^desireds.desired.<< on in stored >>.<< argument1 argument2 >> <object>
+              ^quiescence t
+              ^external-top-state <external-top-state>)
+   (<external-top-state> ^attends <attends>
+                         ^scene.objects.object <object2>)
+   (<object2> ^object-handle <handle>
+             -^class << breadsliced applesliced bananasliced carrotsliced potatosliced floor >>)
+   (<object> ^object-handle <handle>
+            -^class << breadsliced applesliced bananasliced carrotsliced potatosliced floor >>
+            -^anchored false)
+  -(<external-top-state> ^world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desired holding-object -> sets attend.
+sp {thor-soar*elaborate*attend*desired*holding-object
+    :default
+   (state <s> ^desireds.desired.holding-object <holding-object>
+              ^world.objects.object <objectx>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<objectx> ^object-handle <handle>
+             -^anchored false)
+   (<holding-object> ^object-handle { <> none <handle> }
+                    -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate attend desired microwave -> sets attend.
+sp {thor-soar*elaborate*attend*desired*microwave
+    :default
+   (state <s> ^desireds.desired.object.cook-state cooked
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class << stoveknob stoveburner oven microwave >>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired stove -> sets attend.
+sp {thor-soar*elaborate*state*desired*stove
+    :default
+   (state <s> ^desireds.desired.object.class stoveknob
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <stove>
+          ^attends <attends>)
+   (<stove> ^object-handle <object-handle3>
+            ^class << stoveknob stoveburner >>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle3>)
+  -(<s> ^world.objects.object.object-handle <object-handle3>)
+-->
+   (<attends> ^attend <object-handle3>)
+}
+
+## Elaborate state desired toaster -> sets attend.
+sp {thor-soar*elaborate*state*desired*toaster
+    :default
+   (state <s> ^desireds.desired.object.cook-state cooked
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class toaster)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired coffeemachine -> sets attend.
+sp {thor-soar*elaborate*state*desired*coffeemachine
+    :default
+   (state <s> ^desireds.desired.object.liquid-contents coffee
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class coffeemachine)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired slice knife -> sets attend.
+## Already know going to need a knife - a bit bogus
+sp {thor-soar*elaborate*state*desired*slice*knife
+    :default
+   (state <s> ^desireds.desired.object.sliced true
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+            -^anchored false
+             ^class knife)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired garbagecan -> sets attend.
+sp {thor-soar*elaborate*state*desired*garbagecan
+    :default
+   (state <s> ^desireds.desired.object.discarded true
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+            -^anchored false
+             ^class garbagecan)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired dishwasher -> sets attend.
+sp {thor-soar*elaborate*state*desired*dishwasher
+    :default
+   (state <s> ^desireds.desired.dishes-clean true
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class dishwasher)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired pan -> sets attend.
+sp {thor-soar*elaborate*state*desired*pan
+    :default
+   (state <s> ^desireds.desired.object.cook-state cooked
+              ^quiescence t
+              ^external-top-state <ets>)
+   (<ets> ^scene.objects.object <object>
+          ^attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class pan)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired contains -> sets attend.
+sp {thor-soar*elaborate*state*desired*contains
+    :default
+   (state <s> ^io.input-link.objects.object <object>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<attends> ^attend <name>)
+   (<object> ^object-handle <object-handle>
+             ^class <class>
+             ^contains-object-handle <name>
+            -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired in-container container receptacle desired -> sets attend.
+sp {thor-soar*elaborate*state*desired*in-container*container*receptacle*desired
+    :default
+   (state <s> ^io.input-link.objects.object <object>
+              ^quiescence t
+             -^world.on.argument2 <object-handle>
+              ^desireds.desired.on.argument2 <argument2>
+              ^external-top-state.attends <attends>)
+   (<argument2> ^object-handle <object-handle>
+               -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired in-container object handle -> sets attend.
+sp {thor-soar*elaborate*state*desired*in-container*object*handle
+    :default
+   (state <s> ^desireds.desired.in.argument1 <argument1>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<argument1> -^anchored false
+                 ^object-handle { <handle> <=> |string| }) # must be a string
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate state desired in-container container -> sets attend.
+sp {thor-soar*elaborate*state*desired*in-container*container
+    :default
+   (state <s> ^desireds.desired.in.argument2.object-handle { <handle> <=> |string| }
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <handle>)
+}
+
+## Elaborate state desired in-container container 2 -> sets attend.
+sp {thor-soar*elaborate*state*desired*in-container*container*2
+    :default
+   (state <s> ^desireds.desired.object.object-handle <argument1-handle>
+              ^quiescence t
+              ^world.in <in>
+              ^external-top-state.attends <attends>)
+   (<in> ^argument1.object-handle <argument1-handle>
+         ^argument2 <argument2>)
+   (<argument2> ^object-handle <argument2-handle>
+               -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <argument2-handle>)
+  -(<s> ^world.objects.object.object-handle <argument2-handle>)
+-->
+   (<attends> ^attend <argument2-handle>)
+}
+
+## Elaborate state attend reachable-surface desired empty-hand -> sets attend.
+sp {thor-soar*elaborate*state*attend*reachable-surface*desired*empty-hand
+    :default
+   (state <s> ^desireds.desired.holding-object.object-handle none
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^reachable true
+             ^surface true
+            -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state attend reachable-surface desired sink -> sets attend.
+sp {thor-soar*elaborate*state*attend*reachable-surface*desired*sink
+    :default
+   (state <s> ^desireds.desired.object.dirty false
+              ^quiescence t
+              ^world.objects.object.object-handle <handle>
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class sinkbasin)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state attend reachable-surface desired faucet -> sets attend.
+sp {thor-soar*elaborate*state*attend*reachable-surface*desired*faucet
+    :default
+   (state <s> ^desireds.desired.object.dirty false
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^class faucet)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state attend sliced-object -> sets attend.
+sp {thor-soar*elaborate*state*attend*sliced-object
+    :default
+   (state <s> ^desireds.desired.object.sliced true
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<object> ^object-handle <object-handle>
+             ^origin-object-handle)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate state desired unanchored-object-class -> sets attend.
+sp {thor-soar*elaborate*state*desired*unanchored-object-class
+    :default
+   (state <s> ^world.objects.object <unanchored-object>
+              ^quiescence t
+              ^scene.objects.object <object>
+              ^external-top-state.attends <attends>)
+   (<unanchored-object> ^anchored false
+                        ^class <class>)
+   (<object> ^object-handle <object-handle>
+             ^class <class>)
+  -(<s> ^external-top-state.world.objects.object.object-handle <object-handle>)
+  -(<s> ^world.objects.object.object-handle <object-handle>)
+-->
+   (<attends> ^attend <object-handle>)
+}
+
+## Elaborate attend desired object -> sets attend.
+## AM: Attend to objects in a completed-task desired
+sp {thor-soar*elaborate*attend*desired*object
+    :default
+   (state <s> ^desireds.desired.completed-task <task>
+              ^quiescence t
+              ^external-top-state.attends <attends>)
+   (<task> ^{ << argument1 argument2 argument3 >> } <argument>)
+   (<argument> ^object <object>)
+   (<object> ^object-handle <handle>
+            -^anchored false)
+  -(<s> ^external-top-state.world.objects.object.object-handle <handle>)
+  -(<s> ^world.objects.object.object-handle <handle>)
+-->
+   (<attends> ^attend <handle>)
+}

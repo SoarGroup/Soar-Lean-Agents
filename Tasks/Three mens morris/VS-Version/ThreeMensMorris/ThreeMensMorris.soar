@@ -1,3 +1,0 @@
-pushd ThreeMensMorris
-source ThreeMensMorris_source.soar
-popd

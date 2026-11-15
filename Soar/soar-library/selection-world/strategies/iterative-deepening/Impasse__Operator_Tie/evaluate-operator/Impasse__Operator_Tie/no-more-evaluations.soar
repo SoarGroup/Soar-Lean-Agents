@@ -1,0 +1,13 @@
+## no-more-evaluations.soar -- selection-world: 1 application.
+
+## Apply evaluate-operator -> sets symbolic-value.
+sp {selection-world*apply*no-more-evaluations
+   :default
+   (state <s> ^operator <operator>
+              ^selection-superstate.operator <ss-operator>)
+   (<ss-operator> ^name evaluate-operator
+                  ^evaluation <evaluation>)
+   (<operator> ^name no-more-evaluations)
+-->
+   (<evaluation> ^symbolic-value depth-exceeded)
+}

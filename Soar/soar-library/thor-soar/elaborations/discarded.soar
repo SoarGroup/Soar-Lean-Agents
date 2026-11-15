@@ -1,0 +1,32 @@
+## discarded.soar -- thor-soar: 2 elaborations.
+
+## Elaborate state discarded -> sets discarded.
+sp {thor-soar*elaborate*state*discarded
+    :default
+   (state <s> ^desireds.desired.object.discarded true
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^in <in-garbage-object>
+            ^objects.object <container-object>)
+   (<container-object> ^class garbagecan
+                       ^object-handle <container-handle>)
+   (<in-garbage-object> ^argument1 <discarded-object>
+                        ^argument2.object-handle <container-handle>)
+-->
+   (<discarded-object> ^discarded true)
+}
+
+## Elaborate state discarded false -> sets discarded.
+sp {thor-soar*elaborate*state*discarded*false
+    :default
+   (state <s> ^desireds.desired.object.discarded true
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^object-handle <object-handle>)
+  -{(<world> ^in <in-garbage-object>)
+   (<in-garbage-object> ^argument1.object-handle <object-handle>
+                        ^argument2.class garbagecan)}
+-->
+   (<object> ^discarded false)
+}

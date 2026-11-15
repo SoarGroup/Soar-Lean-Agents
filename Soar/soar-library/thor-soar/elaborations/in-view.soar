@@ -1,0 +1,49 @@
+## in-view.soar -- thor-soar: 4 elaborations.
+
+## Elaborate state scene property-in-view false -> sets in-view.
+sp {elaborations*elaborate*state*scene*property-in-view*false
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> -^in-view true)
+-->
+   (<object-int> ^in-view false)
+}
+
+## Elaborate state scene property-in-view false2 -> sets in-view.
+sp {elaborations*elaborate*state*scene*property-in-view*false2
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^derived-from-input <dfi>)
+   (<dfi> -^in-view true)
+-->
+   (<object-int> ^in-view false)
+}
+
+## Elaborate scene-creation scene-attribute-value in-view -> sets in-view.
+sp {apply*scene-creation*scene-attribute-value*in-view
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^in-view true
+                 ^derived-from-input <dfi>)
+   (<dfi> -^in-view true)
+-->
+   (<object-int> ^in-view true -)
+}
+
+## Elaborate scene-creation scene-attribute-value in-view2 -> sets in-view.
+sp {apply*scene-creation*scene-attribute-value*in-view2
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^in-view false
+                 ^derived-from-input <dfi>)
+   (<dfi> ^in-view true)
+-->
+   (<object-int> ^in-view false -
+                          true)
+}

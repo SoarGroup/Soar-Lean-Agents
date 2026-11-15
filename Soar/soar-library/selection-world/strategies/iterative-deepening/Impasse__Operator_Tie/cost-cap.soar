@@ -1,0 +1,163 @@
+## cost-cap.soar -- selection-world: 5 elaborations, 1 proposal, 6 applications.
+## Iterative deepening on cost (^flags.iterative-step cost). The depth counter becomes an iteration index (it is no longer
+## decremented per operator); each iteration has a cost cap, ^cost-cap. A look-ahead branch whose cost bound exceeds the cap
+## is cut off (exceed-depth). The next cap is the smallest cut-off bound above the current cap (IDA*), or
+## cap + ^flags.cost-quantum when that flag is set.
+
+## ---- elaborations ----
+
+## Elaborate selection cost-cap from the superstate (nested selection).
+sp {selection-world*elaborate*selection*cost-cap
+   :default
+   (state <s> ^name selection
+              ^flags.iterative-step cost
+              ^superstate.cost-cap <cap>)
+-->
+   (<s> ^cost-cap <cap>)}
+
+## Elaborate selection evaluate-operator cost-cap -> puts the cap on the operator (copied to the operator's substate).
+sp {selection-world*elaborate*selection*evaluate-operator*cost-cap
+   :default
+   (state <s> ^name selection
+              ^flags.iterative-step cost
+              ^operator <operator> +
+              ^cost-cap <cap>)
+   (<operator> ^name evaluate-operator)
+-->
+   (<operator> ^cost-cap <cap>)}
+
+## Elaborate evaluate-operator cost-bound: the path cost so far (plus the task's optional admissible estimate of the remaining cost).
+sp {selection-world*elaborate*evaluate-operator*cost-bound
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step cost
+              ^world <world>)
+   (<world> ^path-cost <cost>
+           -^estimated-remaining-cost)
+-->
+   (<s> ^cost-bound <cost> ^cost-bound-path <cost>)}
+
+sp {selection-world*elaborate*evaluate-operator*cost-bound*remaining
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step cost
+              ^flags.heuristic-weight <weight>
+              ^world <world>)
+   (<world> ^path-cost <cost>
+            ^estimated-remaining-cost <rem>)
+-->
+   (<s> ^cost-bound (+ <cost> (* <weight> <rem>)) ^cost-bound-path <cost>)}
+
+## Elaborate evaluate-operator cost-exceeded: the cost bound passes the cap.
+sp {selection-world*elaborate*evaluate-operator*cost-exceeded
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^cost-bound > <cap>)
+-->
+   (<s> ^cost-exceeded true)}
+
+## Elaborate evaluate-operator cost-within-cap: the cost bound, computed from the current path cost, is within the cap.
+## A success is passed back only under this marker (or ^cost-exceeded blocks it). Without it the pass-back could fire in the cycles between a
+## change of the path cost and the update of ^cost-bound, when neither marker is current (path cost from the look-ahead clock, cost-metric time).
+sp {selection-world*elaborate*evaluate-operator*cost-within-cap
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^cost-bound <= <cap>
+              ^cost-bound-path <cost>
+              ^world.path-cost <cost>)
+-->
+   (<s> ^cost-within-cap true)}
+
+## ---- operator proposal ----
+
+## Propose exceed-depth in evaluate-operator when the cost bound passes the cap.
+sp {selection-world*propose*evaluate-operator*exceed-depth*cost
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^cost-bound > <cap>)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name exceed-depth)}
+
+## ---- operator application ----
+
+## Apply init-current-evaluation-depth -> sets the first cost cap (0: the first iteration cuts every branch and returns the bounds).
+sp {selection-world*apply*init-current-evaluation-depth*cost-cap
+   :default
+   (state <s> ^top-selection true
+              ^flags.iterative-step cost
+              ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth)
+-->
+   (<s> ^cost-cap 0)}
+
+## Apply init-current-evaluation-depth -> sets max-evaluation-depth for cost iteration (iterations are not depth-limited).
+sp {selection-world*apply*init-current-evaluation-depth*max*cost
+   :default
+   (state <s> ^top-selection true
+              ^flags.iterative-step cost
+              ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth)
+-->
+   (<s> ^max-evaluation-depth 1000)}
+
+## Apply increment-current-evaluation-depth (IDA*): the next cap is the smallest cut-off bound above the current cap.
+sp {selection-world*apply*increment-current-evaluation-depth*cost-cap*bound
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step cost
+             -^flags.cost-quantum
+              ^cost-cap <cap>
+              ^evaluation <evaluation>)
+   (<evaluation> ^symbolic-value depth-exceeded
+                 ^estimated-total-cost { <bound> > <cap> })
+  -{(<s> ^evaluation <other>)
+    (<other> ^symbolic-value depth-exceeded
+             ^estimated-total-cost { < <bound> > <cap> })}
+-->
+   (log 1 (crlf) |New cost cap: | <bound>)
+   (<s> ^cost-cap <bound> <cap> -)}
+
+## Apply increment-current-evaluation-depth (no cut-off bound known): the cap rises by one.
+sp {selection-world*apply*increment-current-evaluation-depth*cost-cap*fallback
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step cost
+             -^flags.cost-quantum
+              ^cost-cap <cap>)
+  -{(<s> ^evaluation <evaluation>)
+    (<evaluation> ^symbolic-value depth-exceeded
+                  ^estimated-total-cost > <cap>)}
+-->
+   (log 1 (crlf) |New cost cap (no bound): | (+ <cap> 1))
+   (<s> ^cost-cap (+ <cap> 1) <cap> -)}
+
+## Apply increment-current-evaluation-depth with ^flags.cost-quantum: the cap rises by the quantum.
+sp {selection-world*apply*increment-current-evaluation-depth*cost-cap*quantum
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step cost
+              ^flags.cost-quantum <quantum>
+              ^cost-cap <cap>)
+-->
+   (log 1 (crlf) |New cost cap: | (+ <cap> <quantum>))
+   (<s> ^cost-cap (+ <cap> <quantum>) <cap> -)}
+
+## Apply increment-current-evaluation-depth (cost cap) -> drops evaluations whose value lies above the cap just finished.
+## A success found beyond the cap came from a search that was cut at the cap, so a cheaper path in the same subtree may exist
+## (the last operator of a path can exceed the cap and still succeed). Such a value is re-evaluated at the next cap.
+sp {selection-world*apply*increment-current-evaluation-depth*cost-cap*drop-over-cap
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^evaluation <evaluation>)
+   (<evaluation> ^numeric-value { > <cap> <> no-value })
+-->
+   (<s> ^evaluation <evaluation> -)}

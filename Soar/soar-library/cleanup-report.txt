@@ -1,0 +1,52 @@
+Library rules renamed/classified: 483 (elaborate 218, propose 49, compare 87, apply 129)
+Phase is derived from the rule body: propose = adds an operator with +; compare = other operator preferences;
+  apply = tests the selected operator (o-support) or halts; elaborate = everything else.
+Rules whose old name used a different phase word than the body shows (48), old name / name phase / body phase / file:
+  selection*elaborate*evaluate-operator*evaluation  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator.soar
+  selection*elaborate*evaluate-operator*super-problem-space  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator.soar
+  selection*elaborate*evaluate-operator*superstate  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator.soar
+  evaluate-operator*elaborate*state*duplicate-of  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-subgoal  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-subgoal*success  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*numeric-evaluation*from-subgoal  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*expected-evaluation*from-subgoal  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*state*world-copy  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-subgoal*constraint-failure  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+  evaluate-operator*propose*look-ahead  propose -> compare  selection-world/Operator_Tie/evaluate-operator/task-operator.soar
+  evaluate-operator*elaborate*evaluation*failure*constraint-failure  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/Operator_Constraint-Failure/elaborations.soar
+  selection*elaborate*evaluate-operator*all-operators-no-value  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/Operator_Tie/elaborations.soar
+  evaluate-operator*elaborate*evaluation*failure*no-operators  elaborate -> apply  selection-world/Operator_Tie/evaluate-operator/State_No-Change/State_No-Change/elaborations.soar
+  apply*achieved-max-depth*worst  apply -> compare  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/achieved-max-depth.soar
+  apply*achieved-max-depth*worst2  apply -> compare  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/achieved-max-depth.soar
+  apply*achieved-max-depth*best  apply -> compare  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/achieved-max-depth.soar
+  selection*elaborate*evaluate-operator*remaining-operators*current-evaluation-depth  elaborate -> apply  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/evaluate-operator.soar
+  selection*elaborate*evaluate-operator*remaining-operators*current-evaluation-depth2  elaborate -> apply  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/evaluate-operator.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-tie-subgoal*depth-exceeded  elaborate -> apply  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/exceed-depth.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-tie-subgoal*depth-exceeded*numeric  elaborate -> apply  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/exceed-depth.soar
+  evaluate-operator*elaborate*symbolic-evaluation*from-subgoal*depth-exceeded  elaborate -> apply  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/evaluate-operator/elaborations.soar
+  apply*operator*maintain-operator*preconditions-satisfied  apply -> compare  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/evaluate-operator/task-operator.soar
+  selection*propose*all-evaluations-failed*too-many  propose -> elaborate  selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/evaluate-operator/Impasse__Operator_Tie/all-evaluations-failed.soar
+  evaluate-operator*elaborate*symbolic-depth*from-subgoal*new  elaborate -> apply  selection-world/strategies/optimal/Impasse__Operator_Tie/evaluate-operator/elaborations.soar
+  agent-world*apply*desired-verify*be-careful  apply -> elaborate  agent-world/force-conflict.soar
+  agent-world*apply*desired-verify*be-careful*desired  apply -> elaborate  agent-world/force-conflict.soar
+  agent-world*apply*desired-verify*be-careful*safety  apply -> elaborate  agent-world/force-conflict.soar
+  Impasse__Operator_Conflict*elaborate*state  elaborate -> apply  agent-world/Impasse__Operator_Conflict/elaborations.soar
+  apply*evaluate-operator*force-conflict2  apply -> compare  agent-world/Impasse__Operator_Tie/evaluate-operator.soar
+  evaluate-operator*elaborate*numeric-evaluation-return*time  elaborate -> apply  agent-world/Impasse__Operator_Tie/evaluate-operator/elaborations.soar
+  agent-world*elaborate*operator*acheived-desired*handle*anchored-only  elaborate -> apply  agent-world/elaborations/achieved-desired-operators.soar
+  agent-world*elaborate*operator*acheived-desired*handle  elaborate -> apply  agent-world/elaborations/achieved-desired-operators.soar
+  agent-world*elaborate*operator*acheived-desired*info  elaborate -> apply  agent-world/elaborations/achieved-desired-operators.soar
+  agent-world*elaborate*operator*desired-count*too-many  elaborate -> apply  agent-world/elaborations/achieved-desired-operators.soar
+  agent-world*elaborate*desired-count*too-many  elaborate -> apply  agent-world/elaborations/achieved-desireds.soar
+  apply*operator*remove-command  apply -> elaborate  agent-world/elaborations/output.soar
+  top-state*apply*any*remove*completed*agent-event  apply -> elaborate  agent-world/elaborations/output.soar
+  apply*operator*error  apply -> elaborate  agent-world/elaborations/output.soar
+  agent-world*apply*future-event*unexpected-completion  apply -> elaborate  agent-world/events/elaborations/future-event.soar
+  agent-world*apply*complete*future-event*change-property*look-ahead  apply -> elaborate  agent-world/events/elaborations/future-event.soar
+  agent-world*apply*complete*future-event*change-property*look-ahead*no-value  apply -> elaborate  agent-world/events/elaborations/future-event.soar
+  apply*smem-store-object*in-location*first-time  apply -> elaborate  object-world/elaborations/smem-store-in.soar
+  apply*smem-store-object  apply -> elaborate  object-world/elaborations/smem-store-object.soar
+  smem*apply*clean-up*retrieve  apply -> elaborate  object-world/elaborations/smem.soar
+  smem*apply*clean-up*query  apply -> elaborate  object-world/elaborations/smem.soar
+  smem*apply*clean-up*store  apply -> elaborate  object-world/elaborations/smem.soar
+  agent-world*apply*world-from-scene*attended-object  apply -> elaborate  object-world/elaborations/world-from-scene.soar

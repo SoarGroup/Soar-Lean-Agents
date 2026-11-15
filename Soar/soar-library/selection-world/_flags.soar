@@ -1,0 +1,85 @@
+## _flags.soar -- selection-world: 6 elaborations.
+
+## Elaborate flags default verify -> sets verify.
+## true: verify look-ahead evaluations (maximum depth 10).
+sp {selection-world*elaborate*flags*default*verify
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.verify <any>)
+-->
+   (<f> ^verify false)
+}
+
+## Elaborate flags default guardrails -> sets guardrails.
+## true: guardrail checks in look-ahead.
+sp {selection-world*elaborate*flags*default*guardrails
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.guardrails <any>)
+-->
+   (<f> ^guardrails false)
+}
+
+## Elaborate flags default hierarchical-properties -> sets hierarchical-properties.
+## true is problematic: reachable desireds are always achieved in look-ahead.
+sp {selection-world*elaborate*flags*default*hierarchical-properties
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.hierarchical-properties <any>)
+-->
+   (<f> ^hierarchical-properties false)
+}
+
+## Elaborate flags default optimize -> sets optimize.
+## false: with a cost metric, the cheapest path at the first successful depth is selected.
+## true: depth-exceeded branches carry a cost bound; branches whose bound is not below the best
+##       success are dominated, which gives an optimal path with pruning (admissible bounds, positive costs).
+sp {selection-world*elaborate*flags*default*optimize
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.optimize <any>)
+-->
+   (<f> ^optimize false)
+}
+
+## Elaborate flags default aspiration-step -> sets aspiration-step (only when ^flags.aspiration is set).
+## The amount by which the aspiration level rises after an iteration without an acceptable success.
+sp {selection-world*elaborate*flags*default*aspiration-step
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flags.aspiration <level>
+             -^flag-override.aspiration-step <any>)
+-->
+   (<f> ^aspiration-step 1)
+}
+
+## Elaborate flags default progress-threshold -> sets progress-threshold (only when ^flags.termination is progress).
+## A branch whose progress rate P = (C - R + 1) / (D + 1) is below this value is cut off.
+sp {selection-world*elaborate*flags*default*progress-threshold
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flags.termination progress
+             -^flag-override.progress-threshold <any>)
+-->
+   (<f> ^progress-threshold 0.15)
+}
+
+## Elaborate flags default failure-grounding -> sets failure-grounding (v2.28).
+## How a look-ahead failure or depth-limit result is made to depend on the state, so it does not outlive it:
+##   counter (default): test the version stamp of the world (see ground-state.soar).
+##   explicit: read every wme of the world and desireds first (ground-state.soar), one decision per wme.
+##   none:     no grounding (results can outlive the state: Towers of Hanoi stale worst preference).
+sp {selection-world*elaborate*flags*default*failure-grounding
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.failure-grounding <any>)
+-->
+   (<f> ^failure-grounding counter)
+}

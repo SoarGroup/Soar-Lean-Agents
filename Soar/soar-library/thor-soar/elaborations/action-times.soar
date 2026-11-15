@@ -1,0 +1,67 @@
+## action-times.soar -- thor-soar: 4 elaborations, 1 application.
+
+## Elaborate action-operators -> sets action-time.
+sp {thor-soar*elaborate*action-operators
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.action-time <action-time>
+              ^flags.cost-metric time
+              ^operator <operator1> +)
+   (<operator1> ^action-handle
+               -^name << cook-microwave make-coffee toast cook-stove go-to >> )
+-->
+   (<operator1> ^action-time <action-time>)
+}
+
+## Elaborate complex-action-operators -> sets action-time.
+sp {thor-soar*elaborate*complex-action-operators
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.complex-action-time <action-time>
+              ^flags.cost-metric time
+              ^operator <operator1> +)
+   (<operator1> ^name << discard store clean-dishwasher >> )
+-->
+   (<operator1> ^action-time <action-time>)
+}
+
+## Elaborate find-object -> sets action-time.
+sp {thor-soar*elaborate*find-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.complex-action-time <action-time>
+              ^flags.cost-metric time
+              ^operator <operator1> +)
+   (<operator1> ^name find-object )
+-->
+   (<operator1> ^action-time 0)
+}
+
+## Elaborate action-operators go-to -> sets action-time.
+sp {thor-soar*elaborate*action-operators*go-to
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.move-time <action-time>
+              ^flags.cost-metric time
+              ^operator <operator1> +)
+   (<operator1> ^name go-to)
+-->
+   (<operator1> ^action-time <action-time>) #2500
+}
+
+## Apply action-times -> sets time.
+sp {apply*action-times
+    :default
+   (state <s> ^operator <op>
+              ^internal-actions true
+              ^flags.cost-metric time
+              ^world <world>)
+   (<world> ^time <time>)
+   (<op> ^name <name>
+         ^action-time <action-time>
+         ^pre-conditions-satisfied true)
+-->
+   (<world> ^time <time> -
+                  (+ <time> <action-time>))
+   (log 1 (crlf) |Increment internal time: | (+ <time> <action-time>))
+}

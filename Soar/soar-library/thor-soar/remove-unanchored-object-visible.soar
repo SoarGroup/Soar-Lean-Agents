@@ -1,0 +1,26 @@
+## remove-unanchored-object-visible.soar -- thor-soar: 2 applications.
+
+## Apply remove-unanchored-object-visible -> sets object.
+sp {apply*remove-unanchored-object-visible
+    :default
+   (state <s> ^operator <op>
+              ^world.objects <objects>)
+   (<op> ^name remove-unanchored-object-visible
+         ^argument1 <unanchored-object>)
+   (<objects> ^object <unanchored-object>)
+-->
+   (<objects> ^object <unanchored-object> -)
+}
+
+## Apply remove-unanchored-object-visible.
+sp {apply*remove-unanchored-object-visible*relation
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^{ << on in >> <on-in> } <relation>)
+   (<relation> ^<< argument1 argument2 >> <unanchored-object>)
+   (<op> ^name remove-unanchored-object-visible
+         ^argument1 <unanchored-object>)
+-->
+   (<world> ^<on-in> <relation> -)
+}

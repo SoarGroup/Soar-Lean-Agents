@@ -1,0 +1,136 @@
+## create-object-state-desired.soar -- thor-soar: 2 proposals, 3 compares, 3 applications.
+
+## Propose create-object-state-desired.
+sp {thor-soar*propose*create-object-state-desired*open
+#   :interrupt
+    :default
+   (state <s> ^flags.clean-up-on-success true
+              ^success <desireds>
+              ^desireds <desireds>
+              ^constants.desired-object-states <dos>
+              ^world.objects.object <object>)
+   (<dos> ^open <value>)
+   (<object> ^open <> <value>
+             ^openable true)  # indicates can open/close it
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name create-object-state-desired
+         ^attribute open
+         ^value <value>
+         ^object <object>)
+}
+
+## Preference for create-object-state-desired desireds-source language.
+## If desireds came from language (via interaction stack)
+## We want to clean them up via goal-completed, so do it first
+sp {thor-soar*compare*create-object-state-desired*desireds-source*language
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.desireds-source language)
+   (<op1> ^name create-object-state-desired)
+   (<op2> ^name goal-completed)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for create-object-state-desired desireds-source.
+## If desireds came from elaboration,
+## We want to do any clean up actions before moving on to the next
+sp {thor-soar*compare*create-object-state-desired*desireds-source*elaboration
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.desireds-source elaboration)
+   (<op1> ^name create-object-state-desired)
+   (<op2> ^name goal-completed)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Propose create-object-state-desired.
+sp {thor-soar*propose*create-object-state-desired*activate
+#   :interrupt
+    :default
+   (state <s> ^attends <attends>
+             -^world.future-event
+              ^success <desireds>
+              ^desireds <desireds>
+              ^constants.desired-object-states <dos>
+              ^scene.objects.object <object>)
+   (<dos> ^activated <value>)
+   (<object> ^activated <> <value>
+             ^class { <> lightswitch <> coffeemachine }# Don't turn the lights out by default!
+             ^object-handle <object-handle>
+             ^activatable true)  # indicates can open/close it
+-->
+   (<s> ^operator <op> + =, <)
+   (<attends> ^attend <object-handle>)
+   (<op> ^name create-object-state-desired
+         ^attribute activated
+         ^value <value>
+         ^object <object>)
+}
+
+## Preference for create-object-state-desired reachable.
+sp {thor-soar*compare*create-object-state-desired*reachable
+    :default
+   (state <s> ^world.objects.object <object1> <object2>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<object1> ^object-handle <object-handle1>
+              ^reachable true)
+   (<op1> ^name create-object-state-desired
+          ^object <xobject1>)
+   (<xobject1> ^object-handle <object-handle1>)
+   (<op2> ^name create-object-state-desired
+          ^object {<xobject2> <> <object1>})
+   (<xobject2> ^object-handle <object-handle2>)
+   (<object2> ^object-handle <object-handle2>
+             -^reachable true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply create-object-state-desired -> sets desireds, desired-count, object-state-desireds.
+sp {apply*create-object-state-desired1
+    :default
+   (state <s> ^operator <op>)
+   (<op> ^name create-object-state-desired)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+               ^object-state-desireds true)
+}
+
+## Apply create-object-state-desired -> sets desired, object-handle.
+sp {apply*create-object-state-desired
+    :default
+   (state <s> ^operator <op>
+             -^success <desireds>
+              ^desireds <desireds>)
+   (<desireds> ^object-state-desireds true)
+   (<op> ^name create-object-state-desired
+         ^attribute <attribute>
+         ^value <value>
+         ^object <object>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<desireds> ^desired.object <dobject>)
+   (<dobject> ^object-handle <object-handle>
+              ^<attribute> <value>)
+}
+
+## Apply create-object-state-desired -> sets desireds, success.
+sp {apply*create-object-state-desired*deleted
+    :default
+   (state <s> ^operator <op>
+              ^desireds { <> <desireds> <desireds2> }
+              ^success <desireds>
+              ^desireds <desireds>)
+   (<desireds2> ^object-state-desireds true)
+   (<op> ^name create-object-state-desired)
+-->
+   (<s> ^desireds <desireds> -
+        ^success <desireds> -)
+}

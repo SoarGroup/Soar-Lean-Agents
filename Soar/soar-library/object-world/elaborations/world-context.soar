@@ -1,0 +1,36 @@
+## world-context.soar -- object-world: 4 elaborations.
+
+## Elaborate world-agent create-world-from desired-world-context -> sets world.
+## Create world structure
+sp {object-world*elaborate*create-world-from*desired-world-context
+   :i-support
+   :default
+   (state <s> ^operator.desireds.world-context <world-context>)
+-->
+   (<s> ^world <world-context>)
+}
+
+## Elaborate world-agent world-context world -> sets world.
+sp {object-world*elaborate*world-context*world
+   :default
+   (state <s> ^desireds.world-context <world-context>)
+-->
+   (<s> ^world <world-context>)
+}
+
+## Elaborate world-agent create-world-from desired-world-context anchored-false -> sets anchored-world.
+sp {object-world*elaborate*create-world-from*desired-world-context*anchored-false
+   :i-support
+   :default
+   (state <s> ^operator.desireds.world-context <world-context>)
+-->
+   (<world-context> ^anchored-world false)
+}
+
+## Elaborate world-agent world-context anchored-false -> sets anchored-world.
+sp {object-world*elaborate*world-context*anchored-false
+   :default
+   (state <s> ^desireds.world-context <world-context>)
+-->
+   (<world-context> ^anchored-world false)
+}

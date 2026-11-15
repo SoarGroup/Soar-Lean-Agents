@@ -1,0 +1,13 @@
+## time.soar -- agent-world: 1 elaboration.
+
+## Elaborate state time -> sets time.
+sp {agent-world*elaborate*state*time
+   :default
+   (state <s> ^superstate nil
+              ^io.input-link.time.ms <time-ms>
+              ^world <w>)
+   (<w> ^real true)
+-->
+   (log 1 (crlf) |Time: | <time-ms>)
+   (<w> ^time <time-ms>)
+}

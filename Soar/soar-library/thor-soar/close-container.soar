@@ -1,0 +1,380 @@
+## close-container.soar -- thor-soar: 4 proposals, 10 compares, 4 applications.
+
+## Propose close-container.
+## MEA Selection
+sp {thor-soar*propose*close-container*mea
+    :default
+   (state <s> ^problem-space.name << thor-world store >>
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<object> ^object-handle <object-handle>)
+   (<desired-object> ^open false
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name close-container
+               ^task-operator true
+               ^action-handle close
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired.object <desired-object2>
+                ^desired.holding-object.object-handle none)
+   (<desired-object2> ^reachable true
+                      ^object-handle <object-handle>)
+}
+
+## Propose close-container.
+## MEA Selection for closing all doors
+sp {thor-soar*propose*close-container*mea*close-doors
+    :default
+   (state <s> ^problem-space.name << thor-world store >>
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^close-doors true)
+   (<object> ^object-handle <object-handle>
+              ^openable true
+              ^open true)
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name close-container
+               ^task-operator true
+               ^action-handle close
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^desired.object <desired-object2>
+                ^desired.object <desired-object3>
+                ^desired.holding-object.object-handle none)
+   (<desired-object2> ^reachable true
+                      ^object-handle <object-handle>)
+   (<desired-object3> ^looked-at true
+                      ^object-handle <object-handle>)
+}
+
+## Propose close-container.
+## Try to close drawer/cabinet/fridge if going somewhere - drawers get in the way of movement!
+## CHEATING _ BUG - need to reimplement as part of a total operator
+sp {thor-soar*propose*close-container*open-object-in-the-way
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world.objects.object <object>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired> ## Only gets proposed if mobile not achieved
+              )# ^unachieved-desireds-count $ <x>)
+   (<desired> ^self.mobile true)
+   (<object> ^object-handle <object-handle>
+             ^class << cabinet fridge drawer  >>  # Should this be reachable, if not, it won't cause problems
+             ^reachable true
+             ^open true)
+   ## Not sure about these next two conditions - might not be needed but were in original version before mobile test
+  -{(<s> ^superstate.desireds.desired <desired2>)  # Don't close if want it to be open in supergoal
+    (<desired2> ^object <objectd>)
+    (<objectd> ^object-handle <object-handle>
+               ^open true)}
+   -{(<desireds> ^desired <desired21>)  # Don't close if want it to be open
+     (<desired21> ^object <objectd1>)
+     (<objectd1> ^object-handle <object-handle>
+                 ^open true)}
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name close-container
+               ^task-operator true
+               ^special-case mobility
+               ^action-handle close
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 1
+                ^desired <desired1>)
+   (<desired1> ^object <objectdd>)
+   (<objectdd> ^object-handle <object-handle>
+               ^reachable true)
+}
+
+## Preference for close-container get-object.
+sp {thor-soar*compare*close-container*get-object
+    :default
+   (state <s> ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name close-container
+          ^argument1.object-handle <> <container>)
+   (<op2> ^name get-object
+          ^argument2.object-handle <container>)
+-->
+   # (log 1 (crlf) |**********thor-soar*compare*close-container*get-object|)
+   (<s> ^operator <op2> -)
+}
+
+## Preference for close-container goto.
+sp {thor-soar*compare*close-container*goto
+    :default
+   (state <s> ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name close-container)
+   (<op2> ^name << slice-object go-to put-on >>)  ## put-on ?? BUG??
+  -{(<s> ^world.holding-object.object-handle <in-object-handle>
+         ^desireds.desired <desired2>)
+    (<desired2> ^<< in on >> <in-on2>)
+    (<in-on2> ^argument1.object-handle <in-object-handle>)}
+  -{(<s> ^world <world>
+         ^desireds.desired <desired>)
+    (<world> ^in <in>)
+    (<in> ^argument1.object-handle <in-object-handle>
+          ^argument2.object-handle <location-object-handle>)
+    (<desired> ^<< in on >> <in-on>)
+    (<in-on> ^argument1.object-handle <in-object-handle>
+             ^argument2.object-handle <> <location-object-handle>)}
+-->
+   # (log 1 (crlf) |**********{thor-soar*compare*close-container*goto|)
+   (<s> ^operator <op2> -)
+}
+
+## Preference for close-container.
+## Search Control
+sp {thor-soar*compare*close-container
+    :default
+   (state <s> ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name close-container
+          ^argument1 <object1>)
+   (<object1> ^reachable true)
+   (<op2> ^name close-container
+          ^argument1 <object2>)
+   (<object2> -^reachable true)
+-->
+   # (log 1 (crlf) |**********{thor-soar*compare*close-container|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply close-container -> sets open.
+sp {apply*close-container*internal
+  # :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name close-container
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <container-handle>
+             ^open true)
+-->
+   (log 1 (crlf) |Apply Close: | <container-handle> | internal.|)
+   (<object> ^open true -
+                   false)
+}
+
+## Apply close-container -> sets mobile.
+sp {apply*close-container*internal*mobile
+  # :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true
+              ^world.self <self>)
+   (<self> ^mobile false)
+   (<operator> ^name close-container
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <container-handle>
+             ^open true)
+-->
+   (log 1 (crlf) |Apply Close: self mobile internal.|)
+    (<self> ^mobile true
+                   false -)
+}
+
+## Apply close-container -> sets reachable, visible, accessible.
+sp {apply*close-container*internal*reachable*visible
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^world <world>
+              ^internal-actions true)
+   (<world> ^in <in>)
+   (<operator> ^name close-container
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<in> ^argument1 <internal-object>
+         ^argument2 <container-object>)
+   (<internal-object> ^object-handle <object-handle>)
+  -(<internal-object> ^reachable false
+                      ^visible false
+                      ^accessible false)
+-->
+   (log 1 (crlf) |Apply Close: | <object-handle> | becomes not visible and reachable and accessible.|)
+   (<internal-object> ^reachable true -
+                                 false
+                      ^visible true -
+                               false
+                      ^accessible true -
+                                  false)
+}
+
+## Apply close-container -> sets looked-at.
+## Flush distances on first move
+sp {apply*close-container*internal*distance
+    :default
+   (state <s> ^world.objects.object <object>
+              ^operator <operator>)
+   (<operator> ^name close-container
+               ^argument1 <> <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^looked-at true)
+-->
+   (<object> ^looked-at true -)
+}
+
+## Propose close-container.
+## Non MEA Selection
+sp {thor-soar*propose*close-container
+    :default
+   (state <s> ^problem-space.name << move thor-world store >>
+              ^flags.mea-operator-selection false
+              ^world.objects.object <container-object>)
+   (<container-object> ^reachable true
+                       ^open true
+                       ^openable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name close-container
+               ^task-operator true
+               ^action-handle close
+               ^argument1 <container-object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}
+
+## Preference for close-container-reject-desired-open super-desireds-open.
+sp {thor-soar*propose*close-container-reject-desired-open*super-desireds-open
+    :default
+   (state <s> ^operator <operator> +
+              ^super-desireds.desired.object <objectd>)
+   (<operator> ^name close-container
+               ^argument1.object-handle <container-object-handle>)
+   (<objectd> ^object-handle <container-object-handle>
+               ^open true)
+-->
+   (<s> ^operator <operator> -)
+}
+
+## Preference for close-container-reject-desired-open desired-object-holding.
+sp {thor-soar*propose*close-container-reject-desired-open*desired-object-holding
+    :default
+   (state <s> ^operator <operator> +
+              ^world.in <in-world>
+              ^super-desireds.desired <desired>)
+   (<in-world> ^argument1.object-handle <in-object-handle>
+               ^argument2.object-handle <container-object-handle>)
+   (<desired> ^holding-object.object-handle <in-object-handle>)
+   (<operator> ^name close-container
+              -^special-case mobility
+               ^argument1.object-handle <container-object-handle>)
+-->
+   (<s> ^operator <operator> -)
+}
+
+## Preference for close-container-reject-desired-open desired-object-in-container.
+sp {thor-soar*propose*close-container-reject-desired-open*desired-object-in-container
+    :default
+   (state <s> ^operator <operator> +
+              ^world.in <in-world>
+              ^super-desireds.desired <desired>)
+   (<in-world> ^argument1.object-handle <in-object-handle>
+               ^argument2.object-handle <container-object-handle>)
+   (<desired> ^in <in-on>)
+   (<in-on> ^argument1.object-handle <in-object-handle>
+           -^argument2.object-handle <container-object-handle>)
+   (<operator> ^name close-container
+              -^special-case mobility
+               ^argument1.object-handle <container-object-handle>)
+-->
+   (<s> ^operator <operator> -)
+}
+
+## Preference for close-container-reject-desired-open desired-object-in-container2.
+sp {thor-soar*propose*close-container-reject-desired-open*desired-object-in-container2
+    :default
+   (state <s> ^operator <operator> +
+             -^superstate.operator.name search-closed-receptacles
+              ^world.objects.object.object-handle <argument1>
+              ^super-desireds.desired.in <in>)
+   (<in> ^argument1.object-handle <argument1>
+         ^argument2.object-handle <container-object-handle>)
+  -{(<s> ^world.in <in2>)
+    (<in2> ^argument1.object-handle <argument1>
+           ^argument2.object-handle  <container-object-handle>)}
+   (<operator> ^name close-container
+               ^argument1.object-handle <container-object-handle>)
+-->
+   (<s> ^operator <operator> -)
+}
+
+## Preference for close-container-reject-desired-open desired-object-on-container-in-container.
+sp {thor-soar*propose*close-container-reject-desired-open*desired-object-on-container-in-container
+    :default
+   (state <s> ^operator <operator> +
+              ^world.objects.object.object-handle <argument1>
+              ^world.in <in>
+              ^super-desireds.desired.on <on>)
+   (<on> ^argument1.object-handle <argument1>
+         ^argument2.object-handle <container-object-handle1>)
+   (<in> ^argument1.object-handle <container-object-handle1>
+         ^argument2.object-handle <container-object-handle>)
+  -{(<s> ^world.in <in2>)
+    (<in2> ^argument1.object-handle <argument1>
+           ^argument2.object-handle  <container-object-handle1>)}
+   (<operator> ^name close-container
+               ^argument1.object-handle <container-object-handle>)
+-->
+   (<s> ^operator <operator> -)
+}
+
+## Preference for close-container6.
+sp {thor-soar*compare*close-container6
+    :default
+   (state <s> ^operator <op1> +
+                        { < <op1> <op2> }  +)
+   (<op1> ^name close-container)
+   (<op2> ^name close-container)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for close-container2.
+sp {thor-soar*compare*close-container2
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.task-search-control true)
+   (<op1> ^name close-container)
+   (<op2> ^name { <> close-container <> exceed-depth <> get-object <> put-in <> find-object <>  search-closed-receptacles}
+          ^task-operator true
+         -^explore-operator true)
+  -{(<s> ^world.in <in>)
+    (<in> ^argument1.object-handle <object-handle>
+          ^argument2 <container-object>)}
+-->
+   # (log 1 (crlf) |**********{thor-soar*compare*close-container2|)
+   (<s> ^operator <op1> > <op2>)
+}

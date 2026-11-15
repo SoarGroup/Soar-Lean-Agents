@@ -1,0 +1,91 @@
+## failed-grounding.soar -- object-world: 1 proposal, 4 applications.
+
+## ---- operator proposal ----
+
+## Propose failed-grounding.
+## Can't anchor to an existing object in the scene during a look-ahead (such as knife in drawer haven't explored)
+## push up to top-level the need to find it. Can lead to exploration.
+sp {object-world*propose*failed-grounding
+   :default
+   (state <s> ^world <world>
+              ^desireds.desired <desired>)
+   (<world> ^anchored-world true
+    )#         -^real true
+      #      ^duplicate-of)
+   (<desired> ^info.unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>)
+  -{(<s> ^external-top-state.scene.objects.object <anchored-object>)  # real-object
+    (<anchored-object> ^anchored true
+                       ^class <class>)}
+  -(<world> ^<< in on >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<world> ^info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name failed-grounding
+         ^task-operator true
+         ^argument1 <desired>)
+}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> sets symbolic-value, failed-grounding-.
+sp {object-world*apply*failed-grounding*selection
+   :default
+   (state <s> ^operator <op>
+             -^real true
+              ^selection-superstate <selection-superstate>)
+   (<selection-superstate> ^operator <operator>)
+   (<operator> ^name evaluate-operator
+               ^evaluation <evaluation>)
+   (<op> ^name failed-grounding
+         ^argument1 <argument1>)
+   (<argument1> ^info <info>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value failed-grounding
+                 ^failed-grounding-info <info>)
+}
+
+## Apply find-object -> sets failed-gro.
+sp {object-world*apply*failed-grounding*world
+   :default
+   (state <s> ^operator <op>
+              ^superstate.operator <operator>)
+   (<operator> ^name find-object
+               ^argument1 <unanchored-object>)
+   (<op> ^name failed-grounding)
+-->
+   (<unanchored-object> ^failed-grounding true)
+}
+
+## Apply failed-grounding -> sets failed-grounding-desire.
+sp {object-world*apply*failed-grounding*world2
+   :default
+   (state <s> ^operator <op>
+              ^superstate <ss>)
+   (<op> ^name failed-grounding)
+   (<ss> ^desireds <desireds>
+         ^operator <operator>)
+   (<operator> ^name find-object
+               ^argument1 <object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <object>)
+-->
+   (<desireds> ^failed-grounding-desired <desired>)
+}
+
+## Apply failed-grounding -> sets failed-grounding-desire.
+sp {object-world*apply*failed-grounding*world*in-on
+   :default
+   (state <s> ^operator <op>
+              ^superstate <ss>)
+   (<op> ^name failed-grounding)
+   (<ss> ^desireds <desireds>
+         ^operator <operator>)
+   (<operator> ^name find-object
+               ^argument1 <object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^<< in on controlled-by >>.argument1 <object>)
+-->
+   (<desireds> ^failed-grounding-desired <desired>)
+}

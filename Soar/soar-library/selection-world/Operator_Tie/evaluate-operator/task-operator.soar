@@ -1,0 +1,9 @@
+## task-operator.soar -- selection-world: 1 compare.
+
+## Preference for evaluate-operator look-ahead.
+sp {selection-world*compare*evaluate-operator*look-ahead
+   :default
+   (state <s> ^look-ahead-operator <operator>
+              ^untried-tied-operator <operator>)
+   -->
+   (<s> ^operator <operator> !)}   # makes learning with add-osk on more general - # might cause problems in some cases.

@@ -1,0 +1,2478 @@
+## desireds.soar -- thor-tasks: 93 elaborations.
+
+## Elaborate desireds better-lower -> sets better, best.
+sp {elaborate*thor-soar*desireds*better-lower
+    :default
+   (state <s> ^desireds <desireds>)
+-->
+   (<desireds> ^better lower
+               ^best 0)
+}
+
+## Elaborate desired reachable-potato55 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*reachable-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection reachable-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1)
+   (<desired> ^object <object>)
+   (<object> ^object-handle Potato55
+             ^reachable true)
+}
+
+## Elaborate desired reachable-potato-class -> sets desireds, desired, desired-count ....
+## Go to the potato
+## Uses world-context to define potato as class instead of potato handle
+sp {elaborate*thor-soar*desired*reachable-potato-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection reachable-potato-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1
+               ^world-context.objects.object <object-potato>)
+   (<desired> ^object <object>)
+   (<object> ^object-handle |unanchored-object-handle|
+             ^reachable true)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-object-handle|
+                    ^anchored false)
+}
+
+## Elaborate desired holding-potato55 -> sets desireds, desired, desired-count.
+## Grab the potato
+sp {elaborate*thor-soar*desired*holding-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle Potato55
+               ^desired-count 1)
+}
+
+## Elaborate desired holding-potato-class -> sets desireds, desired, desired-count ....
+## Grab the potato
+## Uses world-context to define potato as class instead of potato handle
+sp {elaborate*thor-soar*desired*holding-potato-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-potato-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-handle|
+               ^desired-count 1
+               ^world-context.objects.object <object-potato>)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-object-handle|
+                    ^anchored false)
+}
+
+## Elaborate desired dirty-mug -> sets desireds, desired, desired-count ....
+## Dirty the mug
+sp {elaborate*thor-soar*desired*dirty-mug
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection dirty-mug)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1)
+   (<object> ^dirty true
+             ^object-handle Mug48)
+}
+
+## Elaborate desired turn-off-LightSwitch46 -> sets desireds, desired, desired-count ....
+## Turn off the lightswitch
+sp {elaborate*thor-soar*desired*turn-off-LightSwitch46
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection turn-off-lightswitch46)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <desired1>
+               ^desired-count 1)
+   (<desired1> ^object-handle LightSwitch46
+               ^activated false)
+}
+
+## Elaborate desired turn-off-lightswitch-class -> sets desireds, desired, desired-count ....
+## Turn off the lightswitch
+sp {elaborate*thor-soar*desired*turn-off-lightswitch-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection turn-off-lightswitch-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1
+               ^world-context.objects.object <object-lightswitch>)
+   (<object> ^object-handle |unanchored-lightswitch-handle|
+             ^activated false)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle|
+                         ^anchored false)
+}
+
+## Elaborate desired turn-on-faucet37 -> sets desireds, desired, desired-count ....
+## Turn on the faucet
+sp {elaborate*thor-soar*desired*turn-on-faucet37
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection turn-on-faucet37)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1)
+   (<object> ^activated true
+             ^object-handle Faucet37)
+}
+
+## Elaborate desired turn-on-microwave47 -> sets desireds, desired, desired-count ....
+## Turn on the microwave
+sp {elaborate*thor-soar*desired*turn-on-microwave47
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection turn-on-microwave47)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1)
+   (<object> ^activated true
+            # ^event-time 15000
+             ^object-handle Microwave47)
+}
+
+## Elaborate desired open-microwave47 -> sets desireds, desired, desired-count ....
+## Open the microwave
+sp {elaborate*thor-soar*desired*open-microwave47
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection open-microwave47)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^object <object>)
+   (<object> ^open true
+             ^object-handle Microwave47)
+}
+
+## Elaborate desired am-turn-on-coffeemachine -> sets desireds, desired, desired-count ....
+## put mug in coffee machine and then Turn on coffee machine
+sp {elaborate*thor-soar*desired*am-turn-on-coffeemachine
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection am-turn-on-coffeemachine
+              ^scene.objects.object <coffeemachine>)
+   (<coffeemachine> ^object-handle <coffeemachine-handle>
+                    ^class coffeemachine)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^world-context <w11>
+                ^next-desireds <desireds2>)
+   (<w11> ^objects <objects>)
+   (<desired1> ^in <N117>)
+   (<N117> ^argument1 <A24>
+           ^argument2 <A25>)
+   (<A24> ^object-handle Mug48)
+   (<A25> ^object-handle CoffeeMachine19)
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1)
+   (<desired3> ^object <object1>)
+   (<object1> ^object-handle <coffeemachine-handle>
+              ^activated true
+              ^event-time 2000)
+}
+
+## Elaborate desired break-mug48 -> sets desireds, desired, desired-count ....
+## Break the mug
+sp {elaborate*thor-soar*desired*break-mug48
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection break-mug48)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1)
+   (<object> ^broken true
+             ^object-handle Mug48)
+}
+
+## Elaborate desired fill-mug48-water -> sets desireds, desired, desired-count ....
+## Fill the mug with water
+sp {elaborate*thor-soar*desired*fill-mug48-water
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection fill-mug48-water)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object>
+               ^desired-count 1)
+   (<object> ^object-handle Mug48
+             ^liquid-contents water)
+}
+
+## Elaborate desired potato55-in-sinkBasin63 -> sets desireds, desired, desired-count ....
+## Put the potato in the sink
+sp {elaborate*thor-soar*desired*potato55-in-sinkBasin63
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection potato55-in-sinkbasin63)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^in <in>)
+   (<in> ^argument1.object-handle Potato55
+         ^argument2.object-handle SinkBasin63)
+}
+
+## Elaborate desired potato55-in-pan49 -> sets desireds, desired, desired-count ....
+## Put the potato in the pan
+sp {elaborate*thor-soar*desired*potato55-in-pan49
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection potato55-in-pan49)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^in <in>)
+   (<in> ^argument1.object-handle Potato55
+         ^argument2.object-handle Pan49)
+}
+
+## Elaborate desired potato55-in-dishwasher26 -> sets desireds, desired, desired-count ....
+## Put must open
+## Put the potato in the dishwasher
+sp {elaborate*thor-soar*desired*potato55-in-dishwasher26
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection potato55-in-dishwasher26)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^in <in>)
+   (<in> ^argument1.object-handle Potato55
+         ^argument2.object-handle Dishwasher26)
+}
+
+## Elaborate desired potato55-in-microwave47 -> sets desireds, desired, desired-count ....
+## Put the potato in the microwave
+sp {elaborate*thor-soar*desired*potato55-in-microwave47
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection potato55-in-microwave47)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^in <in>)
+   (<in> ^argument1 <object1>
+         ^argument2.object-handle Microwave47)
+   (<object1> ^object-handle Potato55)
+}
+
+## Elaborate desired potato-in-microwave-class -> sets desireds, desired, world-context ....
+## Put the potato in the microwave
+sp {elaborate*thor-soar*desired*potato-in-microwave-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection potato-in-microwave-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^world-context <world-context>
+               ^desired-count 1)
+   (<desired1> ^in <in>)
+   (<world-context> ^objects <objects>)
+   (<objects> ^object <object1> <object2>)
+   (<object1> ^anchored false
+              ^class potato
+              ^object-handle object-1)
+   (<object2> ^anchored false
+              ^class microwave
+              ^object-handle object-2)
+   (<in> ^argument1 <object3>
+         ^argument2 <object4>)
+   (<object3> ^object-handle object-1)
+   (<object4> ^object-handle object-2)
+}
+
+## Elaborate desired make-coffee -> sets desireds, desired, desired-count ....
+## Make coffee
+## Make coffee in the mug
+sp {elaborate*thor-soar*desired*make-coffee
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-coffee)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired2> ^object <object2>)
+   (<object2> ^fill-amount full
+              ^object-handle Mug48)
+}
+
+## Elaborate desired get-egg-in-fridge-class -> sets desireds, desired, desired-count ....
+## Get the egg in the fridge
+## Uses world-context to defind class of egg, fridge, and that egg is in fridge
+sp {elaborate*thor-soar*desired*get-egg-in-fridge-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-egg-in-fridge-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-egg-handle|
+               ^desired-count 1
+               ^world-context <world>)
+   (<world> ^objects.object <object-egg> <object-fridge>
+            ^in <in>)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-object-egg-handle|
+                 ^anchored false)
+   (<in> ^argument1 <object-egg>
+         ^argument2 <object-fridge>)
+   (<object-fridge> ^class fridge
+                    ^object-handle |unanchored-object-fridge|
+                    ^anchored false)
+}
+
+## Elaborate desired get-egg-in-fridge-class door-closed -> sets desireds, desired, avoid-desired ....
+## Get the egg in the fridge
+## Uses world-context to defind class of egg, fridge, and that egg is in fridge
+sp {elaborate*thor-soar*desired*get-egg-in-fridge-class*door-closed
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-egg-in-fridge-class-door-closed)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-egg-handle|
+               ^desired <desired2>
+               ^avoid-desired <desired2>
+               ^desired-count 2
+               ^world-context <world>)
+   (<world> ^objects.object <object-egg> <object-fridge>
+            ^in <in>)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-object-egg-handle|
+                 ^anchored false)
+   (<in> ^argument1 <object-egg>
+         ^argument2 <object-fridge>)
+   (<object-fridge> ^class fridge
+                    ^object-handle |unanchored-object-fridge|
+                    ^anchored false)
+   (<desired2> ^object <object4>)
+   (<object4> ^object-handle |unanchored-object-fridge|
+              ^open false)
+}
+
+## Elaborate desired break-egg-in-fridge40 -> sets desireds, desired, world-context ....
+## break the egg that is in the refrigerator
+sp {elaborate*thor-soar*desired*break-egg-in-fridge40
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection break-egg-in-fridge40)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^world-context <world-context>
+               ^desired-count 1)
+   (<desired1> ^object <object>)
+   (<object> ^broken true
+             ^object-handle |unanchored-object-egg-handle|)
+   (<world-context> ^in <in>
+                    ^objects.object <object-egg>)
+   (<in> ^argument1 <object-egg>
+         ^argument2.object-handle Fridge40)
+   (<object-egg> ^class egg
+                 ^anchored false
+                 ^object-handle |unanchored-object-egg-handle|)
+}
+
+## Elaborate desired get-carrot-in-fridge-class -> sets desireds, desired, desired-count ....
+## Get a carrot from the refrigerator
+## multistep single desired - two carrots - chooses randomly
+sp {elaborate*thor-soar*desired*get-carrot-in-fridge-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-carrot-in-fridge-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-carrot-handle|
+               ^desired-count 1
+               ^world-context <world>)
+   (<world> ^objects.object <object-carrot> <object-fridge>
+            ^in <in>)
+   (<object-carrot> ^class carrot
+                    ^object-handle |unanchored-object-carrot-handle|
+                    ^anchored false)
+   (<in> ^argument1 <object-carrot>
+         ^argument2 <object-fridge>)
+   (<object-fridge> ^class fridge
+                    ^object-handle |unanchored-object-fridge|
+                    ^anchored false)
+}
+
+## Elaborate desired cook-potato55-microwave -> sets desireds, desired, desired-count ....
+## Cook the potato in the microwave
+## Explicity states must be cooked by microwave
+sp {elaborate*thor-soar*desired*cook-potato55-microwave
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato55-microwave)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired2> ^object <object2>)
+   (<object2> ^cooked-by microwave
+              ^event-time 15000
+              ^object-handle Potato55)
+}
+
+## Elaborate desired fork-on-plate-plate-in-microwave -> sets desireds, desired, desired-count ....
+## put fork on plate and plate in the microwave
+## Explicity states must be cooked by microwave
+sp {elaborate*thor-soar*desired*fork-on-plate-plate-in-microwave
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection fork-on-plate-plate-in-microwave)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^next-desireds <desireds2>)
+   (<desired1> ^on <on>)
+   (<on> ^argument1.object-handle Fork39  #Knife44
+         ^argument2.object-handle Plate52)
+   (<desireds2> ^desired <desired2>
+                ^desired.object <object3>
+                ^desired-count 2)
+   (<desired2> ^in <in>)
+   (<in> ^argument1.object-handle Plate52
+         ^argument2.object-handle Microwave47)
+   (<object3> ^activated true
+              ^object-handle Microwave47)
+}
+
+## Elaborate desired cook-potato55-stove -> sets desireds, desired, desired-count ....
+## assumes potato has knowledge associated with it that it should be in stove
+sp {elaborate*thor-soar*desired*cook-potato55-stove
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato55-stove)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Potato55)
+}
+
+## Elaborate desired cook-potato-class-stove -> sets desireds, desired, desired-count ....
+## Cook the potato - defaults to stove...
+sp {elaborate*thor-soar*desired*cook-potato-class-stove
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato-class-stove)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^world-context.objects.object <object-potato>)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle |unanchored-object-handle|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-object-handle|
+                    ^anchored false)
+}
+
+## Elaborate desired put-apple1-in-fridge40 -> sets desireds, desired, desired-count ....
+## put the apple in the fridge
+sp {elaborate*thor-soar*desired*put-apple1-in-fridge40
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-apple1-in-fridge40)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^in <stored>)
+   (<stored> ^argument1.object-handle Apple1
+             ^argument2.object-handle Fridge40)
+}
+
+## Elaborate desired store-apple1-in-fridge40 -> sets desireds, desired, desired-count ....
+## store the apple in the fridge
+sp {elaborate*thor-soar*desired*store-apple1-in-fridge40
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection store-apple1-in-fridge40)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^stored <stored>)
+   (<stored> ^argument1.object-handle Apple1
+             ^argument2.object-handle Fridge40)
+}
+
+## Elaborate desired discard-potato55 -> sets desireds, desired, desired-count ....
+## Discard the potato - defaults to garbage can
+sp {elaborate*thor-soar*desired*discard-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection discard-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1)
+   (<desired> ^object <object>)
+   (<object> ^discarded true
+             ^object-handle Potato55)
+}
+
+## Elaborate desired discard-cup24 -> sets desireds, desired, desired-count ....
+## Discard the cup - defaults to garbage can
+sp {elaborate*thor-soar*desired*discard-cup24
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection discard-cup24)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1)
+   (<desired> ^object <object>)
+   (<object> ^discarded true
+             ^object-handle Cup24)
+}
+
+## Elaborate desired discard-peppershaker51 -> sets desireds, desired, desired-count ....
+## Discard the peppershaker - defaults to garbage can
+sp {elaborate*thor-soar*desired*discard-peppershaker51
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection discard-peppershaker51)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1)
+   (<desired> ^object <object>)
+   (<object> ^discarded true
+             ^object-handle PepperShaker51)
+}
+
+## Elaborate desired holding-cup-class -> sets desireds, desired, desired-count ....
+## Get the cup
+sp {elaborate*thor-soar*desired*holding-cup-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-cup-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-cup-handle|
+               ^desired-count 1
+               ^world-context.objects.object <object-cup>)
+   (<object-cup> ^class cup
+                 ^object-handle |unanchored-object-cup-handle|
+                 ^anchored false)
+}
+
+## Elaborate desired holding-egg-class -> sets desireds, desired, desired-count ....
+## Get the egg
+sp {elaborate*thor-soar*desired*holding-egg-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-egg-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle |unanchored-object-egg-handle|
+               ^desired-count 1
+               ^world-context.objects.object <object-egg>)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-object-egg-handle|
+                 ^anchored false)
+}
+
+## Elaborate desired cook-egg36 -> sets desireds, desired, desired-count ....
+## Cook the egg
+## defaults to microwave -
+sp {elaborate*thor-soar*desired*cook-egg36
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-egg36)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Egg36)
+}
+
+## Elaborate desired holding-fork39 -> sets desireds, desired, desired-count.
+## Get the fork
+sp {elaborate*thor-soar*desired*holding-fork39
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-fork39)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object.object-handle Fork39
+               ^desired-count 1)
+}
+
+## Elaborate desired holding-fork39 restricted -> sets desireds, desired, desired-count ....
+## Get the fork in the drawer
+## Restricts its search for the fork to just drawers (not cabinets or fridge)
+sp {elaborate*thor-soar*desired*holding-fork39*restricted
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection holding-fork39-restricted)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.holding-object <holding-object>
+               ^desired-count 1)
+   (<holding-object> ^object-handle Fork39
+                     ^class fork
+                     ^storage-location.class drawer)
+}
+
+## Elaborate desired put-fork39-on-countertop21 -> sets desireds, desired, desired-count ....
+## Put the fork on the countertop - not sure about how to specify countertop21 in language...
+sp {elaborate*thor-soar*desired*put-fork39-on-countertop21
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-fork39-on-countertop21)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^desired-count 1)
+   (<desired> ^on <on>)
+   (<on> ^argument1.object-handle Fork39
+         ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired cook-egg-search-for-egg -> sets desireds, desired, desired-count ....
+## cook the egg - defaults to microwave
+sp {elaborate*thor-soar*desired*cook-egg-search-for-egg
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-egg-search-for-egg)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^world-context.objects.object <object-egg>)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle |unanchored-object-egg-handle|)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-object-egg-handle|
+                 ^anchored false)
+}
+
+## Elaborate desired get-knife44-put-in-drawer30 -> sets desireds, desired, desired-count ....
+## get the knife from the drawer - not sure how specify drawer30 in language
+sp {elaborate*thor-soar*desired*get-knife44-put-in-drawer30
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-knife44-put-in-drawer30)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^next-desireds <desireds2>)
+   (<desired1> ^holding-object <object1>)
+   (<object1> ^object-handle Knife44)
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1)
+   (<desired3> ^in <in>)
+   (<in> ^argument1.object-handle Knife44
+         ^argument2.object-handle Drawer30)
+}
+
+## Elaborate desired slice-potato55 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*slice-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class potatosliced
+              ^object-handle Potato55)
+}
+
+## Elaborate desired slice-apple1 -> sets desireds, desired, desired-count ....
+## Slice the apple
+sp {elaborate*thor-soar*desired*slice-apple1
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-apple1)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Apple1)
+}
+
+## Elaborate desired slice-carrot know-in-fridge -> sets desireds, desired, world-context ....
+## Slice a carrot that is in the fridge
+sp {elaborate*thor-soar*desired*slice-carrot*know-in-fridge
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-carrot-know-in-fridge)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^world-context <world>)
+   (<world> ^objects.object <object-carrot>
+                            <object-fridge>
+            ^in <in>)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class carrotsliced
+              ^object-handle |unanchored-carrot-handle|)
+   (<in> ^argument1 <object-carrot>
+         ^argument2 <object-fridge>)
+   (<object-fridge> ^class fridge
+                    ^object-handle |unanchored-object-fridge|
+                    ^anchored false)
+   (<object-carrot> ^class carrotsliced
+                    ^object-handle |unanchored-carrot-handle|
+                    ^anchored false)
+}
+
+## Elaborate desired slice-carrot -> sets desireds, desired, world-context ....
+## Slice a carrot
+sp {elaborate*thor-soar*desired*slice-carrot
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-carrot)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^world-context <world-context>
+               ^desired-count 1)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class carrotsliced
+              ^object-handle |unanchored-carrot-handle|)
+   (<world-context> ^objects.object <object-carrot>)
+   (<object-carrot> ^class carrotsliced
+                    ^object-handle |unanchored-carrot-handle|
+                    ^anchored false)
+}
+
+## Elaborate desired slice-potato55-then-cook-slice -> sets desireds, desired, desired-count ....
+## Slice a potato and then cook a slice
+## Cook a slice of potato - harder to generate the next-desired without a then
+sp {elaborate*thor-soar*desired*slice-potato55-then-cook-slice
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-potato55-then-cook-slice)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds2>
+                ^desireds-list <desireds2> <desireds1>)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class potatosliced
+              ^object-handle Potato55)
+   (<desireds2> ^desired <desired2>
+                ^desired-count 1)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+}
+
+## Elaborate desired get-potato-open-fridge -> sets desireds, desired, desired-count ....
+## Get the potato and then open the fridge
+## Will get potato - put it down and then open fridge - will not hold potato at the end
+sp {elaborate*thor-soar*desired*get-potato-open-fridge
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-potato55-open-fridge40)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^next-desireds <desireds2>)
+   (<desired1> ^holding-object <object1>)
+   (<object1> ^object-handle Potato55)
+   (<desireds2> ^desired.object <desired3>
+                ^desired-count 1)
+   (<desired3> ^object-handle Fridge40
+               ^open true)
+}
+
+## Elaborate desired put-potato55-in-fridge40-close-door -> sets desireds, desired, desired-count ....
+## Put the potato in the fridge and the fridge door should be closed.
+sp {elaborate*thor-soar*desired*put-potato55-in-fridge40-close-door
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-potato55-in-fridge40-close-door)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^in <in>)
+   (<in> ^argument1.object-handle Potato55
+         ^argument2.object-handle Fridge40)
+   (<desired2> ^object <object>)
+   (<object> ^object-handle Fridge40
+             ^open false)
+}
+
+## Elaborate desired store-apple1-in-fridge40 turn-on-faucet37 -> sets desireds, desired, desired-count ....
+## Store the apple in the fridge and turn on the faucet
+## Hard to avoid an implied ordering - which is not necessary below - just has both desireds
+sp {elaborate*thor-soar*desired*store-apple1-in-fridge40*turn-on-faucet37
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection store-apple1-in-fridge40-turn-on-faucet37)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^stored <stored>)
+   (<stored> ^argument1.object-handle Apple1
+             ^argument2.object-handle Fridge40)
+   (<desired2> ^object <object>)
+   (<object> ^activated true
+             ^object-handle Faucet37)
+}
+
+## Elaborate desired slice-potato55-place-slice-in-pan49 -> sets desireds, desired, preferred-desired ....
+## Slice the potato and put a slice in the pan
+## would be fine in NL generated a next-desired -
+sp {elaborate*thor-soar*desired*slice-potato55-place-slice-in-pan49
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-potato55-place-slice-in-pan49)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^preferred-desired <desired1>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^class potatosliced
+              ^object-handle Potato55)
+   (<desired2> ^in <in>)
+   (<in> ^argument1.object-handle Potato55
+         ^argument2.object-handle Pan49)
+}
+
+## Elaborate desired store-pototo55-store-apple1-in-fridge40 -> sets desireds, desired, desired-count ....
+## store the potato and apple in the fridge
+sp {elaborate*thor-soar*desired*store-pototo55-store-apple1-in-fridge40
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection store-pototo55-store-apple1-in-fridge40)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>  <desired2>
+               ^desired-count 2)
+   (<desired1> ^stored <stored1>)
+   (<desired2> ^stored <stored2>)
+   (<stored1> ^argument1.object-handle Apple1
+              ^argument2.object-handle Fridge40)
+   (<stored2> ^argument1.object-handle Potato55
+              ^argument2.object-handle Fridge40)
+}
+
+## Elaborate desired dirty-clean-mug48 -> sets desireds, desired, desired-count ....
+## Make the mug dirty and then clean it
+sp {elaborate*thor-soar*desired*dirty-clean-mug48
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection dirty-clean-mug48)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^next-desireds <desireds2>)
+   (<desired1> ^object <object>)
+   (<object> ^dirty true
+             ^object-handle Mug48)
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1)
+   (<desired3> ^object <objects3>)
+   (<objects3> ^dirty false
+               ^object-handle Mug48)
+}
+
+## Elaborate desired cooked-potato-then-countertop20-then-closed-microwave -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cooked-potato-then-countertop20-then-closed-microwave
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cooked-potato-then-countertop20-then-closed-microwave)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 1
+               ^next-desireds <desireds3>)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired2> ^object <object2>)
+   (<object2> ^cooked-by microwave
+              ^event-time 15000
+              ^object-handle Potato55)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^on <on>)
+   (<on> ^argument1.object-handle Potato55
+         ^argument2.object-handle CounterTop20)
+   (<desireds4> ^desired <desired4>
+                ^desired-count 1)
+   (<desired4> ^object <desired-object3>)
+   (<desired-object3> ^open false
+                      ^object-handle Microwave47)
+}
+
+## Elaborate desired make-toast -> sets desireds, desired, desired-count ....
+## Toast a slice of bread and put it on a plate on the counter
+sp {elaborate*thor-soar*desired*make-toast
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast)
+-->
+   (<s> ^desireds <desireds6>)
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1
+                ^next-desireds <desireds8>)
+   (<desired6> ^object <object6>)
+   (<object6> ^cook-state cooked
+              ^object-handle Bread5)
+   (<desireds8> ^desired <desired8> <desired41>
+                ^world-context.objects.object <object-bread>
+                ^desired-count 2)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-object-bread-handle|
+                   ^cook-state cooked
+                   ^anchored false)
+   (<desired8> ^on <on8>)
+   (<on8> ^argument1 <argument1>
+          ^argument2.object-handle Plate52)
+   (<argument1> ^object-handle |unanchored-object-bread-handle|
+                ^anchored false)
+   (<desired41> ^on <in41>)
+   (<in41> ^argument1.object-handle Plate52
+           ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired make-toast times3 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast*times3
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast2)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds2>)
+   (<desired1> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Bread5)
+   ## put on counter
+   (<desireds2> ^desired <desired2>
+                ^world-context.objects.object <object-bread>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-object-bread-handle|
+                   ^cook-state cooked
+                   ^anchored false)
+   (<desired2> ^on <on2>)
+   (<on2> ^argument1 <argument2>
+          ^argument2.object-handle CounterTop21)
+   (<argument2> ^object-handle |unanchored-object-bread-handle|)
+   # cook a second slice that is raw
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^world-context.objects.object <object-bread3>
+                ^next-desireds <desireds4>)
+   (<desired3> ^object <object3>)
+   (<object3> ^cook-state cooked
+              ^class breadsliced
+              ^object-handle |unanchored-object-bread-handle2|)
+   (<object-bread3> ^class breadsliced
+                    ^object-handle |unanchored-object-bread-handle2|
+                    ^cook-state raw
+                    ^anchored false)
+   # put it on countertop
+   (<desireds4> ^desired <desired4>
+                ^desired-count 1
+                ^next-desireds <desireds5>)
+   (<desired4> ^on <on4>)
+   (<on4> ^argument1 <object3>
+          ^argument2.object-handle CounterTop21)
+   # cook a third slice that is raw
+   (<desireds5> ^desired <desired5>
+                ^desired-count 1
+                ^world-context.objects.object <object-bread5>
+                ^next-desireds <desireds6>)
+   (<desired5> ^object <object5>)
+   (<object5> ^cook-state cooked
+              ^class breadsliced
+              ^object-handle |unanchored-object-bread-handle3|)
+   (<object-bread5> ^class breadsliced
+                    ^object-handle |unanchored-object-bread-handle3|
+                    ^cook-state raw
+                    ^anchored false)
+   # put it on countertop
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1)
+   (<desired6> ^on <on6>)
+   (<on6> ^argument1 <object5>
+          ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired get-apply-put-in-fridge -> sets desireds, desired, desired-count ....
+## Get an apple and put it in the fridge
+sp {elaborate*thor-soar*desired*get-apply-put-in-fridge
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection get-apple-put-in-fridge)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1
+               ^next-desireds <desireds2>)
+   (<desired1> ^holding-object <object1>)
+   (<object1> ^object-handle Apple1)
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1)
+   (<desired3> ^in <in>)
+   (<in> ^argument1.object-handle Apple1
+         ^argument2.object-handle Fridge40)
+}
+
+## Elaborate desired open-microwave-get-potato-close-microwave -> sets desireds, desired, desired-count ....
+## Not NL worthy
+## Open the microwave, then get the potato, and then close the microwave
+sp {elaborate*thor-soar*desired*open-microwave-get-potato-close-microwave
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection open-microwave-get-potato-close-microwave)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired-open-microwave>
+               ^desired-count 1
+               ^next-desireds <desireds-get-potato>)
+   (<desired-open-microwave> ^object <object-micro-wave-open>)
+   (<object-micro-wave-open> ^open true
+                             ^object-handle Microwave47)
+   (<desireds-get-potato> ^desired <desired-potato>
+                          ^desired-count 1
+                          ^next-desireds <desireds-close-microwave>)
+   (<desired-potato> ^holding-object <object-potato>)
+   (<object-potato> ^object-handle Potato55)
+   (<desireds-close-microwave> ^desired <desired-close-microwave>
+                               ^desired-count 1)
+   (<desired-close-microwave> ^object <object-micro-wave-close>)
+   (<object-micro-wave-close> ^open false
+                              ^object-handle Microwave47)
+}
+
+## Elaborate desired put-apple-in-fridge-or-on-counter19 -> sets desireds, desired, desired-count ....
+## Disjunction
+## put the apple in the fridge or on the countertop
+sp {elaborate*thor-soar*desired*put-apple-in-fridge-or-on-counter19
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-apple-in-fridge-or-on-counter19)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^in <in>
+               ^disjunction <desired2>)
+   (<in> ^argument1.object-handle Apple1
+         ^argument2.object-handle Fridge40)
+   (<desired2> ^on <on>
+               ^disjunction <desired1>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired put-apple1-in-fridge40-or-on-counter19 AND turn on faucet37 -> sets desireds, desired, desired-count ....
+## Disjunction and conjunction
+## put the apple in the fridge or on the countertop and turn on the faucet
+sp {elaborate*thor-soar*desired*put-apple1-in-fridge40-or-on-counter19*AND*turn*on*faucet37
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection put-apple1-in-fridge40-or-on-counter19-turn-on-faucet37)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3>
+               ^desired-count 3)
+   (<desired1> ^in <in>
+               ^disjunction <desired2>)
+   (<in> ^argument1.object-handle Apple1
+         ^argument2.object-handle Fridge40)
+   (<desired2> ^on <on>
+               ^disjunction <desired1>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+   (<desired3> ^object <object>)
+   (<object> ^activated true
+             ^object-handle Faucet37)
+}
+
+## Elaborate desired clean-counters -> sets desireds, desired, desired-count ....
+## Clean up the counters
+## clean-counters is a very special desired - there is special purpose code for it.
+sp {elaborate*thor-soar*desired*clean-counters
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection clean-counters)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired>
+                ^desired-count 1
+                ^world-context.objects.object <object-counter>
+                ^next-desireds <desireds2>)
+   (<desired> ^object <object>)
+   (<object> ^object-handle  |unanchored-object-handle|
+             ^reachable true)
+   (<object-counter> ^class pan
+                     ^object-handle |unanchored-object-handle|
+                     ^anchored false)
+   (<desireds2> ^desired <desired2>
+                ^desired-count 1)
+   (<desired2> ^clean-counters true)
+}
+
+## Elaborate desired explore-receptacles -> sets desireds, desired, desired-count ....
+## Not NL worthy
+## explore-receptacles is a very special desired - there is special purpose code for it.
+sp {elaborate*thor-soar*desired*explore-receptacles
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection explore-receptacles)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^explore-receptacles true)
+}
+
+## Elaborate desired close-doors -> sets desireds, desired, desired-count ....
+## Not NL worthy
+## All doors are originally closed so doesn't do anything
+sp {elaborate*thor-soar*desired*close-doors
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection close-doors)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired-count 1)
+   (<desired1> ^close-doors true)
+}
+
+## Elaborate desired apple-microwave-then-potato-fridge-then-apple-fridge -> sets desireds, desired, desired-count ....
+## Put the apple in the microwave, then close the door. Put the potato and then the apple in the fridge.
+sp {elaborate*thor-soar*desired*apple-microwave-then-potato-fridge-then-apple-fridge
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection apple-microwave-then-potato-fridge-then-apple-fridge)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds2>)
+   (<desired1> ^in <in1>)
+   (<in1> ^argument1.object-handle Apple1
+          ^argument2.object-handle Microwave47)
+   (<desireds2> ^desired <desired-close-microwave>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired-close-microwave> ^object <object-micro-wave-close>)
+   (<object-micro-wave-close> ^open false
+                              ^object-handle Microwave47)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^in <in2>)
+   (<in2> ^argument1.object-handle Potato55
+          ^argument2.object-handle Fridge40)
+   (<desireds4> ^desired <desired5>
+                ^desired-count 1)
+   (<desired5> ^in <in5>)
+   (<in5> ^argument1.object-handle Apple1
+          ^argument2.object-handle Fridge40)
+}
+
+## Elaborate desired apple-in-microwave-then-potato-in-fridge-then-swap-then-cook-back-to-original -> sets desireds, desired, desired-count ....
+## Put the apple in the microwave, then the potatoin the fridge. Swap their locations, and then cook the potato, and then return them to their original locations.
+sp {elaborate*thor-soar*desired*apple-in-microwave-then-potato-in-fridge-then-swap-then-cook-back-to-original
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection apple-in-microwave-then-potato-in-fridge-then-swap-then-cook-back-to-original)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired1> ^in <in1>)
+   (<in1> ^argument1.object-handle Apple1
+          ^argument2.object-handle Microwave47)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^in <in2>)
+   (<in2> ^argument1.object-handle Potato55
+          ^argument2.object-handle Fridge40)
+   (<desireds4> ^desired <desired4>
+                ^desired <desired5>
+                ^next-desireds <desireds49>
+                ^desired-count 2)
+   (<desired4> ^in <in4>)
+   (<in4> ^argument1.object-handle Potato55
+          ^argument2.object-handle Microwave47)
+   (<desired5> ^in <in5>)
+   (<in5> ^argument1.object-handle Apple1
+          ^argument2.object-handle Fridge40)
+   (<desireds49> ^desired <desired44>
+                 ^desired-count 1
+                 ^next-desireds <desireds55>)
+   (<desired44> ^object <object>)
+   (<object> ^object-handle Fridge40
+             ^open false)
+   (<desireds55> ^desired <desired56>
+                 ^next-desireds <desireds5>
+                 ^desired-count 1)
+   (<desired56> ^object <desired-object56>)
+   (<desired-object56> ^cook-state cooked
+                       ^object-handle Potato55)
+   (<desireds5> ^desired <desired6>
+                ^desired <desired7>
+                ^desired-count 2)
+   (<desired6> ^on <on4>)
+   (<on4> ^argument1.object-handle Potato55
+          ^argument2.object-handle CounterTop22)
+   (<desired7> ^on <on5>)
+   (<on5> ^argument1.object-handle Apple1
+          ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired apple-in-microwave-then-potato-in-fridge-then-swap-then-back-to-original -> sets desireds, desired, desired-count ....
+## Put the apple in the microwave, then the potatoin the fridge. Swap their locations, and then return them to their original locations.
+sp {elaborate*thor-soar*desired*apple-in-microwave-then-potato-in-fridge-then-swap-then-back-to-original
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection apple-in-microwave-then-potato-in-fridge-then-swap-then-back-to-original)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired1> ^in <in1>)
+   (<in1> ^argument1.object-handle Apple1
+          ^argument2.object-handle Microwave47)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^in <in2>)
+   (<in2> ^argument1.object-handle Potato55
+          ^argument2.object-handle Fridge40)
+   (<desireds4> ^desired <desired4>
+                ^desired <desired5>
+                ^next-desireds <desireds49>
+                ^desired-count 2)
+   (<desired4> ^in <in4>)
+   (<in4> ^argument1.object-handle Potato55
+          ^argument2.object-handle Microwave47)
+   (<desired5> ^in <in5>)
+   (<in5> ^argument1.object-handle Apple1
+          ^argument2.object-handle  Fridge40)
+   (<desireds49> ^desired <desired44>
+                 ^desired-count 1
+                 ^next-desireds <desireds55>)
+   (<desired44> ^object <object>)
+   (<object> ^object-handle Fridge40
+             ^open false)
+   (<desireds55> ^desired <desired6>
+                 ^desired <desired7>
+                 ^desired-count 2)
+   (<desired6> ^on <on4>)
+   (<on4> ^argument1.object-handle Potato55
+          ^argument2.object-handle CounterTop22)
+   (<desired7> ^on <on5>)
+   (<on5> ^argument1.object-handle Apple1
+          ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired apple-in-fridge-then-close-then-apple-back-on-table-then-egg-on-table -> sets desireds, desired, desired-count ....
+## Put the apple in the fridge. Close the door, then put the apple on one countertop and the egg on another.
+## Not sure how to specify the countertops.
+sp {elaborate*thor-soar*desired*apple-in-fridge-then-close-then-apple-back-on-table-then-egg-on-table
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection apple-in-fridge-then-close-then-apple-back-on-table-then-egg-on-table)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired1> ^in <in1>)
+   (<in1> ^argument1.object-handle Apple1
+          ^argument2.object-handle Fridge40)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^object <desired-object1>)
+   (<desired-object1> ^open false
+                      ^object-handle Fridge40)
+   (<desireds4> ^desired <desired4>
+                ^desired-count 1
+                ^next-desireds <desireds5>)
+   (<desired4> ^on <on5>)
+   (<on5> ^argument1.object-handle Apple1
+          ^argument2.object-handle CounterTop21)
+   (<desireds5> ^desired <desired5>
+                ^desired-count 1)
+   (<desired5> ^on <on6>)
+   (<on6> ^argument1.object-handle Egg36
+          ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired serve-cooked-eggs -> sets desireds, desired, desired-count ....
+## Put the plate on the countertop, then put the egg on the plate and cook it in the microwave. Move the egg and plate to the countertop.
+sp {elaborate*thor-soar*desired*serve-cooked-eggs
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection serve-cooked-eggs)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds2>
+                ^desireds-list <desireds4> <desireds3> <desireds2> <desireds1>)
+   (<desired1> ^on <on1>)
+   (<on1> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop22)
+   (<desireds2> ^desired <desired2>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired2> ^on <on2>)
+   (<on2> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desireds3> ^desired <desired3> <desired4>
+                ^desired-count 2
+                ^preferred-desired <desired4>
+                ^next-desireds <desireds4>)
+   (<desired3> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Egg36)
+   (<desired4> ^in <in4>)
+   (<in4> ^argument1.object-handle Plate52
+          ^argument2.object-handle Microwave47)
+   (<desireds4> ^desired <desired5>
+                ^desired-count 1)
+   (<desired5> ^on <in5>)
+   (<in5> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired make-toast cook-egg make-coffee1 -> sets desireds, desired, desired-count ....
+## Stopping here on NL.
+sp {elaborate*thor-soar*desired*make-toast*cook-egg*make-coffee1
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg-make-coffee1)
+-->
+   #Put plate on countertop
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds2>
+                ^desireds-list <desireds4> <desireds3> <desireds2> <desireds1>)
+   (<desired1> ^on <on1>)
+   (<on1> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop22)
+   #Put Eggs on Plate and Plate in Microwave
+   (<desireds2> ^desired <desired2> <desired21>
+                ^desired-count 2
+                ^avoid-desired <desired3>
+                ^next-desireds <desireds3>)
+   (<desired2> ^on <on2>)
+   (<on2> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desired21> ^in <in21>)
+   (<in21> ^argument1.object-handle Plate52
+           ^argument2.object-handle Microwave47)
+   #Cook Eggs and close Fridge
+   (<desireds3> ^desired <desired3> <desired32>
+                ^desired-count 2
+                ^preferred-desired <desired32>
+                ^next-desireds <desireds4>)
+   (<desired3> ^object <object1>)
+   (<object1> ^cook-state cooked
+              ^object-handle Egg36)
+   (<desired32> ^object <object32>)
+   (<object32> ^object-handle Fridge40
+               ^open false)
+   #Put Plate on Countertop
+   (<desireds4> ^desired <desired4>
+                ^desired-count 1
+                ^next-desireds <desireds5>)
+   (<desired4> ^on <in4>)
+   (<in4> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop21)
+   #Put slice bread
+   (<desireds5> ^desired <desired5>
+                ^desired-count 1
+                ^next-desireds <desireds6>)
+   (<desired5> ^object <object5>)
+   (<object5> ^sliced true
+              ^class breadsliced
+              ^object-handle Bread5)
+   #cook bread
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1
+                ^next-desireds <desireds7>)
+   (<desired6> ^object <object6>)
+   (<object6> ^cook-state cooked
+              ^object-handle Bread5)
+   #Put Plate on countertop - repeat from above!
+   (<desireds7> ^desired <desired7>
+                ^desired-count 1
+                ^next-desireds <desireds8>)
+   (<desired7> ^on <on7>)
+   (<on7> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop21) ##
+   #Put sliced bread on plate
+   (<desireds8> ^desired <desired8>
+                ^desired-count 1
+                ^world-context <wc>
+                ^next-desireds <desireds9>)
+   (<wc> ^objects.object <object-bread>)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-object-bread-handle|
+                   ^cook-state cooked
+                   ^anchored false)
+   (<desired8> ^on <on8>)
+   (<on8> ^argument1.object-handle |unanchored-object-bread-handle|
+          ^argument2.object-handle Plate52)
+   #Make coffee in mug and close microwave
+   (<desireds9> ^desired <desired9> <desired91> <desired93>
+                ^preferred-desired <desired9>
+                ^desired-count 3
+                ^next-desireds <desireds10>)
+   (<desired9> ^object <object9>)
+   (<object9> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired91> ^object <object91>)
+   (<object91> ^fill-amount full
+               ^object-handle Mug48)
+   (<desired93> ^object <object93>)
+   (<object93> ^open false
+               ^object-handle Microwave47)
+   #Put Fork and mug on countertop
+   (<desireds10> ^desired <desired10> <desired101>
+                 ^desired-count 2)
+   (<desired10> ^on <on10>)
+   (<on10> ^argument1.object-handle Fork39
+           ^argument2.object-handle CounterTop21)
+   (<desired101> ^on <on92>)
+   (<on92> ^argument1.object-handle Mug48
+           ^argument2.object-handle CounterTop21)
+}
+
+## Elaborate desired make-toast cook-egg make-coffee2 -> sets desireds, desired, desired-count ....
+## OVerlapping actions
+sp {elaborate*thor-soar*desired*make-toast*cook-egg*make-coffee2
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg-make-coffee2)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1> <desired2>
+                ^desired-count 2
+                ^preferred-desired <desired2>
+                ^preferred-indifferent <desired1>
+                ^next-desireds <desireds9>
+                ^desireds-list <desireds4> <desireds1>)
+   (<desired1> ^on <on1>)
+   (<on1> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desired2> ^in <in2>)
+   (<in2> ^argument1.object-handle Plate52
+          ^argument2.object-handle Microwave47)
+   #
+   (<desireds9> ^desired <desired9> <desired93> <desired92>
+                ^desired-count 3
+                ^next-desireds <desireds4>)
+   (<desired9> ^object <object9>)
+   (<object9> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired92> ^object <object92>)
+   (<object92> ^fill-amount full
+               ^object-handle Mug48)
+   (<desired93> ^object <object93>)
+   (<object93> ^cook-state cooked
+               ^object-handle Egg36)
+#
+   (<desireds4> ^desired <desired4> <desired41>
+                ^desired-count 2
+                ^next-desireds <desireds5>)
+   (<desired4> ^object <object4>)
+   (<object4> ^object-handle Fridge40
+              ^open false)
+   (<desired41> ^on <in41>)
+   (<in41> ^argument1.object-handle Plate52
+           ^argument2.object-handle CounterTop21)
+   #
+   (<desireds5> ^desired <desired5>
+                ^desired-count 1
+                ^next-desireds <desireds6>)
+   (<desired5> ^object <object5>)
+   (<object5> ^sliced true
+              ^class breadsliced
+              ^object-handle Bread5)
+   #
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1
+                ^next-desireds <desireds7>)
+   (<desired6> ^object <object6>)
+   (<object6> ^cook-state cooked
+              ^object-handle Bread5)
+   #
+   (<desireds7> ^desired <desired7>
+                ^desired-count 1
+                ^next-desireds <desireds8>)
+   (<desired7> ^on <on7>)
+   (<on7> ^argument1.object-handle Plate52
+          ^argument2.object-handle CounterTop21)
+   ##
+   (<desireds8> ^desired <desired8>
+                ^desired-count 1
+                ^world-context <wc>
+                ^next-desireds <desireds10>)
+   (<wc> ^objects.object <object-bread>)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-object-bread-handle|
+                   ^cook-state cooked
+                   ^anchored false)
+   (<desired8> ^on <on8>)
+   (<on8> ^argument1.object-handle |unanchored-object-bread-handle|
+          ^argument2.object-handle Plate52)
+   (<desireds10> ^desired <desired10> <desired101> <desired102>
+                 ^desired-count 3)
+   (<desired10> ^on <on10>)
+   (<on10> ^argument1.object-handle Fork39
+           ^argument2.object-handle CounterTop21)
+   (<desired101> ^on <on101>)
+   (<on101> ^argument1.object-handle Mug48
+            ^argument2.object-handle CounterTop21)
+   (<desired102> ^object <object105>)
+   (<object105> ^object-handle Microwave47
+                ^open false)
+}
+
+## Elaborate desired make-toast cook-egg make-coffee3 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast*cook-egg*make-coffee3
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg-make-coffee3)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1> <desired2>
+                ^desired-count 2
+                ^preferred-desired <desired2>
+                ^preferred-indifferent <desired1>
+                ^next-desireds <desireds9>
+                ^desireds-list <desireds4> <desireds1>)
+   (<desired1> ^on <on1>)
+   (<on1> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desired2> ^in <in2>)
+   (<in2> ^argument1.object-handle Plate52
+          ^argument2.object-handle Microwave47)
+   #
+   (<desireds9> ^desired <desired9> <desired93> <desired92>
+                ^desired-count 3
+                ^next-desireds <desireds4>)
+   (<desired9> ^object <object9>)
+   (<object9> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired92> ^object <object92>)
+   (<object92> ^fill-amount full
+               ^object-handle Mug48)
+   (<desired93> ^object <object93>)
+   (<object93> ^cook-state cooked
+               ^object-handle Egg36)
+#
+   (<desireds4> ^desired <desired4> <desired41>
+                ^desired-count 2
+                ^next-desireds <desireds6>)
+   (<desired4> ^object <object4>)
+   (<object4> ^object-handle Fridge40
+              ^open false)
+   (<desired41> ^on <in41>)
+   (<in41> ^argument1.object-handle Plate52
+           ^argument2.object-handle CounterTop21)
+   #
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1
+                ^next-desireds <desireds8>)
+   (<desired6> ^object <object6>)
+   (<object6> ^cook-state cooked
+              ^object-handle Bread5)
+   #
+   (<desireds8> ^desired <desired8>
+                ^desired-count 1
+                ^world-context <wc>
+                ^next-desireds <desireds10>)
+   (<wc> ^objects.object <object-bread>)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-object-bread-handle|
+                   ^cook-state cooked
+                   ^anchored false)
+   (<desired8> ^on <on8>)
+   (<on8> ^argument1.object-handle |unanchored-object-bread-handle|
+          ^argument2.object-handle Plate52)
+   #
+   (<desireds10> ^desired <desired10> <desired101> <desired42>
+                 ^desired-count 3)
+   (<desired10> ^on <on10>)
+   (<on10> ^argument1.object-handle Fork39
+           ^argument2.object-handle CounterTop21)
+   (<desired101> ^on <on101>)
+   (<on101> ^argument1.object-handle Mug48
+            ^argument2.object-handle CounterTop21)
+   (<desired42> ^object <object105>)
+   (<object105> ^object-handle Microwave47
+                ^open false)
+}
+
+## Elaborate desired long-test -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*long-test
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection long-test)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired1> ^in <in1>)
+   (<in1> ^argument1.object-handle Apple1
+          ^argument2.object-handle Microwave47)
+   (<desireds3> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds4>)
+   (<desired3> ^in <in2>)
+   (<in2> ^argument1.object-handle Potato55
+          ^argument2.object-handle Fridge40)
+   (<desireds4> ^desired <desired4>
+                ^desired <desired5>
+                ^next-desireds <desireds55> # was 55
+                ^desired-count 2)
+   (<desired4> ^in <in4>)
+   (<in4> ^argument1.object-handle Potato55
+          ^argument2.object-handle Microwave47)
+   (<desired5> ^in <in5>)                      # Causes problem later navigating fridge
+   (<in5> ^argument1.object-handle Apple1
+          ^argument2.object-handle Fridge40)
+   (<desireds55> ^desired <desired56>
+                 ^next-desireds <desireds5>
+                 ^desired-count 1)
+   (<desired56> ^object <desired-object56>)
+   (<desired-object56> ^cook-state cooked
+                       ^object-handle Potato55)
+   (<desireds5> ^desired <desired6>
+                ^desired <desired7>
+                ^desired-count 2
+                ^next-desireds <desireds8>)
+   (<desired6> ^on <on4>)
+   (<on4> ^argument1.object-handle Potato55
+          ^argument2.object-handle CounterTop22)
+   (<desired7> ^on <on5>)
+   (<on5> ^argument1.object-handle Apple1
+          ^argument2.object-handle CounterTop21)
+   (<desireds8> ^desired <desired81>
+                ^desired-count 1
+                ^next-desireds <desireds7>)
+   (<desired81> ^object <object>)
+   (<object> ^object-handle Mug48
+             ^liquid-contents water)
+   (<desireds7> ^desired <desired71>
+                ^desired-count 1
+                ^next-desireds <desireds10>)
+   (<desired71> ^object <object71>)
+   (<object71> ^activated true
+               ^object-handle Faucet37)
+   (<desireds10> ^desired <desired101>
+                 ^desired-count 1
+                 ^next-desireds <desireds1222>)
+   (<desired101> ^object <object101>)
+   (<object101> ^activated false
+                ^object-handle LightSwitch46)
+   (<desireds1222> ^desired <desired0>
+                   ^desired-count 1
+                   ^next-desireds <desireds12>)
+   (<desired0> ^object <Apple128>)
+   (<Apple128> ^object-handle Apple1
+               ^sliced true)
+   (<desireds12> ^desired <desired121>
+                 ^desired-count 1
+                 ^next-desireds <desireds13>)
+   (<desired121> ^object <object121>)
+   (<object121> ^sliced true
+                ^object-handle Potato55)
+   (<desireds13> ^desired <desired131>
+                 ^desired-count 1
+                 ^next-desireds <desireds14>)
+   (<desired131> ^object <object13>)
+   (<object13> ^broken true
+               ^object-handle Mug48)
+   (<desireds14> ^desired <desired141>
+                 ^desired-count 1
+             )#    ^next-desireds <desireds15>)
+   (<desired141> ^on <on14>)
+   (<on14> ^argument1.object-handle Knife44
+           ^argument2.object-handle CounterTop21)
+#   (<desireds15> ^desired <desired151>
+#                 ^desired-count 1)
+#   (<desired151> ^close-doors true)
+#   (<desireds15> ^desired <desired151>
+#                 ^desired-count 1)
+#   (<desired151> ^clean-counters true)
+}
+
+## Elaborate desired fill-mug48-and-turn-on-faucet37 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*fill-mug48-and-turn-on-faucet37
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection fill-mug48-and-turn-on-faucet37)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+               ^desired <desired2>
+               ^desired-count 2)
+   (<desired1> ^object <object>)
+   (<object> ^object-handle Mug48
+             ^liquid-contents water)
+   (<desired2> ^object <object2>)
+   (<object2> ^activated true
+              ^object-handle Faucet37)
+}
+
+## Elaborate desired cooked-potato55-countertop20 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cooked-potato55-countertop20
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cooked-potato55-countertop20)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired  <desired1>
+                         <desired2>
+                         <desired3>
+               #^preferred-desired <desired1>
+               ^desired-count 3)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^cook-state cooked
+                      ^object-handle Potato55)
+   (<desired2> ^on <on>)
+   (<on> ^argument1.object-handle Potato55
+         ^argument2.object-handle CounterTop20)
+   (<desired3> ^object <object3>)
+   (<object3> ^cooked-by microwave
+              ^object-handle Potato55)
+}
+
+## Elaborate desired filled-mug48 apple1 on-countertop22 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug48*apple1*on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug48-apple1-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired3> <desired4>
+               ^desired-count 2)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle Mug48
+              ^liquid-contents water)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired turn-on-faucet37-make-coffee -> sets desireds, desired, desired-count ....
+## Temporal overlap
+sp {elaborate*thor-soar*desired*turn-on-faucet37-make-coffee
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection turn-on-faucet37-make-coffee)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3>
+               ^desired-count 3)
+   (<desired1> ^object <object1>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired2> ^object <object2>)
+   (<object2> ^fill-amount full
+              ^object-handle Mug48)
+   (<desired3> ^object <object3>)
+   (<object3> ^activated true
+              ^object-handle Faucet37)
+}
+
+## Elaborate desired cook-potato55-stove-make-coffee -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato55-stove-make-coffee
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato55-stove-make-coffee)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3>
+               ^desired-count 3)
+   (<desired1> ^object <object1>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired2> ^object <object2>)
+   (<object2> ^fill-amount full
+              ^object-handle Mug48)
+   (<desired3> ^object <object3>)
+   (<object3> ^cook-state cooked
+              ^object-handle Potato55)
+}
+
+## Elaborate desired cook-potato55-microwave-make-coffee -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato55-microwave-make-coffee
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato55-microwave-make-coffee)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2> <desired3> <desired4>
+               ^desired-count 4)
+   (<desired1> ^object <object1>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle Mug48)
+   (<desired2> ^object <object2>)
+   (<object2> ^fill-amount full
+              ^object-handle Mug48)
+   (<desired3> ^object <object3>)
+   (<object3> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired4> ^object <object4>)
+   (<object4> ^cooked-by microwave
+              ^object-handle Potato55)
+}
+
+## Elaborate desired cook-potato55 apple1 on-countertop22 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato55*apple1*on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato55-apple1-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired2>
+                        <desired4>
+               ^desired-count 2)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired apple1-on-countertop22-and-cook-potato55 -> sets desireds, desired, desired-count ....
+## Slice apple and cook Potato - should start cooking and then slice - might be a long search
+sp {elaborate*thor-soar*desired*apple1-on-countertop22-and-cook-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection apple1-on-countertop22-and-cook-potato55)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1> <desired2>
+                ^desired-count 2)
+   (<desired1> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+}
+
+## Elaborate desired cooked-potato55-on-countertop22-lightswitch-off -> sets desireds, desired, preferred-desired ....
+sp {elaborate*thor-soar*desired*cooked-potato55-on-countertop22-lightswitch-off
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cooked-potato55-on-countertop22-lightswitch-off)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired  <desired1>
+                         <desired2>
+                         <desired3>
+               ^preferred-desired <desired1>
+               ^avoid-desired <desired3>
+               ^desired-count 3)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^cook-state cooked
+                      ^object-handle Potato55)
+   (<desired2> ^on <on>)
+   (<on> ^argument1.object-handle Potato55
+         ^argument2.object-handle CounterTop22)
+   (<desired3> ^object <object>)
+   (<object> ^activated false
+             ^object-handle LightSwitch46)
+}
+
+## Elaborate desired filled-mug48-cooked-potato55 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug48-cooked-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug48-cooked-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired2> <desired3>
+               ^desired-count 2)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle Mug48
+              ^liquid-contents water)
+}
+
+## Elaborate desired slice-cook-potato55 -> sets desireds, desired, desired-count ....
+## Planning with slice
+sp {elaborate*thor-soar*desired*slice-cook-potato55
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection slice-cook-potato55)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1> <desired2>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Potato55)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+}
+
+## Elaborate desired filled-mug-cooked-potato-apple-on-countertop22 -> sets desireds, desired, desired-count ....
+## Planning with three desired
+sp {elaborate*thor-soar*desired*filled-mug-cooked-potato-apple-on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug-cooked-potato-apple-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired2> <desired3> <desired4>
+               ^desired-count 3)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired3> ^object <object3>)
+   (<object3>  ^object-handle Mug48
+               ^liquid-contents water)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired filled-mug-sliced-apple-cooked-potato -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug-sliced-apple-cooked-potato
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug-sliced-apple-cooked-potato)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+                        <desired2>
+                        <desired3>
+               ^desired-count 3)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Apple1)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle Mug48
+              ^liquid-contents water)
+}
+
+## Elaborate desired sliced-apple-on-countertop22 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*sliced-apple-on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection sliced-apple-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+                        <desired4>
+               ^desired-count 2)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Apple1)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired filled-mug-sliced-apple-on-countertop22 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug-sliced-apple-on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug-sliced-apple-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+                        <desired3>
+                        <desired4>
+               ^desired-count 3)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Apple1)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle Mug48
+              ^liquid-contents water)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired filled-mug48-sliced-cooked-potato55-apple1 on-countertop22 -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug48-sliced-cooked-potato55-apple1*on-countertop22
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug48-sliced-cooked-potato55-apple1-on-countertop22)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+                        <desired2>
+                        <desired3>
+                        <desired4>
+               ^desired-count 4)
+   (<desired1> ^object <object1>)
+   (<object1> ^sliced true
+              ^object-handle Apple1)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle Potato55)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle Mug48
+              ^liquid-contents water)
+   (<desired4> ^on <on>)
+   (<on> ^argument1.object-handle Apple1
+         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired filled-mug48-sliced-cooked-potato55-apple1 on-countertop22-class -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*filled-mug48-sliced-cooked-potato55-apple1*on-countertop22-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection filled-mug48-sliced-cooked-potato55-apple1-on-countertop22-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired <desired1>
+                        <desired2>
+                        <desired3>
+                      #  <desired4>
+               ^desired-count 3
+               ^world-context <world>)
+   (<world> ^objects.object # <object-apple>
+                            <object-potato> <object-mug>)
+#   (<object-apple> ^class apple
+#                   ^object-handle unanchored-object-apple
+#                   ^anchored false)
+   (<object-potato> ^class potato
+                   ^object-handle unanchored-object-potato
+                   ^anchored false)
+   (<object-mug> ^class mug
+                   ^object-handle unanchored-object-mug
+                   ^anchored false)
+#   (<desired1> ^object <object1>)
+#   (<object1> ^sliced true
+#              ^object-handle unanchored-object-apple)
+      (<desired1> ^object <object1>)
+   (<object1> ^fill-amount full
+              ^object-handle unanchored-object-mug)
+   (<desired2> ^object <object2>)
+   (<object2> ^cook-state cooked
+              ^object-handle unanchored-object-potato)
+   (<desired3> ^object <object3>)
+   (<object3> ^object-handle unanchored-object-mug
+              ^liquid-contents coffee)
+#   (<desired4> ^on <on>)
+#   (<on> ^argument1.object-handle unanchored-object-apple
+#         ^argument2.object-handle CounterTop22)
+}
+
+## Elaborate desired epmem-test1 -> sets desireds, desired, desired-count ....
+## agent_config_file: "../../configs/laird-dev/thor-soar-JEL.config",
+## use_previous_chunks: false,
+sp {elaborate*thor-soar*desired*epmem-test1
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection epmem-test1)
+-->
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1> <desired2>
+                ^desired-count 2
+                ^preferred-desired <desired1>
+                ^next-desireds <desireds2>)
+   (<desired1> ^on <on1>)
+   (<on1> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desired2> ^in <in1>)
+   (<in1> ^argument1.object-handle Plate52
+          ^argument2.object-handle Fridge40)
+   #
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired3> ^holding-object.object-handle Potato55)
+    #
+   (<desireds3> ^desired <desired4>
+                ^world-context <world-context>
+                ^desired-count 1)
+   (<desired4> ^holding-object.object-handle |unanchored-object-egg-handle|)
+   (<world-context> ^objects.object <object-egg>
+                    ^on <on2>)
+   (<on2> ^argument1.object-handle |unanchored-object-egg-handle|
+          ^argument2.object-handle Plate52)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-object-egg-handle|
+                 ^temperature cold
+                 ^broken false
+                 ^anchored false)
+}
+
+## Elaborate desired dirty-then-dishwash -> sets desireds, desired, desired-count ....
+## Dirty dishes then clean
+sp {elaborate*thor-soar*desired*dirty-then-dishwash
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection dirty-then-dishwash)
+-->
+   # First dirty the objects
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired1> <desired2> <desired3> <desired4> <desired5>
+                ^desired-count 5
+                ^next-desireds <desireds2>)
+   (<desired1> ^object <object1>)
+   (<object1> ^dirty true
+              ^object-handle Mug48)
+   (<desired2> ^object <object2>)
+   (<object2> ^dirty true
+              ^object-handle Plate52)
+   (<desired3> ^object <object3>)
+   (<object3> ^dirty true
+              ^object-handle Pan49)
+   (<desired4> ^object <object4>)
+   (<object4> ^dirty true
+              ^object-handle Pot53)
+   (<desired5> ^object <object5>)
+   (<object5> ^dirty true
+              ^object-handle Cup24)
+# this puts the dirty objects in the dishwasher and cleans them
+   (<desireds2> ^desired <desired>
+                ^desired-count 1)
+   (<desired> ^dishes-clean true)
+}
+
+## Elaborate desired visited-all-objects-short -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*visited-all-objects-short
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection visited-all-objects-short)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.visited-all-objects true
+               ^desired-count 1
+               ^next-desireds <desireds80>)
+   (<desireds80> ^desired <desired80>
+                 ^desired-count 1)
+   (<desired80> ^explore-receptacles true)
+}
+
+## Elaborate desired visited-all-objects-long -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*visited-all-objects-long
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection visited-all-objects-long)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.visited-all-objects true
+               ^desired-count 1
+               ^next-desireds <desireds80>)
+   (<desireds80> ^desired <desired80>
+                 ^desired-count 1
+                 ^next-desireds <desireds90>)
+   (<desired80> ^explore-receptacles true)
+   (<desireds90> ^desired <desired91> <desired92> <desired93> <desired94> <desired95>
+                 ^desired-count 5
+                 ^next-desireds <desireds100>)
+   (<desired91> ^object <object91>)
+   (<object91> ^dirty true
+               ^object-handle Mug48)
+   (<desired92> ^object <object92>)
+   (<object92> ^dirty true
+               ^object-handle Plate52)
+   (<desired93> ^object <object93>)
+   (<object93> ^dirty true
+               ^object-handle Pan49)
+   (<desired94> ^object <object94>)
+   (<object94> ^dirty true
+               ^object-handle Pot53)
+   (<desired95> ^object <object95>)
+   (<object95> ^dirty true
+               ^object-handle Cup24)
+   (<desireds100> ^desired <desired100>
+                  ^desired-count 1
+                  ^next-desireds <desireds110>)
+   (<desired100> ^dishes-clean true)
+   (<desireds110> ^desired <desired100>
+                  ^desired-count 1
+                  ^next-desireds <desireds120>)
+   (<desireds120> ^desired <desired120>
+                  ^desired-count 1
+                  ^next-desireds <desireds130>)
+   (<desired120> ^object <object120>)
+   (<object120> ^sliced true
+                ^object-handle Apple1)
+   (<desireds130> ^desired <desired130>
+                  ^desired-count 1
+                  ^next-desireds <desireds140>)
+   (<desired130> ^object <object130>)
+   (<object130> ^sliced true
+                ^object-handle Potato55)
+   (<desireds140> ^desired <desired140>
+                  ^desired-count 1
+                  ^next-desireds <desireds150>)
+   (<desired140> ^object <object140>)
+   (<object140> ^cook-state cooked
+                ^object-handle Potato55)
+   (<desireds150> ^desired <desired150>
+                  ^desired-count 1)
+   (<desired150> ^object <object150>)
+   (<object150> ^cook-state cooked
+                ^object-handle Egg36)
+}
+
+## Elaborate desired really-long -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*really-long
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection really-long)
+-->
+   # Egg on plate and plate in microwave and close fridge
+   (<s> ^desireds <desireds1>)
+   (<desireds1> ^desired <desired11> <desired12> <desired13>
+                ^desired-count 3
+                ^preferred-desired <desired11>
+                ^avoid-desired <desired13>
+                ^next-desireds <desireds2>
+                               )#      ^desireds-list <desireds1> <desireds2> <desireds3> <desireds4>)
+   (<desired11> ^on <on1>)
+   (<on1> ^argument1.object-handle Egg36
+          ^argument2.object-handle Plate52)
+   (<desired12> ^in <in2>)
+   (<in2> ^argument1.object-handle Plate52
+          ^argument2.object-handle Microwave47)
+   (<desired13> ^object <object13>)
+   (<object13> ^object-handle Fridge40
+               ^open false)
+   # Cook egg put plate on countertop close microwave close fridge
+   (<desireds2> ^desired <desired21> <desired22> <desired23>
+                ^desired-count 3
+                ^preferred-desired <desired21>
+                ^next-desireds <desireds3>)
+   (<desired21> ^object <object21>)
+   (<object21> ^cook-state cooked
+               ^object-handle Egg36)
+   (<desired22> ^on <in21>)
+   (<in21> ^argument1.object-handle Plate52
+           ^argument2.object-handle CounterTop21)
+   (<desired23> ^object <object22>)
+   (<object22> ^object-handle Microwave47
+               ^open false)
+   # Make coffee - put mug on countertop
+   (<desireds3> ^desired <desired31> <desired32> <desired33>
+                ^desired-count 3
+                ^avoid-desired <desired33>
+                ^next-desireds <desireds4>)
+   (<desired31> ^object <object31>)
+   (<object31> ^liquid-contents coffee
+               ^object-handle Mug48)
+   (<desired32> ^object <object32>)
+   (<object32> ^fill-amount full
+               ^object-handle Mug48)
+   (<desired33> ^on <on33>)
+   (<on33> ^argument1.object-handle Mug48
+           ^argument2.object-handle CounterTop21)
+   # Cook Bread - must slice bread
+   (<desireds4> ^desired <desired4>
+                ^desired-count 1
+                ^next-desireds <desireds5>)
+   (<desired4> ^object <object4>)
+   (<object4> ^cook-state cooked
+              ^object-handle Bread5)
+   ## put cooked bread
+   (<desireds5> ^desired <desired5>
+                ^desired-count 1
+                ^world-context <wc>
+                ^next-desireds <desireds6>)
+   (<wc> ^objects.object <object-bread5>)
+   (<object-bread5> ^class breadsliced
+                    ^object-handle |unanchored-object-bread-handle|
+                    ^cook-state cooked
+                    ^anchored false)
+   (<desired5> ^on <on5>)
+   (<on5> ^argument1.object-handle |unanchored-object-bread-handle|
+          ^argument2.object-handle Plate52)
+   # Cook Another slice of Bread
+   ## How make it a different slice than above?
+   (<desireds6> ^desired <desired6>
+                ^desired-count 1
+                ^next-desireds <desireds7>)
+   (<desired6> ^object <object6>)
+   (<object6> ^cook-state cooked
+              ^object-handle Bread5)
+   #Slice and the cook potato
+   (<desireds7> ^desired <desired71> <desired72>
+               ^desired-count 2)
+   (<desired71> ^object <object71>)
+   (<object71> ^sliced true
+              ^object-handle Potato55)
+   (<desired72> ^object <object72>)
+   (<object72> ^cook-state cooked
+              ^object-handle Potato55)
+}

@@ -1,0 +1,28 @@
+## explore-finished.soar -- thor-soar: 1 proposal, 1 application.
+
+## Propose explore-finished.
+sp {thor-soar*propose*explore-finished
+    :default
+   (state <s> ^name thor-soar
+              ^flags.explore true
+              ^explore-structure <es>)
+   (<es> ^classes <classes>
+        -^current-class)
+  -(<classes> ^untested-unreachable-object <object>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name explore-finished)
+}
+
+## Apply explore-finished -> sets explore-receptacles, explore.
+sp {apply*explore-finished
+    :default
+   (state <s> ^operator <op>
+              ^flags <flags>)
+   (<op> ^name explore-finished)
+   (<flags> ^explore true)
+-->
+   (<flags> ^explore-receptacles true
+                                 false -
+            ^explore true -)
+}

@@ -1,0 +1,22 @@
+## elaborations.soar -- selection-world: 1 application.
+
+## Apply evaluate-operator -> sets symbolic-value.
+sp {selection-world*apply*evaluate-operator*evaluation*failure*no-operators
+   :default
+   (state <goal-nc> ^superstate <state-nc>
+                    ^attribute state
+                    ^impasse no-change
+                    ^quiescence t)  ### TEST
+   (<state-nc> ^superstate <eval-g>
+               ^attribute state
+               ^impasse no-change
+               ^quiescence t)  ### TEST
+   (<eval-g> ^superstate <select-g>
+             ^quiescence t)  ### TEST
+   (<select-g> ^operator <operator2>
+               ^evaluation <evaluation2>)
+   (<operator2> ^name evaluate-operator
+         ^evaluation <evaluation2>)
+   (<evaluation2> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation2> ^symbolic-value exhaustion-failure)}

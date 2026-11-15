@@ -1,0 +1,57 @@
+## constants.soar -- thor-soar: 1 elaboration.
+
+## Elaborate state constants problem-space -> sets constants, action-time, complex-action-time ....
+sp {elaborates*state*constants*thor-soar*problem-space
+    :default
+   (state <s> # ^superstate nil)
+              ^problem-space.name thor-world)  # Create in each substate anew - more wme changes but fewer conditions in chunks.
+-->
+   (<s> ^constants <constants>)
+   (<constants> ^action-time 200 # msec
+                ^complex-action-time 1700
+                ^move-time 1500
+                # ^decision-time 50 not used
+                ^food-cook-time <fct>
+                ^brew-time 200  # was  2000 - but doesn't work with overlapping actions (cook)
+                ^desired-orderings <desired-orderings>
+                ^desired-object-states <dos>
+                ^property-abstraction-hierarchy <pah>
+                ^transformations <transformations>)
+   (<desired-orderings> ^desired-ordering <d1> <d2> <d3> <d4> <d5> <d6> <d7> <d8>)
+   (<fct> ^potato 15000
+          ^potatosliced 1000
+          ^apple 15000
+          ^applesliced 1000
+          ^carrot 15000
+          ^carrotsliced 1000
+          ^breadsliced 5000
+          ^eggcracked 5000
+          ^egg 5000) # burns if cookes for longer
+   (<d1> ^relation on
+         ^value 1)  # 1 is best
+   (<d2> ^relation in
+         ^value 1)
+   (<d3> ^object-property open
+         ^value 2)
+   (<d4> ^object-property closed
+         ^value 2)
+   (<d5> ^object-property accessible
+         ^value 2)
+   (<d6> ^relation holding-object
+         ^value 3)
+   (<d7> ^object-property reachable
+         ^value 4)
+   (<d8> ^object-property activated
+        ^value 3)
+   (<dos> ^activated false
+          ^open false)
+   (<pah> ^object-property reachable
+          ^next <next1>)
+   (<next1> ^object-property accessible
+            ^next nil)
+   (<transformations> ^breadsliced bread
+                      ^applesliced apple
+                      ^bananasliced banana
+                      ^carrotsliced carrot
+                      ^potatosliced potato)
+}

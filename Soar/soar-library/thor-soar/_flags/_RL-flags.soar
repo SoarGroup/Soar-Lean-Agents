@@ -1,0 +1,18 @@
+#########################################
+## _RL-flags
+## Created 2024/01/13
+#########################################
+
+#command-to-file x.soar p -fr
+#
+#rl --set learning off
+#rl --set learning on
+rl --set learning-policy off-policy-gq-lambda
+
+#it is important to set step-size-parameter to a reasonable value for a secondary learning rate, such as 0.01
+rl --set step-size-parameter 0.01
+#rl --set learning-policy on-policy-gq-lambda
+#rl --set eligibility-trace-decay-rate .1
+
+#  Use epsilon - not softmax!
+decide indifferent-selection -e

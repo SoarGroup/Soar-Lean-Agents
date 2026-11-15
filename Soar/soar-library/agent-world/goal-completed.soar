@@ -1,0 +1,139 @@
+## goal-completed.soar -- agent-world: 1 proposal, 10 applications.
+
+## ---- operator proposal ----
+
+## Propose goal-completed.
+sp {agent-world*propose*goal-completed
+   :default
+   (state <s> ^desireds <desireds>
+              ^superstate nil
+              ^<< required-success success >> <desireds>
+              ^world <world>)
+   (<desireds> -^next-desireds)
+   (<world> ^anchored-world true
+            ^real true)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name goal-completed
+         ^completed-desireds <desireds>)
+}
+
+## ---- operator application ----
+
+## Apply goal-completed.
+## Log: that the task was achieved
+sp {agent-world*apply*goal-completed*log*achievement
+   :default
+   (state <s> ^operator <op>
+              ^io.input-link.time.ms <time>)
+   (<op> ^name goal-completed)
+-->
+   (log 1 (crlf)  |Task achieved. Time: | <time> |ms.|)
+}
+
+## Apply goal-completed -> sets report-test-result.
+## If agent-mode = testing, report success to output link (experiment runner)
+sp {agent-world*apply*goal-completed*report-test-result
+   :default
+   (state <s> ^operator <op>
+              ^flags.agent-mode testing
+              ^io.output-link <output-link>)
+   (<op> ^name goal-completed)
+-->
+   (<output-link> ^report-test-result.result success)
+}
+
+## Apply wait.
+## If desireds-source = elaboration, interrupt on a SNC wait
+sp {agent-world*apply*goal-completed*interrupt
+   :default
+   (state <s> ^superstate.superstate.operator.name goal-completed
+              ^superstate.flags.desireds-source elaboration
+              ^operator.name wait)
+-->
+   (interrupt)
+}
+
+## Apply goal-completed -> sets store.
+sp {agent-world*apply*goal-completed*store-smem*scene
+   :default
+   (state <s> ^operator.name goal-completed
+              ^flags.smem-store true
+              ^scene <scene>
+              ^smem.command <command>)
+-->
+   (<command> ^store <scene>)
+}
+
+## Apply goal-completed -> sets in.
+sp {agent-world*apply*goal-completed*store-smem*in*scene
+   :default
+   (state <s> ^operator.name goal-completed
+              ^flags.smem-store true
+              ^flags.explore false
+              ^smem-storage-structure.initial-in-relations <store-in>
+              ^scene.in <in>)
+-->
+   (<store-in> ^in <in>)
+}
+
+## Apply goal-completed -> sets store.
+## If want to store all the operators and relations in smem at the end of a run
+## initial-in-relations
+sp {agent-world*apply*goal-completed*store-smem
+   :default
+   (state <s> ^operator.name goal-completed
+              ^flags.smem-store true
+              ^smem-storage-structure <sss>
+              ^smem.command <command>)
+-->
+   (<command> ^store <sss>)
+   (log 1 (crlf)  |Store Smem Storage Structures: | <sss>)}
+
+## Apply goal-completed -> sets store.
+sp {agent-world*apply*goal-completed*store-smem*initial-in-relations
+   :default
+   (state <s> ^operator <op>
+              ^flags.smem-store true
+              ^smem-storage-structure.initial-in-relations <store-in>
+              ^smem.command <command>)
+   (<op> ^name goal-completed)
+-->
+   (<command> ^store <store-in>)
+   (log 1 (crlf)  |Stored In Relations to SMEM: | <store-in>)}
+
+## Apply goal-completed -> sets store.
+sp {agent-world*apply*goal-completed*store-smem*in
+   :default
+   (state <s> ^operator <op>
+              ^flags.smem-store true
+              ^smem-storage-structure.initial-in-relations.in { @- <in> }
+              ^smem.command <command>)
+   (<op> ^name goal-completed)
+-->
+   (<command> ^store <in>)
+   (log 1 (crlf)  |Stored argument1 Relations to SMEM: | <in>)}
+
+## Apply goal-completed -> sets store.
+sp {agent-world*apply*goal-completed*store-smem*argument1
+   :default
+   (state <s> ^operator <op>
+              ^flags.smem-store true
+              ^smem-storage-structure.initial-in-relations.in.argument1 { @- <argument1> }
+              ^smem.command <command>)
+   (<op> ^name goal-completed)
+-->
+   (<command> ^store <argument1>)
+   (log 1 (crlf) |Stored In Relations to SMEM: | <argument1>)}
+
+## Apply goal-completed -> sets store.
+sp {agent-world*apply*goal-completed*store-smem*argument2
+   :default
+   (state <s> ^operator <op>
+              ^flags.smem-store true
+              ^smem-storage-structure.initial-in-relations.in.argument2 { @- <argument2> }
+              ^smem.command <command>)
+   (<op> ^name goal-completed)
+-->
+   (<command> ^store <argument2>)
+   (log 1 (crlf)  |Stored In Relations to SMEM: | <argument2>)}

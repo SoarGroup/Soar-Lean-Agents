@@ -1,0 +1,253 @@
+## open-container.soar -- thor-soar: 4 proposals, 4 compares, 2 applications.
+
+## Propose open-container.
+## MEA Selection
+## Want object open
+sp {thor-soar*propose*open-container*mea*open
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <container-object-handle>
+             ^anchored true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^open true
+                     ^object-handle <container-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name open-container
+               ^task-operator true
+               ^action-handle open
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument2 1.0
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^desired <desired1>
+                ^preferred-desired <desired1>
+                ^desired.object <desired-object2>
+                ^desired <desired3>
+                ^avoid-desired <desired3>)
+   (<desired1> ^holding-object.object-handle none)
+   (<desired-object2> ^reachable true
+                      ^object-handle <container-object-handle>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^activated false
+                      ^object-handle <container-object-handle>)
+}
+
+## Propose open-container.
+## Want object accessible - will not be accessible if in a closed container.
+## So this is only for cases where either unknown where object is (handled with find-object?) or
+sp {thor-soar*propose*open-container*mea*accessible
+    :default
+   (state <s> ^problem-space.name << move thor-world >>
+              ^flags.mea-operator-selection true
+              ^world.in <in>
+            #  ^world.objects.object <container-object>
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+             ^objects.object <container-object>)
+   (<container-object> ^object-handle <container-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<in> ^argument1 <object>
+         ^argument2 <argument2>)
+   (<argument2> ^object-handle <container-object-handle>
+                ^anchored true)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^accessible true             ## opening the container-object will make it accessible
+                     ^object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name open-container
+               ^task-operator true
+               ^action-handle open
+               ^super-desired <desired>
+               ^argument1 <container-object>
+               ^argument2 1.0  # Maybe play with .5 to see if open drawer doesn't cause problems.
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^desired <desired1>
+                ^preferred-desired <desired1>
+                ^desired.object <desired-object2>
+                ^desired <desired3>
+                ^avoid-desired <desired3>)
+   (<desired1> ^holding-object.object-handle none)
+   (<desired-object2> ^reachable true
+                      ^object-handle <container-object-handle>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^activated false
+                      ^object-handle <container-object-handle>)
+}
+
+## Preference for open-container indifferent.
+sp {thor-soar*compare*open-container*indifferent
+    :default
+   (state <s> ^operator <op1> +
+                        { > <op1> <op2> }  +)
+   (<op1> ^name open-container
+          ^argument1 <container-object>)
+   (<op2> ^name open-container
+          ^argument1 <container-object>)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for open-container better-than go-to.
+sp {thor-soar*compare*open-container*better-than*go-to
+    :default
+   (state <s> ^flags.task-search-control true
+              ^world.in <in>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<in> ^argument1.object-handle <knife>
+         ^argument2.object-handle <containter>)
+   (<op1> ^name open-container
+          ^argument1.object-handle <container>)
+   (<op2> ^name go-to
+          ^argument1.object-handle <knife>)
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*open-container|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for reject open-container drawer.
+## Bug - too specific to get over weirdness - should do in planning without ordering relationships
+sp {thor-soar*reject*open-container*drawer
+    :default
+   (state <s> ^name put-in
+              ^world.objects.object <drawer-object>
+              ^desireds <desireds>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<drawer-object> ^object-handle <drawer-object-handle>
+                    ^class drawer)
+   (<desireds> ^desired <desired-open> <desired-holding> <desired-reachable>
+               ^unachieved <desired-open> <desired-reachable>)
+   (<desired-open> ^object <open-object>)
+   (<open-object> ^object-handle <drawer-object-handle>
+                  ^open true)
+   (<desired-holding> ^holding-object.object-handle <> none)
+   (<desired-reachable> ^object <object-reachable>)
+   (<object-reachable> ^reachable true                # might need to add that object is accessible
+                       ^object-handle <drawer-object-handle> )
+   (<op1> ^name open-container
+          ^argument1 <drawer-object>)
+   (<op2> ^name << go-to get-object >>)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Preference for reject open-object microwave cooking.
+sp {thor-soar*reject*open-object*microwave*cooking
+    :default
+   (state <s> ^world.future-event <future-event>
+              ^world.objects.object <object>
+              ^operator <op1> +)
+   (<object> ^object-handle <microwave-handle>
+             ^class microwave)
+   (<op1> ^name open-container
+          ^argument1.object-handle <microwave-handle>)
+   (<future-event> ^argument2.class microwave)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Apply open-container -> sets open.
+sp {apply*open-container*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name open-container
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<container-object> #^open false
+               ^object-handle <container-handle>)
+-->
+   (log 1 (crlf) |Apply Open: | <container-handle> | internal.|)
+   (<container-object> ^open false -
+                             true)
+}
+
+## Apply open-container -> sets reachable, visible, accessible.
+sp {apply*open-container*internal*reachable*visible
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^world <world>
+              ^internal-actions true)
+   (<world> ^in <in>)
+   (<operator> ^name open-container
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<in> ^argument1 <internal-object>
+         ^argument2 <container-object>)
+   (<internal-object> ^object-handle <object-handle>)
+  -(<internal-object> ^reachable true
+                      ^visible true
+                      ^accessible true)
+-->
+   (log 1 (crlf) |Apply Open: | <object-handle> | becomes visible and reachable and accessible.|)
+   (<internal-object> ^reachable false -
+                                 true
+                      ^visible false -
+                               true
+                      ^accessible false -
+                                  true)
+}
+
+## Propose open-container.
+## Non MEA Selection
+sp {thor-soar*propose*open-container*activatable
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.holding-object.object-handle none
+              ^world.objects.object <container-object>)
+   (<container-object> ^reachable true
+                       ^open false
+                       ^activated false
+                       ^activatable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name open-container
+               ^task-operator true
+               ^action-handle open
+               ^argument1 <container-object>
+               ^argument2 1.0
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}
+
+## Propose open-container.
+sp {thor-soar*propose*open-container*not-activatable
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.holding-object.object-handle none
+              ^world.objects.object <container-object>)
+   (<container-object> ^reachable true
+                       ^open false
+                      -^activatable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name open-container
+               ^task-operator true
+               ^action-handle open
+               ^argument1 <container-object>
+               ^argument2 1.0
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}

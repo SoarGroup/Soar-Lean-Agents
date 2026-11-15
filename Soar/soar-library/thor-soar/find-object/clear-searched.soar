@@ -1,0 +1,32 @@
+## clear-searched.soar -- thor-soar: 1 proposal, 1 application.
+
+## Propose clear-searched.
+sp {find-object*propose*clear-searched
+    :default
+   (state <s> ^desireds.desired.info.anchored-object.object-handle <object-handle>
+              ^quiescence t
+              ^world.real true
+              ^flags.hide-in-container-objects true
+              ^external-top-state.scene.objects <objects>
+              ^external-top-state.scene.objects.object.searched true)
+  -{(<objects> ^object <object>)
+    (<object> ^receptacle true
+              ^openable true
+             -^searched true)}
+  -(<s> ^external-top-state.scene.objects.object.object-handle <object-handle>)
+  -(<s> ^superstate.superstate.operator.name go-to)
+-->
+   (log 1 (crlf) |*********** Proposed clear-searched because no unsearched receptacles ************|)
+   (<s> ^operator <op> + =)
+   (<op> ^name clear-searched)
+}
+
+## Apply clear-searched -> sets searched.
+sp {apply*clear-searched
+    :default
+   (state <s> ^operator.name clear-searched
+              ^external-top-state.scene.objects.object <object>)
+   (<object> ^searched true)
+-->
+   (<object> ^searched true -)
+}

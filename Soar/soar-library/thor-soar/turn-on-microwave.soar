@@ -1,0 +1,75 @@
+## turn-on-microwave.soar -- thor-soar: 1 proposal, 2 applications.
+
+## Propose turn-on-microwave.
+sp {propose*turn-on-microwave*mea-thor-world
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>
+              ^world <world1>)
+   (<world1> ^anchored-world true
+             ^objects.object <cooking-object>)
+   (<desireds> ^desired <desired1>
+               ^unachieved <desired1>)
+   (<desired1> ^object <desired-object1>)
+   (<cooking-object> ^activated false
+                     ^object-handle <cooking-object-handle>
+                     ^class microwave)
+   (<desired-object1> ^activated true
+                     -^event-time <event-time>
+                      ^object-handle <cooking-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-on-microwave
+               ^task-operator true
+               ^action-handle turn-on
+               ^super-desired <desired1>
+               ^argument1 <cooking-object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^desired.object <cooking-object-new1>
+                ^desired.object <cooking-object-new2>
+                ^desired.holding-object.object-handle none)
+   (<cooking-object-new1> #^duplicate-of <cooking-object>
+                          ^reachable true
+                          ^object-handle <cooking-object-handle>)
+   (<cooking-object-new2> #^duplicate-of <cooking-object>
+                          ^open false
+                          ^object-handle <cooking-object-handle>)
+}
+
+## Apply turn-on-microwave -> sets activated.
+sp {apply*turn-on-microwave*internal-thor-world
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name turn-on-microwave
+               ^argument1 <cooking-object>
+               ^pre-conditions-satisfied true)
+-->
+   (log 1 (crlf) |Microwave turned on internal.|)
+   (<cooking-object> ^activated false -
+                                   true)
+}
+
+## Apply turn-on-microwave -> sets activated, cook-state.
+sp {apply*turn-on-microwave*internal-thor-world2
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^operator <operator>
+              ^internal-actions true
+              ^world.in <in>)
+   (<in> ^argument1 <cooking-object>
+         ^argument2 <cook-object>)
+   (<operator> ^name turn-on-microwave
+               ^argument1 <cooking-object>
+               ^pre-conditions-satisfied true)
+-->
+   (log 1 (crlf) |Cook: microwave internal.|)
+   (<cooking-object> ^activated false -
+                                true)
+   (<cook-object> ^cook-state raw -
+                              cooked)
+}

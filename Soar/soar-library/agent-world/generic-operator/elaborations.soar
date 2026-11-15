@@ -1,0 +1,62 @@
+## elaborations.soar -- agent-world: 5 elaborations.
+
+## Elaborate substate super-operator attributes.
+sp {agent-world*elaborate*substate*super-operator*attributes
+   "Elaborate substates with super-operator attributes."
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.operator.{ <> desireds <> superstate <> current-evaluation-depth <attribute> } <value>)
+-->
+   (<s> ^<attribute> <value>)
+}
+
+## Elaborate substate scene -> sets sce.
+sp {agent-world*elaborate*substate*scene
+   "Elaborate substates with scene."
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.scene <scene>)
+-->
+   (<s> ^scene <scene>)
+}
+
+## Elaborate operator-implementation-substate super-operator-problem-space -> sets problem-space.
+## Not an MEA substate - an operator implementation substate
+sp {agent-world*elaborate*operator-implementation-substate*super-operator-problem-space
+   :default
+   (state <s> ^name <name>
+              ^superstate.operator <so>)
+   (<so> ^name <name>
+         ^pre-conditions-satisfied true)  # This indicates it is an operator implementation substate
+-->
+   (<s> ^problem-space.name <name>)
+}
+
+## Elaborate operator-implementation-substate super-operator-desireds -> sets desireds, copied-from, better.
+sp {agent-world*elaborate*operator-implementation-substate*super-operator-desireds
+   :default
+   (state <s> ^superstate.operator <sso>
+              ^impasse no-change
+              ^attribute operator)
+   (<sso> ^pre-conditions-satisfied true
+          ^effect-desireds <effect-desireds>)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^copied-from <effect-desireds>
+               ^better lower)          # assumes minimize time - maybe a bug
+}
+
+## Elaborate operator-implementation-substate super-operator-desireds copy.
+sp {agent-world*elaborate*operator-implementation-substate*super-operator-desireds*copy
+   :default
+   (state <s> ^desireds <desireds>
+              ^superstate.operator.effect-desireds <effect-desireds>)
+   (<desireds> ^copied-from <effect-desireds>)
+   (<effect-desireds> ^{ <> achieved <> unachieved <> achieved-desireds-count
+                         <> unachieved-desireds-count <> unachieved-desireds
+                         <> better <attribute> } <value>)
+-->
+   (<desireds> ^<attribute> <value>)
+}

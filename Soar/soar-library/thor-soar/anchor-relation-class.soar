@@ -1,0 +1,88 @@
+## anchor-relation-class.soar -- thor-soar: 2 proposals, 2 compares, 1 application.
+
+## Propose anchor-relation-class.
+sp {thor-soar*propose*anchor-relation-class
+    :default
+   (state <s> ^external-top-state.scene.{<< on in controlled-by >> <in-on> } <relation1>
+              ^real true
+              ^world.objects.object <unanchored-object>
+              ^desireds <desireds>)
+   (<relation1> ^argument1.object-handle <object-handle1>
+                ^argument2 <argument2>)
+   (<argument2> ^object-handle { <> <unanchored-object-handle> <object-handle2> }
+                ^class <class>)
+   (<unanchored-object> ^object-handle <unanchored-object-handle>
+                        ^class <class>
+                       -^anchored true)
+   (<desireds> ^desired.<in-on> <relation2>)
+   (<relation2> ^argument1.object-handle <object-handle1>
+                ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-relation-class
+         ^task-operator false
+         ^argument1 <relation2>
+         ^argument2 <object-handle2>)
+}
+
+## Propose anchor-relation-class.
+sp {thor-soar*propose*anchor-relation-class*internal
+    :default
+   (state <s> ^world.{<< on in controlled-by >> <in-on> } <relation1>
+              ^real false
+              ^world.objects.object <unanchored-object>
+              ^desireds <desireds>)
+   (<relation1> ^argument1.object-handle <object-handle1>
+                ^argument2 <argument2>)
+   (<argument2> ^object-handle { <> <unanchored-object-handle> <object-handle2> }
+                ^class <class>)
+   (<unanchored-object> ^object-handle <unanchored-object-handle>
+                        ^class <class>
+                       -^anchored true)
+   (<desireds> ^desired.<in-on> <relation2>)
+   (<relation2> ^argument1.object-handle <object-handle1>
+                ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-relation-class
+         ^task-operator false
+         ^argument1 <relation2>
+         ^argument2 <object-handle2>)
+}
+
+## Preference for anchor-relation-class2.
+sp {thor-soar*compare*anchor-relation-class2
+    :default
+   (state <s> # ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-relation-class)
+   (<op2> ^name find-object)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply anchor-relation-class -> sets object-handle.
+sp {apply*anchor-relation-class*reject-unanchored-objects
+    :default
+   (state <s> ^operator <op>)
+   (<op> ^name anchor-relation-class
+         ^argument1 <relation2>
+         ^argument2 <object-handle2>)
+   (<relation2> ^argument2 <argument2>)
+   (<argument2> ^object-handle <unanchored-object-handle>)
+-->
+   (<argument2> ^object-handle <unanchored-object-handle> -
+                               <object-handle2>)
+}
+
+## Preference for anchor-relation-class.
+sp {thor-soar*compare*anchor-relation-class
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-relation-class)
+   (<op2> ^name anchor-object-class)
+-->
+   (<s> ^operator <op1> > <op2>)
+}

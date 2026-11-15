@@ -1,0 +1,161 @@
+## toast.soar -- thor-soar: 3 proposals, 1 compare.
+
+## Propose toast.
+## Assume only one thing that toasts and it is known.
+## MEA Selection
+sp {thor-soar*propose*toast*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^constants.food-cook-time.breadsliced <food-cook-time>
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+            -^future-event.argument2.class toaster
+             ^objects.object <toaster-object>)
+   (<toaster-object> ^class toaster
+                     ^object-handle <toaster-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^unachieved-desireds true)
+   (<desired> ^object <desired-toast-object>)
+   (<desired-toast-object> ^cook-state cooked
+                           ^class breadsliced
+                           ^object-handle <toast-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name toast
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <toast-object>
+               ^argument2 <toaster-object>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^desireds <desireds2>
+               ^effect-desireds <effect-desireds>)
+   (<desireds2> ^desired-count 3
+                ^desired <desired4> <desired5> <desired6>
+                ^preferred-desired <desired5>)
+   (<desired4> ^object <toaster-object-new>)
+   (<toaster-object-new> ^reachable true
+                         ^object-handle <toaster-object-handle>)
+   (<desired5> ^in <in>)
+   (<in> ^argument1.object-handle <toast-object-handle>
+         ^argument2 <toaster-object>)
+   (<desired6> ^object <toast-object>)
+   (<toast-object> ^object-handle <toast-object-handle>
+                   ^class breadsliced
+                   ^sliced true
+                   ^anchored false)
+   (<effect-desireds> ^desired <desired-ef1>
+                      ^desired-count 1)
+   (<desired-ef1> ^object <ef-object>)
+   (<ef-object> ^activated true
+                ^event-time <food-cook-time>
+                ^object-handle <toaster-object-handle>)
+}
+
+## Propose toast.
+sp {thor-soar*propose*toast*mea*preslice
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^constants.food-cook-time.breadsliced <food-cook-time>
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+            -^future-event.argument2.class toaster
+             ^objects.object <cooking-toaster-object>
+                             <bread-object>)
+   (<bread-object> ^object-handle <bread-object-handle>
+                   ^class bread)
+   (<cooking-toaster-object> ^class toaster
+                             ^object-handle <cooking-toaster-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^unachieved-desireds true)
+   (<desired> ^object <desired-toast-object>)
+   (<desired-toast-object> ^cook-state cooked
+                           ^object-handle <bread-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name toast
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <bread-object>
+               ^argument2 <cooking-toaster-object>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^desireds <desireds2>
+               ^effect-desireds <effect-desireds>)
+   (<desireds2> ^desired-count 3
+                ^desired <desired4> <desired5> <desired6>
+                ^preferred-desired <desired6>
+                ^avoid-desired <desired4>)
+   (<desired4> ^object <cooking-toaster-object-new>)
+   (<cooking-toaster-object-new> # ^duplicate-of <cooking-toaster-object>
+               ^reachable true
+               ^object-handle <cooking-toaster-object-handle>)
+   (<desired5> ^in <in>)
+   (<in> ^argument1 <toast-object2>
+         ^argument2 <cooking-toaster-object>)
+   (<toast-object2> ^origin-object-handle <bread-object-handle>
+                    ^class breadsliced
+                    ^object-handle |Undefined-Slice|
+                    ^anchored false)
+   (<desired6> ^object <toast-object3>)
+   (<toast-object3> ^origin-object-handle <bread-object-handle>
+                    ^class breadsliced
+                    ^sliced true
+                    ^anchored false
+                    ^object-handle |Undefined-Slice|)
+   (<effect-desireds> ^desired <desired-ef1>
+                      ^desired-count 1)
+   (<desired-ef1> ^object <ef-object>)
+   (<ef-object> ^activated true
+                ^event-time <food-cook-time>
+                ^object-handle <cooking-toaster-object-handle>)
+}
+
+## Preference for toast2.
+sp {thor-soar*compare*toast2
+    :default
+   (state <s> ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name toast
+          ^argument1.class breadsliced)
+   (<op2> ^name toast
+          ^argument1.class bread)
+-->
+   #  (log 1 (crlf) |**********thor-soar*compare*put-on2|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Propose toast.
+sp {thor-soar*propose*toast
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^constants.food-cook-time <fct>
+              ^world.in <in>)
+   (<in> ^argument2 <cooking-toaster-object>
+         ^argument1 <toast-object>)
+   (<cooking-toaster-object> ^cooks true
+                             ^class toaster
+                             ^reachable true
+                             ^open false)
+   (<toast-object> ^cookable true
+                   ^class breadslice
+                   ^cook-state raw)
+   (<fct> ^breadsliced <food-cook-time>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name toast
+               ^task-operator true
+               ^argument1 <toast-object>
+               ^argument2 <cooking-toaster-object>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^pre-conditions-satisfied true)
+}

@@ -1,0 +1,154 @@
+## cook-stove.soar -- thor-soar: 1 proposal, 5 compares.
+
+## Propose cook-stove.
+sp {thor-soar*propose*cook-stove*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^constants.food-cook-time.<food-type> <food-cook-time>
+              ^world <world>
+             -^world.future-event.argument1.class <food-type>
+              ^desireds <desireds>)
+   (<world> ^objects <objects>
+            ^anchored-world true)
+   (<objects> ^object <food-object>)
+   (<food-object> ^<< origin-object-handle object-handle >> <o-food-object-handle>
+                  ^object-handle <food-object-handle>
+                  ^cooks-on-stove true
+                  ^class <food-type>
+                  ^cook-state raw)
+   (<desireds> ^desired <desired1>
+               ^unachieved-desireds true)
+   (<desired1> ^object <desired-food-object>)
+   (<desired-food-object> ^cook-state cooked
+                          ^object-handle <o-food-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name cook-stove
+               ^task-operator true
+               ^super-desired <desired1>
+               ^argument1 <food-object>
+               ^argument2 <stoveknob-object-d>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^desireds <desireds2>
+               ^effect-desireds <effect-desireds>)
+   (<desireds2> ^desired-count 4
+                ^desired <desired4> <desired5> <desired6> <desired7>
+                ^avoid-desired <desired4>
+                ^world-context <world-context1>)
+   (<desired4> ^object <stoveknob-object-d>)
+   (<stoveknob-object-d> ^duplicate-of <stoveknob-object-w>
+                         ^reachable true
+                         ^object-handle |Undefined-stoveknob|) #<stoveknob-object-handle>)
+   (<desired5> ^in <in1>)
+   (<in1> ^argument1 <food-object>
+          ^argument2 <pan-object-d>)
+   (<desired6> ^in <in2>)
+   (<in2> ^argument1 <pan-object-d>
+          ^argument2 <stoveburner-object-d>)
+   (<desired7> ^controlled-by <controlled-by>)
+   (<controlled-by> ^argument1 <stoveburner-object-d>
+                    ^argument2 <stoveknob-object-d>)
+   (<pan-object-d> ^duplicate-of <pan-object-w>
+                   ^object-handle |Undefined-pan|
+                   ^anchored false)
+   (<stoveburner-object-d> ^duplicate-of <stoveburner-object-w>
+                           ^object-handle |Undefined-stoveburner|
+                           ^anchored false)
+   (<world-context1> ^objects.object <pan-object-w>
+                                     <stoveknob-object-w>
+                                     <stoveburner-object-w>)
+   (<pan-object-w> ^class pan
+                   ^object-handle |Undefined-pan|
+                   ^anchored false)
+   (<stoveknob-object-w> ^object-handle |Undefined-stoveknob| #StoveKnob75
+                      #   ^controls-object-handle |Undefined-stoveburner|
+                         ^anchored false
+                         ^class stoveknob)
+   (<stoveburner-object-w> ^object-handle |Undefined-stoveburner|
+                           ^anchored false
+                           ^class stoveburner)
+   (<effect-desireds> ^desired <desired-ef1>
+                      ^desired-count 1)
+   (<desired-ef1> ^object <ef-object>)
+   (<ef-object> ^activated true
+                ^event-time <food-cook-time>
+                ^object-handle |Undefined-stoveknob|) # StoveKnob75)#
+}
+
+## Preference for cook-stove inview-reachable.
+sp {thor-soar*compare*cook-stove*inview-reachable
+    :default
+   (state <s> ^world <world>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<world> ^objects.object <object1> <object2>)
+   (<op1> ^name cook-stove
+          ^argument1.object-handle <food-object-handle1>)
+   (<object1> ^object-handle <food-object-handle1>
+              ^visible true
+              ^in-view true
+              ^reachable true)
+   (<op2> ^name cook-stove
+          ^argument1.object-handle { <> <food-object-handle1> <food-object-handle2> })
+   (<object2> ^object-handle <food-object-handle2>)
+  -(<object2> ^visible true
+              ^in-view true
+              ^reachable true)
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*put-in2 - prefer to put object currently holding|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for cook-stove.
+sp {thor-soar*compare*cook-stove
+    :default
+   (state <s> ^operator <op1> +
+              ^desireds.desired.object <object>)
+   (<object> ^object-handle <food-object-handle>
+             ^cooked-by { <> stove <> stoveknob <> stoveburner })
+   (<op1> ^name cook-stove
+          ^argument1.object-handle <food-object-handle>)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Preference for cook-stove indifferent.
+## Don't care which burner
+sp {thor-soar*compare*cook-stove*indifferent
+    :default
+   (state <s> ^operator <op1> +
+                        { < <op1> <op2> }  +)
+   (<op1> ^name cook-stove
+          ^argument2 <ooh>)
+   (<op2> ^name cook-stove
+          ^argument2 <> <ooh>)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for cook-stove better-than-turn-off.
+sp {thor-soar*compare*cook-stove*better-than-turn-off
+    :default
+   (state <s> ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name cook-stove)
+   (<op2> ^name turn-off)
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*cook-stove*better-than-turn-off|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for cook-stove better-microwave.
+sp {thor-soar*compare*cook-stove*better-microwave
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name cook-stove
+          ^argument1.cooks-on-stove true)
+   (<op2> ^name cook-microwave)
+-->
+   (<s> ^operator <op1> > <op2>)
+}

@@ -1,0 +1,122 @@
+## external-operator-application.soar -- thor-soar: 1 elaboration, 5 applications.
+
+## Apply turn-on -> sets perform-action, argument1.
+sp {apply*operator*external*turn-on*stove
+    :default
+   (state <s> ^operator <operator>
+            #  ^quiescence t
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle turn-on
+               ^pre-conditions-satisfied true
+               ^argument-count 2
+               ^argument1 <argument1>)
+   (<argument1> ^class stoveknob
+                ^object-handle <argument1-handle>)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, action: turn-on external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name turn-on
+              ^argument1 <argument1-handle>)
+}
+
+## Apply look-at-point -> sets perform-action, object, x ....
+sp {apply*operator*external*argument1*look-at
+    :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle look-at
+               ^pre-conditions-satisfied true
+               ^argument-count 1
+               ^argument1 <argument1>)
+   (<argument1> ^x <x>
+                ^y <y>
+                ^z <z>
+                ^object-handle <argument1-handle>)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, action: look-at external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name look-at-point
+              ^object <argument1-handle>
+              ^x <x>
+              ^y <y>
+              ^z <z>)
+}
+
+## Elaborate operator external argument1 look-at2 -> sets looked-at.
+sp {apply*operator*external*argument1*look-at2
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object>
+              ^io.output-link <output>)
+   (<object> ^object-handle <argument1-handle>)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name look-at-point
+              ^object <argument1-handle>
+              ^status success)
+-->
+   (<object> ^looked-at true)
+}
+
+## Apply operator task create completed-task world -> sets completed-task.
+## If a task composite-operator is finished,
+## (satisfied preconditions, no effect-desireds)
+sp {apply*operator*task*create*completed-task*world
+    :default
+   (state <s> ^operator <operator>
+              ^world <world>)
+   (<world> ^anchored-world true)
+   (<operator> ^name <operator-name>
+               ^task-handle <task-handle>
+               ^pre-conditions-satisfied true
+               ^effect-desireds.desired-count 0
+               ^super-desired.completed-task <task>)
+-->
+   (<world> ^completed-task <task>)
+}
+
+## Apply operator task create completed-task world action -> sets completed-task.
+sp {apply*operator*task*create*completed-task*world*action
+    :default
+   (state <s> ^operator <operator>
+              ^io.output-link <output>
+              ^world <world>)
+   (<world> ^anchored-world true)
+   (<operator> ^name <operator-name>
+               ^task-operator true
+               ^action-handle <action-handle>
+               ^pre-conditions-satisfied true
+               ^super-desired.completed-task <task>)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name <action-handle>
+              ^status success)
+-->
+   (<world> ^completed-task <task>)
+}
+
+## Apply operator external argument2 no-handle1 no-handle2 -> sets perform-action, argument1, argument2.
+## Overlays rule from agent-world that does not swap the order. Not sure if this is a thor-soar thing or a mistake in the rule
+sp {apply*operator*external*argument2*no-handle1*no-handle2
+   :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle { <> turn-on <action-handle> }
+               ^pre-conditions-satisfied true
+               ^argument-count 2
+               ^argument1 <argument1>
+               ^argument2 <argument2>)
+   (<argument1> -^object-handle)
+   (<argument2> -^object-handle)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <argument1> |, | <argument2> |, action: | <action-handle> | external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name <action-handle>
+              ^argument1 <argument2>
+              ^argument2 <argument1>)
+}

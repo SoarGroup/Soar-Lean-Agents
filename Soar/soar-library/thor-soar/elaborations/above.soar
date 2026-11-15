@@ -1,0 +1,17 @@
+## above.soar -- thor-soar: 1 elaboration.
+
+## Elaborate above -> sets above, argument1, argument2.
+sp {elaborate*above
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>
+              ^world <world>)
+   (<scene> ^above <in-location>)
+   (<in-location> ^argument1 <on-object>
+                  ^argument2 <location-object>)
+   (<world> ^objects.object <location-object>)
+-->
+   (<world> ^above <in-location>)
+   (<in-location> ^argument1 <on-object>
+                  ^argument2 <location-object>)
+}

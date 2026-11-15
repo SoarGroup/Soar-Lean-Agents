@@ -1,0 +1,65 @@
+## scene-update.soar -- thor-soar: 2 proposals, 1 application.
+
+## Propose scene-update.
+## Door closes - update to be not visible
+sp {thor-soar*propose*scene-update*true
+    :default
+   (state <s> ^superstate nil
+              ^name thor-soar
+              ^flags.hide-in-container-objects true
+              ^io.input-link.objects <io-objects>
+              ^scene.objects <objects>)
+   (<io-objects> ^object <io-object> <container>)
+   (<io-object> ^object-handle <object-handle>)
+   (<container> ^contains-object-handle <object-handle>
+                ^open false)
+   (<objects> ^object <object>)
+   (<object> ^object-handle <object-handle>
+             ^visible true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name scene-update
+         ^argument1 <object>
+         ^argument2 true
+         ^argument3 false
+         ^task-operator false)
+}
+
+## Propose scene-update.
+## Door opens and update to be visible
+sp {thor-soar*propose*scene-update*false
+    :default
+   (state <s> ^superstate nil
+              ^name thor-soar
+              ^flags.hide-in-container-objects true
+              ^io.input-link.objects <io-objects>
+              ^scene.objects <objects>)
+   (<io-objects> ^object <io-object>)
+   (<io-object> ^object-handle <object-handle>)
+   (<io-objects> ^object <container>)
+   (<container> ^contains-object-handle <object-handle>
+                ^open true)
+   (<objects> ^object <object>)
+   (<object> ^object-handle <object-handle>
+             ^visible false)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name scene-update
+         ^argument1 <object>
+         ^argument2 false
+         ^argument3 true
+         ^task-operator false)
+}
+
+## Apply scene-update -> sets visible.
+sp {apply*scene-update
+    :default
+   (state <s> ^operator <op>)
+   (<op> ^name scene-update
+         ^argument1 <object>
+         ^argument2 <true>
+         ^argument3 <false>)
+-->
+   (<object> ^visible <true>  -
+                      <false>)
+}

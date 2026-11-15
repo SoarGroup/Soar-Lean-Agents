@@ -1,0 +1,32 @@
+## count-desired-object.soar -- selection-world: 1 proposal, 1 application.
+
+## ---- operator proposal ----
+
+## Propose count-desired-object.
+sp {selection-world*propose*failure-evaluation*count-desired-object
+   :default
+   (state <s> ^name failure-evaluation
+              ^superstate.desireds.desired.object <object>
+              ^counted-object-handle <object-handle>
+             -^counted-desired-handle <object-handle>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name count-desired-object
+         ^object <object>)
+}
+
+## ---- operator application ----
+
+## Apply count-desired-object -> sets feature-count, counted-desired-handle.
+sp {selection-world*apply*count-desired-object
+   :default
+   (state <s> ^operator <op>
+              ^feature-count <feature-count>)
+   (<op> ^name count-desired-object
+         ^object.object-handle <object-handle>)
+-->
+   (<s> ^feature-count (+ 1 <feature-count>)
+                       <feature-count> -
+        ^counted-desired-handle <object-handle>)
+}

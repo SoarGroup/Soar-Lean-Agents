@@ -1,0 +1,43 @@
+## close-doors.soar -- thor-soar: 3 elaborations.
+
+## Elaborate close-doors achieved -> sets achieved.
+sp {thor-soar*elaborate*close-doors*achieved
+    :default
+   (state <s> ^superstate nil
+              ^desireds <desireds>)
+   (<desireds> ^desired <clean-desired>)
+   (<clean-desired> ^close-doors true)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^openable true
+              ^open true)}
+-->
+   (<desireds> ^achieved <clean-desired>)
+}
+
+## Elaborate close-doors unachieved -> sets unachieved.
+sp {thor-soar*elaborate*close-doors*unachieved
+    :default
+   (state <s> ^superstate nil
+              ^desireds <desireds>)
+   (<desireds> ^desired <clean-desired>)
+   (<clean-desired> ^close-doors true)
+   (<s> ^world.objects.object <object>)
+   (<object> ^openable true
+             ^open true)
+-->
+   (<desireds> ^unachieved <clean-desired>)
+}
+
+## Elaborate close-doors attend -> sets attend.
+sp {thor-soar*elaborate*close-doors*attend
+    :default
+   (state <s> ^superstate nil
+              ^desireds.desired.close-doors true
+              ^attends <attends>
+              ^scene.objects.object <object>)
+   (<object> ^object-handle <object-handle>
+             ^activated true
+            -^class lightswitch)
+-->
+   (<attends> ^attend <object-handle>)
+}

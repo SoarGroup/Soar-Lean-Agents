@@ -1,0 +1,86 @@
+## simple.soar -- soar-base: 4 elaborations, 1 proposal, 1 compare, 1 application.
+
+## ---- elaborations ----
+
+## Elaborate default state io.
+sp {soar-base*elaborate*default*state*io
+   "Elaborate each substate with io pointer."
+   :default
+   (state <s> ^impasse no-change
+              ^superstate.io <io>)
+   -->
+   (<s> ^io <io>)}
+
+## Elaborate top-state top-state -> sets top-s.
+## Elaborate top-state with pointer to self.
+sp {soar-base*elaborate*top-state*top-state
+   :default
+   (state <s> ^superstate nil)
+-->
+   (<s> ^top-state <s>)
+}
+
+## Elaborate state top-state -> sets top-st.
+sp {soar-base*elaborate*state*top-state
+   :default
+   (state <s> ^superstate <ss>)
+   (<ss> ^top-state <ts>
+        -^operator.name evaluate-operator)
+-->
+   (<s> ^top-state <ts>)
+}
+
+## Elaborate state name -> sets na.
+sp {soar-base*elaborate*state*name
+   "Elaborate substates with name of operator."
+   :default
+   (state <s> ^superstate.operator.name <name>)
+-->
+   (<s> ^name <name>)}
+
+## ---- operator proposal ----
+
+## Propose wait.
+sp {soar-base*propose*top-ps*wait
+   "Propose wait if there is a state no-change."
+   :default
+   (state <s> ^attribute state
+              ^choices none
+             -^superstate.name evaluate-operator
+             -^operator.name wait)
+-->
+   (<s> ^operator <o> + <)
+   (<o> ^name wait)}
+
+## ---- evaluate / compare ----
+
+## Preference for default select indifferent-and-worst tied.
+## Break a tie by creating indifferent preferences if get a state no-change in an impasse.
+sp {soar-base*compare*default*select*indifferent-and-worst*tied
+   "Indifferent an operator if it leads to a tie that can not be resolved."
+   :default
+   (state <s1> ^operator <o> +)
+   (state <s2> ^impasse tie
+               ^superstate <s1>
+               ^item <o>
+               ^quiescence t)
+   (state <s3> ^attribute state
+           ^choices none
+           ^superstate <s2>
+           ^quiescence t)
+   -->
+   (<s1> ^operator <o> =, < )}
+
+## ---- operator application ----
+
+## Apply default top-goal halt operator failure.
+## HALT under bad conditions
+sp {soar-base*apply*default*top-goal*halt*operator*failure
+   "Halt if no operator can be selected for the top goal."
+   :default
+   (state <s> ^superstate nil)
+   (state <ss> ^impasse constraint-failure ^superstate <s>)
+   -->
+   (write (crlf) |No operator can be selected for top goal.| )
+   (write (crlf) |Soar must halt.| )
+   (halt)}

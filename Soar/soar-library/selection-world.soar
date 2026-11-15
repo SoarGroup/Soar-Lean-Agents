@@ -1,0 +1,3 @@
+pushd selection-world
+source selection-world_source.soar
+popd

@@ -1,0 +1,175 @@
+## fill-object.soar -- thor-soar: 5 proposals, 2 applications.
+
+## Propose fill-object.
+## MEA Selection
+sp {thor-soar*propose*fill-object*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <fill-object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-fill-object>)
+   (<desired-fill-object> ^liquid-contents { <> coffee <> none <liquid> }
+                          ^object-handle <fill-object-handle>)
+   (<fill-object> ^object-handle <fill-object-handle>
+                  ^fillable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name fill-object
+               ^task-operator true
+               ^action-handle fill
+               ^super-desired <desired>
+               ^argument1 <fill-object>
+               ^argument2 <liquid>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired <desired1> <desired2>)
+   (<desired1> ^object <dobject1>)
+   (<dobject1> ^reachable true
+               ^object-handle <fill-object-handle>)
+   (<desired2> ^object <dobject2>)
+   (<dobject2> ^fill-amount empty
+               ^object-handle <fill-object-handle>)
+}
+
+## Propose fill-object.
+## If only have contains-liquid as the goal - fill with water
+sp {thor-soar*propose*fill-object*mea*water
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world.objects.object <fill-object>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-fill-object>)
+   (<desired-fill-object> ^fill-amount <> empty
+                          ^liquid-contents water
+                          ^object-handle <fill-object-handle>)
+   (<fill-object> ^object-handle <fill-object-handle>
+                  ^fillable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name fill-object
+               ^task-operator true
+               ^action-handle fill
+               ^super-desired <desired>
+               ^argument1 <fill-object>
+               ^argument2 water
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired.object <object1>
+                ^desired.object <object2>)
+   (<object1> ^reachable true
+              ^object-handle <fill-object-handle>)
+   (<object2> ^liquid-contents none
+              ^object-handle <fill-object-handle>)
+}
+
+## Apply fill-object -> sets liquid-contents, fill-amount.
+sp {apply*fill-object*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name fill-object
+               ^argument1 <fill-object>
+               ^argument2 <liquid>
+               ^pre-conditions-satisfied true)
+   (<fill-object> ^object-handle <fill-object-handle>
+                  ^liquid-contents <old-liquid>
+                  ^fill-amount <old-amount>)
+-->
+   (log 1 (crlf) |Apply fill: | <fill-object-handle> | internal with | <liquid>)
+   (<fill-object> ^liquid-contents <old-liquid> -
+                          <liquid>
+                  ^fill-amount <old-amount> -
+                  ^fill-amount full)
+}
+
+## Apply fill-object -> sets liquid-contents, fill-amount.
+sp {apply*fill-object*internal*no-known-contents
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name fill-object
+               ^argument1 <fill-object>
+               ^argument2 <liquid>
+               ^pre-conditions-satisfied true)
+   (<fill-object> ^object-handle <fill-object-handle>
+                -^liquid-contents <old-liquid>
+                 ^fill-amount <old-amount>)
+-->
+   (log 1 (crlf) |Apply fill: | <fill-object-handle> | internal with | <liquid>)
+   (<fill-object> ^liquid-contents <liquid>
+                  ^fill-amount <old-amount> -
+                  ^fill-amount full)
+}
+
+## Propose fill-object.
+## Non MEA Selection
+sp {thor-soar*propose*fill-object*coffee
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <not-filled-object>)
+   (<not-filled-object> ^fillable true
+                        ^liquid-contents none
+                        ^reachable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name fill-object
+               ^task-operator true
+               ^action-handle fill
+               ^argument1 <not-filled-object>
+               ^argument2 coffee
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}
+
+## Propose fill-object.
+sp {thor-soar*propose*fill-object*wine
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <not-filled-object>)
+   (<not-filled-object> ^fillable true
+                        ^liquid-contents none
+                        ^reachable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name fill-object
+               ^task-operator true
+               ^action-handle fill
+               ^argument1 <not-filled-object>
+               ^argument2 wine
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}
+
+## Propose fill-object.
+sp {thor-soar*propose*fill-object*water
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <not-filled-object>)
+   (<not-filled-object> ^fillable true
+                        ^liquid-contents none
+                        ^reachable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name fill-object
+               ^task-operator true
+               ^action-handle fill
+               ^argument1 <not-filled-object>
+               ^argument2 water
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}

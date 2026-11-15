@@ -1,0 +1,197 @@
+## scene-creation.soar -- thor-soar: 12 elaborations.
+
+## Elaborate scene-creation reattach -> sets derived-from-input.
+sp {apply*scene-creation*reattach
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object2>
+              ^io.input-link.objects.object <object>)
+   (<object> ^object-handle <object-handle>)
+   (<object2> ^object-handle <object-handle>
+              ^derived-from-input { <object3> <> <object> })
+-->
+   (<object2> ^derived-from-input <object3> -)}
+
+## Elaborate scene-creation attach -> sets derived-from-input.
+sp {apply*scene-creation*attach
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object2>
+              ^io.input-link.objects.object <object>)
+   (<object> ^object-handle <object-handle>)
+   (<object2> ^object-handle <object-handle>
+             -^derived-from-input <object>)
+-->
+   (<object2> ^derived-from-input <object>)}
+
+## Elaborate scene-creation dettach -> sets derived-from-input.
+sp {apply*scene-creation*dettach
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object2>
+             -^io.input-link.objects.object <object3>)
+   (<object2> ^derived-from-input <object3>)
+-->
+   (<object2> ^derived-from-input <object3> -)}
+
+## Elaborate scene-creation reattach remove-stale-distance -> sets distance.
+sp {apply*scene-creation*reattach*remove-stale-distance
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object2>
+              ^io.input-link.objects.object <object>)
+   (<object> ^object-handle <object-handle>)
+   (<object2> ^object-handle <object-handle>
+              ^distance <distance>
+              ^derived-from-input { <object3> <> <object> })
+-->
+   (<object2> ^distance <distance> -)}
+
+## Elaborate scene-creation hidden -> sets object, derived-from-input, confirmed ....
+sp {apply*scene-creation*hidden
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects <objects>
+              ^flags.hide-in-container-objects true
+              ^io.input-link.objects <io-objects>)
+   (<io-objects> ^object <object>)
+   (<object> ^object-handle <object-handle>
+             ^class <class>)
+  -{(<io-objects> ^object <container>)
+    (<container> ^contains-object-handle <object-handle>
+                 ^open false)}
+  -{(<objects> ^object <object2>)
+     (<object2> ^object-handle <object-handle>
+                               )}# -^memory-retrieved true)}
+-->
+   (log 2 |; | <object-handle>)
+   (<objects> ^object <new-object>)
+   (<new-object> ^derived-from-input <object>
+                 ^confirmed true
+                 ^visible true
+                 ^anchored true
+                 ^class <class>
+                 ^object-handle <object-handle>)
+}
+
+## Elaborate scene-creation not-hidden -> sets object, derived-from-input, confirmed ....
+sp {apply*scene-creation*not-hidden
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects <objects>
+              ^flags.hide-in-container-objects false
+              ^io.input-link.objects <io-objects>)
+   (<io-objects> ^object <object>)
+   (<object> ^object-handle <object-handle>
+             ^class <class>)
+  -{(<objects> ^object <objectx>)
+    (<objectx> ^object-handle <object-handle>
+              -^memory-retrieved true)}
+-->
+   (<objects> ^object <new-object>)
+   (<new-object> ^derived-from-input <object>
+                 ^confirmed true
+                 ^visible true
+                 ^anchored true
+                 ^class <class>
+                 ^object-handle <object-handle>)
+}
+
+## Elaborate scene-creation not-hidden visible-again -> sets derived-from-input, visible, anchored.
+sp {apply*scene-creation*not-hidden*visible-again
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object>
+              ^flags.hide-in-container-objects false
+              ^io.input-link.objects.object <io-object>)
+   (<io-object> ^object-handle <object-handle>
+                ^class <class>)
+   (<object> ^object-handle <object-handle>
+            -^derived-from-input <io-object>
+            -^anchored true)
+-->
+   (<object> ^derived-from-input <io-object>
+             ^visible true
+             ^anchored true)
+}
+
+## Elaborate scene-creation scene-attribute-value.
+sp {apply*scene-creation*scene-attribute-value
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^object-handle <object-handle>
+                 ^derived-from-input.{ <> reachable <> anchored <> visible <> distance <> confirmed <> object-handle <> class <property-handle> } <property-value>
+                -^<property-handle> <property-value>) # <> contains-object-handle
+-->
+   (<object-int> ^<property-handle> <property-value>)
+}
+
+## Elaborate scene-creation open-false -> sets open.
+sp {apply*scene-creation*open-false
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^open true
+                 ^derived-from-input.open false)
+-->
+   (<object-int> ^open false
+                       true -)
+}
+
+## Elaborate scene-creation open-true -> sets open.
+sp {apply*scene-creation*open-true
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^open false
+                 ^derived-from-input.open true)
+-->
+   (<object-int> ^open true
+                       false -)
+}
+
+## Elaborate scene-creation scene-attribute-value false2 -> sets contains-object-handle.
+## Needs work - 1635 no SC, no Frustum
+sp {apply*scene-creation*scene-attribute-value*false2
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>)
+   (<scene> ^objects.object <object-int>
+            ^<< in on >> <relation>)
+   (<relation> ^argument1.object-handle <object-handle-contained>
+               ^argument2.object-handle <object-handle-container>)
+   (<object-int> ^object-handle <> <object-handle-container>
+                -^derived-from-input.contains-object-handle <object-handled-contained>
+                 ^contains-object-handle <object-handle-contained>)
+-->
+   (<object-int> ^contains-object-handle <object-handle-contained> -)
+}
+
+## Elaborate scene-creation scene-attribute-value false contains-object-handle -> sets contains-object-handle.
+## Special case for attributes that are just missing
+sp {apply*scene-creation*scene-attribute-value*false*contains-object-handle
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^object-handle <object-handle>
+                 ^contains-object-handle <property-value> # <> contains-object-handle
+                 ^derived-from-input <dfi>)
+   (<dfi> ^in-view true
+          ^open true
+         -^contains-object-handle <property-value>)
+-->
+   (<object-int> ^contains-object-handle <property-value> -)
+}

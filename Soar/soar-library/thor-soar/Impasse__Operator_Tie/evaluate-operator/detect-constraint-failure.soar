@@ -1,0 +1,37 @@
+## detect-constraint-failure.soar -- thor-soar: 1 elaboration, 1 application.
+
+## Elaborate evaluate-operator state detect-constraint-failure metal microwave -> sets constraint-failure, failure-string.
+## Metal in microwave failure
+sp {evaluate-operator*elaborate*state*detect-constraint-failure*metal*microwave
+   :default
+   (state <s> ^real false
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^objects.object <object>
+            ^in <in>)
+   (<object> ^class microwave
+             ^activated true)
+   (<in> ^argument1.material metal
+         ^argument2.class microwave)
+-->
+   (log 1 (crlf) | ** Constraint Failure ** metal in microwave and microwave on **|)
+   (<s> ^constraint-failure <desireds>
+        ^failure-string | ** Constraint Failure ** metal in microwave and microwave on **|)}
+
+## Apply go-to -> sets constraint-failure, failure-string.
+## Could just reject it..
+sp {evaluate-operator*elaborate*state*detect-constraint-failure*running-with-knives
+   :default
+   (state <s>  ^real false
+              ^flags.guardrails true
+              ^desireds <desireds>
+              ^world.holding-object <knife-object>
+              ^operator <operator>)
+   (<knife-object> ^class knife
+                  -^material plastic)
+   (<operator> ^name go-to
+               ^expected-distance > 10)
+-->
+   (log 1 (crlf) | ** Constraint Failure ** running with knife **|)
+   (<s> ^constraint-failure <desireds>
+        ^failure-string | ** Constraint Failure ** running with knife **|)}

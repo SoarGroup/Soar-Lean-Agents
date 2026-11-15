@@ -1,0 +1,43 @@
+## assume-successful-grounding.soar -- object-world: 2 compares, 1 application.
+
+## ---- evaluate / compare ----
+
+## Preference for evaluate-operator assume-successful-grounding real-world.
+sp {object-world*compare*evaluate-operator*assume-successful-grounding*real-world
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^real true)
+   (<op1> ^name assume-successful-grounding)
+   (<op2> ^name anchor-smem-object-retrieve)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for evaluate-operator assume-successful-grounding internal.
+sp {object-world*compare*evaluate-operator*assume-successful-grounding*internal
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^real false)
+   (<op1> ^name assume-successful-grounding)
+   (<op2> ^name anchor-smem-object-retrieve)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply assume-successful-grounding -> sets failure.
+sp {object-world*apply*assume-successful-grounding*failue-if-would-assume-ground
+    :default
+   (state <s> ^operator.name assume-successful-grounding
+              ^superstate <superstate>)
+   (<superstate> ^desireds <desireds>
+                 ^duplicate-look-ahead-operator <operator>
+                 ^operator <operator>
+                 ^name evaluate-operator)
+   (<operator> ^name find-object)
+-->
+   (<superstate> ^failure <desireds>)
+}

@@ -1,0 +1,48 @@
+## exceed-depth.soar -- selection-world: 1 proposal, 2 compares, 1 application.
+
+## ---- operator proposal ----
+
+## Propose evaluate-operator.
+sp {selection-world*propose*evaluate-operator*exceed-depth
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.iterative-step operator  # why needed
+              ^current-evaluation-depth.value <= 0)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name exceed-depth)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for evaluate-operator exceed-depth.
+sp {selection-world*compare*evaluate-operator*exceed-depth
+   :default
+   (state <s> ^operator <operator1> +
+                        { <> <operator1> <operator2> } +)
+   (<operator1> ^name exceed-depth)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## Preference for evaluate-operator exceed-depth duplicate.
+sp {selection-world*compare*evaluate-operator*exceed-depth*duplicate
+   :default
+   (state <s> ^operator <operator1> +
+                        { <> <operator1> <operator2> } +
+              ^duplicate-look-ahead-operator <operator2>)
+   (<operator1> ^name exceed-depth)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## ---- operator application ----
+
+## Apply exceed-depth -> sets depth-excee.
+sp {selection-world*apply*exceed-depth
+   :default
+   (state <s> ^operator.name exceed-depth
+              ^desireds <desireds>)
+-->
+   (<s> ^depth-exceeded <desireds>)
+}

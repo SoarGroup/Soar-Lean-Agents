@@ -1,0 +1,36 @@
+#  Cause problems with chunking with iterative deepening! Argh!
+## Doesn't include reasons for achieved desireds - no details of superoperator
+#sp {selection*pass-back-success*iterative
+#   :default
+#  # :interrupt
+#   (state <s> ^selection-superstate.operator <sso>
+#              ^evaluation <evaluation>)
+#   (<evaluation> ^symbolic-value { <value> << required-success success >> })
+#   (<sso> ^name evaluate-operator
+#          ^evaluation <evaluation2>
+#          ^super-operator.name <name>)
+#-->
+#   (write (crlf) <value> |: | <evaluation2> )
+#   (<evaluation2> ^symbolic-value <value>)}
+#
+
+#sp {selection*pass-back-success*iterative2
+#   :default
+#  # :interrupt
+#   (state <s> ^superstate <ss>
+#              ^evaluation <evaluation>)
+#   (<evaluation> ^symbolic-value { <value> << required-success success >> }
+#                 ^desireds <desireds>)
+#   (<ss> ^name evaluate-operator)
+#-->
+#   (<ss> ^success <desireds>)}
+
+##############################
+#### copy down over a tie impasse
+#sp {selection*elaborate*current-evaluate-depth
+#   (state <s> ^name selection
+#             -^top-selection true
+#              ^superstate.current-evaluation-depth <current-evaluation-depth>)
+#-->
+#   (<s> ^current-evaluation-depth <current-evaluation-depth>)
+#}

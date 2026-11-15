@@ -1,0 +1,82 @@
+## init-scene-smem.soar -- thor-soar: 1 proposal, 1 compare, 3 applications.
+
+## Propose init-scene-smem.
+sp {thor-soar*propose*init-scene-smem
+    :default
+   (state <s> ^name thor-soar
+              ^scene-smem <scene-smem>
+              ^flags.initialize-scene-with-smem true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name init-scene-smem)
+}
+
+## Preference for init-scene-smem.
+sp {thor-soar*compare*init-scene-smem
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name init-scene-smem)
+   (<op2> ^name smem-query)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply init-scene-smem -> sets object, object-handle, anchored ....
+sp {apply*init-scene-smem*copy-object
+    :default
+   (state <s> ^operator.name init-scene-smem
+              ^scene-smem <scene-smem>
+              ^scene.objects <scene-objects>)
+   (<scene-smem> ^objects.object <object>)
+  -(<scene-objects> ^object.object-handle <object-handle>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<scene-objects> ^object <scene-object>)
+   (<scene-object> ^object-handle <object-handle>
+                   ^anchored true
+                   ^memory-retrieved true)
+}
+
+## Apply init-scene-smem.
+sp {apply*init-scene-smem*copy-object-features
+    :default
+   (state <s> ^operator.name init-scene-smem
+              ^scene-smem <scene-smem>
+              ^flags <flags>
+              ^scene.objects <scene-objects>)
+   (<flags> ^initialize-scene-with-smem true)
+   (<scene-smem> ^objects.object <object>)
+   (<scene-objects> ^object <scene-object>)
+   (<scene-object> ^object-handle <object-handle>
+                  -^<attribute>)
+   (<object> ^object-handle <object-handle>
+             ^{<> smem-stored <> derived-from-input <> contains-object-handle <> visible <> reachable  <> in-view <> anchored  <> accessible  <> confirmed <attribute> } <value>)
+-->
+   (<scene-object> ^<attribute> <value>)
+}
+
+## Apply init-scene-smem -> sets argument1, argument2, initialize-scene-with-smem.
+sp {apply*init-scene-smem*copy-relations
+    :default
+   (state <s> ^operator.name init-scene-smem
+              ^flags <flags>
+              ^scene-smem <scene-smem>
+              ^scene <scene>)
+   (<flags> ^initialize-scene-with-smem true)
+   (<scene> ^objects.object <object1> <object2>)
+   (<object1> ^object-handle <argument1-object-handle>)
+   (<object2> ^object-handle <argument2-object-handle>)
+   (<scene-smem> ^{ << above in on >> <relation> } <in-on-above2>)
+   (<in-on-above2> ^argument1.object-handle <argument1-object-handle>
+                   ^argument2.object-handle <argument2-object-handle>)
+  -{(<scene> ^{ << above in on >> <relation> } <in-on-above>)
+    (<in-on-above> ^argument1.object-handle <argument1-object-handle>
+                   ^argument2.object-handle <argument2-object-handle>)}
+-->
+   (<scene> ^<relation> <in-on-above3>)
+   (<in-on-above3> ^argument1 <object1>
+                   ^argument2 <object2>)
+   (<flags> ^initialize-scene-with-smem true -)
+}

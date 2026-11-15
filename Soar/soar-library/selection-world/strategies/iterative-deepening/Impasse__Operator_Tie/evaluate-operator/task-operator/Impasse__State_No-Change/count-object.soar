@@ -1,0 +1,31 @@
+## count-object.soar -- selection-world: 1 proposal, 1 application.
+
+## ---- operator proposal ----
+
+## Propose count-object.
+sp {selection-world*propose*failure-evaluation*count-object
+   :default
+   (state <s> ^name failure-evaluation
+              ^world.objects.object <object>
+             -^counted-object-handle <object-handle>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name count-object
+         ^object <object>)
+}
+
+## ---- operator application ----
+
+## Apply count-object -> sets feature-count, counted-object-handle.
+sp {selection-world*apply*count-object
+   :default
+   (state <s> ^operator <op>
+              ^feature-count <feature-count>)
+   (<op> ^name count-object
+         ^object.object-handle <object-handle>)
+-->
+   (<s> ^feature-count (+ 1 <feature-count>)
+                       <feature-count> -
+        ^counted-object-handle <object-handle>)
+}

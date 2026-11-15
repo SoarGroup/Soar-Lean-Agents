@@ -1,0 +1,33 @@
+Content fixes applied after the move (see patches.py):
+P-001  agent-world/elaborations/achieved-desireds.soar
+    agent-world*elaborate*desired-count3*achieved-3 tested the unbound variable <desired> instead of <desired1>, so it matched with only two achieved desireds and reported success early (Blocks World false success).
+P-002  thor-soar/elaborations/flags-initialization.soar
+    Removed the attend-all flag from the Thor flag initialization (P-003 deletes its only rule).
+P-004  selection-world/Operator_Tie/evaluate-operator/elaborations.soar
+    Look-ahead world copies: relations the task declares with ^copy-relation on its problem space are copied (on/above/in are still always copied). Replaces per-task copy rules.
+P-005  agent-world/Impasse__Operator_Tie/evaluate-operator/elaborations.soar
+    Look-ahead desireds: any relation-shaped desired value (argument1.object-handle and argument2.object-handle) is copied, not only on/in/controlled-by/above.
+P-007  thor-soar/elaborations/flags-initialization.soar
+    Thor flag initialization now creates ^flag-override (copied into ^flags by agent-world) instead of ^flags itself.
+P-009  thor-soar/elaborations/flags-initialization.soar
+    Retired the look-ahead-planning flag (always true): removed from the Thor flag initialization.
+P-010  thor-soar/elaborations/flags-initialization.soar
+    Retired the forget-unattended flag (always false): removed from the Thor flag initialization.
+P-006  (all rule files, 33 substitutions)
+    Deprecated ^problem-space.agent-world: rules no longer test it (31 rules), Thor no longer sets it. All tasks use the agent-world structure.
+P-003  object-world/elaborations/attend-all.soar (deleted)
+    Removed the attend-all flag: its only rule (agent-world*elaborate*state*attend*all-object, which attended every input-link object when ^flags.attend-all was true) is deleted. No rule tested the flag false.
+P-009  thor-soar/elaborations/random-operator-selection.soar (deleted)
+    Retired the look-ahead-planning flag (always true): the only rule that tested it false (thor-soar*select*operator, random operator selection) is deleted. No library rule tested the flag.
+P-010  object-world/remove-object.soar (deleted)
+    Retired the forget-unattended flag (always false): the remove-object operator was proposed only when it was true, so its proposal, preference and three application rules are deleted.
+P-010  thor-soar/from-agent-world/remove-object.soar (deleted)
+    Retired the forget-unattended flag: the Thor proposal of remove-object (agent-world*propose*remove-object*not-desired*hack) tested it true and is deleted.
+P-011  agent-world/elaborations/_all.soar (rule elaborate*substate*top-state deleted)
+    Duplicate of soar-base elaborate*state*top-state (same body); Soar ignored it. Deleted.
+P-011  thor-soar/elaborations/mobile.soar (rule elaborations*elaborate*state*mobile*true2 deleted)
+    Duplicate of elaborations*elaborate*state*mobile*true1 (same body); Soar ignored it. Deleted.
+P-007  (new files: agent-world/_flags.soar, selection-world/_flags.soar, selection-world/strategies/iterative-deepening/_flags.soar)
+    Flags convention: per-project _flags files with defaults, a generic ^flag-override copy rule in agent-world, ^flags created once on the top state by agent-world. Tasks and Thor set flags through ^flag-override.
+P-008  (all library rule files)
+    Cleanup: rule names conform to <project>*<phase>*<topic>, rules grouped elaborate/propose/compare/apply, a comment on every file and rule, blank lines collapsed. Old to new names are in rule-renames.csv.

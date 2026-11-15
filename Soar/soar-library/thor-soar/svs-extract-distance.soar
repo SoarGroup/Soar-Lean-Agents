@@ -1,0 +1,49 @@
+## svs-extract-distance.soar -- thor-soar: 1 proposal, 1 compare, 1 application.
+
+## Propose svs-extract-distance.
+## init-soar
+## distance
+sp {thor-soar*propose*svs-extract-distance*no-distance
+    :default
+   (state <s> ^superstate nil
+              ^flags.explore true
+              ^name thor-soar
+              ^scene.objects <objects>)
+   (<objects> ^object <object>)
+   (<object> -^distance
+              ^derived-from-input.class)
+  -{(<objects> ^object { < <object> <object2> }) # So only get one instantiation.
+    (<object2> -^distance)}
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name svs-extract-distance
+               ^task-operator false)
+}
+
+## Preference for svs-extract-distance.
+sp {thor-soar*compare*svs-extract-distance
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name svs-extract-distance)
+   (<op2> ^name scan-room)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply svs-extract-distance -> sets extract, type, a ....
+sp {thor-soar*apply*svs-extract-distance*distance
+    :default
+   (state <s> ^name thor-soar
+              ^svs.command <cmd>
+              ^operator.name svs-extract-distance)
+-->
+   (<cmd> ^extract <filter>)
+   (<filter> ^type distance
+             ^a <robot>
+             ^b.type all_nodes
+             ^distance_type hull)
+   (<robot> ^type node
+            ^id robot_pos)
+}

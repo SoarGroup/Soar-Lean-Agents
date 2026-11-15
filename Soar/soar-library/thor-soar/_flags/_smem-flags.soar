@@ -1,0 +1,19 @@
+#########################################
+## _smem-flags
+## Created 2024/01/13
+#########################################
+
+smem -e
+#smem -s timers two
+#smem -s learning on
+#smem --set initial-variable-id 999000
+#smem --set activation-mode maximal-constraint 
+# cd ../../agent
+#smem --export thor-soar-semantic-memory.soar
+
+### places related to smem storage and retrieval
+## elaborations/smem-scene-copy - uncomment to have copy of scene recreated on top-state
+## init-thor-soar: apply*init-thor-soar*smem-retrieve retrieves structures as startup from smem
+##### classes - in-relations -- complete scene
+## elaboratrions/smem-scene-copy.soar - copies ^objects and ^room-name to scene-copy for smem store and later retreival
+## pause.soar - stores many structures in smem

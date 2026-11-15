@@ -1,0 +1,14 @@
+## reward.soar -- agent-world: 1 elaboration.
+
+## Elaborate state reward -> sets reward.
+## reward
+## Created 2024/01/13
+sp {agent-world*elaborate*state*reward
+   :default
+   (state <s>
+               ^flags.rl true
+               ^desireds <desireds>
+               ^reward-link <r>
+               ^success <desireds>)
+-->
+   (<r> ^reward.value 1.0)}

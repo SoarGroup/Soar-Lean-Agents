@@ -1,0 +1,37 @@
+## initialize-agent-world.soar -- agent-world: 1 proposal, 1 application.
+
+## ---- operator proposal ----
+
+## Propose initialize-agent-world.
+sp {agent-world*propose*initialize-agent-world
+   :default
+   (state <s> ^superstate nil
+             -^world <world>)
+-->
+   (<s> ^operator <o> +, >)
+   (<o> ^name initialize-agent-world
+         ^task-operator false)
+}
+
+## ---- operator application ----
+
+## Apply initialize-agent-world -> sets quiescence, top-state, external-top-state ....
+sp {agent-world*apply*init-agent-world
+   :default
+   (state <s> ^operator.name initialize-agent-world)
+-->
+   (<s> ^quiescence t
+        ^top-state <s>
+        ^external-top-state <s>
+        ^world <world>
+        ^scene.objects <scene-objects>
+        ^attends <attends>
+        ^real true
+        ^super-desireds <super-desireds>
+        ^smem-storage-structure.initial-in-relations <iir>)
+   (<world> ^objects <world-objects>
+            ^applied-count 0
+            ^real true
+            ^self <self>
+            ^anchored-world true)
+}

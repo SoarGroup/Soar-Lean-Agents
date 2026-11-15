@@ -1,0 +1,54 @@
+## drive.soar -- thor-soar: 2 proposals.
+
+## Propose drive.
+## Propose moving forward a default amount
+## (The current desired is to execute this action)
+sp {propose*drive*any*direction*no*distance*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle drive
+             ^argument-count 1
+             ^argument1 { <direction> << forward backward left right >>})
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name drive
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle drive
+               ^argument-count 1
+               ^argument1 <direction>
+               ^pre-conditions-satisfied true)
+}
+
+## Propose drive.
+## Propose moving forward a fixed amount
+## (The current desired is to execute this action)
+sp {propose*drive*any*direction*with*distance*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+          )#     ^unachieved-desireds-count [ 1 2 3 4 ])
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle drive
+             ^argument-count 2
+             ^argument1 { <direction> << forward backward left right >>}
+             ^argument2 <distance>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name drive
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle drive
+               ^argument-count 2
+               ^argument1 <direction>
+               ^argument2 <distance>
+               ^pre-conditions-satisfied true)
+}

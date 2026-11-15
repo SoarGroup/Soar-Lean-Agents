@@ -1,0 +1,28 @@
+## elaborations.soar -- selection-world: 3 elaborations.
+
+## Elaborate failure-evaluation substate selection-superstate -> sets selection-s.
+sp {selection-world*elaborate*failure-evaluation*substate*selection-superstate
+   :default
+   (state <s> ^name failure-evaluation
+              ^superstate.selection-superstate <ss>)
+-->
+   (<s> ^selection-superstate <ss>)
+}
+
+## Elaborate failure-evaluation substate world.
+sp {selection-world*elaborate*failure-evaluation*substate*world
+   :default
+   (state <s> ^name failure-evaluation
+              ^superstate.world <w>)
+-->
+   (<s> ^world <w>)
+}
+
+## Elaborate failure-evaluation substate world2.
+sp {selection-world*elaborate*failure-evaluation*substate*world2
+   :default
+   (state <s> ^name failure-evaluation
+              ^superstate.superstate.world <w>)
+-->
+   (<s> ^world <w>)
+}

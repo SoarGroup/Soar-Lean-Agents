@@ -1,0 +1,5 @@
+# Library projects, in load order. Source this file from the directory it is in (pushd first).
+source soar-base.soar
+source selection-world.soar
+source agent-world.soar
+source object-world.soar

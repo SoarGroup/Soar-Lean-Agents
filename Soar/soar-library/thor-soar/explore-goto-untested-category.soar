@@ -1,0 +1,67 @@
+## explore-goto-untested-category.soar -- thor-soar: 1 elaboration, 1 proposal, 1 application.
+
+## Elaborate explore no-reachable-untested -> sets untested-unreachable-object.
+sp {explore*no-reachable-untested
+    :default
+   (state <s> ^name thor-soar
+              ^scene.objects <objects>
+             -^scene.in.argument1 <object>  #filled in by explore-receptacles
+              ^explore-structure <es>)
+   (<es> ^classes <classes>
+        -^current-class)
+   (<objects> ^object <object>)  # An object exists of an untested class that is unreachable
+   (<object> -^reachable true
+             -^failed-go-to true
+              ^class { <> sink <class-handle> }) #No object exists of that class that is reachable
+  -{(<objects> ^object <object2>)
+    (<object2> ^reachable true
+               ^class <class-handle>)}
+  -(<classes> ^class.class-handle <class-handle>)
+-->
+   (<classes> ^untested-unreachable-object <object>)
+}
+
+## Propose go-to.
+sp {thor-soar*propose*explore-goto-untested-class
+    :default
+   (state <s> ^name thor-soar
+              ^flags.explore true
+              ^explore-structure.classes <classes>)
+   (<classes> ^untested-unreachable-object <object>)
+   (<object> ^distance <distance>)
+  -{(<classes> ^untested-unreachable-object <object2>)
+    (<object2> ^distance < <distance>)}
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name go-to
+         ^sub-name go-to-untested-class
+         ^task-operator true
+         ^explore-operator true
+         ^argument1 <object>
+         ^argument-count 1
+         ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.self.mobile true)
+}
+
+## Apply go-to -> sets perform-action, failed-go-to.
+sp {apply*explore-goto-untested-class*error
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^explore-structure <es>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^<< object argument1 >> <object-handle>
+         ^status error)
+   (<op> ^name go-to
+         ^sub-name go-to-untested-class
+         ^task-operator true
+         ^argument1 <object>
+         ^argument-count 1)
+   (<object> ^object-handle <object-handle>)
+-->
+   (log 1 (crlf) | !!!!! Action: go-to-untested-class failed | <object-handle> | !!!!!|)
+   (<output> ^perform-action <pa> -)
+   (<object> ^failed-go-to true)
+}

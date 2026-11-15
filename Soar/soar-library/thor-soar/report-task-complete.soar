@@ -1,0 +1,28 @@
+## report-task-complete.soar -- thor-soar: 1 proposal, 1 application.
+
+## Propose report-task-complete.
+sp {thor-soar*propose*report-task-complete
+    :default
+   (state <s> ^desireds <desireds>
+              ^success <desireds>
+              ^superstate.operator <ss-operator>)
+   (<ss-operator> ^effect-desireds <desireds>
+                  ^super-desired.completed-task <task>)
+-->
+   (<s> ^operator <operator> + !)
+   (<operator> ^name report-task-complete
+               ^task <task>)
+}
+
+## Apply report-task-complete -> sets completed-task.
+## This flag will cause the desired to be achieved
+sp {thor-soar*apply*report-task-complete
+    :default
+   (state <s> ^operator <operator>
+              ^top-state.world <world>)
+   (<operator> ^name report-task-complete
+               ^task <task>)
+   (<world> ^anchored-world true)
+-->
+   (<world> ^completed-task <task>)
+}

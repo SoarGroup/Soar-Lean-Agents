@@ -1,0 +1,17 @@
+## elaborations.soar -- selection-world: 1 application.
+
+## Apply evaluate-operator -> sets symbolic-value.
+sp {selection-world*apply*evaluate-operator*evaluation*failure*constraint-failure
+   :default
+   (state <rej-state-imp> ^selection-superstate <sstate>
+                          ^attribute operator
+                          ^impasse constraint-failure
+                          ^quiescence t)
+   (<sstate> ^evaluation <evaluation2>
+             ^operator <operator2>
+             ^quiescence t)
+   (<operator2> ^name evaluate-operator
+                ^evaluation <evaluation2>)
+   (<evaluation2> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation2> ^symbolic-value exhaustion-failure)}

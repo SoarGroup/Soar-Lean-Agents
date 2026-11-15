@@ -1,0 +1,133 @@
+## explore-in-receptacle-object.soar -- thor-soar: 5 elaborations, 1 proposal, 3 applications.
+
+## Elaborate achieved explore-in-receptacle no-object -> sets achieved.
+sp {thor-soar*elaborate*achieved*explore-in-receptacle*no-object
+   :i-support
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds <desireds>
+              ^external-top-state.scene <scene>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+   (<scene> ^objects.object <object>)
+   (<object> ^object-handle <receptacle-handle>
+             ^open true)
+  -(<scene> ^in.argument2.object-handle <receptacle-handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Apply operator achieved explore-in-receptacle no-object -> sets achieved.
+sp {thor-soar*elaborate*operator*achieved*explore-in-receptacle*no-object
+    :default
+   (state <s> ^operator.desireds <desireds>
+              ^external-top-state.scene <scene>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+   (<scene> ^objects.object <object>)
+   (<object> ^object-handle <receptacle-handle>
+             ^open true)
+  -(<scene> ^in.argument2.object-handle <receptacle-handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate operator unachieved explore-in-receptacle object-not-processed -> sets unachieved.
+sp {thor-soar*elaborate*operator*unachieved*explore-in-receptacle*object-not-processed
+   :i-support
+    :default
+   (state <s> ^operator.desireds <desireds>
+              ^flags.explore-receptacles true
+              ^external-top-state.scene <scene>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+   (<scene> ^in <in>)
+   (<in> ^argument1 <object>
+         ^argument2.object-handle <receptacle-handle>)
+  -(<s> ^initial-in-relations.in <in>)
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate achieved explore-in-receptacle object-not-processed -> sets unachieved.
+sp {thor-soar*elaborate*achieved*explore-in-receptacle*object-not-processed
+   :i-support
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds <desireds>
+              ^flags.explore-receptacles true
+              ^external-top-state.scene <scene>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+   (<scene> ^in <in>)
+   (<in> ^argument1 <object>
+         ^argument2.object-handle <receptacle-handle>)
+  -(<s> ^initial-in-relations.in <in>)
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate operator achieved explore-in-receptacle no-objectx -> sets achieved.
+sp {thor-soar*elaborate*operator*achieved*explore-in-receptacle*no-objectx
+   :i-support
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+              -^unachieved <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate achieved explore-in-receptacle no-objectx -> sets achieved.
+sp {thor-soar*elaborate*achieved*explore-in-receptacle*no-objectx
+   :i-support
+    :default
+   (state <s> ^operator.desireds <desireds>)
+   (<desireds> ^desired <desired>
+              -^unachieved <desired>)
+   (<desired> ^explore-in-receptacle-handle <receptacle-handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Propose explore-in-receptacle-object.
+sp {thor-soar*propose*explore-in-receptacle*found-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds.desired.explore-in-receptacle-handle <receptacle-handle>
+             -^external-top-state.initial-in-relations.in <in>
+              ^external-top-state.scene.in <in>)
+   (<in> ^argument2 <receptacle>)
+   (<receptacle> ^object-handle <receptacle-handle>
+                 ^open true
+                 ^openable true)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-in-receptacle-object
+         ^argument1 <in>)
+}
+
+## Apply explore-in-receptacle-object -> sets in.
+sp {apply*explore-in-receptacle
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.initial-in-relations <iir>)
+   (<op> ^name explore-in-receptacle-object
+         ^argument1 <in>)
+-->
+   (<iir> ^in <in>)
+}
+
+## Apply explore-in-receptacle-object -> sets graspable, initially-hidden.
+sp {apply*explore-in-receptacle*graspable
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.world.room-name <room-name>)
+   (<op> ^name explore-in-receptacle-object
+         ^argument1.argument1 <argument1>)
+-->
+   (<argument1> ^graspable true
+                ^initially-hidden <room-name>)
+}

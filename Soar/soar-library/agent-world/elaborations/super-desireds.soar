@@ -1,0 +1,19 @@
+## super-desireds.soar -- agent-world: 2 elaborations.
+
+## Elaborate super-desireds substate super-desireds desired -> sets desired.
+sp {agent-world*elaborate*super-desireds*substate*super-desireds*desired
+   :default
+   (state <s> ^desireds.desired <desired>
+              ^super-desireds <super-desireds>)
+-->
+   (<super-desireds> ^desired <desired>)
+}
+
+## Elaborate super-desireds substate desired -> sets desired.
+sp {agent-world*elaborate*super-desireds*substate*desired
+   :default
+   (state <s> ^superstate.super-desireds.desired <desired>
+              ^super-desireds <super-desireds>)
+-->
+   (<super-desireds> ^desired <desired>)
+}

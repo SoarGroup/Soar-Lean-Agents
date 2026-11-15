@@ -1,0 +1,29 @@
+## force-conflict.soar -- thor-soar: 2 compares.
+
+## Preference for force-conflict.
+sp {agent-world*compare*force-conflict
+   :default
+   (state <s>
+              ^desireds.verify true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name force-conflict)
+   (<op2> ^name <> force-conflict <> turn-off
+          ^task-operator true)
+-->
+   (<s> ^operator <op1> < <op2>
+        ^operator <op1> > <op2>)
+}
+
+## Preference for force-conflict reject only-one-option.
+sp {agent-world*compare*force-conflict*reject*only-one-option
+   :default
+   (state <s>
+              ^operator <op1> +)
+  -{(<s> ^operator { <> <op1> <op2> }  +)
+   (<op2> ^name <> force-conflict <> turn-off
+          ^task-operator true)}
+   (<op1> ^name force-conflict)
+-->
+   (<s> ^operator <op1> -)
+}

@@ -1,0 +1,49 @@
+## problem-space.soar -- thor-soar: 3 elaborations, 1 application.
+
+## Elaborate problem-space thor-world -> sets problem-space.
+sp {elaborate*problem-space*thor-world
+    :default
+   (state <s> ^name thor-soar)
+-->
+   (<s> ^problem-space <problem-space>)
+   (<problem-space> ^name thor-world)}
+
+## Apply thor-world -> sets problem-space.
+sp {elaborate*problem-space*operator-subgoal
+    :default
+   (state <s> ^superstate <superstate>
+             -^name thor-soar
+              ^impasse no-change
+              ^attribute operator)
+   (<superstate> ^operator <operator>)
+  -(<operator> ^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <problem-space>)
+   (<problem-space> ^name thor-world)
+}
+
+## Elaborate problem-space -> sets default-state-copy, default-operator-copy, dont-copy ....
+sp {elaborate*problem-space
+    :default
+   (state <s> ^name <> selection
+              ^problem-space <problem-space>)
+   (<problem-space> ^name << cook thor-world move >>)
+-->
+   (<problem-space> ^default-state-copy no
+                    ^default-operator-copy no
+                    ^dont-copy top-state
+                    ^default-desired-copy no
+                    ^dont-copy-object-attribute accessible)
+}
+
+## Elaborate problem-space name.
+sp {thor-soar*elaborate*problem-space*name
+   :i-support
+    :default
+   (state <s> ^superstate.operator.task-handle <task-handle>
+              ^effect-desireds <desireds>
+              ^desireds <desireds>
+              ^problem-space <problem-space>)
+-->
+   (<problem-space> ^name thor-world)
+}

@@ -1,0 +1,39 @@
+## output.soar -- agent-world: 3 elaborations.
+
+## Elaborate operator remove-command -> sets perform-ac.
+sp {agent-world*elaborate*operator*remove-command
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^io.output-link <ol>)
+   (<ol> ^perform-action <value>)
+   (<value> ^status << interrupted complete success >>) #error
+-->
+   (<ol> ^perform-action <value> -)
+}
+
+## Elaborate top-state any remove completed agent-event -> sets agent-e.
+## Apply Rule for any top-state operator:
+## If an agent-event on the output-link is marked complete,
+sp {agent-world*elaborate*top-state*any*remove*completed*agent-event
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^io.output-link <out>)
+   (<out> ^agent-event <event>)
+   (<event> ^status complete)
+-->
+   (<out> ^agent-event <event> -)
+}
+
+## Elaborate operator error.
+sp {agent-world*elaborate*operator*error
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^io.output-link.perform-action <perform-action>)
+   (<perform-action> ^status error
+                     ^error-info <string>)
+-->
+   (log 1 (crlf) |Output Error: | <string>)
+}

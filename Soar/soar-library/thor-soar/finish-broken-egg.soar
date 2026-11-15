@@ -1,0 +1,164 @@
+## finish-broken-egg.soar -- thor-soar: 1 proposal, 5 applications.
+
+## Propose finish-broken-egg.
+sp {thor-soar*propose*finish-broken-egg
+ #  :interrupt
+    :default
+   (state <s>  ^world <world>)
+   (<world> ^future-event <broken-egg-event>
+            ^time <time>
+            ^real true)
+   (<broken-egg-event> ^type broken-egg
+                       ^completion-time <= <time>)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+}
+
+## Apply finish-broken-egg -> sets future-event, object, anchored ....
+sp {apply*finish-broken-egg*microwave
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>
+              ^world <world>)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+   (<world> ^future-event <broken-egg-event>
+            ^objects <world-objects>)
+   (<world-objects> -^object.object-handle <new-egg-object-handle>)
+   (<broken-egg-event> ^type broken-egg
+                       ^argument1 <egg-object>
+                       ^argument2 <microwave-object>
+                       ^argument3 <new-egg-object>)
+   (<scene> ^objects <objects>)
+   (<objects> ^object <microwave-object>
+                      <egg-object2>)
+   (<egg-object> ^object-handle <original-egg-object-handle>)
+   (<egg-object2> ^object-handle <original-egg-object-handle>)
+   (<microwave-object> ^object-handle <microwave-object-handle>
+                       ^class microwave
+                       ^contains-object-handle <new-egg-object-handle>)
+  -{(<objects> ^object <object3>)
+    (<object3> ^object-handle <new-egg-object-handle>
+               ^class eggcracked)}
+-->
+   (log 1 (crlf) |Apply finish broken egg.|)
+   (<world> ^future-event <broken-egg-event> -)
+   (<objects> ^object <new-egg-object>
+              ^object <egg-object2> -)
+   (<world-objects> ^object <egg-object> -
+                            <egg-object2> -)
+   (<new-egg-object> ^anchored true
+                     ^class eggcracked
+                     ^origin-object-handle <original-egg-object-handle>
+                     ^object-handle <new-egg-object-handle>
+                     ^broken true
+                     ^cookable true
+                     ^breakable false
+                     ^grabbed false
+                     ^dirty false
+                     ^graspable true
+                     ^surface false
+                     ^cook-state raw)
+}
+
+## Apply finish-broken-egg -> sets future-event, object.
+sp {apply*finish-broken-egg*microwave2
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>
+              ^world <world>)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+   (<world> ^future-event <broken-egg-event>
+            ^objects <world-objects>)
+   (<world-objects> ^object.object-handle <new-egg-object-handle>
+                    ^object <egg-object>)
+   (<broken-egg-event> ^type broken-egg
+                       ^argument1 <egg-object>
+                       ^argument2 <microwave-object>)
+   (<scene> ^objects <objects>)
+   (<objects> ^object <microwave-object>)
+   (<egg-object> ^object-handle <original-egg-object-handle>)
+   (<microwave-object> ^object-handle <microwave-object-handle>
+                       ^class microwave
+                       ^contains-object-handle <new-egg-object-handle>)
+   (<objects> ^object <object3>)
+   (<object3> ^object-handle <new-egg-object-handle>
+              ^origin-object-handle <original-egg-object-handle>
+              ^class eggcracked)
+-->
+   (log 1 (crlf) |Apply finish broken egg.|)
+   (<world> ^future-event <broken-egg-event> -)
+   (<world-objects> ^object <egg-object> -)
+}
+
+## Apply finish-broken-egg -> sets future-event, object.
+sp {apply*finish-broken-egg*microwave3
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>
+              ^world <world>)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+   (<world> ^future-event <broken-egg-event>
+            ^objects <world-objects>)
+   (<world-objects> ^object.object-handle <new-egg-object-handle>)
+   (<broken-egg-event> ^type broken-egg
+                       ^argument1 <egg-object>
+                       ^argument2 <microwave-object>)
+   (<scene> ^objects <objects>)
+   (<objects> ^object <microwave-object>)
+   (<egg-object> ^object-handle <original-egg-object-handle>)
+   (<microwave-object> ^object-handle <microwave-object-handle>
+                       ^class microwave
+                       ^contains-object-handle <new-egg-object-handle>)
+  -{(<objects> ^object <object3>)
+    (<object3> ^object-handle <new-egg-object-handle>
+               ^origin-object-handle <original-egg-object-handle>
+               ^class eggcracked)}
+-->
+   (log 1 (crlf) |Apply finish broken egg. Remove future event|)
+   (<world> ^future-event <broken-egg-event> -)
+   (<world-objects> ^object <egg-object> -)
+   (<objects> ^object <egg-object> -)
+}
+
+## Apply finish-broken-egg -> sets contains-object-handle.
+sp {apply*finish-broken-egg*remove-old
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+   (<broken-egg-event> ^type broken-egg
+                       ^argument1.object-handle <egg-object-handle>)
+   (<scene> ^objects.object <object>)
+   (<object> ^contains-object-handle <egg-object-handle>)
+-->
+   (<object> ^contains-object-handle <egg-object-handle> -)
+}
+
+## Apply finish-broken-egg -> sets on, argument1, argument2.
+sp {apply*finish-broken-egg*on
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>
+              ^world <world>)
+   (<operator> ^name finish-broken-egg
+               ^future-event <broken-egg-event>)
+   (<world> ^future-event <broken-egg-event>)
+   (<broken-egg-event> ^type broken-egg
+                       ^argument3 <new-egg-object>)
+   (<scene> ^objects <objects>)
+   (<objects> ^object <plate-object>)
+   (<plate-object> ^object-handle <plate-object-handle>
+                   ^class plate
+                   ^contains-object-handle <new-egg-object-handle>)
+  -(<objects> ^object.object-handle <new-egg-object-handle>)
+-->
+   (<scene> ^on <on>)
+   (<on> ^argument1 <new-egg-object>
+         ^argument2 <plate-object>)
+}

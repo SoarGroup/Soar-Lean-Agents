@@ -1,0 +1,50 @@
+## remove-evaluation.soar -- selection-world: 1 proposal, 1 compare, 1 application.
+
+## ---- operator proposal ----
+
+## Propose remove-evaluation: the evaluated operator is no longer proposed in the superstate (v2.30).
+## Through v2.29 it was proposed when the operator was no longer a tied ^item. An operator also leaves the item set when a
+## preference made from its own evaluation filters it out (a failure-cutoff worst preference); removing the evaluation
+## then retracted that preference, the operator returned to the tie and was evaluated again, in a loop (seen with
+## iterative-step tie-impasse, cost-metric unit and optimize true).
+sp {selection-world*propose*selection*remove-evaluation
+   :default
+   (state <s> ^name selection
+             -^item <item>
+              ^superstate <ss>
+              ^evaluation <evaluation>)
+   (<evaluation> ^super-operator <item>)
+  -(<ss> ^operator <item> +)
+-->
+   (<s> ^operator <operator> +, =, >)
+   (<operator> ^name remove-evaluation
+               ^evaluation <evaluation>)}
+
+## ---- evaluate / compare ----
+
+## Preference for selection remove-evaluation.
+sp {selection-world*compare*selection*remove-evaluation
+   :default
+   (state <s> ^name selection
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name remove-evaluation)
+   (<op2> ^name << decrement-remaining-operators init-current-evaluation-depth >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply remove-evaluation -> sets evaluation.
+sp {selection-world*apply*remove-evaluation
+   :default
+   (state <s> ^operator <op>
+              ^evaluation <evaluation>)
+   (<op> ^name remove-evaluation
+               ^evaluation <evaluation>)
+   (<evaluation> ^super-operator <item>)
+-->
+   (write (crlf) |Remove | <evaluation> | as there is no longer the tied item: | <item>)
+   (<s> ^evaluation <evaluation> -)
+}

@@ -1,0 +1,493 @@
+#Loaded ontop of BW-LA
+#     1: O: O1 (initialize-blocks-world)
+#Simple Blocks World - just move blocks.
+#Initial state has C on A, A on table, and B on the table.
+#The goal is to get A on B on C on the table.
+#     2: ==>S: S2 (operator tie)
+#     3:    O: O9 (evaluate-operator)
+#     4:    ==>S: S3 (operator no-change)
+#     5:       O: C7 (move-block)
+#  APPLYING C7: move-block(C,B)
+#     6:       O: O18 (move-block)
+#  APPLYING O18: move-block(A,C)
+#     7:       ==>S: S4 (state no-change)
+#     8:          ==>S: S5 (state no-change)
+#     9:    O: O8 (evaluate-operator)
+#    10:    ==>S: S6 (operator no-change)
+#    11:       O: C14 (move-block)
+#  APPLYING C14: move-block(C,table)
+#    12:       ==>S: S7 (operator tie)
+#    13:          O: O34 (evaluate-operator)
+#    14:          ==>S: S8 (operator no-change)
+#    15:             O: C19 (move-block)
+#  APPLYING C19: move-block(B,C)
+#    16:             O: O36 (move-block)
+#  APPLYING O36: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    17:          O: O33 (evaluate-operator)
+#    18:          ==>S: S9 (operator no-change)
+#    19:             O: C22 (move-block)
+#  APPLYING C22: move-block(A,B)
+#    20:             O: O48 (move-block)
+#  APPLYING O48: move-block(C,A)
+#    21:             ==>S: S10 (state no-change)
+#    22:                ==>S: S11 (state no-change)
+#    23:          O: O31 (evaluate-operator)
+#    24:          ==>S: S12 (operator no-change)
+#    25:             O: C29 (move-block)
+#  APPLYING C29: move-block(B,A)
+#    26:             O: O56 (move-block)
+#  APPLYING O56: move-block(C,B)
+#    27:             ==>S: S13 (state no-change)
+#    28:                ==>S: S14 (state no-change)
+#    29:          O: O32 (evaluate-operator)
+#    30:          ==>S: S15 (operator no-change)
+#    31:             O: C36 (move-block)
+#  APPLYING C36: move-block(A,C)
+#    32:             O: O64 (move-block)
+#  APPLYING O64: move-block(B,A)
+#    33:             ==>S: S16 (state no-change)
+#    34:                ==>S: S17 (state no-change)
+#    35:       O: O23 (move-block)
+#  APPLYING O23: move-block(B,C)
+#    36:       O: O30 (move-block)
+#  APPLYING O30: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    37:    O: O10 (evaluate-operator)
+#    38:    ==>S: S18 (operator no-change)
+#    39:       O: C43 (move-block)
+#  APPLYING C43: move-block(B,C)
+#    40:       ==>S: S19 (state no-change)
+#    41:          ==>S: S20 (state no-change)
+#    42: O: O5 (move-block)
+#  APPLYING O5: move-block(C,table)
+#    43: ==>S: S21 (operator tie)
+#    44:    O: O88 (evaluate-operator)
+#    45:    ==>S: S22 (operator no-change)
+#    46:       O: C52 (move-block)
+#  APPLYING C52: move-block(C,B)
+#    47:       O: O90 (move-block)
+#  APPLYING O90: move-block(A,C)
+#    48:       ==>S: S23 (state no-change)
+#    49:          ==>S: S24 (state no-change)
+#    50:    O: O85 (evaluate-operator)
+#    51:    ==>S: S25 (operator no-change)
+#    52:       O: C59 (move-block)
+#  APPLYING C59: move-block(C,A)
+#    53:       O: O101 (move-block)
+#  APPLYING O101: move-block(B,C)
+#    54:       ==>S: S26 (state no-change)
+#    55:          ==>S: S27 (state no-change)
+#    56:    O: O87 (evaluate-operator)
+#    57:    ==>S: S28 (operator no-change)
+#    58:       O: C66 (move-block)
+#  APPLYING C66: move-block(A,B)
+#    59:       O: O113 (move-block)
+#  APPLYING O113: move-block(C,A)
+#    60:       ==>S: S29 (state no-change)
+#    61:          ==>S: S30 (state no-change)
+#    62:    O: O89 (evaluate-operator)
+#    63:    ==>S: S31 (operator no-change)
+#    64:       O: C73 (move-block)
+#  APPLYING C73: move-block(B,C)
+#    65:       O: O118 (move-block)
+#  APPLYING O118: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    66:    O: O86 (evaluate-operator)
+#    67:    ==>S: S32 (operator no-change)
+#    68:       O: C76 (move-block)
+#  APPLYING C76: move-block(A,C)
+#    69:       O: O128 (move-block)
+#  APPLYING O128: move-block(B,A)
+#    70:       ==>S: S33 (state no-change)
+#    71:          ==>S: S34 (state no-change)
+#    72:    O: O84 (evaluate-operator)
+#    73:    ==>S: S35 (operator no-change)
+#    74:       O: C83 (move-block)
+#  APPLYING C83: move-block(B,A)
+#    75:       O: O138 (move-block)
+#  APPLYING O138: move-block(C,B)
+#    76:       ==>S: S36 (state no-change)
+#    77:          ==>S: S37 (state no-change)
+#    78: O: O7 (move-block)
+#  APPLYING O7: move-block(B,C)
+#    79: ==>S: S38 (operator tie)
+#    80:    O: O145 (evaluate-operator)
+#    81:    ==>S: S39 (operator no-change)
+#    82:       O: C92 (move-block)
+#  APPLYING C92: move-block(B,A)
+#    83:       O: O154 (move-block)
+#  APPLYING O154: move-block(C,B)
+#    84:       ==>S: S40 (state no-change)
+#    85:          ==>S: S41 (state no-change)
+#    86:    O: O146 (evaluate-operator)
+#    87:    ==>S: S42 (operator no-change)
+#    88:       O: C99 (move-block)
+#  APPLYING C99: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    89:    O: O144 (evaluate-operator)
+#    90:    ==>S: S43 (operator no-change)
+#    91:       O: C102 (move-block)
+#  APPLYING C102: move-block(B,table)
+#    92:       ==>S: S44 (operator tie)
+#    93:          O: O174 (evaluate-operator)
+#    94:          ==>S: S45 (operator no-change)
+#    95:             O: C107 (move-block)
+#  APPLYING C107: move-block(A,C)
+#    96:             O: O181 (move-block)
+#  APPLYING O181: move-block(B,A)
+#    97:             ==>S: S46 (state no-change)
+#    98:                ==>S: S47 (state no-change)
+#    99:          O: O176 (evaluate-operator)
+#   100:          ==>S: S48 (operator no-change)
+#   101:             O: C114 (move-block)
+#  APPLYING C114: move-block(C,A)
+#   102:             O: O189 (move-block)
+#  APPLYING O189: move-block(B,C)
+#   103:             ==>S: S49 (state no-change)
+#   104:                ==>S: S50 (state no-change)
+#   105:          O: O177 (evaluate-operator)
+#   106:          ==>S: S51 (operator no-change)
+#   107:             O: C121 (move-block)
+#  APPLYING C121: move-block(A,B)
+#   108:             O: O201 (move-block)
+#  APPLYING O201: move-block(C,A)
+#   109:             ==>S: S52 (state no-change)
+#   110:                ==>S: S53 (state no-change)
+#   111:       O: O172 (move-block)
+#  APPLYING O172: move-block(C,B)
+#   112:       O: O171 (move-block)
+#  APPLYING O171: move-block(A,C)
+#   113:       ==>S: S54 (state no-change)
+#   114:          ==>S: S55 (state no-change)
+#   115: O: O83 (move-block)
+#  APPLYING O83: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#Interrupt received.
+#This Agent halted.
+#
+#An agent halted during the run.
+#stats
+#Soar 9.6.0 on DESKTOP-B3NEA79 at Fri Dec 30 12:58:22 2022
+#
+#105 productions (88 default, 17 user, 0 chunks)
+#   + 0 justifications
+#                                                        |   Computed
+#Phases:      Input   Propose   Decide   Apply    Output |     Totals
+#========================================================|===========
+#Kernel:      0.000    0.000    0.001    0.006    0.003  |      0.010
+#========================================================|===========
+#Input fn:    0.000                                      |      0.000
+#========================================================|===========
+#Outpt fn:                                        0.000  |      0.000
+#========================================================|===========
+#Callbcks:    0.000    0.000    0.000    0.000    0.000  |      0.000
+#========================================================|===========
+#Computed------------------------------------------------+-----------
+#Totals:      0.000    0.000    0.001    0.006    0.003  |      0.010
+#
+#Values from single timers:
+# Kernel CPU Time:       0.009 sec. 
+# Total  CPU Time:       0.010 sec.
+#
+#115 decisions (0.082 msec/decision)
+#496 elaboration cycles (4.313 ec's per dc, 0.019 msec/ec)
+#496 inner elaboration cycles
+#80 p-elaboration cycles (0.696 pe's per dc, 0.118 msec/pe)
+#1694 production firings (3.415 pf's per ec, 0.006 msec/pf)
+#5972 wme changes (3020 additions, 2952 removals)
+#WM size: 68 current, 217.770 mean, 347 maximum
+#srand 1
+#Random number generator seed set to 1
+#chunk only 
+#Learns rules in states: only
+#run
+#
+#An agent halted during the run.
+#init-soar
+#     0: ==>S: S1
+#
+#Agent reinitialized.
+#run
+#     1: O: O1 (initialize-blocks-world)
+#Simple Blocks World - just move blocks.
+#Initial state has C on A, A on table, and B on the table.
+#The goal is to get A on B on C on the table.
+#     2: ==>S: S2 (operator tie)
+#     3:    O: O9 (evaluate-operator)
+#     4:    ==>S: S3 (operator no-change)
+#     5:       O: C7 (move-block)
+#  APPLYING C7: move-block(C,B)
+#     6:       O: O18 (move-block)
+#  APPLYING O18: move-block(A,C)
+#     7:       ==>S: S4 (state no-change)
+#     8:          ==>S: S5 (state no-change)
+#     9:    O: O8 (evaluate-operator)
+#    10:    ==>S: S6 (operator no-change)
+#    11:       O: C14 (move-block)
+#  APPLYING C14: move-block(C,table)
+#    12:       ==>S: S7 (operator tie)
+#    13:          O: O34 (evaluate-operator)
+#    14:          ==>S: S8 (operator no-change)
+#    15:             O: C19 (move-block)
+#  APPLYING C19: move-block(B,C)
+#    16:             O: O36 (move-block)
+#  APPLYING O36: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    17:          O: O33 (evaluate-operator)
+#    18:          ==>S: S9 (operator no-change)
+#    19:             O: C22 (move-block)
+#  APPLYING C22: move-block(A,B)
+#    20:             O: O48 (move-block)
+#  APPLYING O48: move-block(C,A)
+#    21:             ==>S: S10 (state no-change)
+#    22:                ==>S: S11 (state no-change)
+#    23:          O: O31 (evaluate-operator)
+#    24:          ==>S: S12 (operator no-change)
+#    25:             O: C29 (move-block)
+#  APPLYING C29: move-block(B,A)
+#    26:             O: O56 (move-block)
+#  APPLYING O56: move-block(C,B)
+#    27:             ==>S: S13 (state no-change)
+#    28:                ==>S: S14 (state no-change)
+#    29:          O: O32 (evaluate-operator)
+#    30:          ==>S: S15 (operator no-change)
+#    31:             O: C36 (move-block)
+#  APPLYING C36: move-block(A,C)
+#    32:             O: O64 (move-block)
+#  APPLYING O64: move-block(B,A)
+#    33:             ==>S: S16 (state no-change)
+#    34:                ==>S: S17 (state no-change)
+#    35:       O: O23 (move-block)
+#  APPLYING O23: move-block(B,C)
+#    36:       O: O30 (move-block)
+#  APPLYING O30: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#    37:    O: O10 (evaluate-operator)
+#    38:    ==>S: S18 (operator no-change)
+#    39:       O: C43 (move-block)
+#  APPLYING C43: move-block(B,C)
+#    40:       ==>S: S19 (state no-change)
+#    41:          ==>S: S20 (state no-change)
+#    42: O: O5 (move-block)
+#  APPLYING O5: move-block(C,table)
+#    43: O: O7 (move-block)
+#  APPLYING O7: move-block(B,C)
+#    44: ==>S: S21 (operator tie)
+#    45:    O: O86 (evaluate-operator)
+#    46:    ==>S: S22 (operator no-change)
+#    47:       O: C52 (move-block)
+#  APPLYING C52: move-block(B,A)
+#    48:       O: O95 (move-block)
+#  APPLYING O95: move-block(C,B)
+#    49:       ==>S: S23 (state no-change)
+#    50:          ==>S: S24 (state no-change)
+#    51:    O: O85 (evaluate-operator)
+#    52:    ==>S: S25 (operator no-change)
+#    53:       O: C59 (move-block)
+#  APPLYING C59: move-block(B,table)
+#    54:       ==>S: S26 (operator tie)
+#    55:          O: O110 (evaluate-operator)
+#    56:          ==>S: S27 (operator no-change)
+#    57:             O: C64 (move-block)
+#  APPLYING C64: move-block(C,A)
+#    58:             O: O114 (move-block)
+#  APPLYING O114: move-block(B,C)
+#    59:             ==>S: S28 (state no-change)
+#    60:                ==>S: S29 (state no-change)
+#    61:          O: O111 (evaluate-operator)
+#    62:          ==>S: S30 (operator no-change)
+#    63:             O: C71 (move-block)
+#  APPLYING C71: move-block(A,B)
+#    64:             O: O126 (move-block)
+#  APPLYING O126: move-block(C,A)
+#    65:             ==>S: S31 (state no-change)
+#    66:                ==>S: S32 (state no-change)
+#    67:          O: O109 (evaluate-operator)
+#    68:          ==>S: S33 (operator no-change)
+#    69:             O: C78 (move-block)
+#  APPLYING C78: move-block(C,B)
+#    70:             O: O130 (move-block)
+#  APPLYING O130: move-block(A,C)
+#    71:             ==>S: S34 (state no-change)
+#    72:                ==>S: S35 (state no-change)
+#    73:       O: O105 (move-block)
+#  APPLYING O105: move-block(A,C)
+#    74:       O: O101 (move-block)
+#  APPLYING O101: move-block(B,A)
+#    75:       ==>S: S36 (state no-change)
+#    76:          ==>S: S37 (state no-change)
+#    77: O: O83 (move-block)
+#  APPLYING O83: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#Interrupt received.
+#This Agent halted.
+#
+#An agent halted during the run.
+#p -c
+#chunk*selection*select*success-evaluation-becomes-best-preference*t28-41-1 
+#chunk*selection*select*success-evaluation-becomes-best-preference*OpNoChange*t28-34-1 
+#init-soar
+#     0: ==>S: S1
+#
+#Agent reinitialized.
+#srand 1
+#Random number generator seed set to 1
+#run
+#     1: O: O1 (initialize-blocks-world)
+#Simple Blocks World - just move blocks.
+#Initial state has C on A, A on table, and B on the table.
+#The goal is to get A on B on C on the table.
+#     2: O: O5 (move-block)
+#  APPLYING O5: move-block(C,table)
+#     3: O: O7 (move-block)
+#  APPLYING O7: move-block(B,C)
+#     4: ==>S: S2 (operator tie)
+#     5:    O: O14 (evaluate-operator)
+#     6:    ==>S: S3 (operator no-change)
+#     7:       O: C7 (move-block)
+#  APPLYING C7: move-block(B,A)
+#     8:       O: O23 (move-block)
+#  APPLYING O23: move-block(C,B)
+#     9:       ==>S: S4 (state no-change)
+#    10:          ==>S: S5 (state no-change)
+#    11:    O: O13 (evaluate-operator)
+#    12:    ==>S: S6 (operator no-change)
+#    13:       O: C14 (move-block)
+#  APPLYING C14: move-block(B,table)
+#    14:       ==>S: S7 (operator tie)
+#    15:          O: O39 (evaluate-operator)
+#    16:          ==>S: S8 (operator no-change)
+#    17:             O: C19 (move-block)
+#  APPLYING C19: move-block(A,B)
+#    18:             O: O45 (move-block)
+#  APPLYING O45: move-block(C,A)
+#    19:             ==>S: S9 (state no-change)
+#    20:                ==>S: S10 (state no-change)
+#    21:          O: O38 (evaluate-operator)
+#    22:          ==>S: S11 (operator no-change)
+#    23:             O: C26 (move-block)
+#  APPLYING C26: move-block(C,A)
+#    24:             O: O51 (move-block)
+#  APPLYING O51: move-block(B,C)
+#    25:             ==>S: S12 (state no-change)
+#    26:                ==>S: S13 (state no-change)
+#    27:          O: O36 (evaluate-operator)
+#    28:          ==>S: S14 (operator no-change)
+#    29:             O: C33 (move-block)
+#  APPLYING C33: move-block(A,C)
+#    30:             O: O61 (move-block)
+#  APPLYING O61: move-block(B,A)
+#    31:             ==>S: S15 (state no-change)
+#    32:                ==>S: S16 (state no-change)
+#    33:       O: O34 (move-block)
+#  APPLYING O34: move-block(C,B)
+#    34:       O: O33 (move-block)
+#  APPLYING O33: move-block(A,C)
+#    35:       ==>S: S17 (state no-change)
+#    36:          ==>S: S18 (state no-change)
+#    37: O: O11 (move-block)
+#  APPLYING O11: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#Interrupt received.
+#This Agent halted.
+#
+#An agent halted during the run.
+#p -c
+#chunk*selection*select*success-evaluation-becomes-best-preference*t28-41-1 
+#chunk*selection*select*success-evaluation-becomes-best-preference*OpNoChange*t28-34-1 
+#init-soar
+#     0: ==>S: S1
+#
+#Agent reinitialized.
+#srand 2
+#Random number generator seed set to 2
+#run
+#     1: O: O1 (initialize-blocks-world)
+#Simple Blocks World - just move blocks.
+#Initial state has C on A, A on table, and B on the table.
+#The goal is to get A on B on C on the table.
+#     2: O: O5 (move-block)
+#  APPLYING O5: move-block(C,table)
+#     3: O: O7 (move-block)
+#  APPLYING O7: move-block(B,C)
+#     4: ==>S: S2 (operator tie)
+#     5:    O: O15 (evaluate-operator)
+#     6:    ==>S: S3 (operator no-change)
+#     7:       O: C7 (move-block)
+#  APPLYING C7: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#     8:    O: O13 (evaluate-operator)
+#     9:    ==>S: S4 (operator no-change)
+#    10:       O: C10 (move-block)
+#  APPLYING C10: move-block(B,table)
+#    11:       ==>S: S5 (operator tie)
+#    12:          O: O35 (evaluate-operator)
+#    13:          ==>S: S6 (operator no-change)
+#    14:             O: C15 (move-block)
+#  APPLYING C15: move-block(C,A)
+#    15:             O: O39 (move-block)
+#  APPLYING O39: move-block(B,C)
+#    16:             ==>S: S7 (state no-change)
+#    17:                ==>S: S8 (state no-change)
+#    18:          O: O36 (evaluate-operator)
+#    19:          ==>S: S9 (operator no-change)
+#    20:             O: C22 (move-block)
+#  APPLYING C22: move-block(A,B)
+#    21:             O: O51 (move-block)
+#  APPLYING O51: move-block(C,A)
+#    22:             ==>S: S10 (state no-change)
+#    23:                ==>S: S11 (state no-change)
+#    24:          O: O34 (evaluate-operator)
+#    25:          ==>S: S12 (operator no-change)
+#    26:             O: C29 (move-block)
+#  APPLYING C29: move-block(C,B)
+#    27:             O: O55 (move-block)
+#  APPLYING O55: move-block(A,C)
+#    28:             ==>S: S13 (state no-change)
+#    29:                ==>S: S14 (state no-change)
+#    30:       O: O30 (move-block)
+#  APPLYING O30: move-block(A,C)
+#    31:       O: O26 (move-block)
+#  APPLYING O26: move-block(B,A)
+#    32:       ==>S: S15 (state no-change)
+#    33:          ==>S: S16 (state no-change)
+#    34:    O: O14 (evaluate-operator)
+#    35:    ==>S: S17 (operator no-change)
+#    36:       O: C40 (move-block)
+#  APPLYING C40: move-block(B,A)
+#    37:       O: O74 (move-block)
+#  APPLYING O74: move-block(C,B)
+#    38:       ==>S: S18 (state no-change)
+#    39:          ==>S: S19 (state no-change)
+#    40: O: O11 (move-block)
+#  APPLYING O11: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#Interrupt received.
+#This Agent halted.
+#
+#An agent halted during the run.
+#p -c
+#chunk*selection*select*success-evaluation-becomes-best-preference*t30-39-1 
+#chunk*selection*select*success-evaluation-becomes-best-preference*t28-41-1 
+#chunk*selection*select*success-evaluation-becomes-best-preference*OpNoChange*t28-34-1 
+#init-soar
+#     0: ==>S: S1
+#
+#Agent reinitialized.
+#run
+#     1: O: O1 (initialize-blocks-world)
+#Simple Blocks World - just move blocks.
+#Initial state has C on A, A on table, and B on the table.
+#The goal is to get A on B on C on the table.
+#     2: O: O5 (move-block)
+#  APPLYING O5: move-block(C,table)
+#     3: O: O7 (move-block)
+#  APPLYING O7: move-block(B,C)
+#     4: O: O11 (move-block)
+#  APPLYING O11: move-block(A,B)
+#TASK: Finished Stacking the Blocks.
+#Interrupt received.
+#This Agent halted.
+#
+#An agent halted during the run.

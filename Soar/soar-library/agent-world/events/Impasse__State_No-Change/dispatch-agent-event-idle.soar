@@ -1,0 +1,62 @@
+## dispatch-agent-event-idle.soar -- agent-world: 1 elaboration, 1 proposal, 1 compare, 1 application.
+
+## ---- elaborations ----
+
+## Elaborate state-no-change no-desireds true -> sets no-des.
+## Elaborate ^no-desireds true if no desireds on superstate
+sp {agent-world*elaborate*state-no-change*no-desireds*true
+   :default
+   (state <s> ^attribute state
+              ^impasse no-change
+              ^superstate <superstate>)
+   (<superstate> -^desireds)
+-->
+   (<s> ^no-desireds true)
+}
+
+## ---- operator proposal ----
+
+## Propose dispatc.
+## If we are in a top-state SNC,
+## Propose an operator to dispatch an idle agent-event on the output-link
+sp {agent-world*propose*top*state-no-change*propose*dispatch-agent-event-idle
+   :default
+   (state <s> ^attribute state
+              ^impasse no-change
+              ^no-desireds true
+              ^superstate <top-state>
+              ^external-top-state <top-state>
+              ^io.output-link <out>)
+  -(<out> ^agent-event.name idle)
+-->
+   (<s> ^operator <operator> + <)
+   (<operator> ^name dispatch-agent-event-idle)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for prefer other over dispatch-agent-event-idle.
+## Prefer any other operators over dispatch-agent-event-idle (except wait)
+sp {agent-world*compare*prefer*other*over*dispatch-agent-event-idle
+   :default
+   (state <s> ^operator <operator1> +
+              ^operator <operator2> +)
+   (<operator1> ^name <> wait <> dispatch-agent-event-idle)
+   (<operator2> ^name dispatch-agent-event-idle)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## ---- operator application ----
+
+## Apply dispatch-agent-event-idle -> sets agent.
+## Chunking always gets max elab chunk BUG
+## Apply dispatch-agent-event-idle: put agent-event on output-link
+sp {agent-world*apply*top*state-no-change*apply*wait*dispatch*agent-event*idle
+   :default
+   (state <s> ^operator.name dispatch-agent-event-idle
+              ^quiescence t
+              ^io.output-link <out>)
+-->
+   (<out> ^agent-event.name idle)
+}

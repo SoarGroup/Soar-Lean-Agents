@@ -1,0 +1,303 @@
+## search-closed-receptacles.soar -- thor-soar: 4 proposals, 3 compares, 5 applications.
+
+## Propose search-closed-receptacles.
+sp {thor-soar*propose*search-closed-receptacles*info
+    :default
+   (state <s> ^desireds.desired <desired>
+              ^quiescence t
+              ^world.real true
+              ^flags.hide-in-container-objects true
+             -^flags.smem-retrieve true # shouldn't need it if retrieved from smem
+              ^external-top-state.scene.objects.object <object>)
+   (<desired> ^info.unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <value>
+                       -^storage-location)
+   (<object> ^receptacle true
+             ^openable true
+            -^graspable true
+            -^explored true
+            -^searched true
+             ^object-handle <receptacle-handle>)
+  -{(<s> ^scene.objects.object <world-object>)    # existing object don't need to search for - should use anchor-info-...
+    (<world-object> ^anchored true
+                    ^class <value>)}
+  -(<s> ^superstate.superstate.operator.name go-to)    #
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name search-closed-receptacles
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^next-desireds <desireds3>)
+   (<desired-object1> ^open true
+                      ^object-handle <receptacle-handle>)
+   (<desireds3> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object3>
+                ^next-desireds <desireds4>)
+   (<desired-object3> ^looked-at true
+                      ^object-handle <receptacle-handle>)
+   (<desireds4> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object4>)
+   (<desired-object4> ^open false
+                      ^object-handle <receptacle-handle>)
+}
+
+## Propose search-closed-receptacles.
+sp {thor-soar*propose*search-closed-receptacles*info*storage-location
+    :default
+   (state <s> ^desireds.desired <desired>
+              ^quiescence t
+              ^world.real true
+              ^flags.hide-in-container-objects true
+             -^flags.smem-retrieve true # shouldn't need it if retrieved from smem
+              ^external-top-state.scene.objects.object <object>)
+   (<desired> ^info.unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <value>
+                        ^storage-location.class <storage-class>)
+   (<object> ^receptacle true
+             ^openable true
+            -^graspable true
+            -^explored true
+            -^searched true
+             ^class <storage-class>
+             ^object-handle <receptacle-handle>)
+  -{(<s> ^scene.objects.object <world-object>)    # existing object don't need to search for - should use anchor-info-...
+    (<world-object> ^anchored true
+                    ^class <value>)}
+   -(<s> ^superstate.superstate.operator.name go-to)
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name search-closed-receptacles
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^next-desireds <desireds3>)
+   (<desired-object1> ^open true
+                      ^object-handle <receptacle-handle>)
+   (<desireds3> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object3>
+                ^next-desireds <desireds4>)
+   (<desired-object3> ^looked-at true
+                      ^object-handle <receptacle-handle>)
+   (<desireds4> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object4>)
+   (<desired-object4> ^open false
+                      ^object-handle <receptacle-handle>)
+}
+
+## Propose search-closed-receptacles.
+sp {thor-soar*propose*search-closed-receptacles*info*object-handle
+    :default
+   (state <s> ^desireds.desired.info.<< unanchored-object anchored-object >> <anchored-object>
+              ^quiescence t
+              ^world.real true
+              ^flags.hide-in-container-objects true
+             -^flags.smem-retrieve true # shouldn't need it if retrieved from smem
+              ^external-top-state.scene.objects.object <object>)
+   (<anchored-object> ^object-handle <object-handle>
+                      -^surface true
+                      -^receptacle true
+                     -^storage-location)
+   (<object> ^receptacle true
+             ^openable true
+            -^graspable true
+            -^explored true
+            -^searched true
+             ^object-handle <receptacle-handle>)
+  -{(<s> ^scene.objects.object.object-handle <object-handle>)}
+  -(<s> ^superstate.superstate.operator.name go-to)
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name search-closed-receptacles
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^next-desireds <desireds3>)
+   (<desired-object1> ^open true
+                      ^object-handle <receptacle-handle>)
+   (<desireds3> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object3>
+                ^next-desireds <desireds4>)
+   (<desired-object3> ^looked-at true
+                      ^object-handle <receptacle-handle>)
+   (<desireds4> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object4>)
+   (<desired-object4> ^open false
+                      ^object-handle <receptacle-handle>)
+}
+
+## Propose search-closed-receptacles.
+sp {thor-soar*propose*search-closed-receptacles*info*object-handle*storage-known
+    :default
+   (state <s> ^desireds.desired.info.anchored-object <anchored-object>
+              ^quiescence t
+              ^world.real true
+              ^flags.hide-in-container-objects true
+             -^flags.smem-retrieve true # shouldn't need it if retrieved from smem
+              ^external-top-state.scene.objects.object <object>)
+   (<anchored-object> ^object-handle <object-handle>
+                      ^storage-location.class <storage-class>)
+   (<object> ^receptacle true
+             ^openable true
+             ^class <storage-class>
+            -^graspable true
+            -^explored true
+            -^searched true
+             ^object-handle <receptacle-handle>)
+  -{(<s> ^scene.objects.object.object-handle <object-handle>)}
+  -(<s> ^superstate.superstate.operator.name go-to)
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name search-closed-receptacles
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^next-desireds <desireds3>)
+   (<desired-object1> ^open true
+                      ^object-handle <receptacle-handle>)
+   (<desireds3> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object3>
+                ^next-desireds <desireds4>)
+   (<desired-object3> ^looked-at true
+                      ^object-handle <receptacle-handle>)
+   (<desireds4> ^desired-count 1                         # clean up!
+                ^desired.object <desired-object4>)
+   (<desired-object4> ^open false
+                      ^object-handle <receptacle-handle>)
+}
+
+## Preference for search-closed-receptacles.
+sp {thor-soar*compare*search-closed-receptacles
+    :default
+   (state <s> ^operator <op1> +
+                       )# { <> <op1> <op2> }  +)
+#   (<op1> ^name search-closed-receptacles
+#          ^argument1.reachable true)
+   (<op1> ^name search-closed-receptacles
+          ^argument1.reachable false)
+-->
+   (<s> ^operator  <op1> <)
+}
+
+## Preference for search-closed-receptacles2.
+sp {thor-soar*compare*search-closed-receptacles2
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name search-closed-receptacles
+          ^argument1.reachable true)
+   (<op2> ^name close-container)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for search-closed-receptacles prefer-fridge cheat.
+sp {thor-soar*compare*search-closed-receptacles*prefer-fridge*cheat
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name search-closed-receptacles
+          ^argument1.class fridge)
+   (<op2> ^name << failed-grounding search-closed-receptacles >>
+         -^argument1.class fridge)
+-->
+   (<s> ^operator <op2> -)
+}
+
+## Apply search-closed-receptacles -> sets searched.
+sp {apply*search-closed-receptacles
+    :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name << close-container search-closed-receptacles >>
+               ^pre-conditions-satisfied true
+               ^argument1 <object>)
+   (<object> ^object-handle <receptable-handle>)
+-->
+#   (log 1 (crlf) |Apply search-closed-receptacles | <receptable-handle> | .|)
+   (<object> ^searched false -
+                       true)
+}
+
+## Apply search-closed-receptacles1 -> sets searched.
+sp {apply*search-closed-receptacles1
+    :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name << close-container search-closed-receptacles >>
+               ^argument1 <object>)
+   (<object> ^object-handle <receptable-handle>
+             ^open true)
+-->
+#   (log 1 (crlf) |Apply search-closed-receptacles | <receptable-handle> | .|)
+   (<object> ^searched false -
+                       true)
+}
+
+## Apply put-in -> sets searched.
+sp {apply*search-closed-receptacles2
+    :default
+   (state <s> ^operator <operator>
+              ^world.real true
+              ^flags.hide-in-container-objects true)
+   (<operator> ^name put-in
+               ^pre-conditions-satisfied true
+               ^argument1 <object>)
+   (<object> ^object-handle <receptable-handle>)
+-->
+#   (log 1 (crlf) |Apply search-closed-receptacles | <receptable-handle> | .|)
+   (<object> ^searched false -
+                       true)
+}
+
+## Apply search-closed-receptacles -> sets searched.
+sp {apply*search-closed-receptacles*reject-closed
+    :default
+   (state <s> ^operator <operator>
+              ^world.in <in-world>
+              ^super-desireds.desired <desired>)
+   (<in-world> ^argument1.object-handle <in-object-handle>
+               ^argument2.object-handle <container-object-handle>)
+   (<desired> ^in <in-on>)
+   (<in-on> ^argument1.object-handle <in-object-handle>
+           -^argument2.object-handle <container-object-handle>)
+   (<operator> ^name search-closed-receptacles
+               ^argument1 <object>)
+   (<object> ^object-handle <container-object-handle>)
+-->
+#   (log 1 (crlf) |Apply search-closed-receptacles | <container-object-handle> | .|)
+   (<object> ^searched false -
+                       true)
+}
+
+## Apply search-closed-receptacles -> sets searched.
+sp {apply*search-closed-receptacles*reject-closed2
+    :default
+   (state <s> ^operator <operator>
+              ^world.in <in-world>
+              ^super-desireds.desired <desired>)
+   (<in-world> ^argument1.object-handle <in-object-handle>
+               ^argument2.object-handle <container-object-handle>)
+   (<desired> ^holding-object.object-handle <in-object-handle>)
+   (<operator> ^name search-closed-receptacles
+               ^argument1 <object>)
+   (<object> ^object-handle <container-object-handle>)
+-->
+#   (log 1 (crlf) |Apply search-closed-receptacles | <container-object-handle> | .|)
+   (<object> ^searched false -
+                       true)
+}

@@ -1,0 +1,35 @@
+## explore-clean-up-undo.soar -- thor-soar: 1 proposal, 1 application.
+
+## Propose explore-clean-up-undo.
+sp {thor-soar*propose*explore-clean-up-undo
+    :default
+   (state <s> ^io.output-link.perform-action <pa>
+              ^scene.objects.object <object>
+              ^explore-structure <es>)
+   (<object> ^object-handle <object-handle>
+             ^class <class-handle>)
+   (<es> ^current-class <class>)
+   (<class> ^class-handle <class-handle>
+               ^tested-action <tested-action>)
+   (<pa> ^name put-down
+         ^status success
+         ^argument2 <object-handle>)
+   (<tested-action> ^need-undo-action true
+                    ^undo-initiated true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name explore-clean-up-undo
+         ^explore-operator true
+         ^tested-action <tested-action>)
+}
+
+## Apply explore-clean-up-undo -> sets need-undo-action.
+sp {apply*explore-clean-up-undo
+    :default
+   (state <s> ^operator <op>)
+   (<op> ^name explore-clean-up-undo
+         ^tested-action <tested-action>)
+-->
+   (<tested-action> ^need-undo-action false
+                                      true -)
+}

@@ -1,0 +1,98 @@
+## init-current-evaluation-depth.soar -- selection-world: 4 proposals, 3 applications.
+
+## ---- operator proposal ----
+
+## Propose init-current-evaluation-depth.
+## For top-level selection space
+sp {selection-world*propose*selection*init-current-evaluation-depth*top-selection*one
+   :default
+   (state <s> ^name selection
+             -^flags.verify true
+              ^flags.init-evaluation-depth one
+              ^superstate.desireds.unachieved-desireds-count $ <count>
+              ^top-selection true
+             -^current-evaluation-depth)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name init-current-evaluation-depth
+               ^value 1)
+}
+
+## Propose init-current-evaluation-depth.
+sp {selection-world*propose*selection*init-current-evaluation-depth*top-selection
+   :default
+   (state <s> ^name selection
+             -^flags.verify true
+              ^top-selection true
+              ^flags.init-evaluation-depth unachieved-desireds
+              ^superstate.desireds.unachieved-desireds-count { $ <count> > 2 }  #1
+             -^current-evaluation-depth)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name init-current-evaluation-depth
+               ^value (- <count> 0)) # original - 1 = testing 0
+}
+
+## Propose init-current-evaluation-depth.
+sp {selection-world*propose*selection*init-current-evaluation-depth*top-selection*1
+   :default
+   (state <s> ^name selection
+             -^flags.verify true
+              ^top-selection true
+              ^flags.init-evaluation-depth unachieved-desireds
+              ^superstate.desireds.unachieved-desireds-count { $ <count> <= 2 }
+             -^current-evaluation-depth)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name init-current-evaluation-depth
+               ^value 2) # 1 shallow
+}
+
+## Propose init-current-evaluation-depth.
+sp {selection-world*propose*selection*init-current-evaluation-depth*top-selection*verify
+   :default
+   (state <s> ^name selection
+              ^flags.verify true
+             # ^top-selection true
+             -^current-evaluation-depth)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name init-current-evaluation-depth
+               ^value 10)
+}
+
+## ---- operator application ----
+
+## Apply init-current-evaluation-depth -> sets current-evaluation-depth.
+sp {selection-world*apply*init-current-evaluation-depth
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth
+               ^value <value>)
+-->
+   (<s> ^current-evaluation-depth.value <value>)
+}
+
+## Apply init-current-evaluation-depth -> sets max-eval.
+sp {selection-world*apply*init-current-evaluation-depth*max
+   :default
+   (state <s> ^top-selection true
+             -^flags.verify true
+             -^flags.iterative-step cost
+              ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth)
+-->
+   (<s> ^max-evaluation-depth 12)
+}
+
+## Apply init-current-evaluation-depth -> sets max-evaluation-dep.
+sp {selection-world*apply*init-current-evaluation-depth*max*verify
+   :default
+   (state <s> ^top-selection true
+              ^flags.verify true
+              ^operator <operator>)
+   (<operator> ^name init-current-evaluation-depth)
+-->
+   (<s> ^max-evaluation-depth 12)
+   #was 7, 9, 10 (raised to 12)
+}

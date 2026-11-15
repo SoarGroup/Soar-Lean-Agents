@@ -1,0 +1,23 @@
+## _flags.soar -- selection-world: 2 elaborations.
+
+## Elaborate flags default iterative-step -> sets iterative-step.
+## operator: an iterative step is a task operator; tie-impasse: it is a tie impasse.
+sp {selection-world*elaborate*flags*default*iterative-step
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.iterative-step <any>)
+-->
+   (<f> ^iterative-step operator)
+}
+
+## Elaborate flags default init-evaluation-depth -> sets init-evaluation-depth.
+## one: start at depth 1; unachieved-desireds: start at the number of unachieved desireds.
+sp {selection-world*elaborate*flags*default*init-evaluation-depth
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.init-evaluation-depth <any>)
+-->
+   (<f> ^init-evaluation-depth one)
+}

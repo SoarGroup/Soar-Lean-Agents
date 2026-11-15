@@ -1,0 +1,8 @@
+#
+#sp {elaborations*class*receptacle
+#   (state <s> ^superstate nil
+#              ^scene.objects.object <object>)
+#   (<object> ^class << stoveburner pan >>)
+#-->
+#   (<object> ^receptacle true)
+#}

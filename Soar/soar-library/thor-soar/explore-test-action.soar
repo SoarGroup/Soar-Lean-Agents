@@ -1,0 +1,145 @@
+## explore-test-action.soar -- thor-soar: 2 proposals, 1 compare, 3 applications.
+
+## Propose explore-test-action.
+sp {thor-soar*propose*explore-test-action
+    :default
+   (state <s> ^name thor-soar
+              ^scene.objects.object <object>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<class> -^tested-action.action.action-handle <action-handle>
+                ^class-handle <class-handle>)
+   (<object> ^reachable true
+             ^class <class-handle>)
+   (<action> ^action-handle { <> fill <action-handle> })
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-test-action
+         ^pre-conditions-satisfied true
+         ^explore-operator true
+         ^argument1 <object>
+         ^action <action>
+         ^action-handle <action-handle>
+         ^argument-count 1)
+}
+
+## Propose explore-test-action.
+sp {thor-soar*propose*explore-test-action*fill
+    :default
+   (state <s> ^name thor-soar
+              ^scene.objects.object <object>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<class> -^tested-action.action.action-handle fill
+                ^class-handle <class-handle>)
+   (<object> ^reachable true
+             ^class <class-handle>)
+   (<action> ^action-handle fill)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-test-action
+         ^pre-conditions-satisfied true
+         ^explore-operator true
+         ^argument1 <object>
+         ^argument2 water
+         ^action <action>
+         ^action-handle fill
+         ^argument-count 2)
+}
+
+## Preference for explore-test-action.
+sp {thor-soar*compare*explore-test-action
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        {<> <op1> <op2> } +)
+   (<op1> ^name explore-test-action
+          ^action-handle break)
+   (<op2> ^name explore-test-action
+          ^action-handle <> break)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply explore-test-action -> sets perform-action, tested-action, action ....
+sp {apply*explore-test-action*apply*action*error
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^argument1 <object-handle>
+         ^status error)
+   (<op> ^name explore-test-action
+         ^action <action>
+         ^pre-conditions-satisfied true
+         ^argument1.object-handle <object-handle>)
+ #  (<action> ^action-handle <action-handle>)
+-->
+   (log 1 (crlf) | Action: | <action-handle> | Failed to apply to | <object-handle> )
+   (<output> ^perform-action <pa> -)
+   (<class> ^tested-action <tested-action>)
+   (<tested-action> ^action <action>
+                    ^success false
+                    ^need-undo-action false)
+}
+
+## Apply explore-test-action -> sets perform-action, tested-action, action ....
+sp {apply*explore-test-action*apply*action*undo-none
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^argument1 <object-handle>
+         ^status << complete success >>)
+   (<op> ^name explore-test-action
+         ^action <action>
+         ^pre-conditions-satisfied true
+         ^argument1.object-handle <object-handle>)
+   (<action> ^undo-action-handle none)
+-->
+   (log 1 (crlf) | Action: | <action-handle> | Succeeded to apply to | <object-handle> |, no undo.|)
+   (<output> ^perform-action <pa> -)
+   (<class> ^tested-action <tested-action>)
+   (<tested-action> ^action <action>
+                    ^success true
+                    ^need-undo-action false)
+}
+
+## Apply explore-test-action -> sets perform-action, tested-action, action ....
+sp {apply*explore-test-action*apply*action*success
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^argument1 <object-handle>
+         ^status << complete success >>)
+   (<op> ^name explore-test-action
+         ^action <action>
+         ^argument1 <object>
+         ^pre-conditions-satisfied true
+         ^argument1.object-handle <object-handle>)
+   (<action> ^undo-action-handle { <> none <undo-action-handle> })
+-->
+   (log 1 (crlf) | Action: | <action-handle> | Succeeded to apply to | <object-handle> )
+   (<output> ^perform-action <pa> -)
+   (<class> ^tested-action <tested-action>)
+   (<tested-action> ^action <action>
+                    ^object <object>
+                    ^success true
+                    ^undo-action-handle <undo-action-handle>
+                    ^need-undo-action true)
+}

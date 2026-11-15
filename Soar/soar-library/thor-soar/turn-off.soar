@@ -1,0 +1,100 @@
+## turn-off.soar -- thor-soar: 2 proposals, 2 applications.
+
+## Propose turn-off.
+sp {thor-soar*propose*turn-off*mea
+    :default
+   (state <s> ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <object-handle>
+             ^anchored true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated false
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-off
+               ^action-handle turn-off
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired <desired1> <desired2>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^reachable true
+                      ^object-handle <object-handle>)
+   (<desired2> ^holding-object.object-handle none)
+}
+
+## Apply turn-off -> sets activated.
+sp {apply*turn-off*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name turn-off
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+           )#  ^activated true)
+-->
+   (log 1 (crlf) |Apply Turn-off: | <object-handle> | internal.|)
+   (<object> ^activated false
+                        true -)
+}
+
+## Apply turn-off -> sets cook-state, future-event, time.
+sp {apply*turn-off*stoveknob-internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true
+              ^world <world>)
+   (<world> ^future-event <future-event>)
+   (<operator> ^name turn-off
+               ^argument1 <stoveknob-object>
+               ^pre-conditions-satisfied true)
+   (<future-event> ^argument1 <food-object>
+                   ^argument2 <stoveknob-object>
+                   ^argument-count 2
+                   ^completion-time <c-time>)
+   (<stoveknob-object> ^class stoveknob
+                       ^activated true)
+   (<food-object> ^object-handle <food-object-handle>
+                  ^cook-state raw)
+-->
+   (log 1 (crlf) |Apply Turn-off: | <food-object-handle> | cooked internal.|)
+   (<food-object> ^cook-state raw -
+                              cooked)
+   (<world> ^future-event <future-event> -
+            ^time <time> -
+                  <c-time>)
+}
+
+## Propose turn-off.
+## Non MEA Selection
+sp {thor-soar*propose*turn-off-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world <world>)
+   (<world> ^objects.object <object>
+            ^holding-object.object-handle none)
+   (<object> ^reachable true
+             ^activatable true
+             ^activated true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-off
+               ^task-operator true
+               ^action-handle turn-off
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

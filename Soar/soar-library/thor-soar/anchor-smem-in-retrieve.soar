@@ -1,0 +1,55 @@
+## anchor-smem-in-retrieve.soar -- thor-soar: 1 proposal, 2 compares, 1 application.
+
+## Propose anchor-smem-in-retrieve.
+sp {thor-soar*propose*anchor-smem-in-retrieve
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.smem-retrieve true
+              ^retrieved-object <object>)
+  -(<object> ^receptacle true
+             -^graspable true)
+  -(<object> ^class lightswitch)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-smem-in-retrieve
+         ^argument1 <object>)
+}
+
+## Preference for anchor-smem-in-retrieve.
+## If can anchor to existing object directly, don't look in epmem.
+sp {thor-soar*compare*anchor-smem-in-retrieve
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-smem-in-retrieve)
+   (<op2> ^name << anchor-smem-object-retrieve anchor-info-existing-object anchor-epmem-retrieve >>)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for anchor-smem-in-retrieve search.
+sp {thor-soar*compare*anchor-smem-in-retrieve*search
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-smem-in-retrieve)
+   (<op2> ^name << search-smem search-closed-receptacles scan-room >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply anchor-smem-in-retrieve -> sets retrieved-object, smem-query, cue ....
+sp {apply*anchor-smem-in-retrieve*search
+    :default
+   (state <s> ^operator <op>
+              ^retrieved-object <object>)
+   (<op> ^name anchor-smem-in-retrieve)
+-->
+   (<s> ^retrieved-object <object> -)
+   (log 1 (crlf) |Query SMEM for in containing object | <object>)
+   (<s> ^smem-query <query>)
+   (<query> ^cue.argument1 <object>             # need to find where this object is
+            ^copy-destination <s>
+            ^depth 3
+            ^copy-name retrieved-in)
+}

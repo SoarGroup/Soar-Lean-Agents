@@ -1,0 +1,11 @@
+## sliced.soar -- thor-soar: 1 elaboration.
+
+## Elaborate state scene sliced -> sets sliced.
+sp {elaborations*elaborate*state*scene*sliced
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object-int>)
+   (<object-int> ^class << potatosliced carrotsliced applesliced breadsliced bananasliced >>)
+-->
+   (<object-int> ^sliced true)
+}

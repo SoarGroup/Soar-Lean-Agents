@@ -1,0 +1,88 @@
+## evaluate-operator.soar -- selection-world: 1 proposal, 1 compare, 5 applications.
+
+## ---- operator proposal ----
+
+## Propose evaluate-operator.
+sp {selection-world*propose*selection*evaluate-operator
+   :default
+   (state <s> ^name selection
+              ^item <item>)
+  -{(state <s> ^evaluation <evaluation>)
+    (<evaluation> ^super-operator <item>
+                  ^value true)}
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name evaluate-operator
+               ^super-operator <item>)}
+
+## ---- evaluate / compare ----
+
+## Preference for selection select evaluate-operator indifferent.
+sp {selection-world*compare*selection*select*evaluate-operator*indifferent
+   :default
+   (state <s> ^name selection
+             -^operator-selection not-indifferent
+              ^operator <operator> +)
+   (<operator> ^name evaluate-operator)
+-->
+   (<s> ^operator <operator> =)}
+
+## ---- operator application ----
+
+## Apply selection -> sets evaluation, super-operator.
+sp {selection-world*apply*selection*state*evaluation
+   :default
+   (state <s> ^name selection
+              ^operator <operator>)
+   (<operator> ^name evaluate-operator
+               ^super-operator <super-operator>)
+  -{(<s> ^evaluation <evaluation2>)
+    (<evaluation2> ^super-operator <super-operator>)}
+-->
+   (<s> ^evaluation <evaluation>)
+   (<evaluation> ^super-operator <super-operator>)}
+
+## Apply selection (o-support) -> sets evaluation.
+sp {selection-world*apply*selection*evaluate-operator*evaluation
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^operator <operator>
+              ^evaluation <evaluation>)
+   (<operator> ^name evaluate-operator
+              -^evaluation <evaluation>
+               ^super-operator <super-operator>)
+   (<evaluation> ^super-operator <super-operator>)
+-->
+   (<operator> ^evaluation <evaluation>)}
+
+## Apply selection -> sets super-problem-space.
+sp {selection-world*apply*selection*evaluate-operator*super-problem-space
+   :default
+   (state <s> ^name selection
+              ^operator <operator>
+              ^superstate.problem-space <super-problem-space>)
+   (<operator> ^name evaluate-operator)
+-->
+   (<operator> ^super-problem-space <super-problem-space>)}
+
+## Apply selection -> sets superstate.
+sp {selection-world*apply*selection*evaluate-operator*superstate
+   :default
+   (state <s> ^name selection
+              ^operator <operator>
+              ^superstate <superstate>)
+   (<operator> ^name evaluate-operator)
+-->
+   (<operator> ^superstate <superstate>)}
+
+## Apply evaluate-operator.
+sp {selection-world*apply*evaluate-operator*print
+   :default
+   (state <s> ^operator <op>)
+   (<op> ^name evaluate-operator
+         ^super-operator <super-operator>)
+   (<super-operator> ^name <name>)
+-->
+   (log 1 |Evaluate operator: | <name>)
+}

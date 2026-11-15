@@ -1,0 +1,186 @@
+## smem-copy-retrieved-in.soar -- thor-soar: 1 proposal, 1 compare, 6 applications.
+
+## Propose smem-copy-retrieved-in.
+sp {thor-soar*propose*smem-copy-retrieved-in
+    :default
+   (state <s> ^quiescence t
+              ^problem-space.name thor-world
+              ^superstate.operator.name find-object
+              ^flags.smem-retrieve true
+              ^retrieved-in <in>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>
+         ^argument4 <new-arg2>)
+}
+
+## Preference for smem-copy-retrieved-in.
+## If can anchor to existing object directly, don't look in epmem.
+sp {thor-soar*compare*smem-copy-retrieved-in
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name smem-copy-retrieved-in)
+   (<op2> ^name << search-smem search-closed-receptacles scan-room >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply smem-copy-retrieved-in -> sets in, argument1, argument2 ....
+sp {apply*smem-copy-retrieved-in*create-in
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>
+              ^retrieved-in <in>)
+   (<scene> ^objects <scene-objects>)
+   (<in> ^argument2.object-handle <smem-container-handle>
+         ^argument1.class <class>
+         ^argument1-class <class>)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>
+         ^argument4 <new-arg2>)
+  -{(<scene-objects> ^object <scene-object>)
+    (<scene-object> ^object-handle <smem-container-handle>
+                    ^derived-from-input)}
+-->
+   (<scene> ^in <new-in>)
+   (<new-in> ^argument1 <new-arg1>
+             ^argument2 <new-arg2>)
+   (<scene-objects> ^object <new-arg1>
+                            <new-arg2>)
+   (<new-arg1> ^memory-retrieved true
+               ^anchored true
+               ^class <class>)
+   (<new-arg2> ^memory-retrieved true
+               ^anchored true)
+}
+
+## Apply smem-copy-retrieved-in -> sets on, argument1, argument2 ....
+sp {apply*smem-copy-retrieved-in*create-on
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>
+              ^retrieved-in <in>)
+   (<scene> ^objects <scene-objects>)
+   (<in> ^argument2.object-handle <smem-container-handle>
+         ^argument1.class <class>
+        -^argument1-class <class>)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>
+         ^argument4 <new-arg2>)
+  -{(<scene-objects> ^object <scene-object>)
+    (<scene-object> ^object-handle <smem-container-handle>
+                    ^derived-from-input)}
+-->
+   (<scene> ^on <new-in>)
+   (<new-in> ^argument1 <new-arg1>
+             ^argument2 <new-arg2>)
+   (<scene-objects> ^object <new-arg1>
+                            <new-arg2>)
+   (<new-arg1> ^memory-retrieved true
+               ^anchored true
+               ^class <class>)
+   (<new-arg2> ^memory-retrieved true
+               ^anchored true)
+}
+
+## Apply smem-copy-retrieved-in -> sets in, argument1, argument2 ....
+## If already see the container - no need to create it.
+sp {apply*smem-copy-retrieved-in*create-in*argument2-exist
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>
+              ^retrieved-in <in>)
+   (<scene> ^objects <scene-objects>)
+   (<scene-objects> ^object <scene-object>)
+   (<scene-object> ^object-handle <smem-container-handle>
+                   ^derived-from-input)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>
+         ^argument4 <new-arg2>)
+   (<in> ^argument2.object-handle <smem-container-handle>
+         ^argument1.class <class>
+         ^argument1-class <class>)
+-->
+   (<scene> ^in <new-in>)
+   (<new-in> ^argument1 <new-arg1>
+             ^argument2 <scene-object>
+             ^argument1-class <class>)
+   (<scene-objects> ^object <new-arg1>)
+   (<new-arg1> ^memory-retrieved true
+               ^anchored true)
+}
+
+## Apply smem-copy-retrieved-in -> sets on, argument1, argument2 ....
+sp {apply*smem-copy-retrieved-in*create-on*argument2-exist
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>
+              ^retrieved-in <in>)
+   (<scene> ^objects <scene-objects>)
+   (<scene-objects> ^object <scene-object>)
+   (<scene-object> ^object-handle <smem-container-handle>
+                   ^derived-from-input)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>
+         ^argument4 <new-arg2>)
+   (<in> ^argument2.object-handle <smem-container-handle>
+         ^argument1.class <class>
+        -^argument1-class <class>)
+-->
+   (<scene> ^on <new-in>)
+   (<new-in> ^argument1 <new-arg1>
+             ^argument2 <scene-object>
+             ^argument1-class <class>)
+   (<scene-objects> ^object <new-arg1>)
+   (<new-arg1> ^memory-retrieved true
+               ^anchored true)
+}
+
+## Apply smem-copy-retrieved-in -> sets retrieved-in.
+sp {apply*smem-copy-retrieved-in*create-argument1
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>)
+   (<scene> ^objects <scene-objects>)
+   (<scene-objects> ^object <new-arg1>)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument3 <new-arg1>)
+   (<in> ^argument1 <argument1>)
+   (<argument1> ^{ <> smem-stored <> derived-from-input <> contains-object-handle <> visible <> reachable  <> in-view <> anchored  <> accessible  <> confirmed <attribute> } <value>)
+-->
+   (<s> ^retrieved-in <in> -)
+   (<new-arg1> ^<attribute> <value>)
+}
+
+## Apply smem-copy-retrieved-in.
+sp {apply*smem-copy-retrieved-in*create-argument2
+    :default
+   (state <s> ^operator <op>
+              ^external-top-state.scene <scene>)
+   (<scene> ^objects <scene-objects>)
+   (<scene-objects> ^object <new-arg2>)
+   (<new-arg2> ^memory-retrieved true)
+   (<scene> ^objects <scene-objects>)
+   (<op> ^name smem-copy-retrieved-in
+         ^argument1 <in>
+         ^argument2 <new-in>
+         ^argument4 <new-arg2>)
+   (<in> ^argument2 <argument2>)
+   (<argument2> ^{ <> smem-stored <> derived-from-input <> contains-object-handle <> visible <> reachable  <> in-view <> anchored  <> accessible  <> confirmed <attribute> } <value>)
+-->
+   (<new-arg2> ^<attribute> <value>)
+}
