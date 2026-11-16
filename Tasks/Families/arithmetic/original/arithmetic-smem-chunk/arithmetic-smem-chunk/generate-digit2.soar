@@ -1,0 +1,79 @@
+
+sp {arithmetic*propose*generate-digit2*1
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c>)
+   (<s> ^digit <d>)
+   (<p> ^operation { <> 0 1 })
+   (<c> ^gen1 <p-pid>)
+   (<p> ^pid <p-pid>)
+   (<c> ^gen2 { <c-gen2> <> <p-pid> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name generate-digit2)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^d <d>)
+}
+
+sp {arithmetic*propose*generate-digit2*2
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c>)
+   (<s> ^digit <d>)
+   (<p> ^operation { <> 0 2 })
+   (<c> ^gen1 <p-pid>)
+   (<p> ^pid <p-pid>)
+   (<c> ^gen2 { <c-gen2> <> <p-pid> })
+   (<c> ^last 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name generate-digit2)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^d <d>)
+}
+
+sp {arithmetic*propose*generate-digit2*3
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c>)
+   (<s> ^digit <d>)
+   (<p> ^operation { <> 0 2 })
+   (<c> ^gen1 <p-pid>)
+   (<p> ^pid <p-pid>)
+   (<c> ^gen2 { <c-gen2> <> <p-pid> })
+   (<c> ^last 1)
+   (<d> ^val { <d-val> < <c-digit1> })
+   (<c> ^digit1 <c-digit1>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name generate-digit2)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^d <d>)
+}
+
+sp {arithmetic*apply*generate-digit2
+   (state <s> ^name arithmetic)
+   (<s> ^operator <o>)
+   (<o> ^name generate-digit2)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^d <d>)
+   (<c> ^digit2 <c-digit2>)
+   (<d> ^val <d-val>)
+   (<c> ^gen2 <c-gen2>)
+   (<p> ^pid <p-pid>)
+   (<p> ^digits <p-digits>)
+-->
+   (<c> ^digit2 <d-val>)
+   (<c> ^digit2 <c-digit2> -)
+   (<c> ^gen2 <p-pid>)
+   (<c> ^gen2 <c-gen2> -)
+   (<p> ^digits (+ <p-digits> 1))
+   (<p> ^digits <p-digits> -)
+}

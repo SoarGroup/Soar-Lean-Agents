@@ -1,0 +1,62 @@
+Below are my responses to the questions about the mapping from the CMC to Sigma. But I have a few additional comments first (as well as some further elaborations in the answers to the questions that go beyond the literal questions).
+
+On perception, each perceptual predicate is effectively a perceptual buffer. The architecture doesn’t specify the form perceptual processing should take but we have experimented with a number of forms, with perhaps Himanshu’s work on speech understanding being the most involved.
+
+I believe motor actions are driven analogously to perception, in that there are motor predicates/buffers that drive them, but that wasn’t in the 2016 paper and I’m not sure how well this was ever worked out. There is potential for motor actions to be driven by a combination of persistent and retractable data.
+
+Section 4 says that Sigma implements persistent elaborations, in contrast with Soar’s retractable ones. Open-world predicates in Sigma do yield retractable elaborations. Closed-world processing that is detached from operators can be thought of a persistent elaborations. I believe these latched results only become available after a decision, but I’m not sure of this.
+
+1.     The functional value as metadata. Is this the right reading of Sigma against the CMC? If not, how should the CMC's distinction between symbols and quantitative metadata be applied to a predicate's function?
+
+
+
+This is correct, and connects with our recent discussion about procedural memory including functions on metadata, which is distinct from matching on data. I agreed with the narrow interpretation of the CMC’s proscription of matching on metadata, interpreting it in the latter manner (of no matching to data), but Sigma would be impossible without functions on metadata.
+
+
+
+2.     The 2017 text. That paper says relations cannot be defined over quantitative metadata. Was Sigma understood to satisfy this, and in what sense?
+
+
+
+This is correct for Sigma. Relations are over data, but with associated metadata.
+
+
+
+3.     Persistence. Is it right that actions on closed-world predicates persist with no operator selected? In Sigma's own terms, what distinguishes a deliberate change from an automatic one?
+
+
+
+I believe there are actually three notions in Sigma relevant here. Changes to closed-world predicates are indeed persistent. Changes to selection predicates require a preference-based choice, and are thus deliberate in one sense. Changes made by operators, which are intended to make a logical state change, are a subset of the changes to closed-world selection predicates. It is the latter that are limited to “one deliberate act” in CMC terms, although one operator can change multiple closed-world predicates within a single cycle. It might have been that closed-world predicates were only used for operator application (and selection?), in which case this would map cleanly onto the CMC, even if Sigma didn’t technically require this, but again I’m not sure.
+
+
+
+4.     Memories. Should conditionals be divided between the CMC's procedural and declarative memories (for example by condacts and functions), or is one memory the correct mapping?
+
+
+
+Conditionals may be purely procedural (based on conditions and actions), purely declarative (based on condacts), or some mixture of the two. For the purposes of the CMC, only the pure conditionals are relevant. Further, you can do declarative processing – that is, symmetric processing via condacts – without necessarily having a distinguished declarative buffer. However, when I would implement things like naive Bayes classifiers as a model of declarative memory there would be the equivalent of a buffer that feeds it. Condact-based processing is retractable, so to get it retained in a buffer requires a “hybrid” conditional that has both condacts and actions (I believe, but my memory isn’t completely sure). It is this kind of input-buffer+classifier+retention-buffer that I think of as mapping to the CMC’s declarative memory. It does require a decision to retrieve into the buffer, for the retention, but it is not asynchronous with the cognitive cycle. Sigma also clearly can do all sorts of other things with these capabilities not anticipated by the CMC, but those can be considered as extensions to the CMC implemented by Sigma, unless the CMC explicitly forbids them (and then I might want to discuss them further).
+
+
+
+5.     Retrieval. Is there a sense in which Sigma has a retrieval cue and result that this mapping misses, for example evidence as the cue and the open-world posterior as the result?
+
+
+
+This is answered as part of the response to question 4.
+
+
+
+6.     Impasses. Is the Impasse predicate the right counterpart of the CMC's procedural process data? Is the absence of a conflict impasse a matter of principle?
+
+
+
+Impasses are certainly a form of procedural process data (PPD). We can ask whether any of the emotional appraisals are also PPD. Surprise is computed at factor nodes that learn. This is largely in symmetric graphs, but does also happen with backpropagation, so this may be considered a form of PPD in such cases. Familiarity, which was explored later and may or may not have made it into this release is also based on function factor nodes that learn, and so may be though of similarly. Desirability is computed on WM, so it isn’t PPD.
+
+I had to go back to check the final version of the metacognition paper to find out where conflict impasses are discussed. I’m not sure this should really be in the CMC. They don’t occur in Sigma because, if I understand right, they require symbolic preferences that Sigma doesn’t have.
+
+
+
+7.     What to formalize next. Learning is the largest gap for the comparison: five CMC commitments cannot be assessed without it. Which of Sigma's learning mechanisms should be specified first, and which release programs are the best tests?
+
+Sigma’s graphical architecture only has one learning mechanism, a form of gradient descent. Backpropagation, RL, episodic, SLAM, and other forms of learning were all built on top of this. Perhaps a good place to start would be with (test-slam).
+

@@ -1,0 +1,49 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+sp {left-right*propose*initialize-left-right
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-left-right
+        ^task-operator false)
+}
+
+## initialize-agent-world (best, proposed while the top state has no ^name) stays acceptable
+## after it applies; prefer the task's initialization to it so that it is not reselected.
+sp {left-right*compare*initialize-left-right*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-left-right)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+## World: the agent at location 0, not yet moved. Goal: agent moved.
+## ^flags.rl is not set: agent-world's generic reward (1.0 at success) would add to the
+## task's own rewards (-1 left, +1 right).
+sp {left-right*apply*initialize-left-right
+   (state <s> ^operator.name initialize-left-right
+              ^world.objects <objs>)
+-->
+   (<s> ^name left-right
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<ps> ^name left-right
+         ^agent-world true)
+   (<f> ^mea-operator-selection true)
+   (<objs> ^object <a>)
+   (<a> ^object-handle agent
+        ^anchored true
+        ^location 0
+        ^moved 0)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle agent
+         ^moved 1)
+}

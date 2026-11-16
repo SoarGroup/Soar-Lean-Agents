@@ -1,0 +1,11 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-knights.soar
+source knight-move.soar
+source backup.soar
+source detect-goal.soar
+source exhausted.soar
+source finish-run.soar
+source preferences.soar

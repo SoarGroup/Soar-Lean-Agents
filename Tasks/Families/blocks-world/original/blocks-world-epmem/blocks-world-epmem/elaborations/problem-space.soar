@@ -1,0 +1,12 @@
+
+sp {blocks-world*elaborate*problem-space
+   (state <s> ^name blocks-world)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name blocks-world)
+   (<p> ^default-state-copy yes)
+   (<p> ^default-operator-copy yes)
+   (<p> ^two-level-attributes object)
+   (<p> ^dont-copy in-place)
+   (<p> ^dont-copy ancestor)
+}

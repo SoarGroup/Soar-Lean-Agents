@@ -1,0 +1,14 @@
+Artists and managers river crossing: English input
+
+Task description as given. The number of artist-manager pairs is a parameter of gen.py.
+
+The Setup: A certain number of artists (often three) and their respective personal managers need to cross a river using a small boat.
+
+The Constraints:
+* The boat can only hold a maximum of two people at a time.
+* A boat cannot cross empty; someone must row it back and forth.
+* The Twist: The managers are fiercely protective and competitive. If an artist is left on either side of the riverbank with other managers, their own manager must also be present. If an artist is left with other managers without their own manager to protect them, the other managers will immediately try to poach or mistreat that artist.
+
+The Goal: Figure out a sequential order of boat trips to get all artists and all managers safely across the river without ever leaving an artist unprotected.
+
+Source: header comment of artists-rules.soar ("Description (as given)").

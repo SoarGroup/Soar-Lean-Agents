@@ -1,0 +1,118 @@
+##############################################################################
+## TicTacToe: world, goal, problem space, end of episode
+## World objects: 9 cells (handles c11..c33; ^x ^y ^xy ^content 0/1/2), 8 lines (handles
+##   row1..diagonal2; ^cell-handle of their three cells: the original linked lines to cell
+##   identifiers, here they refer to cells by handle), and the game (handle game; ^turn 1/2,
+##   ^winner 0/1/2, ^over 0/1).
+## Goal (^desireds): game ^over 1.
+##############################################################################
+
+sp {TicTacToe*propose*initialize-TicTacToe
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-TicTacToe
+        ^task-operator false)
+}
+
+sp {TicTacToe*compare*initialize-TicTacToe*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-TicTacToe)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {TicTacToe*apply*initialize-TicTacToe
+   (state <s> ^operator.name initialize-TicTacToe
+              ^world.objects <objs>)
+-->
+   (<s> ^name TicTacToe
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^look-ahead-planning false)
+   (<objs> ^object <c11> <c21> <c31> <c12> <c22> <c32> <c13> <c23> <c33> <row1> <row2> <row3> <column1> <column2> <column3> <diagonal1> <diagonal2> <game>)
+   (<c11> ^object-handle |c11| ^anchored true ^type cell ^xy 11 ^x 1 ^y 1 ^content 0)
+   (<c21> ^object-handle |c21| ^anchored true ^type cell ^xy 21 ^x 2 ^y 1 ^content 0)
+   (<c31> ^object-handle |c31| ^anchored true ^type cell ^xy 31 ^x 3 ^y 1 ^content 0)
+   (<c12> ^object-handle |c12| ^anchored true ^type cell ^xy 12 ^x 1 ^y 2 ^content 0)
+   (<c22> ^object-handle |c22| ^anchored true ^type cell ^xy 22 ^x 2 ^y 2 ^content 0)
+   (<c32> ^object-handle |c32| ^anchored true ^type cell ^xy 32 ^x 3 ^y 2 ^content 0)
+   (<c13> ^object-handle |c13| ^anchored true ^type cell ^xy 13 ^x 1 ^y 3 ^content 0)
+   (<c23> ^object-handle |c23| ^anchored true ^type cell ^xy 23 ^x 2 ^y 3 ^content 0)
+   (<c33> ^object-handle |c33| ^anchored true ^type cell ^xy 33 ^x 3 ^y 3 ^content 0)
+   (<row1> ^object-handle row1 ^anchored true ^type line ^cell-handle |c11| |c21| |c31|)
+   (<row2> ^object-handle row2 ^anchored true ^type line ^cell-handle |c12| |c22| |c32|)
+   (<row3> ^object-handle row3 ^anchored true ^type line ^cell-handle |c13| |c23| |c33|)
+   (<column1> ^object-handle column1 ^anchored true ^type line ^cell-handle |c11| |c12| |c13|)
+   (<column2> ^object-handle column2 ^anchored true ^type line ^cell-handle |c21| |c22| |c23|)
+   (<column3> ^object-handle column3 ^anchored true ^type line ^cell-handle |c31| |c32| |c33|)
+   (<diagonal1> ^object-handle diagonal1 ^anchored true ^type line ^cell-handle |c11| |c22| |c33|)
+   (<diagonal2> ^object-handle diagonal2 ^anchored true ^type line ^cell-handle |c31| |c22| |c13|)
+   (<game> ^object-handle game ^anchored true ^turn 1 ^winner 0 ^over 0)
+   (<ds> ^desired <d> ^desired-count 1)
+   (<d> ^object <dg>)
+   (<dg> ^object-handle game ^over 1)
+}
+
+sp {TicTacToe*elaborate*problem-space
+   (state <s> ^name TicTacToe)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name TicTacToe
+        ^agent-world true)
+}
+
+### Achievement of object-property desireds (task-supplied, W-DBK-002)
+
+sp {TicTacToe*elaborate*desireds*achieved
+   (state <s> ^problem-space.name TicTacToe
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {TicTacToe*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name TicTacToe
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### End of episode
+
+sp {TicTacToe*halt*success
+   (state <s> ^superstate nil
+              ^name TicTacToe
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

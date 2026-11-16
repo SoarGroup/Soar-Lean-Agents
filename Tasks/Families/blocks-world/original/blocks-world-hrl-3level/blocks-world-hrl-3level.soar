@@ -1,0 +1,3 @@
+pushd blocks-world-hrl-3level
+source blocks-world-hrl-3level_source.soar
+popd

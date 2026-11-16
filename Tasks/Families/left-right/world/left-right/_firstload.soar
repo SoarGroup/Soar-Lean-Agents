@@ -1,0 +1,7 @@
+## Settings of the original: no chunking, Q-learning with the original's parameters,
+## epsilon-greedy selection (set after the libraries so it is the one in force).
+chunk never
+rl --set learning on
+rl --set learning-rate 0.300000
+rl --set discount-rate 0.900000
+indifferent-selection --epsilon-greedy

@@ -1,0 +1,32 @@
+
+sp {add-digits*propose*done-add
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^sum <_v5>)
+   (<s> ^stored 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name done-add)
+}
+
+sp {add-digits*apply*done-add
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name done-add)
+   (<ss> ^r <ss-r>)
+   (<s> ^sum <s-sum>)
+   (<ss> ^cout <ss-cout>)
+-->
+   (<ss> ^r (- <s-sum> (* (div <s-sum> 10) 10)))
+   (<ss> ^r <ss-r> -)
+   (<ss> ^cout (div <s-sum> 10))
+   (<ss> ^cout <ss-cout> -)
+}

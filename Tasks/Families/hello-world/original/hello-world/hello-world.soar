@@ -1,0 +1,3 @@
+pushd hello-world
+source hello-world_source.soar
+popd

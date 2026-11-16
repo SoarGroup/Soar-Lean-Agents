@@ -1,0 +1,443 @@
+## arithmetic-solve-problem: task situation, goal and knowledge tables (world conventions, the shared library)
+## The problem and its columns are world objects; the goal is ^desireds on the top state.
+## The task has no external environment: the top state is marked ^environment none.
+
+sp {arithmetic*propose*initialize-arithmetic
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-arithmetic
+        ^task-operator false)
+}
+
+sp {arithmetic*compare*initialize-arithmetic*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o> +
+              ^operator <iaw> +)
+   (<o> ^name initialize-arithmetic)
+   (<iaw> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o> > <iaw>)
+}
+
+sp {arithmetic*apply*initialize-arithmetic
+   (state <s> ^operator.name initialize-arithmetic
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name arithmetic
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <flags>
+        ^desireds <ds>)
+   (<ps> ^name arithmetic
+         ^agent-world true)
+   (<flags> ^mea-operator-selection false
+            ^look-ahead-planning false)
+   (<objs> ^object <p>)
+   (<p> ^object-handle problem
+        ^anchored true
+        ^operation 0
+        ^carry 0
+        ^count 10
+        ^pid 1
+        ^digits 0)
+   (<objs> ^object <c1>)
+   (<c1> ^object-handle column1
+         ^anchored true
+         ^pos 1
+         ^last 0
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<objs> ^object <c2>)
+   (<c2> ^object-handle column2
+         ^anchored true
+         ^pos 2
+         ^last 0
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<objs> ^object <c3>)
+   (<c3> ^object-handle column3
+         ^anchored true
+         ^pos 3
+         ^last 1
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle problem
+         ^count 0)
+}
+
+## Fixed knowledge (digits and arithmetic fact tables): a lookup table on the top state, not part of the world.
+sp {arithmetic*elaborate*facts
+   (state <s> ^superstate nil)
+-->
+   (<s> ^facts <f>)
+   (<f> ^digit <dg0>) (<dg0> ^val 0)
+   (<f> ^digit <dg1>) (<dg1> ^val 1)
+   (<f> ^digit <dg2>) (<dg2> ^val 2)
+   (<f> ^digit <dg3>) (<dg3> ^val 3)
+   (<f> ^digit <dg4>) (<dg4> ^val 4)
+   (<f> ^digit <dg5>) (<dg5> ^val 5)
+   (<f> ^digit <dg6>) (<dg6> ^val 6)
+   (<f> ^digit <dg7>) (<dg7> ^val 7)
+   (<f> ^digit <dg8>) (<dg8> ^val 8)
+   (<f> ^digit <dg9>) (<dg9> ^val 9)
+   (<f> ^add-fact <k0>) (<k0> ^|d1| 0 ^|d2| 0 ^sum 0 ^carry 0)
+   (<f> ^add-fact <k1>) (<k1> ^|d1| 0 ^|d2| 1 ^sum 1 ^carry 0)
+   (<f> ^add-fact <k2>) (<k2> ^|d1| 0 ^|d2| 2 ^sum 2 ^carry 0)
+   (<f> ^add-fact <k3>) (<k3> ^|d1| 0 ^|d2| 3 ^sum 3 ^carry 0)
+   (<f> ^add-fact <k4>) (<k4> ^|d1| 0 ^|d2| 4 ^sum 4 ^carry 0)
+   (<f> ^add-fact <k5>) (<k5> ^|d1| 0 ^|d2| 5 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k6>) (<k6> ^|d1| 0 ^|d2| 6 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k7>) (<k7> ^|d1| 0 ^|d2| 7 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k8>) (<k8> ^|d1| 0 ^|d2| 8 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k9>) (<k9> ^|d1| 0 ^|d2| 9 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k10>) (<k10> ^|d1| 0 ^|d2| 10 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k11>) (<k11> ^|d1| 1 ^|d2| 0 ^sum 1 ^carry 0)
+   (<f> ^add-fact <k12>) (<k12> ^|d1| 1 ^|d2| 1 ^sum 2 ^carry 0)
+   (<f> ^add-fact <k13>) (<k13> ^|d1| 1 ^|d2| 2 ^sum 3 ^carry 0)
+   (<f> ^add-fact <k14>) (<k14> ^|d1| 1 ^|d2| 3 ^sum 4 ^carry 0)
+   (<f> ^add-fact <k15>) (<k15> ^|d1| 1 ^|d2| 4 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k16>) (<k16> ^|d1| 1 ^|d2| 5 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k17>) (<k17> ^|d1| 1 ^|d2| 6 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k18>) (<k18> ^|d1| 1 ^|d2| 7 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k19>) (<k19> ^|d1| 1 ^|d2| 8 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k20>) (<k20> ^|d1| 1 ^|d2| 9 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k21>) (<k21> ^|d1| 1 ^|d2| 10 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k22>) (<k22> ^|d1| 2 ^|d2| 0 ^sum 2 ^carry 0)
+   (<f> ^add-fact <k23>) (<k23> ^|d1| 2 ^|d2| 1 ^sum 3 ^carry 0)
+   (<f> ^add-fact <k24>) (<k24> ^|d1| 2 ^|d2| 2 ^sum 4 ^carry 0)
+   (<f> ^add-fact <k25>) (<k25> ^|d1| 2 ^|d2| 3 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k26>) (<k26> ^|d1| 2 ^|d2| 4 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k27>) (<k27> ^|d1| 2 ^|d2| 5 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k28>) (<k28> ^|d1| 2 ^|d2| 6 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k29>) (<k29> ^|d1| 2 ^|d2| 7 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k30>) (<k30> ^|d1| 2 ^|d2| 8 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k31>) (<k31> ^|d1| 2 ^|d2| 9 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k32>) (<k32> ^|d1| 2 ^|d2| 10 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k33>) (<k33> ^|d1| 3 ^|d2| 0 ^sum 3 ^carry 0)
+   (<f> ^add-fact <k34>) (<k34> ^|d1| 3 ^|d2| 1 ^sum 4 ^carry 0)
+   (<f> ^add-fact <k35>) (<k35> ^|d1| 3 ^|d2| 2 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k36>) (<k36> ^|d1| 3 ^|d2| 3 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k37>) (<k37> ^|d1| 3 ^|d2| 4 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k38>) (<k38> ^|d1| 3 ^|d2| 5 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k39>) (<k39> ^|d1| 3 ^|d2| 6 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k40>) (<k40> ^|d1| 3 ^|d2| 7 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k41>) (<k41> ^|d1| 3 ^|d2| 8 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k42>) (<k42> ^|d1| 3 ^|d2| 9 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k43>) (<k43> ^|d1| 3 ^|d2| 10 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k44>) (<k44> ^|d1| 4 ^|d2| 0 ^sum 4 ^carry 0)
+   (<f> ^add-fact <k45>) (<k45> ^|d1| 4 ^|d2| 1 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k46>) (<k46> ^|d1| 4 ^|d2| 2 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k47>) (<k47> ^|d1| 4 ^|d2| 3 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k48>) (<k48> ^|d1| 4 ^|d2| 4 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k49>) (<k49> ^|d1| 4 ^|d2| 5 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k50>) (<k50> ^|d1| 4 ^|d2| 6 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k51>) (<k51> ^|d1| 4 ^|d2| 7 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k52>) (<k52> ^|d1| 4 ^|d2| 8 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k53>) (<k53> ^|d1| 4 ^|d2| 9 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k54>) (<k54> ^|d1| 4 ^|d2| 10 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k55>) (<k55> ^|d1| 5 ^|d2| 0 ^sum 5 ^carry 0)
+   (<f> ^add-fact <k56>) (<k56> ^|d1| 5 ^|d2| 1 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k57>) (<k57> ^|d1| 5 ^|d2| 2 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k58>) (<k58> ^|d1| 5 ^|d2| 3 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k59>) (<k59> ^|d1| 5 ^|d2| 4 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k60>) (<k60> ^|d1| 5 ^|d2| 5 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k61>) (<k61> ^|d1| 5 ^|d2| 6 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k62>) (<k62> ^|d1| 5 ^|d2| 7 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k63>) (<k63> ^|d1| 5 ^|d2| 8 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k64>) (<k64> ^|d1| 5 ^|d2| 9 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k65>) (<k65> ^|d1| 5 ^|d2| 10 ^sum 5 ^carry 1)
+   (<f> ^add-fact <k66>) (<k66> ^|d1| 6 ^|d2| 0 ^sum 6 ^carry 0)
+   (<f> ^add-fact <k67>) (<k67> ^|d1| 6 ^|d2| 1 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k68>) (<k68> ^|d1| 6 ^|d2| 2 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k69>) (<k69> ^|d1| 6 ^|d2| 3 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k70>) (<k70> ^|d1| 6 ^|d2| 4 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k71>) (<k71> ^|d1| 6 ^|d2| 5 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k72>) (<k72> ^|d1| 6 ^|d2| 6 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k73>) (<k73> ^|d1| 6 ^|d2| 7 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k74>) (<k74> ^|d1| 6 ^|d2| 8 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k75>) (<k75> ^|d1| 6 ^|d2| 9 ^sum 5 ^carry 1)
+   (<f> ^add-fact <k76>) (<k76> ^|d1| 6 ^|d2| 10 ^sum 6 ^carry 1)
+   (<f> ^add-fact <k77>) (<k77> ^|d1| 7 ^|d2| 0 ^sum 7 ^carry 0)
+   (<f> ^add-fact <k78>) (<k78> ^|d1| 7 ^|d2| 1 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k79>) (<k79> ^|d1| 7 ^|d2| 2 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k80>) (<k80> ^|d1| 7 ^|d2| 3 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k81>) (<k81> ^|d1| 7 ^|d2| 4 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k82>) (<k82> ^|d1| 7 ^|d2| 5 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k83>) (<k83> ^|d1| 7 ^|d2| 6 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k84>) (<k84> ^|d1| 7 ^|d2| 7 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k85>) (<k85> ^|d1| 7 ^|d2| 8 ^sum 5 ^carry 1)
+   (<f> ^add-fact <k86>) (<k86> ^|d1| 7 ^|d2| 9 ^sum 6 ^carry 1)
+   (<f> ^add-fact <k87>) (<k87> ^|d1| 7 ^|d2| 10 ^sum 7 ^carry 1)
+   (<f> ^add-fact <k88>) (<k88> ^|d1| 8 ^|d2| 0 ^sum 8 ^carry 0)
+   (<f> ^add-fact <k89>) (<k89> ^|d1| 8 ^|d2| 1 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k90>) (<k90> ^|d1| 8 ^|d2| 2 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k91>) (<k91> ^|d1| 8 ^|d2| 3 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k92>) (<k92> ^|d1| 8 ^|d2| 4 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k93>) (<k93> ^|d1| 8 ^|d2| 5 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k94>) (<k94> ^|d1| 8 ^|d2| 6 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k95>) (<k95> ^|d1| 8 ^|d2| 7 ^sum 5 ^carry 1)
+   (<f> ^add-fact <k96>) (<k96> ^|d1| 8 ^|d2| 8 ^sum 6 ^carry 1)
+   (<f> ^add-fact <k97>) (<k97> ^|d1| 8 ^|d2| 9 ^sum 7 ^carry 1)
+   (<f> ^add-fact <k98>) (<k98> ^|d1| 8 ^|d2| 10 ^sum 8 ^carry 1)
+   (<f> ^add-fact <k99>) (<k99> ^|d1| 9 ^|d2| 0 ^sum 9 ^carry 0)
+   (<f> ^add-fact <k100>) (<k100> ^|d1| 9 ^|d2| 1 ^sum 0 ^carry 1)
+   (<f> ^add-fact <k101>) (<k101> ^|d1| 9 ^|d2| 2 ^sum 1 ^carry 1)
+   (<f> ^add-fact <k102>) (<k102> ^|d1| 9 ^|d2| 3 ^sum 2 ^carry 1)
+   (<f> ^add-fact <k103>) (<k103> ^|d1| 9 ^|d2| 4 ^sum 3 ^carry 1)
+   (<f> ^add-fact <k104>) (<k104> ^|d1| 9 ^|d2| 5 ^sum 4 ^carry 1)
+   (<f> ^add-fact <k105>) (<k105> ^|d1| 9 ^|d2| 6 ^sum 5 ^carry 1)
+   (<f> ^add-fact <k106>) (<k106> ^|d1| 9 ^|d2| 7 ^sum 6 ^carry 1)
+   (<f> ^add-fact <k107>) (<k107> ^|d1| 9 ^|d2| 8 ^sum 7 ^carry 1)
+   (<f> ^add-fact <k108>) (<k108> ^|d1| 9 ^|d2| 9 ^sum 8 ^carry 1)
+   (<f> ^add-fact <k109>) (<k109> ^|d1| 9 ^|d2| 10 ^sum 9 ^carry 1)
+   (<f> ^sub-fact <k110>) (<k110> ^|d1| 0 ^|d2| 0 ^diff 0)
+   (<f> ^sub-fact <k111>) (<k111> ^|d1| 1 ^|d2| 0 ^diff 1)
+   (<f> ^sub-fact <k112>) (<k112> ^|d1| 1 ^|d2| 1 ^diff 0)
+   (<f> ^sub-fact <k113>) (<k113> ^|d1| 2 ^|d2| 0 ^diff 2)
+   (<f> ^sub-fact <k114>) (<k114> ^|d1| 2 ^|d2| 1 ^diff 1)
+   (<f> ^sub-fact <k115>) (<k115> ^|d1| 2 ^|d2| 2 ^diff 0)
+   (<f> ^sub-fact <k116>) (<k116> ^|d1| 3 ^|d2| 0 ^diff 3)
+   (<f> ^sub-fact <k117>) (<k117> ^|d1| 3 ^|d2| 1 ^diff 2)
+   (<f> ^sub-fact <k118>) (<k118> ^|d1| 3 ^|d2| 2 ^diff 1)
+   (<f> ^sub-fact <k119>) (<k119> ^|d1| 3 ^|d2| 3 ^diff 0)
+   (<f> ^sub-fact <k120>) (<k120> ^|d1| 4 ^|d2| 0 ^diff 4)
+   (<f> ^sub-fact <k121>) (<k121> ^|d1| 4 ^|d2| 1 ^diff 3)
+   (<f> ^sub-fact <k122>) (<k122> ^|d1| 4 ^|d2| 2 ^diff 2)
+   (<f> ^sub-fact <k123>) (<k123> ^|d1| 4 ^|d2| 3 ^diff 1)
+   (<f> ^sub-fact <k124>) (<k124> ^|d1| 4 ^|d2| 4 ^diff 0)
+   (<f> ^sub-fact <k125>) (<k125> ^|d1| 5 ^|d2| 0 ^diff 5)
+   (<f> ^sub-fact <k126>) (<k126> ^|d1| 5 ^|d2| 1 ^diff 4)
+   (<f> ^sub-fact <k127>) (<k127> ^|d1| 5 ^|d2| 2 ^diff 3)
+   (<f> ^sub-fact <k128>) (<k128> ^|d1| 5 ^|d2| 3 ^diff 2)
+   (<f> ^sub-fact <k129>) (<k129> ^|d1| 5 ^|d2| 4 ^diff 1)
+   (<f> ^sub-fact <k130>) (<k130> ^|d1| 5 ^|d2| 5 ^diff 0)
+   (<f> ^sub-fact <k131>) (<k131> ^|d1| 6 ^|d2| 0 ^diff 6)
+   (<f> ^sub-fact <k132>) (<k132> ^|d1| 6 ^|d2| 1 ^diff 5)
+   (<f> ^sub-fact <k133>) (<k133> ^|d1| 6 ^|d2| 2 ^diff 4)
+   (<f> ^sub-fact <k134>) (<k134> ^|d1| 6 ^|d2| 3 ^diff 3)
+   (<f> ^sub-fact <k135>) (<k135> ^|d1| 6 ^|d2| 4 ^diff 2)
+   (<f> ^sub-fact <k136>) (<k136> ^|d1| 6 ^|d2| 5 ^diff 1)
+   (<f> ^sub-fact <k137>) (<k137> ^|d1| 6 ^|d2| 6 ^diff 0)
+   (<f> ^sub-fact <k138>) (<k138> ^|d1| 7 ^|d2| 0 ^diff 7)
+   (<f> ^sub-fact <k139>) (<k139> ^|d1| 7 ^|d2| 1 ^diff 6)
+   (<f> ^sub-fact <k140>) (<k140> ^|d1| 7 ^|d2| 2 ^diff 5)
+   (<f> ^sub-fact <k141>) (<k141> ^|d1| 7 ^|d2| 3 ^diff 4)
+   (<f> ^sub-fact <k142>) (<k142> ^|d1| 7 ^|d2| 4 ^diff 3)
+   (<f> ^sub-fact <k143>) (<k143> ^|d1| 7 ^|d2| 5 ^diff 2)
+   (<f> ^sub-fact <k144>) (<k144> ^|d1| 7 ^|d2| 6 ^diff 1)
+   (<f> ^sub-fact <k145>) (<k145> ^|d1| 7 ^|d2| 7 ^diff 0)
+   (<f> ^sub-fact <k146>) (<k146> ^|d1| 8 ^|d2| 0 ^diff 8)
+   (<f> ^sub-fact <k147>) (<k147> ^|d1| 8 ^|d2| 1 ^diff 7)
+   (<f> ^sub-fact <k148>) (<k148> ^|d1| 8 ^|d2| 2 ^diff 6)
+   (<f> ^sub-fact <k149>) (<k149> ^|d1| 8 ^|d2| 3 ^diff 5)
+   (<f> ^sub-fact <k150>) (<k150> ^|d1| 8 ^|d2| 4 ^diff 4)
+   (<f> ^sub-fact <k151>) (<k151> ^|d1| 8 ^|d2| 5 ^diff 3)
+   (<f> ^sub-fact <k152>) (<k152> ^|d1| 8 ^|d2| 6 ^diff 2)
+   (<f> ^sub-fact <k153>) (<k153> ^|d1| 8 ^|d2| 7 ^diff 1)
+   (<f> ^sub-fact <k154>) (<k154> ^|d1| 8 ^|d2| 8 ^diff 0)
+   (<f> ^sub-fact <k155>) (<k155> ^|d1| 9 ^|d2| 0 ^diff 9)
+   (<f> ^sub-fact <k156>) (<k156> ^|d1| 9 ^|d2| 1 ^diff 8)
+   (<f> ^sub-fact <k157>) (<k157> ^|d1| 9 ^|d2| 2 ^diff 7)
+   (<f> ^sub-fact <k158>) (<k158> ^|d1| 9 ^|d2| 3 ^diff 6)
+   (<f> ^sub-fact <k159>) (<k159> ^|d1| 9 ^|d2| 4 ^diff 5)
+   (<f> ^sub-fact <k160>) (<k160> ^|d1| 9 ^|d2| 5 ^diff 4)
+   (<f> ^sub-fact <k161>) (<k161> ^|d1| 9 ^|d2| 6 ^diff 3)
+   (<f> ^sub-fact <k162>) (<k162> ^|d1| 9 ^|d2| 7 ^diff 2)
+   (<f> ^sub-fact <k163>) (<k163> ^|d1| 9 ^|d2| 8 ^diff 1)
+   (<f> ^sub-fact <k164>) (<k164> ^|d1| 9 ^|d2| 9 ^diff 0)
+   (<f> ^sub-fact <k165>) (<k165> ^|d1| 10 ^|d2| 0 ^diff 10)
+   (<f> ^sub-fact <k166>) (<k166> ^|d1| 10 ^|d2| 1 ^diff 9)
+   (<f> ^sub-fact <k167>) (<k167> ^|d1| 10 ^|d2| 2 ^diff 8)
+   (<f> ^sub-fact <k168>) (<k168> ^|d1| 10 ^|d2| 3 ^diff 7)
+   (<f> ^sub-fact <k169>) (<k169> ^|d1| 10 ^|d2| 4 ^diff 6)
+   (<f> ^sub-fact <k170>) (<k170> ^|d1| 10 ^|d2| 5 ^diff 5)
+   (<f> ^sub-fact <k171>) (<k171> ^|d1| 10 ^|d2| 6 ^diff 4)
+   (<f> ^sub-fact <k172>) (<k172> ^|d1| 10 ^|d2| 7 ^diff 3)
+   (<f> ^sub-fact <k173>) (<k173> ^|d1| 10 ^|d2| 8 ^diff 2)
+   (<f> ^sub-fact <k174>) (<k174> ^|d1| 10 ^|d2| 9 ^diff 1)
+   (<f> ^sub-fact <k175>) (<k175> ^|d1| 10 ^|d2| 10 ^diff 0)
+   (<f> ^sub-fact <k176>) (<k176> ^|d1| 11 ^|d2| 0 ^diff 11)
+   (<f> ^sub-fact <k177>) (<k177> ^|d1| 11 ^|d2| 1 ^diff 10)
+   (<f> ^sub-fact <k178>) (<k178> ^|d1| 11 ^|d2| 2 ^diff 9)
+   (<f> ^sub-fact <k179>) (<k179> ^|d1| 11 ^|d2| 3 ^diff 8)
+   (<f> ^sub-fact <k180>) (<k180> ^|d1| 11 ^|d2| 4 ^diff 7)
+   (<f> ^sub-fact <k181>) (<k181> ^|d1| 11 ^|d2| 5 ^diff 6)
+   (<f> ^sub-fact <k182>) (<k182> ^|d1| 11 ^|d2| 6 ^diff 5)
+   (<f> ^sub-fact <k183>) (<k183> ^|d1| 11 ^|d2| 7 ^diff 4)
+   (<f> ^sub-fact <k184>) (<k184> ^|d1| 11 ^|d2| 8 ^diff 3)
+   (<f> ^sub-fact <k185>) (<k185> ^|d1| 11 ^|d2| 9 ^diff 2)
+   (<f> ^sub-fact <k186>) (<k186> ^|d1| 11 ^|d2| 10 ^diff 1)
+   (<f> ^sub-fact <k187>) (<k187> ^|d1| 12 ^|d2| 0 ^diff 12)
+   (<f> ^sub-fact <k188>) (<k188> ^|d1| 12 ^|d2| 1 ^diff 11)
+   (<f> ^sub-fact <k189>) (<k189> ^|d1| 12 ^|d2| 2 ^diff 10)
+   (<f> ^sub-fact <k190>) (<k190> ^|d1| 12 ^|d2| 3 ^diff 9)
+   (<f> ^sub-fact <k191>) (<k191> ^|d1| 12 ^|d2| 4 ^diff 8)
+   (<f> ^sub-fact <k192>) (<k192> ^|d1| 12 ^|d2| 5 ^diff 7)
+   (<f> ^sub-fact <k193>) (<k193> ^|d1| 12 ^|d2| 6 ^diff 6)
+   (<f> ^sub-fact <k194>) (<k194> ^|d1| 12 ^|d2| 7 ^diff 5)
+   (<f> ^sub-fact <k195>) (<k195> ^|d1| 12 ^|d2| 8 ^diff 4)
+   (<f> ^sub-fact <k196>) (<k196> ^|d1| 12 ^|d2| 9 ^diff 3)
+   (<f> ^sub-fact <k197>) (<k197> ^|d1| 12 ^|d2| 10 ^diff 2)
+   (<f> ^sub-fact <k198>) (<k198> ^|d1| 13 ^|d2| 0 ^diff 13)
+   (<f> ^sub-fact <k199>) (<k199> ^|d1| 13 ^|d2| 1 ^diff 12)
+   (<f> ^sub-fact <k200>) (<k200> ^|d1| 13 ^|d2| 2 ^diff 11)
+   (<f> ^sub-fact <k201>) (<k201> ^|d1| 13 ^|d2| 3 ^diff 10)
+   (<f> ^sub-fact <k202>) (<k202> ^|d1| 13 ^|d2| 4 ^diff 9)
+   (<f> ^sub-fact <k203>) (<k203> ^|d1| 13 ^|d2| 5 ^diff 8)
+   (<f> ^sub-fact <k204>) (<k204> ^|d1| 13 ^|d2| 6 ^diff 7)
+   (<f> ^sub-fact <k205>) (<k205> ^|d1| 13 ^|d2| 7 ^diff 6)
+   (<f> ^sub-fact <k206>) (<k206> ^|d1| 13 ^|d2| 8 ^diff 5)
+   (<f> ^sub-fact <k207>) (<k207> ^|d1| 13 ^|d2| 9 ^diff 4)
+   (<f> ^sub-fact <k208>) (<k208> ^|d1| 13 ^|d2| 10 ^diff 3)
+   (<f> ^sub-fact <k209>) (<k209> ^|d1| 14 ^|d2| 0 ^diff 14)
+   (<f> ^sub-fact <k210>) (<k210> ^|d1| 14 ^|d2| 1 ^diff 13)
+   (<f> ^sub-fact <k211>) (<k211> ^|d1| 14 ^|d2| 2 ^diff 12)
+   (<f> ^sub-fact <k212>) (<k212> ^|d1| 14 ^|d2| 3 ^diff 11)
+   (<f> ^sub-fact <k213>) (<k213> ^|d1| 14 ^|d2| 4 ^diff 10)
+   (<f> ^sub-fact <k214>) (<k214> ^|d1| 14 ^|d2| 5 ^diff 9)
+   (<f> ^sub-fact <k215>) (<k215> ^|d1| 14 ^|d2| 6 ^diff 8)
+   (<f> ^sub-fact <k216>) (<k216> ^|d1| 14 ^|d2| 7 ^diff 7)
+   (<f> ^sub-fact <k217>) (<k217> ^|d1| 14 ^|d2| 8 ^diff 6)
+   (<f> ^sub-fact <k218>) (<k218> ^|d1| 14 ^|d2| 9 ^diff 5)
+   (<f> ^sub-fact <k219>) (<k219> ^|d1| 14 ^|d2| 10 ^diff 4)
+   (<f> ^sub-fact <k220>) (<k220> ^|d1| 15 ^|d2| 0 ^diff 15)
+   (<f> ^sub-fact <k221>) (<k221> ^|d1| 15 ^|d2| 1 ^diff 14)
+   (<f> ^sub-fact <k222>) (<k222> ^|d1| 15 ^|d2| 2 ^diff 13)
+   (<f> ^sub-fact <k223>) (<k223> ^|d1| 15 ^|d2| 3 ^diff 12)
+   (<f> ^sub-fact <k224>) (<k224> ^|d1| 15 ^|d2| 4 ^diff 11)
+   (<f> ^sub-fact <k225>) (<k225> ^|d1| 15 ^|d2| 5 ^diff 10)
+   (<f> ^sub-fact <k226>) (<k226> ^|d1| 15 ^|d2| 6 ^diff 9)
+   (<f> ^sub-fact <k227>) (<k227> ^|d1| 15 ^|d2| 7 ^diff 8)
+   (<f> ^sub-fact <k228>) (<k228> ^|d1| 15 ^|d2| 8 ^diff 7)
+   (<f> ^sub-fact <k229>) (<k229> ^|d1| 15 ^|d2| 9 ^diff 6)
+   (<f> ^sub-fact <k230>) (<k230> ^|d1| 15 ^|d2| 10 ^diff 5)
+   (<f> ^sub-fact <k231>) (<k231> ^|d1| 16 ^|d2| 0 ^diff 16)
+   (<f> ^sub-fact <k232>) (<k232> ^|d1| 16 ^|d2| 1 ^diff 15)
+   (<f> ^sub-fact <k233>) (<k233> ^|d1| 16 ^|d2| 2 ^diff 14)
+   (<f> ^sub-fact <k234>) (<k234> ^|d1| 16 ^|d2| 3 ^diff 13)
+   (<f> ^sub-fact <k235>) (<k235> ^|d1| 16 ^|d2| 4 ^diff 12)
+   (<f> ^sub-fact <k236>) (<k236> ^|d1| 16 ^|d2| 5 ^diff 11)
+   (<f> ^sub-fact <k237>) (<k237> ^|d1| 16 ^|d2| 6 ^diff 10)
+   (<f> ^sub-fact <k238>) (<k238> ^|d1| 16 ^|d2| 7 ^diff 9)
+   (<f> ^sub-fact <k239>) (<k239> ^|d1| 16 ^|d2| 8 ^diff 8)
+   (<f> ^sub-fact <k240>) (<k240> ^|d1| 16 ^|d2| 9 ^diff 7)
+   (<f> ^sub-fact <k241>) (<k241> ^|d1| 16 ^|d2| 10 ^diff 6)
+   (<f> ^sub-fact <k242>) (<k242> ^|d1| 17 ^|d2| 0 ^diff 17)
+   (<f> ^sub-fact <k243>) (<k243> ^|d1| 17 ^|d2| 1 ^diff 16)
+   (<f> ^sub-fact <k244>) (<k244> ^|d1| 17 ^|d2| 2 ^diff 15)
+   (<f> ^sub-fact <k245>) (<k245> ^|d1| 17 ^|d2| 3 ^diff 14)
+   (<f> ^sub-fact <k246>) (<k246> ^|d1| 17 ^|d2| 4 ^diff 13)
+   (<f> ^sub-fact <k247>) (<k247> ^|d1| 17 ^|d2| 5 ^diff 12)
+   (<f> ^sub-fact <k248>) (<k248> ^|d1| 17 ^|d2| 6 ^diff 11)
+   (<f> ^sub-fact <k249>) (<k249> ^|d1| 17 ^|d2| 7 ^diff 10)
+   (<f> ^sub-fact <k250>) (<k250> ^|d1| 17 ^|d2| 8 ^diff 9)
+   (<f> ^sub-fact <k251>) (<k251> ^|d1| 17 ^|d2| 9 ^diff 8)
+   (<f> ^sub-fact <k252>) (<k252> ^|d1| 17 ^|d2| 10 ^diff 7)
+   (<f> ^sub-fact <k253>) (<k253> ^|d1| 18 ^|d2| 0 ^diff 18)
+   (<f> ^sub-fact <k254>) (<k254> ^|d1| 18 ^|d2| 1 ^diff 17)
+   (<f> ^sub-fact <k255>) (<k255> ^|d1| 18 ^|d2| 2 ^diff 16)
+   (<f> ^sub-fact <k256>) (<k256> ^|d1| 18 ^|d2| 3 ^diff 15)
+   (<f> ^sub-fact <k257>) (<k257> ^|d1| 18 ^|d2| 4 ^diff 14)
+   (<f> ^sub-fact <k258>) (<k258> ^|d1| 18 ^|d2| 5 ^diff 13)
+   (<f> ^sub-fact <k259>) (<k259> ^|d1| 18 ^|d2| 6 ^diff 12)
+   (<f> ^sub-fact <k260>) (<k260> ^|d1| 18 ^|d2| 7 ^diff 11)
+   (<f> ^sub-fact <k261>) (<k261> ^|d1| 18 ^|d2| 8 ^diff 10)
+   (<f> ^sub-fact <k262>) (<k262> ^|d1| 18 ^|d2| 9 ^diff 9)
+   (<f> ^sub-fact <k263>) (<k263> ^|d1| 18 ^|d2| 10 ^diff 8)
+   (<f> ^sub-fact <k264>) (<k264> ^|d1| 19 ^|d2| 0 ^diff 19)
+   (<f> ^sub-fact <k265>) (<k265> ^|d1| 19 ^|d2| 1 ^diff 18)
+   (<f> ^sub-fact <k266>) (<k266> ^|d1| 19 ^|d2| 2 ^diff 17)
+   (<f> ^sub-fact <k267>) (<k267> ^|d1| 19 ^|d2| 3 ^diff 16)
+   (<f> ^sub-fact <k268>) (<k268> ^|d1| 19 ^|d2| 4 ^diff 15)
+   (<f> ^sub-fact <k269>) (<k269> ^|d1| 19 ^|d2| 5 ^diff 14)
+   (<f> ^sub-fact <k270>) (<k270> ^|d1| 19 ^|d2| 6 ^diff 13)
+   (<f> ^sub-fact <k271>) (<k271> ^|d1| 19 ^|d2| 7 ^diff 12)
+   (<f> ^sub-fact <k272>) (<k272> ^|d1| 19 ^|d2| 8 ^diff 11)
+   (<f> ^sub-fact <k273>) (<k273> ^|d1| 19 ^|d2| 9 ^diff 10)
+   (<f> ^sub-fact <k274>) (<k274> ^|d1| 19 ^|d2| 10 ^diff 9)
+   (<f> ^inc-fact <k275>) (<k275> ^n 0 ^next 1)
+   (<f> ^inc-fact <k276>) (<k276> ^n 1 ^next 2)
+   (<f> ^inc-fact <k277>) (<k277> ^n 2 ^next 3)
+   (<f> ^inc-fact <k278>) (<k278> ^n 3 ^next 4)
+   (<f> ^inc-fact <k279>) (<k279> ^n 4 ^next 5)
+   (<f> ^inc-fact <k280>) (<k280> ^n 5 ^next 6)
+   (<f> ^inc-fact <k281>) (<k281> ^n 6 ^next 7)
+   (<f> ^inc-fact <k282>) (<k282> ^n 7 ^next 8)
+   (<f> ^inc-fact <k283>) (<k283> ^n 8 ^next 9)
+   (<f> ^inc-fact <k284>) (<k284> ^n 9 ^next 10)
+   (<f> ^ten-fact <k285>) (<k285> ^n 0 ^plus10 10)
+   (<f> ^ten-fact <k286>) (<k286> ^n 1 ^plus10 11)
+   (<f> ^ten-fact <k287>) (<k287> ^n 2 ^plus10 12)
+   (<f> ^ten-fact <k288>) (<k288> ^n 3 ^plus10 13)
+   (<f> ^ten-fact <k289>) (<k289> ^n 4 ^plus10 14)
+   (<f> ^ten-fact <k290>) (<k290> ^n 5 ^plus10 15)
+   (<f> ^ten-fact <k291>) (<k291> ^n 6 ^plus10 16)
+   (<f> ^ten-fact <k292>) (<k292> ^n 7 ^plus10 17)
+   (<f> ^ten-fact <k293>) (<k293> ^n 8 ^plus10 18)
+   (<f> ^ten-fact <k294>) (<k294> ^n 9 ^plus10 19)
+}
+
+sp {arithmetic*elaborate*desireds*achieved*object-property
+   (state <s> ^problem-space.name arithmetic
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> anchored <> duplicate-of <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {arithmetic*elaborate*desireds*unachieved*object-property
+   (state <s> ^problem-space.name arithmetic
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> anchored <> duplicate-of <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+sp {arithmetic*apply*goal-completed*report
+   (state <s> ^superstate nil
+              ^name arithmetic
+              ^operator <o>)
+   (<o> ^name goal-completed)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}
+

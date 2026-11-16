@@ -1,0 +1,33 @@
+
+sp {left-right*rl*move
+   :template
+   (state <s> ^name left-right)
+   (<s> ^operator <o> +)
+   (<o> ^name move)
+   (<o> ^agent <agent>)
+   (<o> ^direction <direction>)
+   (<agent> ^location <agent-location>)
+   (<agent> ^moved <agent-moved>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {left-right*reward*1
+   (state <s> ^name left-right)
+   (<s> ^reward-link <r>)
+   (<s> ^agent <x0>)
+   (<x0> ^location -1)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -1)
+}
+
+sp {left-right*reward*2
+   (state <s> ^name left-right)
+   (<s> ^reward-link <r>)
+   (<s> ^agent <x0>)
+   (<x0> ^location 1)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value 1)
+}

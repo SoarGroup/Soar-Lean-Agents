@@ -1,0 +1,11 @@
+Total: 602 productions sourced.
+282 decisions | Kernel CPU Time:       0.081
+Crossing: artist-1 and manager-1 row from the left bank to the right bank.
+Crossing: manager-1 row from the right bank to the left bank.
+Crossing: artist-2 row from the left bank to the right bank.
+Crossing: artist-1 row from the right bank to the left bank.
+Crossing: manager-1 and manager-2 row from the left bank to the right bank.
+Crossing: manager-1 row from the right bank to the left bank.
+Crossing: artist-1 and manager-1 row from the left bank to the right bank.
+Everyone is across; no artist was ever left unprotected.
+TASK-RESULT: success

@@ -1,0 +1,34 @@
+
+sp {add*propose*done
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^|d1| <_v3>)
+   (<s> ^|d3| <a-digit2>)
+   (<a> ^digit2 <a-digit2>)
+   (<s> ^phase 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name done)
+}
+
+sp {add*apply*done
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^operator <o>)
+   (<o> ^name done)
+   (<a> ^digit1 <a-digit1>)
+   (<s> ^|d1| <s-d1>)
+   (<a> ^carry <a-carry>)
+   (<s> ^carry <s-carry>)
+   (<a> ^done <a-done>)
+-->
+   (<a> ^digit1 <s-d1>)
+   (<a> ^digit1 <a-digit1> -)
+   (<a> ^carry <s-carry>)
+   (<a> ^carry <a-carry> -)
+   (<a> ^done 1)
+   (<a> ^done <a-done> -)
+}

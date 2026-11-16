@@ -1,0 +1,20 @@
+
+sp {hello-world*elaborate*goal*success
+   (state <s> ^name hello-world)
+   (<s> ^desired <d>)
+   (<s> ^greeting <x>)
+   (<d> ^greeting <dx>)
+   (<dx> ^written <g-written>)
+   (<x> ^written <g-written>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {hello-world*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

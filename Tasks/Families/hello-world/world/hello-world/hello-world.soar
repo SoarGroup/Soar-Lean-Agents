@@ -1,0 +1,9 @@
+## hello-world rewritten to the world conventions (the shared library, no external environment)
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+source _firstload.soar
+source initialize-hello-world.soar
+source desireds.soar
+source hello-world-operator.soar

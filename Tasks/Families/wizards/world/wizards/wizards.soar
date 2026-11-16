@@ -1,0 +1,17 @@
+## wizards (three wizards' spots; nested models of what each wizard knows, until wizard 1 can
+## guess his own spot) under the world conventions (the shared library, no external environment:
+## ^environment none).
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+chunk never
+multi-attributes object 20
+multi-attributes sib 2
+
+source wizards-world.soar
+source wizards-derived.soar
+source wizards-operators.soar
+source wizards-search-control.soar

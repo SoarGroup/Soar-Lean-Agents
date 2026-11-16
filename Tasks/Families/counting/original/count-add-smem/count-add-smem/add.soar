@@ -1,0 +1,18 @@
+
+sp {count-add-smem*elaborate*add-relevant*1
+   (state <s> ^name count-add-smem)
+   (<s> ^adder <a>)
+   (<a> ^done 0)
+-->
+   (<s> ^add-relevant <a>)
+}
+
+sp {count-add-smem*propose*add
+   (state <s> ^name count-add-smem)
+   (<s> ^add-relevant <a>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add)
+   (<o> ^a <a>)
+}

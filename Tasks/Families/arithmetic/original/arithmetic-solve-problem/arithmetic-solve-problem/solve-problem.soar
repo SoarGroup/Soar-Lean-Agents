@@ -1,0 +1,22 @@
+
+sp {arithmetic*propose*solve-problem
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c1>)
+   (<s> ^column <c2>)
+   (<s> ^column <c3>)
+   (<p> ^digits 6)
+   (<c3> ^done { <c3-done> <> <p-pid> })
+   (<p> ^pid <p-pid>)
+   (<c1> ^pos 1)
+   (<c2> ^pos 2)
+   (<c3> ^pos 3)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name solve-problem)
+   (<o> ^p <p>)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+   (<o> ^|c3| <c3>)
+}

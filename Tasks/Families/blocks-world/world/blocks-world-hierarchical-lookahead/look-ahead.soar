@@ -1,0 +1,113 @@
+## Look-ahead in the move-block space (selection-world). pick-up and put-down are proposed
+## without preferences, so they tie and are evaluated in look-ahead states.
+
+## The look-ahead state works in the move-block problem space (W-LAH-009).
+sp {move-block*elaborate*look-ahead*problem-space
+   (state <s> ^name evaluate-operator
+              ^superstate.superstate.problem-space.name move-block)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name move-block)
+}
+
+## The original's abstract action model, used only in look-ahead (^real false): pick-up makes
+## the gripper hold the block; put-down puts the held block on the destination and empties the
+## gripper. In the real move-block state these operators have no application and are carried
+## out by gripper actions in their implementation substates.
+sp {move-block*apply*pick-up*look-ahead-model
+   (state <s> ^operator <o>
+              ^real false
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name pick-up
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <xh>)
+   (<w> ^anchored-world true
+        ^objects.object <x> <g>
+        ^holding-object <h>)
+   (<x> ^object-handle $ <xh>)
+   (<h> ^object-handle $ none)
+   (<g> ^class gripper
+        ^last-held <lh>)
+-->
+   (log 1 (crlf) |Apply pick-up (model): | <xh>)
+   (<w> ^holding-object <h> -
+        ^holding-object <x>)
+   (<g> ^last-held <lh> -
+        ^last-held <xh>)
+}
+
+sp {move-block*apply*put-down*look-ahead-model*release
+   (state <s> ^operator <o>
+              ^real false
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name put-down
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <yh>
+        ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true
+        ^holding-object <y>)
+   (<y> ^object-handle $ <yh>)
+-->
+   (log 1 (crlf) |Apply put-down (model): | <yh> | -> | <dh>)
+   (<w> ^holding-object <y> -
+        ^holding-object <h>)
+   (<h> ^object-handle none)
+}
+
+sp {move-block*apply*put-down*look-ahead-model*on
+   (state <s> ^operator <o>
+              ^real false
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name put-down
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <yh>
+        ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true
+        ^holding-object <y>
+        ^objects.object <d>
+        ^on <r>)
+   (<y> ^object-handle $ <yh>)
+   (<d> ^object-handle $ <dh>)
+   (<r> ^argument1 <y>
+        ^argument2 <> <d>)
+-->
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <y>
+         ^argument2 <d>
+         ^argument-count 2)
+}
+
+## Evaluation (task knowledge of the original): success is the look-ahead state's own desireds
+## (block on destination), recognised by agent-world. Failure, once the evaluated operator has
+## been applied: the gripper holds a block other than the one to move, or it is empty and the
+## block is not on the destination.
+sp {move-block*evaluate*failure*holding-other
+   (state <s> ^problem-space.name move-block
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired.on.argument1.object-handle $ <bh>)
+   (<w> ^holding-object.object-handle { <> none <> <bh> })
+-->
+   (<s> ^failure <ds>)
+}
+
+sp {move-block*evaluate*failure*empty-not-placed
+   (state <s> ^problem-space.name move-block
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired.on <dr>)
+   (<dr> ^argument1.object-handle $ <bh>
+         ^argument2.object-handle $ <dh>)
+   (<w> ^holding-object.object-handle $ none)
+  -{(<w> ^on <r>)
+    (<r> ^argument1.object-handle <bh>
+         ^argument2.object-handle <dh>)}
+-->
+   (<s> ^failure <ds>)
+}

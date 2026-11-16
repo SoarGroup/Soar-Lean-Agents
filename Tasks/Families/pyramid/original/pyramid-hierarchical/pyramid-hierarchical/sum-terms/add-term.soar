@@ -1,0 +1,32 @@
+
+sp {sum-terms*propose*add-term
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^sum <_v3>)
+   (<ss> ^term <t>)
+   (<t> ^index <s-next>)
+   (<s> ^next <s-next>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-term)
+   (<o> ^t <t>)
+}
+
+sp {sum-terms*apply*add-term
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^operator <o>)
+   (<o> ^name add-term)
+   (<o> ^t <t>)
+   (<s> ^sum <s-sum>)
+   (<t> ^value <t-value>)
+   (<s> ^next <s-next>)
+-->
+   (<s> ^sum (+ <s-sum> <t-value>))
+   (<s> ^sum <s-sum> -)
+   (<s> ^next (+ <s-next> 1))
+   (<s> ^next <s-next> -)
+}

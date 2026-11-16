@@ -1,0 +1,33 @@
+
+sp {blocks-world*select*out-of-place-to-table
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<o> ^g <g>)
+   -(<block> ^in-place 1)
+   (<dest> ^table 1)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {blocks-world*select*onto-desired-in-place
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<o> ^g <g>)
+   (<dest> ^in-place 1)
+   (<s> ^desired <des1>)
+   (<des1> ^object <dx1>)
+   (<block> ^name <ko1>)
+   (<dx1> ^name <ko1>)
+   (<dx1> ^on <dt1>)
+   (<dt1> ^name <kt1>)
+   (<dest> ^name <kt1>)
+   (<s> ^operator { <o2> <> <o> } +)
+-->
+   (<s> ^operator <o> > <o2>)
+}

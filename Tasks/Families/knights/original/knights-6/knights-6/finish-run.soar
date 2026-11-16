@@ -1,0 +1,25 @@
+
+sp {knights*propose*finish-run
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<t> ^done 0)
+   (<t> ^moves { <t-moves> >= 1000000 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name finish-run)
+   (<o> ^t <t>)
+}
+
+sp {knights*apply*finish-run
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name finish-run)
+   (<o> ^t <t>)
+   (<t> ^done <t-done>)
+   (<t> ^solutions <t-solutions>)
+-->
+   (<t> ^done 1)
+   (<t> ^done <t-done> -)
+   (write |Run over: | <t-solutions> | solutions|)
+}

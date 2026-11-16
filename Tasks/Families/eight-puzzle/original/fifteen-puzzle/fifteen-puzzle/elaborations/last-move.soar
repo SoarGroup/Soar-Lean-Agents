@@ -1,0 +1,45 @@
+
+sp {fifteen-puzzle*apply*move-tile*last-move*replace
+   (state <s> ^name fifteen-puzzle)
+   (<s> ^operator <o>)
+   (<s> ^last-move <l>)
+   (<o> ^name move-tile)
+   (<o> ^t <t>)
+   (<o> ^k <k>)
+   (<o> ^bt <bt>)
+   (<o> ^bb <bb>)
+   (<o> ^from <from>)
+   (<o> ^to <to>)
+-->
+   (<s> ^last-move <l> -)
+   (<s> ^last-move <n>)
+   (<n> ^name move-tile)
+   (<n> ^t <t>)
+   (<n> ^k <k>)
+   (<n> ^bt <bt>)
+   (<n> ^bb <bb>)
+   (<n> ^from <from>)
+   (<n> ^to <to>)
+}
+
+sp {fifteen-puzzle*apply*move-tile*last-move*first
+   (state <s> ^name fifteen-puzzle)
+   (<s> ^operator <o>)
+   -(<s> ^last-move <_v2>)
+   (<o> ^name move-tile)
+   (<o> ^t <t>)
+   (<o> ^k <k>)
+   (<o> ^bt <bt>)
+   (<o> ^bb <bb>)
+   (<o> ^from <from>)
+   (<o> ^to <to>)
+-->
+   (<s> ^last-move <n>)
+   (<n> ^name move-tile)
+   (<n> ^t <t>)
+   (<n> ^k <k>)
+   (<n> ^bt <bt>)
+   (<n> ^bb <bb>)
+   (<n> ^from <from>)
+   (<n> ^to <to>)
+}

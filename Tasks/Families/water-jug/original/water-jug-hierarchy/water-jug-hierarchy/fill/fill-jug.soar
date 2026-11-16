@@ -1,0 +1,25 @@
+
+sp {fill*propose*fill-jug
+   (state <s> ^name fill)
+   (<s> ^superstate <ss>)
+   (<s> ^jug <jug>)
+   (<jug> ^free { <jug-free> > 0 })
+   (<ss> ^holding <jug>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name fill-jug)
+}
+
+sp {fill*apply*fill-jug
+   (state <s> ^name fill)
+   (<s> ^superstate <ss>)
+   (<s> ^jug <jug>)
+   (<s> ^operator <o>)
+   (<o> ^name fill-jug)
+   (<jug> ^contents <jug-contents>)
+   (<jug> ^volume <jug-volume>)
+-->
+   (<jug> ^contents <jug-volume>)
+   (<jug> ^contents <jug-contents> -)
+}

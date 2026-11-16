@@ -1,0 +1,20 @@
+
+sp {count-up*propose*initialize-count-up
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-count-up)
+}
+
+sp {count-up*apply*initialize-count-up
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-count-up)
+-->
+   (<s> ^name count-up)
+   (<s> ^counter <x0>)
+   (<x0> ^value 0)
+   (<s> ^desired <d>)
+   (<d> ^counter <dg>)
+   (<dg> ^value 100)
+}

@@ -1,0 +1,29 @@
+
+sp {put-down*propose*down-holding
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^position 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name down-holding)
+}
+
+sp {put-down*apply*down-holding
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name down-holding)
+   (<g> ^position <g-position>)
+-->
+   (<g> ^position 0)
+   (<g> ^position <g-position> -)
+}

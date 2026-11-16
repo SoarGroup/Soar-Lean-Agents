@@ -1,0 +1,201 @@
+##############################################################################
+## Task operators (all applied internally, ^environment none; no preconditions,
+## ^desireds.desired-count 0; legality is tested in the proposals, as in the original).
+##   mark        argument1 = empty cell, argument2 = game: cell gets the side to move,
+##               turn switches (1 <-> 2).
+##   x-wins      argument1 = game, argument2 = line with three 1s: over 1, winner 1.
+##   o-wins      argument1 = game, argument2 = line with three 2s: over 1, winner 2.
+##   detect-draw argument1 = game, no empty cell: over 1.
+## Search control (from the original): x-wins and o-wins best; every task operator
+## indifferent while look-ahead planning is off.
+##############################################################################
+
+sp {TicTacToe*propose*mark
+   (state <s> ^problem-space.name TicTacToe
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <cell> <game>)
+   (<cell> ^type cell
+           ^content 0)
+   (<game> ^object-handle $ game
+           ^over 0)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name mark
+        ^task-operator true
+        ^action-handle mark
+        ^argument1 <cell>
+        ^argument2 <game>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {apply*mark*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name mark
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <ch>
+        ^argument2.object-handle $ <gh>)
+   (<w> ^anchored-world true
+        ^objects.object <cell> <game>)
+   (<cell> ^object-handle $ <ch>
+           ^content 0)
+   (<game> ^object-handle $ <gh>
+           ^turn <turn>)
+-->
+   (log 1 (crlf) |Apply mark: | <ch> | with | <turn>)
+   (<cell> ^content 0 - <turn>)
+   (<game> ^turn <turn> - (- 3 <turn>))
+}
+
+sp {TicTacToe*propose*x-wins
+   (state <s> ^problem-space.name TicTacToe
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <line> <game> <c1> <c2> <c3>)
+   (<game> ^object-handle $ game
+           ^over 0)
+   (<line> ^type line
+           ^cell-handle <h1> { <h2> <> <h1> } { <h3> <> <h1> <> <h2> })
+   (<c1> ^object-handle $ <h1> ^content 1)
+   (<c2> ^object-handle $ <h2> ^content 1)
+   (<c3> ^object-handle $ <h3> ^content 1)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name x-wins
+        ^task-operator true
+        ^action-handle x-wins
+        ^argument1 <game>
+        ^argument2 <line>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {apply*x-wins*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name x-wins
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <gh>)
+   (<w> ^anchored-world true
+        ^objects.object <game>)
+   (<game> ^object-handle $ <gh>
+           ^over 0
+           ^winner <winner>)
+-->
+   (log 1 (crlf) |Apply x-wins|)
+   (<game> ^over 0 - 1
+           ^winner <winner> - 1)
+   (write |Side X won.|)
+}
+
+sp {TicTacToe*propose*o-wins
+   (state <s> ^problem-space.name TicTacToe
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <line> <game> <c1> <c2> <c3>)
+   (<game> ^object-handle $ game
+           ^over 0)
+   (<line> ^type line
+           ^cell-handle <h1> { <h2> <> <h1> } { <h3> <> <h1> <> <h2> })
+   (<c1> ^object-handle $ <h1> ^content 2)
+   (<c2> ^object-handle $ <h2> ^content 2)
+   (<c3> ^object-handle $ <h3> ^content 2)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name o-wins
+        ^task-operator true
+        ^action-handle o-wins
+        ^argument1 <game>
+        ^argument2 <line>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {apply*o-wins*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name o-wins
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <gh>)
+   (<w> ^anchored-world true
+        ^objects.object <game>)
+   (<game> ^object-handle $ <gh>
+           ^over 0
+           ^winner <winner>)
+-->
+   (log 1 (crlf) |Apply o-wins|)
+   (<game> ^over 0 - 1
+           ^winner <winner> - 2)
+   (write |Side O won.|)
+}
+
+sp {TicTacToe*propose*detect-draw
+   (state <s> ^problem-space.name TicTacToe
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <game>)
+   (<game> ^object-handle $ game
+           ^over 0)
+  -{(<w> ^objects.object <cell>)
+    (<cell> ^type cell
+            ^content 0)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name detect-draw
+        ^task-operator true
+        ^action-handle detect-draw
+        ^argument1 <game>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {apply*detect-draw*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name detect-draw
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <gh>)
+   (<w> ^anchored-world true
+        ^objects.object <game>)
+   (<game> ^object-handle $ <gh>
+           ^over 0)
+-->
+   (log 1 (crlf) |Apply detect-draw|)
+   (<game> ^over 0 - 1)
+   (write |Draw.|)
+}
+
+sp {TicTacToe*select*x-wins-best
+   (state <s> ^problem-space.name TicTacToe
+              ^operator <o> +)
+   (<o> ^name x-wins)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {TicTacToe*select*o-wins-best
+   (state <s> ^problem-space.name TicTacToe
+              ^operator <o> +)
+   (<o> ^name o-wins)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {TicTacToe*select*task-operator*indifferent
+   (state <s> ^problem-space.name TicTacToe
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}

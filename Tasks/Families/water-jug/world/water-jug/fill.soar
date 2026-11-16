@@ -1,0 +1,38 @@
+## fill <jug>: proposed when the jug is not full (original: ^free > 0), indifferent.
+
+sp {water-jug*propose*fill
+   (state <s> ^problem-space.name water-jug
+              ^world <w>
+              ^desireds.desired <d>
+              ^jug-free <jf>)
+   (<w> ^anchored-world true
+        ^objects.object <jug>)
+   (<jf> ^jug <jug> ^free > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name fill
+        ^task-operator true
+        ^action-handle fill
+        ^super-desired <d>
+        ^argument1 <jug>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## Internal application (also used at the top state: ^environment none).
+## The operator's argument is matched by handle, so the rule works on look-ahead copies.
+sp {water-jug*apply*fill*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world.objects.object <jug>)
+   (<o> ^name fill
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<jug> ^object-handle $ <h>
+          ^volume <v>
+          ^contents { <> <v> <c> })
+-->
+   (log 1 (crlf) |Apply fill: | <h>)
+   (<jug> ^contents <c> - <v>)
+}

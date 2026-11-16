@@ -1,0 +1,85 @@
+##############################################################################
+## Look-ahead knowledge (from the original): a look-ahead situation that repeats the
+## situation of an enclosing task state is a failure.
+##   ^ancestor: every enclosing state (as in the original; state structure, not world).
+##   ^moved true: marks a look-ahead state (^real false) once a move-boat has been applied
+##   in it (the original tested the selection library's ^tried-tied-operator, which the
+##   world conventions reserve).
+## Task operators are left tied (^flags.look-ahead-planning true), so ties are resolved by
+## selection-world look-ahead.
+##############################################################################
+
+sp {mac*elaborate*ancestor*superstate
+   (state <s> ^superstate <ss>)
+   (<ss> ^superstate <_v1>)
+-->
+   (<s> ^ancestor <ss>)
+}
+
+sp {mac*elaborate*ancestor*inherit
+   (state <s> ^superstate <ss>)
+   (<ss> ^ancestor <a>)
+-->
+   (<s> ^ancestor <a>)
+}
+
+sp {apply*move-boat*mark-look-ahead
+   (state <s> ^operator.name move-boat
+              ^real false)
+-->
+   (<s> ^moved true)
+}
+
+sp {mac*evaluate*state*failure*duplicate
+   (state <s> ^problem-space.name mac
+              ^real false
+              ^moved true
+              ^desireds <ds>
+              ^world <w>
+              ^ancestor <a>)
+   (<a> ^name mac
+        ^world <aw>)
+   (<w> ^anchored-world true
+        ^objects.object <x0> { <x1> <> <x0> })
+   (<x0> ^object-handle $ <h0>
+         ^missionaries <m0>
+         ^cannibals <c0>
+         ^boat <b0>)
+   (<x1> ^object-handle $ <h1>
+         ^missionaries <m1>
+         ^cannibals <c1>
+         ^boat <b1>)
+   (<aw> ^anchored-world true
+         ^objects.object <y0> { <y1> <> <y0> })
+   (<y0> ^object-handle $ <h0>
+         ^missionaries <m0>
+         ^cannibals <c0>
+         ^boat <b0>)
+   (<y1> ^object-handle $ <h1>
+         ^missionaries <m1>
+         ^cannibals <c1>
+         ^boat <b1>)
+-->
+   (<s> ^failure <ds>
+        ^constraint-failure <ds>
+        ^failure-string |repeated situation|)
+}
+
+## The original's selection library turns a failure evaluation into a reject; selection-world
+## turns it into a worst preference.  To keep the reject, a failure found in look-ahead is also
+## reported as a constraint failure (W-LAH-023), which agent-world turns into a reject.  It is
+## elaborated in the same wave as ^failure (by testing the failure condition, not ^failure),
+## so that it reaches the evaluation before the evaluation substate is removed.
+sp {mac*evaluate*state*failure*outnumbered*reject
+   (state <s> ^problem-space.name mac
+              ^real false
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <bank>)
+   (<bank> ^missionaries { <m> > 0 }
+           ^cannibals > <m>)
+-->
+   (<s> ^constraint-failure <ds>
+        ^failure-string |missionaries outnumbered|)
+}

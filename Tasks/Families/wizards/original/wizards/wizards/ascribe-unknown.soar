@@ -1,0 +1,32 @@
+
+sp {wizards*propose*ascribe-unknown
+   (state <s> ^name wizards)
+   (<s> ^rec <x1>)
+   (<s> ^rec <x2>)
+   (<s> ^markvar <m>)
+   (<x1> ^sub <x2>)
+   (<x1> ^mv <m>)
+   -(<x2> ^own 1)
+   (<x2> ^var 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name ascribe-unknown)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^m <m>)
+}
+
+sp {wizards*apply*ascribe-unknown
+   (state <s> ^name wizards)
+   (<s> ^operator <o>)
+   (<o> ^name ascribe-unknown)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^m <m>)
+   (<x2> ^var <x2-var>)
+-->
+   (<x2> ^mv <m>)
+   (<x2> ^var 1)
+   (<x2> ^var <x2-var> -)
+}

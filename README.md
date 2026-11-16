@@ -5,7 +5,7 @@ Soar agents created from English -> Lean -> Soar, with the shared Soar library t
 Start here:
 - `RESUME.md`: current status and next steps of the English-to-Soar and library work.
 - `Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`: the manual, which includes how to set up Claude, Soar and a session to generate a Soar agent from English (Chapter 6), how to interface to an external environment (Chapter 7) and a worked Water Jug example (Appendices I to K).
-- `Soar/soar-library/`: the Soar library every project loads (v2.30, 15 November 2026).
+- `Soar/soar-library/`: the Soar library every project loads (v2.34, 16 November 2026).
 - `CMC/cmcsoar-release-2026-11-14.zip`: the Lean specifications of the CMC and of Soar (see `RELEASE.md` inside it); `STATUS.md` here is a copy of its status file.
 - `Slides/From-English-to-Soar-CIC.pptx`: the main deck.
 
@@ -22,7 +22,7 @@ The library needs Soar 9.6.6 (the SoarSuite 9.6.6 bug-fix release, used for all 
 
 Soar 9.6.6 download (the zip is not kept in this repository): <https://github.com/SoarGroup/Soar/releases/download/untagged-d618888db86c4a9e18ee/SoarSuite_9.6.6-bigbugfixrelease-Multiplatform.zip>
 
-Each library release is a numbered zip in `Soar-library-dev/releases` (`soar-library-restructured-v2.NN.zip`) with an entry in `CHANGES.md`. To install a release, replace `Soar/soar-library` with the release's contents; the load lines above do not change.
+Each library release is a numbered zip in `Soar-library-dev/releases` (`soar-library-restructured-v2.NN.zip`) with an entry in `CHANGES.md`. To install a release, delete `Soar/soar-library` and unzip the release in `Soar/`: from v2.35 on, each release zip's top folder is `soar-library/`. (Up to v2.34 the top folder is `soar-library-restructured/`; copy its contents into `Soar/soar-library` instead.) `VERSION.txt` names the installed version. The load lines above do not change.
 
 ## Layout
 
@@ -32,37 +32,38 @@ Each library release is a numbered zip in `Soar-library-dev/releases` (`soar-lib
 
 ### `Soar/`
 Using Soar and the shared library. `Soar/README.md` lists the contents.
-- `soar-library/`: the shared library (v2.30). Projects: soar-base, selection-world (with iterative deepening), agent-world, object-world, thor-soar and thor-tasks, each a VisualSoar project with its datamap; `tools/` holds the build scripts (parser, datamaps, chunker).
+- `soar-library/`: the shared library (v2.34). Projects: soar-base, selection-world (with iterative deepening), agent-world, object-world, thor-soar and thor-tasks, each a VisualSoar project with its datamap; `tools/` holds the build scripts (parser, datamaps, chunker).
 - `docs/`: `Soar-Lean-Agents-Manual-draft-v1.docx` (draft manual; it supersedes the former setup guide `English-to-Soar-Setup.docx`), `Visual Soar User's Manual.html`.
 - `bugs/`: `Soar-9.6.5-Kernel-Defects.docx` (defects found in the Soar 9.6.5 kernel, with their status in 9.6.6) and `soar-dollar-bugs.zip` (two defects with `$`: repro programs, code locations, proposed fixes).
 - `lean-spec/`: `Soar-on-CMC-Lean.docx` (and `.pdf`), `Soar-Lean-map.xlsx` (copies of those in the Lean release's `doc/`), `SOAR-LEAN-CONTEXT.md` (the release's `CLAUDE.md`; rename to `CLAUDE.md` to have it loaded), `Value of Lean Soar.docx`.
 
 ### `Soar-library-dev/`
 Development of the shared library (formerly `Default-conversion`, the conversion of the Soar default libraries). `Soar-library-dev/README.md` lists the contents and the release policy.
-- `releases/`: numbered library releases; current `soar-library-restructured-v2.30.zip` (same content as `Soar/soar-library`).
-- `testset/`: numbered regression test sets; current `soar-library-testset-v1.27.zip` (296 tests, all passing on v2.30).
-- `docs/`: `Soar-Library-Refactoring-Proposal-v3.docx`, `Restructure-Build-Report-v1.md`, `Cost-Aware-Evaluation-Plan-v2.docx`, `Option-Selection-Guide-v1.md`.
-- `findings/`: `FINDING-chunking-overgeneral.md`, `FINDING-early-failure-propagation.md`, `FINDING-stale-worst-preference.md`, and the findings of 10 November (`Library-Findings.docx`, `Library-Findings-Review.xlsx`).
-- `tools/`: `worldgen-v18.zip` (generators for the generated test tasks), `restructure-tools-v2.22.zip`, `option-selection/` (option-selection tools, unpacked), `soar-lint/` (the linter with its step-0 report and baseline).
-- `studies/`: `water-jug-79-v4.zip` (the water jug 7/9 study).
+- `releases/`: numbered library releases; current `soar-library-restructured-v2.34.zip` (same content as `Soar/soar-library`). Library defaults: `^iterative-step operator`, `^cost-metric none`, `^optimize false`; each task sets better search settings in `^flag-override`.
+- `testset/`: numbered regression test sets; current `soar-library-testset-v1.28.zip` (296 tests, baselines for v2.34).
+- `docs/`: `Soar-Library-Refactoring-Proposal-v3.docx`, `Restructure-Build-Report-v1.md`, `Cost-Aware-Evaluation-Plan-v2.docx`, `Option-Selection-Guide-v1.md`, `Search-Settings-Intake-Checklist-v1.md` (choosing a task's search settings).
+- `findings/`: `FINDING-chunking-overgeneral.md`, `FINDING-early-failure-propagation.md`, `FINDING-stale-worst-preference.md`, `FINDING-tie-impasse-unbounded-continuation.md`, and the findings of 10 November (`Library-Findings.docx`, `Library-Findings-Review.xlsx`).
+- `tools/`: `worldgen-v19.zip` (generators for the generated test tasks), `restructure-tools-v2.22.zip`, `option-selection/` (option-selection tools, unpacked, including `probe_settings.py`), `soar-lint/` (the linter with its step-0 report and baseline).
+- `studies/`: `water-jug-79-v4.zip` (the water jug 7/9 study), `Families-Results.xlsx`.
 
 ### `SoarLean/`
-- `soarlean-agentgen-2026-11-15.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, plus the Python world-rule back end. `README.md` says how to build and use it.
+- `soarlean-agentgen-2026-11-16.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, plus the Python world-rule back end. `README.md` says how to build and use it.
 
 ### `Conventions/`
 - `World-Conventions-Spec-v6.md`: the world conventions specification, including the chunking conventions W-CHK-009 to W-CHK-011.
+- `IO-Conventions-Proposed.md`: proposed input/output conventions (draft).
 - `World-Conventions-v5.xlsx`: the world conventions workbook (state and `^world` representation, desireds, operators, capacities, cost, chunking), with reviewer columns, defects and change log.
 - `Soar-Conventions.xlsx`: conventions derived from existing Soar programs.
 - `VisualSoar-Project-Conventions.docx`: conventions for laying out an agent as a VisualSoar project.
 
 ### `Tasks/`
-Task packages load `Soar/soar-library`; unpack each zip in its place (`Tasks/` or `Tasks/UWM Tasks/`).
-- `zebra-world.zip`: the five-houses puzzle (updated 15 Nov 2026 for v2.30).
-- `artists-world.zip`: artists and managers river crossing with iterative deepening (updated 15 Nov 2026; ships 2 pairs).
-- `UWM Tasks/`: the UWM task definitions, with `mc-world.zip` (missionaries and cannibals) and `wizards-world.zip` (three wizards), both updated 15 Nov 2026, and the original `missionaries-cannibals.soar` and `wizards.soar`.
-- `hps-tasks.zip`: PDDL task sets derived for replicating Langley, Barley and Meadows (2018): blocks world, five puzzle, kinship and logistics, 52 problems.
+Task agents that load `Soar/soar-library`.
+- `From-English/`: agents written directly from English under the world conventions: `artists-world/`, `zebra-world/`, `mc-world/` (sets `^iterative-step tie-impasse`, v2.34), `wizards-world/`; also `Three-mens-morris/`, `UWM/` (the UWM task descriptions and first versions) and `rosie-teaching.zip` (54 games and puzzles as English input). `From-English/README.md` lists them.
+- `Families/`: the 68 step 6 task agents in 14 families, each as the original program and the world-convention version, with `Families-Results.xlsx` and the harness (`run.py`, `list.txt`). `step6-families-world.zip` is the same folder as a zip. Five world variants set `^iterative-step tie-impasse` (v2.34; see `Families/README.md`).
 - `STEP6/`: the blind round trip of 68 tasks (`Blind-Round-Trip-68.xlsx`, `blind-round-trip-68.zip`) and the step 6 package (`step6-consolidated-2026-11-08.zip`); these use the libraries of early November.
-- `Three mens morris/`: Three Men's Morris in Soar and Lean, with the reports.
+- `hps-tasks.zip`: PDDL task sets derived for replicating Langley, Barley and Meadows (2018): blocks world, five puzzle, kinship and logistics, 52 problems.
+- `io-reference-and-conventions.zip`: an input/output reference agent (`io-guess`) and `IO-Conventions-Proposed.md` (also in `Conventions/`).
+- `Issues-Priority-2026-11-15.xlsx`: open issues by priority.
 - `soar-agents-default-libraries.zip`, `soar-agents-working.zip`, `soar-agents-other-issues.zip`: agent library test results (early November).
 
 ### `CMC/`

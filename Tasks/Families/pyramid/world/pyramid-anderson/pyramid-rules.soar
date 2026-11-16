@@ -1,0 +1,162 @@
+##############################################################################
+## pyramid-anderson
+## World: one object, handle pyramid, with ^term (next term), ^height (terms still to add,
+##   counting down to -1) and ^sum.
+## Goal (^desireds): pyramid ^height -1.
+## Task operator add-next-term (argument1 = the pyramid): adds term to sum, term - 1,
+##   height - 1, and prints " + <term>".
+##############################################################################
+
+sp {pyramid*propose*initialize-pyramid
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-pyramid
+        ^task-operator false)
+}
+
+sp {pyramid*compare*initialize-pyramid*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-pyramid)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {pyramid*apply*initialize-pyramid
+   (state <s> ^operator.name initialize-pyramid
+              ^world.objects <objs>)
+-->
+   (<s> ^name pyramid
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^look-ahead-planning false)
+   (<objs> ^object <p>)
+   (<p> ^object-handle pyramid ^anchored true
+        ^term 5 ^height 2 ^sum 0)
+   (<ds> ^desired <d> ^desired-count 1)
+   (<d> ^object <dp>)
+   (<dp> ^object-handle pyramid ^height -1)
+}
+
+sp {pyramid*elaborate*problem-space
+   (state <s> ^name pyramid)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name pyramid
+        ^agent-world true)
+}
+
+### Achievement of object-property desireds (task-supplied, W-DBK-002)
+
+sp {pyramid*elaborate*desireds*achieved
+   (state <s> ^problem-space.name pyramid
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {pyramid*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name pyramid
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### add-next-term
+
+sp {pyramid*propose*add-next-term
+   (state <s> ^problem-space.name pyramid
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^height >= 0)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name add-next-term
+        ^task-operator true
+        ^action-handle add-next-term
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## The original makes add-next-term indifferent; kept as task search control while look-ahead
+## planning is off.
+sp {pyramid*select*task-operator*indifferent
+   (state <s> ^problem-space.name pyramid
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}
+
+## Internal application (^environment none).  ^height >= 0 guards against a second firing
+## while the operator stays selected.
+sp {apply*add-next-term*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name add-next-term
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ <h>
+        ^sum <sum>
+        ^term <term>
+        ^height { <height> >= 0 })
+-->
+   (log 1 (crlf) |Apply add-next-term: | <term>)
+   (<p> ^sum <sum> - (+ <sum> <term>)
+        ^term <term> - (- <term> 1)
+        ^height <height> - (- <height> 1))
+   (write | + | <term>)
+}
+
+### End of episode
+
+sp {pyramid*halt*success
+   (state <s> ^superstate nil
+              ^name pyramid
+              ^desireds <ds>
+              ^success <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^sum <sum>)
+-->
+   (write (crlf) |The answer is | <sum> |.|)
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

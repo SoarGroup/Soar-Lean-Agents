@@ -1,0 +1,7 @@
+Three wizards: English input
+
+English description as given to the solver. Both the world-conventions agent in this folder and the first version, UWM/wizards.soar, were written from it alone.
+
+A king wants to find out which of his three wizards is the wisest. He seats them in a circle where each can see and hear the others. He tells them that he will paste a white or a black spot on each one's forehead, and that at least one of the spots will be white. No one can see his own spot. In fact, he pastes a white spot on all three. He then promises his favor to the first wizard who can say what color his own spot is. For a while no one speaks. Then one wizard announces that his spot is white. How does he know?
+
+Source: task 12 of UWM/UWM_Tasks_problem_definitions.docx ("English description (as given to the solver)"), Universal Weak Method tasks (Laird & Newell, 1983, CMU-CS-83-141); repeated in the header comment of three-wizards-rules.soar.

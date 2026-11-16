@@ -1,0 +1,79 @@
+
+sp {add*propose*next-digit1
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^|d1| <_v3>)
+   (<s> ^|d3| { <s-d3> <> <a-digit2> })
+   (<a> ^digit2 <a-digit2>)
+   (<s> ^phase 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name next-digit1)
+}
+
+sp {add*apply*next-digit1*query
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^operator <o>)
+   (<o> ^name next-digit1)
+   -(<s> ^queried <o>)
+   (<s> ^smem <sm>)
+   (<sm> ^command <smc>)
+   (<s> ^|d1| <s-d1>)
+-->
+   (<s> ^queried <o>)
+   (<smc> ^query <smq>)
+   (<smq> ^kind succ)
+   (<smq> ^symbol <s-d1>)
+}
+
+sp {add*apply*next-digit1*case1
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^operator <o>)
+   (<o> ^name next-digit1)
+   (<s> ^smem <sm>)
+   (<sm> ^result <smr>)
+   (<smr> ^retrieved <f>)
+   (<sm> ^command <smc>)
+   (<smc> ^query <smq>)
+   (<s> ^|d1| <s-d1>)
+   (<s> ^|d1| 9)
+   (<f> ^next <f-next>)
+   (<s> ^carry <s-carry>)
+   (<s> ^phase <s-phase>)
+-->
+   (<s> ^|d1| <f-next>)
+   (<s> ^|d1| <s-d1> -)
+   (<s> ^carry 1)
+   (<s> ^carry <s-carry> -)
+   (<s> ^phase 1)
+   (<s> ^phase <s-phase> -)
+   (<smc> ^query <smq> -)
+}
+
+sp {add*apply*next-digit1*case2
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^operator <o>)
+   (<o> ^name next-digit1)
+   (<s> ^smem <sm>)
+   (<sm> ^result <smr>)
+   (<smr> ^retrieved <f>)
+   (<sm> ^command <smc>)
+   (<smc> ^query <smq>)
+   (<s> ^|d1| { <s-d1> <> 9 })
+   (<f> ^next <f-next>)
+   (<s> ^phase <s-phase>)
+-->
+   (<s> ^|d1| <f-next>)
+   (<s> ^|d1| <s-d1> -)
+   (<s> ^phase 1)
+   (<s> ^phase <s-phase> -)
+   (<smc> ^query <smq> -)
+}

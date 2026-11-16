@@ -1,0 +1,44 @@
+## Task operator count: adds 1 to the counter while its value is below 100.
+## MEA proposal: serves the unachieved desired on the counter's ^value.
+sp {count-up*propose*count
+   (state <s> ^problem-space.name count-up
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^value)
+   (<w> ^anchored-world true
+        ^objects.object <c>)
+   (<c> ^object-handle $ <h>
+        ^value < 100)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name count
+        ^task-operator true
+        ^action-handle count
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument-count 1
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Internal application: value -> value + 1, in the decision the operator is selected.
+sp {count-up*apply*count*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world <w>)
+   (<o> ^name count
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<w> ^objects.object <c>)
+   (<c> ^object-handle $ <h>
+        ^value <v>)
+-->
+   (<c> ^value <v> -
+               (+ <v> 1))
+   (log 1 (crlf) |Apply count: | <h> | | (+ <v> 1))
+}

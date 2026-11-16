@@ -1,0 +1,58 @@
+
+sp {put-down*propose*release
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^open 0)
+   (<g> ^position 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name release)
+}
+
+sp {put-down*apply*release*case1
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name release)
+   (<g> ^open <g-open>)
+   (<g> ^empty <g-empty>)
+   (<g> ^above { <g-above> <dest> })
+   (<block> ^on <block-on>)
+-->
+   (<g> ^open 1)
+   (<g> ^open <g-open> -)
+   (<g> ^empty 1)
+   (<g> ^empty <g-empty> -)
+   (<g> ^above <block>)
+   (<g> ^above <g-above> -)
+   (<block> ^on <dest>)
+   (<block> ^on <block-on> -)
+}
+
+sp {put-down*apply*release*case2
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name release)
+   (<g> ^open <g-open>)
+   (<g> ^empty <g-empty>)
+   (<g> ^above { <g-above> <> <dest> })
+-->
+   (<g> ^open 1)
+   (<g> ^open <g-open> -)
+   (<g> ^empty 1)
+   (<g> ^empty <g-empty> -)
+}

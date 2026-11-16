@@ -1,0 +1,316 @@
+## Three wizards, written to the world conventions (agent-world,
+## selection-world, selection-iterative-deepening).
+## Written from the English description only.
+##
+## Description:
+##   A king wants to find out which of his three wizards is the wisest. He
+##   seats them in a circle where each can see and hear the others. He tells
+##   them that he will paste a white or a black spot on each one's forehead,
+##   and that at least one of the spots will be white. No one can see his own
+##   spot. In fact, he pastes a white spot on all three. He then promises his
+##   favor to the first wizard who can say what color his own spot is. For a
+##   while no one speaks. Then one wizard announces that his spot is white.
+##   How does he know?
+##
+## World objects:
+##   wizard-1..3 (^type wizard, ^spot = the spot the king pasted, which the wizard
+##     cannot see; ^knows-spot true once he can tell his own color)
+##   king (^type king; ^at-least-one-white true once he has said so;
+##     ^answered true once a wizard has named his color)
+##   clock (^type clock, ^round = rounds of silence so far)
+##   pw-<c1>-<c2>-<c3> (^type possible-world, one per assignment of spots,
+##     ^wizard-1/2/3 <color>; ^eliminated true once ruled out)
+## Derived on each state (not on the world, so copies in look-ahead are not stale):
+##   ^uncertain: in a live possible world, a wizard's view (the other two spots)
+##     also fits a live world where his own spot differs;
+##   ^knows: otherwise; ^actual: the possible world that matches the real spots.
+## Goal: one desired, king ^answered true.
+## Task operators:
+##   announce(wizard): proposed once the wizard ^knows-spot true; its effect is
+##     king ^answered true. When several wizards know at once, they tie and
+##     look-ahead (iterative deepening) evaluates them.
+##   remain-silent: proposed while no wizard knows his spot; a round passes with
+##     no one speaking, which rules out every live possible world in which some
+##     wizard would already have known his color.
+## Internal operator: king-announces (^task-operator false) rules out the
+##   possible world with no white spot.
+
+sp {three-wizards*propose*initialize-three-wizards
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-three-wizards ^task-operator false)
+}
+
+sp {three-wizards*apply*initialize-three-wizards
+   (state <s> ^operator.name initialize-three-wizards ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name three-wizards ^desireds <ds>)
+   (<objs> ^object <wizard-1> <wizard-2> <wizard-3> <king> <clock> <pw-white-white-white> <pw-white-white-black> <pw-white-black-white> <pw-white-black-black> <pw-black-white-white> <pw-black-white-black> <pw-black-black-white> <pw-black-black-black>)
+   (<wizard-1> ^object-handle wizard-1 ^anchored true ^type wizard ^spot white)
+   (<wizard-2> ^object-handle wizard-2 ^anchored true ^type wizard ^spot white)
+   (<wizard-3> ^object-handle wizard-3 ^anchored true ^type wizard ^spot white)
+   (<king> ^object-handle king ^anchored true ^type king)
+   (<clock> ^object-handle clock ^anchored true ^type clock ^round 0)
+   (<pw-white-white-white> ^object-handle pw-white-white-white ^anchored true ^type possible-world ^wizard-1 white ^wizard-2 white ^wizard-3 white)
+   (<pw-white-white-black> ^object-handle pw-white-white-black ^anchored true ^type possible-world ^wizard-1 white ^wizard-2 white ^wizard-3 black)
+   (<pw-white-black-white> ^object-handle pw-white-black-white ^anchored true ^type possible-world ^wizard-1 white ^wizard-2 black ^wizard-3 white)
+   (<pw-white-black-black> ^object-handle pw-white-black-black ^anchored true ^type possible-world ^wizard-1 white ^wizard-2 black ^wizard-3 black)
+   (<pw-black-white-white> ^object-handle pw-black-white-white ^anchored true ^type possible-world ^wizard-1 black ^wizard-2 white ^wizard-3 white)
+   (<pw-black-white-black> ^object-handle pw-black-white-black ^anchored true ^type possible-world ^wizard-1 black ^wizard-2 white ^wizard-3 black)
+   (<pw-black-black-white> ^object-handle pw-black-black-white ^anchored true ^type possible-world ^wizard-1 black ^wizard-2 black ^wizard-3 white)
+   (<pw-black-black-black> ^object-handle pw-black-black-black ^anchored true ^type possible-world ^wizard-1 black ^wizard-2 black ^wizard-3 black)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle king ^answered true)
+   (log 1 (crlf) |Initialize three-wizards: a white spot on each wizard.|)
+}
+
+sp {three-wizards*elaborate*problem-space
+   (state <s> ^name three-wizards)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name three-wizards ^agent-world true ^default-state-copy no ^default-operator-copy no ^default-desired-copy no ^dont-copy top-state)
+}
+
+sp {three-wizards*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name three-wizards ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name three-wizards ^agent-world true)
+}
+
+sp {three-wizards*elaborate*flags
+   (state <s> ^superstate nil ^name three-wizards)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true ^iterative-step tie-impasse)
+}
+
+## Achievement of object-property desireds on states (supplied by the task).
+sp {three-wizards*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {three-wizards*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### Knowledge, derived on each state from its world
+
+sp {three-wizards*elaborate*state*uncertain
+   (state <s> ^problem-space.name three-wizards ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <wi> <wj> <wk> <pw> { <pw2> <> <pw> })
+   (<wi> ^type wizard ^object-handle <i>)
+   (<wj> ^type wizard ^object-handle { <j> <> <i> })
+   (<wk> ^type wizard ^object-handle { <k> <> <i> <> <j> })
+   (<pw> ^type possible-world -^eliminated true ^<i> <ci> ^<j> <cj> ^<k> <ck>)
+   (<pw2> ^type possible-world -^eliminated true ^<i> <> <ci> ^<j> <cj> ^<k> <ck>)
+-->
+   (<s> ^uncertain <u>)
+   (<u> ^possible-world <pw> ^wizard <i>)
+}
+
+sp {three-wizards*elaborate*state*knows
+   (state <s> ^problem-space.name three-wizards ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <wi> <pw>)
+   (<wi> ^type wizard ^object-handle <i>)
+   (<pw> ^type possible-world -^eliminated true)
+  -{(<s> ^uncertain <u>)
+    (<u> ^possible-world <pw> ^wizard <i>)}
+-->
+   (<s> ^knows <k>)
+   (<k> ^possible-world <pw> ^wizard <i>)
+}
+
+sp {three-wizards*elaborate*state*not-actual
+   (state <s> ^problem-space.name three-wizards ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <wi> <pw>)
+   (<wi> ^type wizard ^object-handle <i> ^spot <c>)
+   (<pw> ^type possible-world ^<i> <> <c>)
+-->
+   (<s> ^not-actual <pw>)
+}
+
+sp {three-wizards*elaborate*state*actual
+   (state <s> ^problem-space.name three-wizards ^world <w>)
+   (<w> ^anchored-world true ^objects.object <pw>)
+   (<pw> ^type possible-world)
+  -(<s> ^not-actual <pw>)
+-->
+   (<s> ^actual <pw>)
+}
+
+# A wizard knows his spot if he knows it in the actual world. Knowledge only
+# grows (worlds are only ever ruled out), so a copied value is never stale.
+sp {three-wizards*elaborate*world*knows-spot
+   (state <s> ^problem-space.name three-wizards ^world <w> ^actual <pw> ^knows <k>)
+   (<k> ^possible-world <pw> ^wizard <i>)
+   (<w> ^anchored-world true ^objects.object <wi>)
+   (<wi> ^type wizard ^object-handle <i>)
+-->
+   (<wi> ^knows-spot true)
+}
+
+# Some live possible world has a wizard who would know his spot, so a round
+# of silence can rule something out (one WME however many ^knows there are).
+sp {three-wizards*elaborate*state*silence-informative
+   (state <s> ^problem-space.name three-wizards ^knows)
+-->
+   (<s> ^silence-informative true)
+}
+
+### The king's statement (internal operator)
+
+sp {three-wizards*propose*king-announces
+   (state <s> ^problem-space.name three-wizards ^superstate nil ^world <w>)
+   (<w> ^anchored-world true ^objects.object <king>)
+   (<king> ^type king -^at-least-one-white true)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name king-announces ^task-operator false)
+}
+
+sp {three-wizards*apply*king-announces
+   (state <s> ^operator.name king-announces ^world <w>)
+   (<w> ^anchored-world true ^objects.object <king>)
+   (<king> ^type king)
+-->
+   (<king> ^at-least-one-white true)
+   (write |King: at least one of your spots is white.| (crlf))
+}
+
+sp {three-wizards*apply*king-announces*rule-out
+   (state <s> ^operator.name king-announces ^world <w>)
+   (<w> ^anchored-world true ^objects.object <pw>)
+   (<pw> ^type possible-world -^eliminated true)
+  -(<pw> ^<< wizard-1 wizard-2 wizard-3 >> white)
+-->
+   (<pw> ^eliminated true)
+}
+
+### announce(wizard)
+
+sp {three-wizards*propose*announce*mea
+   (state <s> ^problem-space.name three-wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <wz> <king>)
+   (<wz> ^type wizard ^object-handle <h> ^knows-spot true)
+   (<king> ^type king ^at-least-one-white true)
+   (<ds> ^desired <sd> ^unachieved <sd>)
+   (<sd> ^object <sd-o>)
+   (<sd-o> ^object-handle king ^answered true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name announce ^task-operator true ^action-handle announce ^super-desired <sd> ^argument1 <wz> ^argument-count 1 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {three-wizards*apply*announce*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^name announce ^pre-conditions-satisfied true ^argument1.object-handle <h>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <king>)
+   (<king> ^type king)
+-->
+   (log 1 (crlf) |Apply announce internal: | <h>)
+   (<king> ^answered true)
+}
+
+sp {three-wizards*apply*announce*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^actual <pw> ^io.output-link.perform-action <pa>)
+   (<pa> ^name announce ^status complete ^argument1 <h> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <king> <clock>)
+   (<king> ^type king)
+   (<clock> ^type clock ^round <r>)
+   (<pw> ^<h> <c>)
+-->
+   (<pa> ^effect-applied true)
+   (<king> ^answered true)
+   (write |After | <r> | rounds of silence, | <h> |: my spot is | <c> |.| (crlf))
+}
+
+### remain-silent: a round passes with no one speaking
+
+sp {three-wizards*propose*remain-silent*mea
+   (state <s> ^problem-space.name three-wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds> ^silence-informative true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <clock> <king>)
+   (<clock> ^type clock ^round <r>)
+   (<king> ^type king ^at-least-one-white true)
+  -{(<objs> ^object <wz>)
+    (<wz> ^type wizard ^knows-spot true)}
+   (<ds> ^desired <sd> ^unachieved <sd>)
+   (<sd> ^object.answered true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name remain-silent ^task-operator true ^action-handle remain-silent ^super-desired <sd> ^argument-count 0 ^round <r> ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {three-wizards*apply*remain-silent*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^name remain-silent ^pre-conditions-satisfied true ^round <r>)
+   (<w> ^anchored-world true ^objects.object <clock>)
+   (<clock> ^type clock ^round <r>)
+-->
+   (log 1 (crlf) |Apply remain-silent internal: round | (+ <r> 1))
+   (<clock> ^round <r> - (+ <r> 1))
+}
+
+sp {three-wizards*apply*remain-silent*internal*rule-out
+   (state <s> ^operator <op> ^internal-actions true ^world <w> ^knows.possible-world <pw>)
+   (<op> ^name remain-silent ^pre-conditions-satisfied true ^round <r>)
+   (<w> ^anchored-world true ^objects.object <clock>)
+   (<clock> ^type clock ^round <r>)
+-->
+   (<pw> ^eliminated true)
+}
+
+sp {three-wizards*apply*remain-silent*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name remain-silent ^status complete -^effect-applied true)
+   (<w> ^anchored-world true ^objects.object <clock>)
+   (<clock> ^type clock ^round <r>)
+-->
+   (<pa> ^effect-applied true)
+   (<clock> ^round <r> - (+ <r> 1))
+   (write |Round | (+ <r> 1) |: no one speaks.| (crlf))
+}
+
+sp {three-wizards*apply*remain-silent*environment-effect*rule-out
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^knows <k> ^io.output-link.perform-action <pa>)
+   (<pa> ^name remain-silent ^status complete -^effect-applied true)
+   (<k> ^possible-world <pw> ^wizard <i>)
+   (<pw> ^object-handle <ph>)
+   (<w> ^objects.object <clock>)
+   (<clock> ^type clock ^round <r>)
+-->
+   (<pw> ^eliminated true)
+   (write |  round | (+ <r> 1) |: ruled out | <ph> |, where | <i> | would have known his spot| (crlf))
+}

@@ -8,7 +8,7 @@ sp {selection-world*elaborate*flags*default*iterative-step
               ^flags <f>
              -^flag-override.iterative-step <any>)
 -->
-   (<f> ^iterative-step operator)
+   (<f> ^iterative-step operator)   # v2.34: tie-impasse loses where every step is a choice; set per task (probe_settings.py)
 }
 
 ## Elaborate flags default init-evaluation-depth -> sets init-evaluation-depth.

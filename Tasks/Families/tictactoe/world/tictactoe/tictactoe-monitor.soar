@@ -1,0 +1,42 @@
+## Monitor (trace output only, as the original): prints the board after every change, with
+## X, O and blank for the cells' contents.  ^shown is a display attribute derived on the cells
+## (no look-ahead in this program, so it cannot go stale in a copied world).
+sp {TicTacToe*elaborate*cell*shown*0
+   (state <s> ^name TicTacToe ^world.objects.object <c>)
+   (<c> ^type cell ^content 0)
+-->
+   (<c> ^shown | |)
+}
+sp {TicTacToe*elaborate*cell*shown*1
+   (state <s> ^name TicTacToe ^world.objects.object <c>)
+   (<c> ^type cell ^content 1)
+-->
+   (<c> ^shown |X|)
+}
+sp {TicTacToe*elaborate*cell*shown*2
+   (state <s> ^name TicTacToe ^world.objects.object <c>)
+   (<c> ^type cell ^content 2)
+-->
+   (<c> ^shown |O|)
+}
+sp {TicTacToe*monitor*board
+   (state <s> ^superstate nil ^name TicTacToe ^world.objects <objs>)
+   (<objs> ^object <c11> <c21> <c31> <c12> <c22> <c32> <c13> <c23> <c33>)
+   (<c11> ^type cell ^x 1 ^y 1 ^shown <v11>)
+   (<c21> ^type cell ^x 2 ^y 1 ^shown <v21>)
+   (<c31> ^type cell ^x 3 ^y 1 ^shown <v31>)
+   (<c12> ^type cell ^x 1 ^y 2 ^shown <v12>)
+   (<c22> ^type cell ^x 2 ^y 2 ^shown <v22>)
+   (<c32> ^type cell ^x 3 ^y 2 ^shown <v32>)
+   (<c13> ^type cell ^x 1 ^y 3 ^shown <v13>)
+   (<c23> ^type cell ^x 2 ^y 3 ^shown <v23>)
+   (<c33> ^type cell ^x 3 ^y 3 ^shown <v33>)
+-->
+   (write (crlf) |     -------------| (crlf))
+   (write |     \|| | | <v11> | | |\|| | | <v21> | | |\|| | | <v31> | | |\|| (crlf))
+   (write |     \|---\|---\|---\|| (crlf))
+   (write |     \|| | | <v12> | | |\|| | | <v22> | | |\|| | | <v32> | | |\|| (crlf))
+   (write |     \|---\|---\|---\|| (crlf))
+   (write |     \|| | | <v13> | | |\|| | | <v23> | | |\|| | | <v33> | | |\|| (crlf))
+   (write |     -------------| (crlf))
+}

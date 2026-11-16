@@ -1,0 +1,12 @@
+
+sp {expand-pyramid*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name expand-pyramid)
+   (<so> ^pyramid <pyramid>)
+-->
+   (<s> ^name expand-pyramid)
+   (<s> ^pyramid <pyramid>)
+}

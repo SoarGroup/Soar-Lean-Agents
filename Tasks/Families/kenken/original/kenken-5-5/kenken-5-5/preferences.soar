@@ -1,0 +1,34 @@
+
+sp {kenken*select*choose-cell-last
+   (state <s> ^name kenken)
+   (<s> ^operator <o> +)
+   (<o> ^name choose-cell)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<p> ^gcell 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {kenken*select*choose-cell-3-last
+   (state <s> ^name kenken)
+   (<s> ^operator <o> +)
+   (<o> ^name choose-cell-3)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<p> ^gcell 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {kenken*select*two-before-three
+   (state <s> ^name kenken)
+   (<s> ^operator <o> +)
+   (<o> ^name choose-cell)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name choose-cell-3)
+   (<o2> ^p <other-p>)
+   (<o2> ^c <other-c>)
+-->
+   (<s> ^operator <o> > <o2>)
+}

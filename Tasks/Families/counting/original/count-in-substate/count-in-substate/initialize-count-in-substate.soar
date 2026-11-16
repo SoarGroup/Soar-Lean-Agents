@@ -1,0 +1,20 @@
+
+sp {count-in-substate*propose*initialize-count-in-substate
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-count-in-substate)
+}
+
+sp {count-in-substate*apply*initialize-count-in-substate
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-count-in-substate)
+-->
+   (<s> ^name count-in-substate)
+   (<s> ^counter <x0>)
+   (<x0> ^value 1)
+   (<s> ^desired <d>)
+   (<d> ^counter <dg>)
+   (<dg> ^value 75000)
+}

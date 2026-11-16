@@ -1,0 +1,78 @@
+## Task operator move, one proposal per direction value (-1 left, 1 right), proposed while the
+## agent is at location 0; it serves the unachieved desired on the agent's ^moved property.
+## The direction is a non-object argument (^argument2). Proposals are indifferent, as in the
+## original: the choice is made by RL values, not by look-ahead.
+sp {left-right*propose*move*direction--1
+   (state <s> ^problem-space.name left-right
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^moved)
+   (<w> ^anchored-world true
+        ^objects.object <a>)
+   (<a> ^object-handle $ <h>
+        ^location 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move
+        ^task-operator true
+        ^action-handle move
+        ^super-desired <d>
+        ^argument1 <a>
+        ^argument2 -1
+        ^argument-count 2
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+sp {left-right*propose*move*direction-1
+   (state <s> ^problem-space.name left-right
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^moved)
+   (<w> ^anchored-world true
+        ^objects.object <a>)
+   (<a> ^object-handle $ <h>
+        ^location 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move
+        ^task-operator true
+        ^action-handle move
+        ^super-desired <d>
+        ^argument1 <a>
+        ^argument2 1
+        ^argument-count 2
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Internal application: the agent goes to the direction's location and is marked moved.
+sp {left-right*apply*move*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world <w>)
+   (<o> ^name move
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>
+        ^argument2 <direction>)
+   (<w> ^objects.object <a>)
+   (<a> ^object-handle $ <h>
+        ^location <loc>
+        ^moved <moved>)
+-->
+   (<a> ^location <loc> -
+                  <direction>
+        ^moved <moved> -
+               1)
+   (write |Moved: | <direction>)
+}

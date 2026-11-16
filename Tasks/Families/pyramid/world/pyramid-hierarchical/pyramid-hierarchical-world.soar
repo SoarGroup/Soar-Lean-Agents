@@ -1,0 +1,123 @@
+##############################################################################
+## pyramid-hierarchical: world, goal, problem spaces, end of episode
+## World: object pyramid with ^term (next term value), ^height (terms left, down to -1),
+##   ^terms (number of term objects made), ^sum, ^summed (0/1); one world object per
+##   expanded term (handle term-<index>, ^index, ^value), which the original kept as
+##   ^term structures on the top state.
+## Goal (^desireds): pyramid ^summed 1.
+## expand-pyramid and sum-terms are complex composite task operators (^effect-desireds,
+## implemented in their operator-implementation substates, problem spaces expand-pyramid and
+## sum-terms).
+##############################################################################
+
+sp {pyramid-hierarchical*propose*initialize-pyramid-hierarchical
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-pyramid-hierarchical
+        ^task-operator false)
+}
+
+sp {pyramid-hierarchical*compare*initialize*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-pyramid-hierarchical)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {pyramid-hierarchical*apply*initialize-pyramid-hierarchical
+   (state <s> ^operator.name initialize-pyramid-hierarchical
+              ^world.objects <objs>)
+-->
+   (<s> ^name pyramid-hierarchical
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^look-ahead-planning false)
+   (<objs> ^object <p>)
+   (<p> ^object-handle pyramid ^anchored true
+        ^term 10 ^height 6 ^terms 0 ^sum 0 ^summed 0)
+   (<ds> ^desired <d> ^desired-count 1)
+   (<d> ^object <dp>)
+   (<dp> ^object-handle pyramid ^summed 1)
+}
+
+sp {pyramid-hierarchical*elaborate*problem-space
+   (state <s> ^name pyramid-hierarchical)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name pyramid-hierarchical
+        ^agent-world true)
+}
+
+### Achievement of object-property desireds (task-supplied, W-DBK-002), in the task's
+### problem spaces (top state and the two implementation substates).
+
+sp {pyramid-hierarchical*elaborate*desireds*achieved
+   (state <s> ^problem-space.name << pyramid-hierarchical expand-pyramid sum-terms >>
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {pyramid-hierarchical*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name << pyramid-hierarchical expand-pyramid sum-terms >>
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## The original makes every operator indifferent; kept as task search control for task
+## operators while look-ahead planning is off.
+sp {pyramid-hierarchical*select*task-operator*indifferent
+   (state <s> ^problem-space.name << pyramid-hierarchical expand-pyramid sum-terms >>
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}
+
+### End of episode
+
+sp {pyramid-hierarchical*halt*success
+   (state <s> ^superstate nil
+              ^name pyramid-hierarchical
+              ^desireds <ds>
+              ^success <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^sum <sum>)
+-->
+   (write (crlf) |The answer is | <sum> |.|)
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

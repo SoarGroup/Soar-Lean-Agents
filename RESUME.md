@@ -1,52 +1,112 @@
-# Resume: Soar-Lean-Agents (updated 15 Nov 2026, evening)
+# Resume: Soar-Lean-Agents (updated 16 Nov 2026)
 
-The earlier resume (10 Nov 2026) is in `OLD/RESUME.md`; its next steps (library findings, Blocks World optimality, Soar 9.6.50 with `$`, workbook updates) are done or carried below.
+## Status (16 Nov 2026): library
 
-## Status (15 Nov 2026)
+- **Library v2.34** is installed in `Soar/soar-library` (release zip in `Soar-library-dev/releases`).
+  No rule change from v2.33. Defaults: `^iterative-step operator`, `^cost-metric none`,
+  `^optimize false`. Search gains come from per-task `^flag-override`, chosen by measurement with
+  `probe_settings.py` (`Soar-library-dev/docs/Search-Settings-Intake-Checklist-v1.md`).
+- Tasks that set `^iterative-step tie-impasse`: generated Blocks World (test set), mc
+  (`Tasks/From-English/mc-world` and test set), and in `Tasks/Families`: blocks-world-look-ahead,
+  kenken-4-5, kenken-6-1, 6-2, 6-3. water-jug-look-ahead keeps operator depth
+  (`Soar-library-dev/findings/FINDING-tie-impasse-unbounded-continuation.md`).
+- **Test set v1.28** (296 tests) holds the v2.34 baselines. Known regression: artists-3 (all three
+  seeds) does not solve within 20,000 decisions.
+- **Tools:** worldgen v19; `SoarLean/soarlean-agentgen-2026-11-16.zip` (agentgen with the
+  `vsproject.py` settings option and the v18 `wg.py`).
 
-**Shared library v2.32 (current; v2.30 text below still describes the optimality results).** The Soar default libraries were restructured into one library, `Soar/soar-library` (soar-base, selection-world with iterative deepening, agent-world, object-world, thor-soar, thor-tasks). All projects load it through `soar-library.soar`; each release is a numbered zip in `Soar-library-dev/releases` with an entry in `CHANGES.md`. v2.30 makes iterative deepening with tie-impasse depth, a cost metric and `^optimize true` find optimal solutions, with and without chunking:
+## Open (library)
 
-| Task | No chunking | Chunking, first run | Chunking, second run (reusing the first run's chunks) |
-|---|---|---|---|
-| Hanoi, 2 discs | 3 moves on all seeds | 3 on all | 3 on all |
-| Blocks world | 3 on all | 3 on all | 3 on all |
-| Water jug 7/9 B1, D1, B3, D3 | 8 on all | 8 on all | 8 on all |
-| Missionaries and cannibals | 11 on all | 11 on all | 11 on all |
-| Artists, 2 pairs | 5 on all | 5, 7, 5 | 5 on all |
+1. Chunking in look-ahead is off for now; the over-generality problem and candidate solutions are in
+   `FINDING-chunking-overgeneral.md`. A better solution is still needed.
+2. Build the search-settings intake (checklist and `probe_settings.py`) into agentgen.
+3. Kenken world variants: the cause of the failures under operator depth is not diagnosed
+   (`Tasks/Families/README.md`).
+4. Clean up the repository's `Soar` directory; ACT-R and Sigma cleanup deferred.
 
-**Regression test set v1.27** (`Soar-library-dev/testset/soar-library-testset-v1.27.zip`): 296 tests, all passing on v2.30. Action sequences are unchanged from v2.29 in every environment-complete test that changed.
 
-**Conventions.** `Conventions/World-Conventions-v5.xlsx` and `Conventions/World-Conventions-Spec-v6.md`. New in v5/v6: W-CHK-009 (no negated tests on look-ahead structure; maintain such elaborations in the applications), W-CHK-010 (status of chunking in look-ahead), W-CHK-011 (object-handle tests carry `$`, with two exceptions for Soar defects). Generated task rules follow them (`Soar-library-dev/tools/worldgen-v18.zip`).
+---- Earlier status (10 Nov 2026), kept as written ----
 
-**Soar defects with `$`.** `Soar/bugs/soar-dollar-bugs.zip`: `$` in a negated condition makes chunking fail ("bad test type in hash_test"), and `$` after a relational test inside `{ }` crashes Soar when the rule loads. Repro programs, code locations and proposed fixes are in the report; the library uses neither construct.
+## Status (10 Nov 2026)
 
-**Task packages.** `Tasks/zebra-world.zip`, `Tasks/artists-world.zip`, `Tasks/UWM Tasks/mc-world.zip` and `wizards-world.zip` now load the shared library and were rerun on v2.30 (zebra solved and checked on seeds 1 to 10; artists 2 pairs solved and checked safe on seeds 1 to 3; mc 11 crossings; wizards solved).
+Work since the defect review (9 Nov), all delivered in this folder:
 
-**Lean tools.** `SoarLean/soarlean-agentgen-2026-11-15.zip`: agentgen, the World library and worldcheck in one Lean package, with the Python world-rule back end (its `wg.py` now adds `$`).
+- **Blind round trip, 68 tasks** (Soar -> English -> Soar, standard and world conventions), plus
+  direct conversions of the original Soar code to both conventions: STEP6/Blind-Round-Trip-68.xlsx,
+  STEP6/blind-round-trip-68.zip. Summary (original / standard / world / world-no-environment /
+  direct-standard / direct-world): episode-1 successes 168/167/170/171/168/170; median decisions
+  102/114/272/102/126/102. Task-rule counts exclude blocks-world-hrl-3level.
+- **Artists-and-managers** in the world framework (artists-world.zip) with iterative deepening;
+  `^iterative-step operator` mode was rerun. It does not return shortest plans (open).
+- **Five-houses (zebra) puzzle** encoded under the world conventions (zebra-world.zip).
+- **Library findings:** Library-Findings.docx, 47 findings (17 high, 20 medium, 10 low), by
+  component. The Library findings sheet in Blind-Round-Trip-68.xlsx holds only the first 9 added;
+  the zebra findings are in the document and the zebra README only.
+- **Conventions:** VisualSoar-Project-Conventions.docx (37 conventions for representing Soar agents
+  on the VisualSoar project structure). World conventions: World-Conventions.xlsx, Slides/.
+- **Deck:** Slides/From-English-to-Soar-CIC.pptx (37 slides, with page numbers), plus the single-topic
+  slide files in Slides/.
 
-## Task families, world versions (15 Nov 2026, evening)
+## Next steps (from the Next steps slide)
 
-`Tasks/step6-families-world.zip` (unpack in `Tasks/`): 68 variants in 14 families, each as `Families/<family>/original/<variant>` and `world/<variant>`, with `Families-Results.xlsx`, `run.py`, `list.txt` and a README. The world versions are the Direct-World rewrites of the blind round trip (English intermediary dropped) ported to the shared library, with `$` on object-handle tests and `^flag-override`. Results are in `Tasks/Families-Results.xlsx`: seeds 1-3, decisions, firings, chunks, task rules.
-- 49 variants solved on all seeds by both; 10 by neither (originals also fail: arithmetic x5, fifteen-puzzle, knights-6/8, mac, mac-rl); world better on 3 (blocks-world-look-ahead, water-jug-look-ahead, mac-look-ahead); world worse on 6 (kenken-4-5, 6-1, 6-2, 6-3, eight-puzzle-expected-value, water-jug-look-ahead-rl).
-- On the 49: task rules median 1.10x, decisions about equal (1.02x), production firings 2.7x (library rules), chunks 370 vs 234 in total.
+1. Address the 17 high-priority library findings, starting with the selection-world attribute
+   copying and the iterative-deepening guard (once per operator, not once per state).
+2. Retest Blocks World optimality with the fixed libraries (carried over from 9 Nov).
+3. Add the remaining findings to the spreadsheet's Library findings sheet.
+4. Ratify one convention set (world conventions plus the VisualSoar project conventions).
+5. Test the pipeline on tasks that were not written for it.
 
-**Library v2.32** (`Soar-library-dev/releases/soar-library-restructured-v2.32.zip`; test set v1.27, 296 pass). Fix: the applied count is local to the state. The top state keeps it on the real world; a substate keeps its own `^applied-count` and `^counted-operator` on the substate, from zero, never shared (even in the same problem space). Before, the top state and a substate shared `^counted-operator` on the world and rewrote it without end (max-elaborations, also with chunking off); six world variants looped on v2.30. The intermediate v2.31 (top state only) undercounted substate operators and was replaced; its zip is not in the repository.
+---- Earlier status, kept as written ----
 
-## Open items
+## Resume: world-conventions defect review (stopped 8 Nov 2026, 21:00)
 
-0. **Task families follow-ups:**
-   - (a) The nine hierarchical variants take 30-50% more decisions on v2.32 than on v2.31 and the originals (blocks-world-hierarchical 63 vs 42; hrl-3level 101-141 vs 69-82; hanoi-mea 59 vs 47; water-jug-hierarchy +30%). Cause not identified.
-   - (b) The substate count is not part of any stamp yet, so chunks built in a substate are not tied to it.
-   - (c) kenken-4-5 and kenken-6-1..3 world versions fail ("task has failed") on some seeds where the originals solve all; same with chunking off and on v2.30; not diagnosed.
-   - (d) The 10 variants that fail in the original were not repaired.
-   - (e) README.md and Soar/README.md do not yet mention v2.32 or the families package.
+Defects are taken in order of severity, high first. JL edits the original library rules; Claude
+re-checks them in Soar and soar-lean.
 
-1. **Artists, 3 pairs:** not solved within 20,000 decisions since v2.25 (known regression in the test set). Artists 2 pairs, seed 2, took 7 crossings in a first chunking run; not yet traced.
-2. **Operator iterative step with chunking:** still longer than optimal on some water jug seeds (24 moves on some B1 and D1 seeds).
-3. **Chunk transfer across objects:** with `$` on handles, chunks apply only to the same named objects. A chunking mechanism that keeps distinct handles distinct would remove the need for `$` (JEL looking into chunking options).
-4. **Report the `$` defects** to SoarGroup (`Soar/bugs/soar-dollar-bugs.zip`). Pushing to SoarGroup repositories needs the Claude GitHub App installed or GitHub reconnected.
-5. **Thor-Soar on the shared library:** `thor-soar` and `thor-tasks` load in v2.30 but have not been run against the Thor simulator.
-6. **worldcheck** encodes the conventions of 10 and 11 November; it does not yet know `^flag-override`, relation objects for one-argument relations, rule names or `$` on handles.
-7. **Generation from English** under the world conventions covers the Water Jug family only; the 14 step 6 families have ported world versions (`Tasks/step6-families-world.zip`), not generated from English.
-8. **Ratify** the world conventions (World-Conventions-v5.xlsx and the VisualSoar project conventions) with CIC reviewers.
-9. **Decks** in `Slides/` and predate the current layout and library v2.30. The draft manual (`Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`) is current for v2.30 (library now v2.32), has six Parts and includes the former setup guide, external-environment chapter and Water Jug example.
+## Status (9 Nov 2026, 16:05): defect review complete
+
+Every defect now has a decision in the "Review (8-9 Nov 2026)" column of the Defects sheet in
+World-Conventions.xlsx. (That column was added after build_world.py ran; rerunning the build
+script would drop it.)
+
+- Fixed by JL (35, incl. D-019, D-030, D-068), D-010 count-6 rules, D-043/D-053 covered by other fixes.
+- Moot: base selection dropped (D-003, D-004, D-034-037, D-073, D-074).
+- On hold: D-012/D-017 generic achievement rules (fixes/d012v2/); retest Blocks World optimality now
+  that the look-ahead defects are fixed, before deciding.
+- Deferred: D-013/D-055 (operator next-desireds), D-032 group (Thor names out of agent-world:
+  D-032, D-057, D-058, D-061-063, D-070; markers ^custom-output, ^grounding-operator, ^no-verify).
+- Documentation corrections: D-015, D-016, D-018 (fixes/doc-errata-D015-D016-D018.md); still to add:
+  D-049 (task copies scene relations), D-054, D-056, D-085 (^world.estimated-total-time optional).
+- Saved for future, skipped now: D-060, D-067, D-072, D-075, D-078-081, D-084, D-085, D-087, D-089,
+  D-094, D-095 (suggestions in the 16:01 discussion; D-089 one test, narrow W-TOP-001/021 to task rules).
+- Kept for possible future use: D-064, D-077, D-082, D-083. Skipped: D-065, D-088, D-091, naming/:default items.
+
+## Next steps
+1. Get JL's updated libraries (agent-world, selection-world, selection-iterative-deepening) and rerun:
+   Blocks World (id, indiff, sw), WM/rule checks, soar-lean comparison.
+2. Build Soar 9.6.50 (has `$`) from SoarGroup source; add `$` to soar-lean.
+3. Update the workbook: conventions changed by the fixes (no-value, ^dont-copy-object-attribute,
+   ^copied-from, ^internal-actions on every state, reserved operator attributes, top-state
+   ^quiescence t, ^action-handle only), base-selection rows out of scope, Lean checks to match.
+
+## Open side issue
+
+selection-world loaded without iterative deepening does not run: the evaluate-operator substate
+gets no operators and falls into a state no-change. Iterative deepening currently provides what
+it lacks.
+
+## Where things are
+
+- Workbook: /home/claude/wc/World-Conventions.xlsx, built by /home/claude/wc/build/build_world.py
+- Lean: /home/claude/src/agentgen/World/ (Types, Check, RulePred, Compile, Tasks/BlocksWorld).
+  The generator no longer loads base selection.
+- Generated Blocks World: /home/claude/wc/gen2/{id,indiff,sw}; run with
+  `python3 /home/claude/wc/runworld.py <dir> 400`
+- Libraries as uploaded: /home/claude/wc/in/dw/default-world (read-only copy). Test copy with
+  the D-005 fix: /tmp/libfix
+- Package sent: world-conventions-2026-11-08.zip
+
+## To restart
+
+Say "continue the defect review". Claude starts with D-005 (your decision) and then D-006. Upload
+the edited library folder when convenient so that D-001 and D-002 can be re-checked.

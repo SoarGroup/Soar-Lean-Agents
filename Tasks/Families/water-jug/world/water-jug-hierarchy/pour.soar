@@ -1,0 +1,61 @@
+## pour <from> <to>: proposed when <from> has contents > 0 and <to> is not full, indifferent.
+
+sp {water-jug*propose*pour
+   (state <s> ^problem-space.name water-jug
+              ^world <w>
+              ^desireds.desired <d>
+              ^jug-free <jf>)
+   (<w> ^anchored-world true
+        ^objects.object <from> { <> <from> <to> })
+   (<from> ^contents > 0)
+   (<jf> ^jug <to> ^free > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name pour
+        ^task-operator true
+        ^action-handle pour
+        ^super-desired <d>
+        ^argument1 <from>
+        ^argument2 <to>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## Case 1: <from> holds more than <to> can take: <to> becomes full.
+sp {water-jug*apply*pour*internal*case1
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world.objects.object <from> <to>
+              ^jug-free <jf>)
+   (<o> ^name pour
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <fh>
+        ^argument2.object-handle $ <th>)
+   (<from> ^object-handle $ <fh> ^contents <fc>)
+   (<to> ^object-handle $ <th> ^contents <tc> ^volume <tv>)
+   (<jf> ^jug <to> ^free { > 0 < <fc> <tf> })
+-->
+   (log 1 (crlf) |Apply pour: | <fh> | -> | <th>)
+   (<from> ^contents <fc> - (- <fc> <tf>))
+   (<to> ^contents <tc> - <tv>)
+}
+
+## Case 2: <to> can take everything in <from>: <from> becomes empty.
+sp {water-jug*apply*pour*internal*case2
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world.objects.object <from> <to>
+              ^jug-free <jf>)
+   (<o> ^name pour
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <fh>
+        ^argument2.object-handle $ <th>)
+   (<from> ^object-handle $ <fh> ^contents { > 0 <fc> })
+   (<to> ^object-handle $ <th> ^contents <tc>)
+   (<jf> ^jug <to> ^free { > 0 >= <fc> })
+-->
+   (log 1 (crlf) |Apply pour: | <fh> | -> | <th>)
+   (<from> ^contents <fc> - 0)
+   (<to> ^contents <tc> - (+ <tc> <fc>))
+}

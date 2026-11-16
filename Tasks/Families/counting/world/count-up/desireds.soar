@@ -1,0 +1,52 @@
+## Achievement of object-property desireds (task-supplied, W-DBK-002/003):
+## a desired object (handle + one property) is achieved when the anchored world object with
+## that handle has that property value, otherwise unachieved.
+sp {count-up*elaborate*desireds*achieved
+   (state <s> ^problem-space.name count-up
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <v>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {count-up*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name count-up
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <v>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## End of the task: agent-world marks (<s> ^success <desireds>) when all desireds are
+## achieved; in the real top state this ends the episode with the original's message.
+sp {count-up*halt*success
+   (state <s> ^superstate nil
+              ^name count-up
+              ^desireds <ds>
+              ^success <ds>
+              ^world <w>)
+   (<w> ^real true
+        ^anchored-world true)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

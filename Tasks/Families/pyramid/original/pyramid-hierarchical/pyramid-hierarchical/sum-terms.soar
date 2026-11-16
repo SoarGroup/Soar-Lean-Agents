@@ -1,0 +1,19 @@
+
+sp {pyramid-hierarchical*elaborate*sum-terms-relevant*1
+   (state <s> ^name pyramid-hierarchical)
+   (<s> ^pyramid <pyramid>)
+   (<pyramid> ^height -1)
+   (<pyramid> ^summed 0)
+-->
+   (<s> ^sum-terms-relevant <pyramid>)
+}
+
+sp {pyramid-hierarchical*propose*sum-terms
+   (state <s> ^name pyramid-hierarchical)
+   (<s> ^sum-terms-relevant <pyramid>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name sum-terms)
+   (<o> ^pyramid <pyramid>)
+}

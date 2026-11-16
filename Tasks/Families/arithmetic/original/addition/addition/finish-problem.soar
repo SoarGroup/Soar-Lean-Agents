@@ -1,0 +1,49 @@
+
+sp {arithmetic*propose*finish-problem
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c1>)
+   (<s> ^column <c2>)
+   (<p> ^pid <p-pid>)
+   (<p> ^digits 4)
+   (<c1> ^pos 1)
+   (<c2> ^pos 2)
+   -{ (<s> ^column <none2>) (<none2> ^done <> <p-pid>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name finish-problem)
+   (<o> ^p <p>)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+}
+
+sp {arithmetic*apply*finish-problem
+   (state <s> ^name arithmetic)
+   (<s> ^operator <o>)
+   (<o> ^name finish-problem)
+   (<o> ^p <p>)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+   (<p> ^count <p-count>)
+   (<p> ^pid <p-pid>)
+   (<p> ^digits <p-digits>)
+   (<p> ^operation <p-operation>)
+   (<c2> ^digit1 <c2-digit1>)
+   (<c1> ^digit1 <c1-digit1>)
+   (<c2> ^digit2 <c2-digit2>)
+   (<c1> ^digit2 <c1-digit2>)
+   (<c2> ^result <c2-result>)
+   (<c1> ^result <c1-result>)
+   (<p> ^carry <p-carry>)
+-->
+   (<p> ^count (- <p-count> 1))
+   (<p> ^count <p-count> -)
+   (<p> ^pid (+ <p-pid> 1))
+   (<p> ^pid <p-pid> -)
+   (<p> ^digits 0)
+   (<p> ^digits <p-digits> -)
+   (<p> ^operation 0)
+   (<p> ^operation <p-operation> -)
+   (write |problem op | <p-operation> | top | <c2-digit1> <c1-digit1> | bottom | <c2-digit2> <c1-digit2> | answer | <c2-result> <c1-result> | carry | <p-carry>)
+}

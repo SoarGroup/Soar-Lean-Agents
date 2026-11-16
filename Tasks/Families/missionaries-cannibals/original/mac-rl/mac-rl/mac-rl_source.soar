@@ -1,0 +1,7 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-mac.soar
+source move-boat.soar
+source rl.soar

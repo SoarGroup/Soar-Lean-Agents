@@ -1,0 +1,60 @@
+## Task initialisation (W-WLD-002): proposed after agent-world has created ^world; gives the top
+## state its ^name, ^environment none (no external environment: every task operator is applied
+## internally), ^flags and the goal as ^desireds. World objects carry ^object-handle and
+## ^anchored true; ^on relations are world relation objects (W-REL-001).
+
+sp {blocks-world*propose*initialize-blocks-world
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-blocks-world
+        ^task-operator false)
+}
+
+## initialize-agent-world stays proposed (best) until the top state has a ^name.
+sp {blocks-world*compare*initialize-blocks-world*initialize-agent-world
+   (state <s> ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-blocks-world)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {blocks-world*apply*initialize-blocks-world
+   (state <s> ^operator.name initialize-blocks-world
+              ^world <w>)
+   (<w> ^objects <os>)
+-->
+   (<s> ^name blocks-world
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^mea-operator-selection false ^desired-preferences false ^look-ahead-planning false ^rl false)
+   (<os> ^object <t> <b0> <b1> <b2> <g>)
+   (<t> ^object-handle table ^class table ^anchored true)
+   (<b0> ^object-handle A ^class block ^anchored true)
+   (<b1> ^object-handle B ^class block ^anchored true)
+   (<b2> ^object-handle C ^class block ^anchored true)
+   (<w> ^on <r0>)
+   (<r0> ^argument1 <b0> ^argument2 <t> ^argument-count 2)
+   (<w> ^on <r1>)
+   (<r1> ^argument1 <b1> ^argument2 <t> ^argument-count 2)
+   (<w> ^on <r2>)
+   (<r2> ^argument1 <b2> ^argument2 <b0> ^argument-count 2)
+   (<g> ^object-handle gripper ^class gripper ^anchored true
+        ^position up ^open true ^last-held table)
+   (<w> ^holding-object <hn> ^above <ab>)
+   (<hn> ^object-handle none)
+   (<ab> ^argument1 <g> ^argument2 <t> ^argument-count 2)
+   (<ds> ^desired-count 3
+         ^desired <d0> <d1> <d2>)
+   (<d0> ^on <dr0>)
+   (<dr0> ^argument1.object-handle A ^argument2.object-handle B)
+   (<d1> ^on <dr1>)
+   (<dr1> ^argument1.object-handle B ^argument2.object-handle C)
+   (<d2> ^on <dr2>)
+   (<dr2> ^argument1.object-handle C ^argument2.object-handle table)
+}

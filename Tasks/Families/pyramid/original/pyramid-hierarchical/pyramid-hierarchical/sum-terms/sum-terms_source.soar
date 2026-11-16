@@ -1,0 +1,4 @@
+source elaborations.soar
+source init-local.soar
+source add-term.soar
+source final-sum.soar

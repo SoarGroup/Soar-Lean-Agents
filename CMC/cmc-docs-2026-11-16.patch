@@ -1,0 +1,40 @@
+--- cmcsoar/CMC/Base.lean	2026-11-16 09:18:49.095177679 -0500
++++ cmcsoar/CMC/Base.lean	2026-11-16 09:18:49.113166394 -0500
+@@ -253,7 +253,17 @@
+ a separate preference memory that productions cannot test; here that memory is internal to
+ `Arch.select`.
+ 
+-OPEN: Sigma's position on this has not yet been checked.
++OPEN (Laird, 2026-11-16): whether rules may *compute* with numeric metadata is left open,
++as a topic for discussion among the CMC authors. Conditions are blind to it under both options.
++- Option A, strict: numeric metadata reaches behaviour only through selection, retrieval and
++  learning, as the prose above says. Rule actions would then need a further well-formedness
++  condition, because `Rule.act : WM σ → WM σ` can now read and write metadata. Sigma could not
++  be an instance: its conditionals multiply and summarize functional values.
++- Option B, narrow (Rosenbloom, 2026-11-16): rules may not match on numeric metadata, but
++  procedural memory may compute functions on it. This is what `WFProc` already states (it
++  constrains `cond` only); the prose above would change. Sigma can be an instance if its
++  matching depends only on which tuples are present (not yet checked). Metadata then reaches
++  working memory through rule actions too, and can influence later selections.
+ -/
+ def MetaBlind (c : WM σ → Prop) : Prop :=
+   ∀ w₁ w₂ : WM σ, symView w₁ = symView w₂ → (c w₁ ↔ c w₂)
+--- cmcsoar/CMC/Meta.lean	2026-11-16 09:18:49.095229545 -0500
++++ cmcsoar/CMC/Meta.lean	2026-11-16 09:18:49.113548981 -0500
+@@ -221,7 +221,15 @@
+ > — [LLRS] §5
+ 
+ [META] DECIDED (Laird, 2026-10-28): all four reasons are in scope for the CMC extension,
+-including no progress with the previously selected action. -/
++including no progress with the previously selected action.
++
++[META] DECIDED (Laird, 2026-11-16), superseding the above for `conflict`: conflict is an
++optional reason. An architecture need not report it; Sigma has no conflict impasse, having no
++symbolic preferences, and Rosenbloom doubts it belongs in the CMC. No proof obligation requires
++any particular reason to occur, so only this prose changes. OPEN: whether architectures without
++symbolic preferences have a counterpart; what an architecture that does not report conflict
++reports when its knowledge is contradictory; whether Soar's constraint failure, mapped to
++`conflict` in Soar/Conform.lean, should be a reason of its own. -/
+ inductive SelFail where
+   | noCandidates | tie | conflict | noProgress
+   deriving DecidableEq

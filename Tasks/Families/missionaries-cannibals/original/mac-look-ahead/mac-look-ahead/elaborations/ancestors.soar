@@ -1,0 +1,14 @@
+
+sp {mac*elaborate*ancestor*superstate
+   (state <s> ^superstate <ss>)
+   (<ss> ^superstate <_v1>)
+-->
+   (<s> ^ancestor <ss>)
+}
+
+sp {mac*elaborate*ancestor*inherit
+   (state <s> ^superstate <ss>)
+   (<ss> ^ancestor <a>)
+-->
+   (<s> ^ancestor <a>)
+}

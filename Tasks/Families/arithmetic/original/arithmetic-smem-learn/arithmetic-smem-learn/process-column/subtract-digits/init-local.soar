@@ -1,0 +1,27 @@
+
+sp {subtract-digits*propose*init-local
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   -(<s> ^base <_v5>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {subtract-digits*apply*init-local
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+   (<ss> ^|d1| <ss-d1>)
+-->
+   (<s> ^base <ss-d1>)
+   (<s> ^n 0)
+   (<s> ^stored 0)
+}

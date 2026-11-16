@@ -1,0 +1,197 @@
+## Action model from episodic memory. In a look-ahead state the evaluated move-block is not
+## applied by the internal application rule; it stays selected, and in its operator no-change
+## substate the agent looks for an episode in which the same move was made in the same
+## situation, steps to the next episode and copies the blocks' supports it finds there into the
+## look-ahead world. If there is no exactly matching episode the move is evaluated as
+## partial-success with value 2.5. (selection-world marks the evaluated operator tried as soon as
+## it is selected; the load file excises that rule so that the move counts as tried only once the
+## model has been applied, as the original did with its own selection rules.)
+
+sp {blocks-world*model*propose*query
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <e>
+             -^queried yes)
+   (<e> ^problem-space.name blocks-world
+        ^look-ahead-operator <o>
+        ^operator <o>)
+-->
+   (<s> ^operator <x> + =)
+   (<x> ^name model-query
+        ^task-operator false)
+}
+
+sp {blocks-world*model*propose*next
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <e>
+              ^queried yes
+             -^stepped yes
+              ^epmem.result.graph-match 1)
+   (<e> ^problem-space.name blocks-world
+        ^look-ahead-operator <o>
+        ^operator <o>)
+-->
+   (<s> ^operator <x> + =)
+   (<x> ^name model-next
+        ^task-operator false)
+}
+
+sp {blocks-world*model*propose*update
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <e>
+              ^stepped yes
+              ^epmem.result <res>)
+   (<e> ^problem-space.name blocks-world
+        ^look-ahead-operator <o>
+        ^operator <o>)
+   (<res> ^retrieved
+         -^graph-match)
+-->
+   (<s> ^operator <x> + =)
+   (<x> ^name model-update
+        ^task-operator false)
+}
+
+sp {blocks-world*model*propose*unknown*no-match
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <e>
+              ^queried yes
+             -^stepped yes
+              ^epmem.result.graph-match 0)
+   (<e> ^problem-space.name blocks-world
+        ^look-ahead-operator <o>
+        ^operator <o>)
+-->
+   (<s> ^operator <x> + =)
+   (<x> ^name model-unknown
+        ^task-operator false)
+}
+
+sp {blocks-world*model*propose*unknown*failure
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <e>
+              ^queried yes
+              ^epmem.result.failure)
+   (<e> ^problem-space.name blocks-world
+        ^look-ahead-operator <o>
+        ^operator <o>)
+-->
+   (<s> ^operator <x> + =)
+   (<x> ^name model-unknown
+        ^task-operator false)
+}
+
+## The cue: the move (name and argument handles) and the look-ahead world's ^on relations, with
+## one cue node per object handle so that the cue is one connected graph.
+sp {blocks-world*model*apply*query
+   (state <s> ^operator.name model-query
+              ^epmem.command <c>)
+-->
+   (<c> ^query <q>)
+   (<q> ^operator <qo>
+        ^world <qw>)
+   (<qo> ^name move-block)
+   (<qw> ^objects <qos>)
+   (<s> ^queried yes
+        ^cue <q>)
+}
+
+sp {blocks-world*model*apply*query*object
+   (state <s> ^operator.name model-query
+              ^cue.world.objects <qos>
+              ^superstate.world.objects.object <x>)
+   (<x> ^class << block table >>
+        ^object-handle $ <h>)
+-->
+   (<qos> ^object <cx>)
+   (<cx> ^object-handle <h>)
+}
+
+sp {blocks-world*model*apply*query*on
+   (state <s> ^operator.name model-query
+              ^cue.world <qw>
+              ^superstate.world <w>)
+   (<w> ^on <r>)
+   (<r> ^argument1.object-handle $ <h1>
+        ^argument2.object-handle $ <h2>)
+   (<qw> ^objects <qos>)
+   (<qos> ^object <c1> <c2>)
+   (<c1> ^object-handle $ <h1>)
+   (<c2> ^object-handle $ <h2>)
+-->
+   (<qw> ^on <cr>)
+   (<cr> ^argument1 <c1>
+         ^argument2 <c2>)
+}
+
+sp {blocks-world*model*apply*query*arguments
+   (state <s> ^operator.name model-query
+              ^cue <q>
+              ^superstate.look-ahead-operator <lo>)
+   (<lo> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+   (<q> ^operator <qo>
+        ^world.objects <qos>)
+   (<qos> ^object <c1> <c2>)
+   (<c1> ^object-handle $ <h1>)
+   (<c2> ^object-handle $ <h2>)
+-->
+   (<qo> ^argument1 <c1>
+         ^argument2 <c2>)
+}
+
+sp {blocks-world*model*apply*next
+   (state <s> ^operator.name model-next
+              ^epmem.command <c>)
+   (<c> ^query <q>)
+-->
+   (<c> ^query <q> -
+        ^next <n>)
+   (<s> ^stepped yes)
+}
+
+## The retrieved (next) episode: every block whose support differs gets that support.
+sp {blocks-world*model*apply*update*on
+   (state <s> ^operator.name model-update
+              ^epmem.result.retrieved.world <rw>
+              ^superstate.world <w>)
+   (<rw> ^on <rr>)
+   (<rr> ^argument1.object-handle $ <xh>
+         ^argument2.object-handle $ <th>)
+   (<w> ^on <r>
+        ^objects.object <x> <t>)
+   (<x> ^object-handle $ <xh>)
+   (<t> ^object-handle $ <th>)
+   (<r> ^argument1 <x>
+        ^argument2 <> <t>)
+-->
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <x>
+         ^argument2 <t>
+         ^argument-count 2)
+}
+
+sp {blocks-world*model*apply*update*tried
+   (state <s> ^operator.name model-update
+              ^superstate <e>)
+   (<e> ^look-ahead-operator <o>
+        ^operator <o>)
+-->
+   (<e> ^tried-tied-operator <o>)
+}
+
+## Unknown outcome: partial-success with value 2.5, put on the look-ahead state for its own
+## desireds (selection-world passes both up to the evaluation).
+sp {blocks-world*model*apply*unknown
+   (state <s> ^operator.name model-unknown
+              ^superstate <e>)
+   (<e> ^desireds <ds>)
+-->
+   (<e> ^partial-success <ds>
+        ^numeric-value 2.500000)
+}

@@ -1,0 +1,73 @@
+
+sp {process-column*propose*subtract-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v4>)
+   (<p> ^operation 2)
+   (<s> ^adj 1)
+   (<s> ^r -1)
+   (<s> ^|d1| { <s-d1> >= <s-d2> })
+   (<s> ^|d2| <s-d2>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name subtract-digits)
+}
+
+sp {process-column*apply*subtract-digits*query
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name subtract-digits)
+   -(<s> ^queried <o>)
+   (<s> ^smem <sm>)
+   (<sm> ^command <smc>)
+   (<s> ^|d1| <s-d1>)
+   (<s> ^|d2| <s-d2>)
+-->
+   (<s> ^queried <o>)
+   (<smc> ^query <smq>)
+   (<smq> ^kind sub-fact)
+   (<smq> ^|d1| <s-d1>)
+   (<smq> ^|d2| <s-d2>)
+}
+
+sp {process-column*apply*subtract-digits*retrieval-failed
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name subtract-digits)
+   (<s> ^smem <sm>)
+   (<sm> ^result <smr>)
+   (<smr> ^failure <smq>)
+   (<sm> ^command <smc>)
+   (<smc> ^query <smq>)
+-->
+   (<smc> ^query <smq> -)
+}
+
+sp {process-column*apply*subtract-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name subtract-digits)
+   (<s> ^smem <sm>)
+   (<sm> ^result <smr>)
+   (<smr> ^retrieved <f>)
+   (<sm> ^command <smc>)
+   (<smc> ^query <smq>)
+   (<s> ^r <s-r>)
+   (<f> ^diff <f-diff>)
+-->
+   (<s> ^r <f-diff>)
+   (<s> ^r <s-r> -)
+   (<smc> ^query <smq> -)
+}

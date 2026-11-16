@@ -1,0 +1,14 @@
+Three Men's Morris: English input
+
+Prompts that produced the two agents, verbatim (spelling as typed), from the session of 31 October 2026. The first prompt named only the game; its rules (board, placement and movement phases, winning lines) were supplied from Claude's general knowledge, not from an English statement. Prompt 2 asked only for the summary document and is omitted.
+
+Prompt 1 (16:52), option 1 (three-mens-morris.soar, gen.py):
+Ok, create me a soar version of three men's morris. It can use the selection space (source it). time how long it takes to generate this and then test and possibly fix - so giving times on the different aspects of the development process.
+
+Prompt 3 (17:15), design question leading to option 2:
+What if you gave cooredinates to each of the positions and then could calculate three in a row more generally instead of with so many rules?
+
+Prompt 4 (17:17), option 2 (morris2.soar, gen2.py):
+build option 2, but check if you can just copy a pointer to the substructure instead of the details of it. Also expand the report to include thiese options and my prompts to get you to generate them.
+
+Source: Morris-Soar-Report.docx, section "Prompts that produced the work".

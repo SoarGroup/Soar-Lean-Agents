@@ -1,0 +1,23 @@
+
+sp {kenken*propose*prune
+   (state <s> ^name kenken)
+   (<s> ^cand <x>)
+   (<x> ^alive 1)
+   -{ (<x> ^in <lk2>) (<lk2> ^alive 1) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name prune)
+   (<o> ^x <x>)
+}
+
+sp {kenken*apply*prune
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name prune)
+   (<o> ^x <x>)
+   (<x> ^alive <x-alive>)
+-->
+   (<x> ^alive 0)
+   (<x> ^alive <x-alive> -)
+}

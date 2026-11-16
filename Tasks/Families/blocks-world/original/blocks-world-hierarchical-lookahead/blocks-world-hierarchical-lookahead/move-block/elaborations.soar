@@ -1,0 +1,192 @@
+
+sp {move-block*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name move-block)
+   (<so> ^block <block>)
+   (<so> ^dest <dest>)
+   (<so> ^g <g>)
+-->
+   (<s> ^name move-block)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^task-state <ss>)
+}
+
+sp {move-block*elaborate*substate*object
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<ss> ^object <x>)
+-->
+   (<s> ^object <x>)
+}
+
+sp {move-block*elaborate*substate*gripper
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<ss> ^gripper <x>)
+-->
+   (<s> ^gripper <x>)
+}
+
+sp {move-block*elaborate*substate*desired
+   (state <s> ^name move-block)
+   -(<s> ^duplicate-of <_v1>)
+-->
+   (<s> ^desired <d>)
+}
+
+sp {move-block*elaborate*problem-space
+   (state <s> ^name move-block)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name move-block)
+   (<p> ^default-state-copy yes)
+   (<p> ^default-operator-copy yes)
+   (<p> ^two-level-attributes object)
+   (<p> ^two-level-attributes gripper)
+   (<p> ^dont-copy block)
+   (<p> ^dont-copy dest)
+   (<p> ^dont-copy g)
+   (<p> ^dont-copy in-place)
+   (<p> ^dont-copy clear)
+   (<p> ^dont-copy free)
+   (<p> ^dont-copy task-state)
+}
+
+sp {move-block*elaborate*copy*block
+   (state <s> ^name move-block)
+   (<s> ^duplicate-of <orig>)
+   (<orig> ^block <x>)
+   (<x> ^name <xk>)
+   (<s> ^object <y>)
+   (<y> ^name <xk>)
+-->
+   (<s> ^block <y>)
+}
+
+sp {move-block*elaborate*copy*dest
+   (state <s> ^name move-block)
+   (<s> ^duplicate-of <orig>)
+   (<orig> ^dest <x>)
+   (<x> ^name <xk>)
+   (<s> ^object <y>)
+   (<y> ^name <xk>)
+-->
+   (<s> ^dest <y>)
+}
+
+sp {move-block*elaborate*copy*g
+   (state <s> ^name move-block)
+   (<s> ^duplicate-of <orig>)
+   (<orig> ^g <x>)
+   (<x> ^name <xk>)
+   (<s> ^gripper <y>)
+   (<y> ^name <xk>)
+-->
+   (<s> ^g <y>)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*in-place*base
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   (<self> ^table 1)
+   (<s> ^duplicate-of <_v3>)
+-->
+   (<self> ^in-place 1)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*in-place*via-on
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   (<self> ^on <below>)
+   (<below> ^in-place 1)
+   (<s> ^desired <des0>)
+   (<des0> ^object <dx0>)
+   (<self> ^name <ko0>)
+   (<dx0> ^name <ko0>)
+   (<dx0> ^on <dt0>)
+   (<dt0> ^name <kt0>)
+   (<below> ^name <kt0>)
+   (<s> ^duplicate-of <_v11>)
+-->
+   (<self> ^in-place 1)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*clear*base*2
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   (<self> ^table 1)
+   (<s> ^duplicate-of <_v3>)
+-->
+   (<self> ^clear 1)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*clear*base*3
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   -{ (<s> ^object <none1>) (<none1> ^on <self>) }
+   -{ (<s> ^gripper <none2>) (<none2> ^empty 0) (<none2> ^holding <self>) }
+   (<s> ^duplicate-of <_v4>)
+-->
+   (<self> ^clear 1)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*free*base*4
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   (<self> ^table 1)
+   (<s> ^duplicate-of <_v3>)
+-->
+   (<self> ^free 1)
+}
+
+sp {move-block*copy*blocks-world*elaborate*object*free*base*5
+   (state <s> ^name move-block)
+   (<s> ^object <self>)
+   -{ (<s> ^object <none1>) (<none1> ^on <self>) }
+   (<s> ^duplicate-of <_v3>)
+-->
+   (<self> ^free 1)
+}
+
+sp {move-block*evaluate*success
+   (state <s> ^name move-block)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<block> ^on <dest>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {move-block*evaluate*failure*1
+   (state <s> ^name move-block)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^empty 0)
+   (<g> ^holding { <g-holding> <> <block> })
+-->
+   (<s> ^failure <d>)
+}
+
+sp {move-block*evaluate*failure*2
+   (state <s> ^name move-block)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^empty 1)
+   (<block> ^on { <block-on> <> <dest> })
+-->
+   (<s> ^failure <d>)
+}

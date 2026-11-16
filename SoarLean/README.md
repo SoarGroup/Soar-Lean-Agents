@@ -1,4 +1,4 @@
-# SoarLean: agentgen, the World library and worldcheck (15 November 2026)
+# SoarLean: agentgen, the World library and worldcheck (16 November 2026)
 
 One Lean package that holds the Lean tools of the English-to-Soar pipeline, plus the Python
 back end that writes world-convention rules. It replaces `agentgen-bundle.zip` and
@@ -17,6 +17,10 @@ back end that writes world-convention rules. It replaces `agentgen-bundle.zip` a
   - `tools/vsproject.py`: writes Visual Soar projects.
 - `worldgen/` (Python): `world_backend.py` (Lean description to world-convention rules),
   `check_derived.py` (derived attributes are declared not to be copied), `wg.py` (shared generator).
+
+## Revision b
+
+`agentgen/tools/vsproject.py` takes `--settings FILE` (Soar commands, one per line) and a per-variant `settings` list in the JSON; the commands are appended to `_firstload.soar` before any rule or library loads (for example `srand 42`, `soar wait-snc on`, `multi-attributes turn 20`). Output is unchanged without them. This is the near-term part of issue 10; the Lean `Settings` field is not done.
 
 ## Build
 
@@ -43,15 +47,25 @@ back end that writes world-convention rules. It replaces `agentgen-bundle.zip` a
 
 Built against release-2026-11-14 (it uses only `Soar.Parse` and `Soar.Syntax`). The four commands
 above ran; the generated Water Jug rules (33 rules) pass `check_derived.py` and `worldcheck`
-(0 violations) and load in Soar 9.6.6 with library v2.26 without error (see the update below for v2.30).
+(0 violations) and load in Soar 9.6.6 with library v2.26 without error (see the updates below).
 
 ## Updated 15 November 2026 (afternoon)
 
-`worldgen/wg.py` is now the worldgen v18 version (`Soar-library-dev/tools/worldgen-v18.zip`): object-handle
+`worldgen/wg.py` is the worldgen v18 version (`Soar-library-dev/tools/worldgen-v18.zip`): object-handle
 tests in generated rules carry `$` (World-Conventions-Spec-v6, W-CHK-011). `world_backend.py` and
 `check_derived.py` are unchanged. Checked: the Water Jug description generates 33 rules, 3 of them with
 `$` handle tests; they pass `check_derived.py` and load without error after Soar library v2.30
 (`Soar/soar-library`) in Soar 9.6.6.
+
+## Updated 16 November 2026
+
+This package combines `soarlean-agentgen-2026-11-15.zip` and `soarlean-agentgen-2026-11-15b.zip`, which
+had diverged: revision b added the `vsproject.py` settings (above) but carried the older `wg.py`, without
+the v18 literal handles. Here `vsproject.py` is revision b's and `wg.py` is the v18 one (the same file as in
+`Soar-library-dev/tools/worldgen-v19.zip`). Library: v2.34 (`Soar/soar-library`). Library defaults are
+`^iterative-step operator`, `^cost-metric none`, `^optimize false`; a task that does better with other
+search settings sets them in `^flag-override`, chosen with `probe_settings.py`
+(`Soar-library-dev/docs/Search-Settings-Intake-Checklist-v1.md`). agentgen does not yet choose these settings.
 
 ## Limits
 

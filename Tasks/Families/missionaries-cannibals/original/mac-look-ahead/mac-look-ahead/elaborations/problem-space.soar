@@ -1,0 +1,11 @@
+
+sp {mac*elaborate*problem-space
+   (state <s> ^name mac)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name mac)
+   (<p> ^default-state-copy yes)
+   (<p> ^default-operator-copy yes)
+   (<p> ^two-level-attributes bank)
+   (<p> ^dont-copy ancestor)
+}

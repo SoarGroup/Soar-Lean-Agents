@@ -1,0 +1,16 @@
+## towers-of-hanoi-mea (5 disks, means-ends analysis with operator subgoaling) under the world
+## conventions (the shared library, no external environment: ^environment none; MEA operator
+## subgoaling through agent-world, ^flags.mea-operator-selection true).
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+chunk never
+multi-attributes object 12
+multi-attributes on 8
+multi-attributes above 8
+
+source towers-of-hanoi-world.soar
+source move-disk.soar

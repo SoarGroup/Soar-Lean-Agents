@@ -1,0 +1,3 @@
+pushd pyramid-hierarchical
+source pyramid-hierarchical_source.soar
+popd

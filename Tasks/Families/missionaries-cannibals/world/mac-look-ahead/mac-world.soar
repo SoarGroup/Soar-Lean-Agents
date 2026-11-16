@@ -1,0 +1,135 @@
+##############################################################################
+## mac: world, goal, problem space, failure and end of episode
+##
+## World: two bank objects (handles left, right) with constant-valued properties
+##   ^missionaries ^cannibals ^boat (1 = boat at this bank) ^other-bank-handle.
+##   (The original's ^other-bank link is an identifier; it is a handle here so that
+##   it survives the look-ahead copy.)
+## Goal (^desireds, 2 object-property desireds): right bank has 3 missionaries
+##   and 3 cannibals (the original's single ^desired.bank description, split
+##   into one property per desired).
+##############################################################################
+
+sp {mac*propose*initialize-mac
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-mac
+        ^task-operator false)
+}
+
+sp {mac*compare*initialize-mac*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-mac)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {mac*apply*initialize-mac
+   (state <s> ^operator.name initialize-mac
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name mac
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^look-ahead-planning true)
+   (<objs> ^object <left> <right>)
+   (<left> ^object-handle left ^anchored true ^other-bank-handle right
+           ^missionaries 3 ^cannibals 3 ^boat 1)
+   (<right> ^object-handle right ^anchored true ^other-bank-handle left
+            ^missionaries 0 ^cannibals 0 ^boat 0)
+   (<ds> ^desired <d1> <d2> ^desired-count 2)
+   (<d1> ^object <o1>)
+   (<o1> ^object-handle right ^missionaries 3)
+   (<d2> ^object <o2>)
+   (<o2> ^object-handle right ^cannibals 3)
+}
+
+sp {mac*elaborate*problem-space
+   (state <s> ^name mac)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name mac
+        ^agent-world true)
+}
+
+### Achievement of object-property desireds (task-supplied, W-DBK-002)
+
+sp {mac*elaborate*desireds*achieved
+   (state <s> ^problem-space.name mac
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {mac*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name mac
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### Failure: a bank with missionaries outnumbered by cannibals
+
+sp {mac*elaborate*failure*outnumbered
+   (state <s> ^problem-space.name mac
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <bank>)
+   (<bank> ^missionaries { <m> > 0 }
+           ^cannibals > <m>)
+-->
+   (<s> ^failure <ds>)
+}
+
+### End of episode (real top state only)
+
+sp {mac*halt*success
+   (state <s> ^superstate nil
+              ^name mac
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}
+
+sp {mac*halt*failure
+   (state <s> ^superstate nil
+              ^name mac
+              ^desireds <ds>
+              ^failure <ds>)
+-->
+   (write (crlf) |Failure state: the task has failed.|)
+   (write (crlf) |TASK-RESULT: failure|)
+   (halt)
+}

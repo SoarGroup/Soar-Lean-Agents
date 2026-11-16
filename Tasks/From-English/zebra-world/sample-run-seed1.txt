@@ -1,0 +1,132 @@
+Total: 664 productions sourced.
+140 decisions | Kernel CPU Time:       0.625
+Five houses; every house starts with all 25 values as candidates.
+Deductions:
+  House 3 is not Norwegian: clue 10 (The Norwegian lives in house 1).
+  House 1 is not white: clue 5 (The green house is immediately to the left of the white house) and it has no house to its left.
+  House 1 is not milk: clue 9 (The man in house 3 drinks milk).
+  House 5 is not Norwegian: clue 10 (The Norwegian lives in house 1).
+  House 4 is not Norwegian: clue 10 (The Norwegian lives in house 1).
+  House 4 is not blue: clue 15 (The Norwegian lives next to the blue house) and no neighbour of house 4 can be Norwegian.
+  House 5 is not milk: clue 9 (The man in house 3 drinks milk).
+  House 5 is not green: clue 5 (The green house is immediately to the left of the white house) and it has no house to its right.
+  House 2 is not milk: clue 9 (The man in house 3 drinks milk).
+  House 4 is not milk: clue 9 (The man in house 3 drinks milk).
+  House 3 is not beer: only house 3 can be milk.
+  House 3 is not coffee: only house 3 can be milk.
+  House 3 is not green: clue 6 (The green house owner drinks coffee) and house 3 cannot be coffee.
+  House 5 is not blue: clue 15 (The Norwegian lives next to the blue house) and no neighbour of house 5 can be Norwegian.
+  House 3 is not tea: only house 3 can be milk.
+  House 4 is not white: clue 5 (The green house is immediately to the left of the white house) and the house to its left cannot be green.
+  House 3 is not water: only house 3 can be milk.
+  House 2 is not Norwegian: clue 10 (The Norwegian lives in house 1).
+  House 3 is not Dane: clue 4 (The Dane drinks tea) and house 3 cannot be tea.
+  House 1 is not English: only house 1 can be Norwegian.
+  House 1 is not red: clue 2 (The Englishman lives in the red house) and house 1 cannot be English.
+  House 3 is not BlueMaster: clue 13 (The BlueMaster smoker drinks beer) and house 3 cannot be beer.
+  House 1 is not blue: clue 15 (The Norwegian lives next to the blue house) and no neighbour of house 1 can be Norwegian.
+  House 5 is not coffee: clue 6 (The green house owner drinks coffee) and house 5 cannot be green.
+  House 1 is not Dane: only house 1 can be Norwegian.
+  House 1 is not Swede: only house 1 can be Norwegian.
+  House 1 is not German: only house 1 can be Norwegian.
+  House 1 is not tea: clue 4 (The Dane drinks tea) and house 1 cannot be Dane.
+  House 1 is not dogs: clue 3 (The Swede keeps dogs) and house 1 cannot be Swede.
+  House 3 is not blue: clue 15 (The Norwegian lives next to the blue house) and no neighbour of house 3 can be Norwegian.
+  House 2 is not red: only house 2 can be blue.
+  House 2 is not green: only house 2 can be blue.
+  House 1 is not Prince: clue 14 (The German smokes Prince) and house 1 cannot be German.
+  House 3 is not white: clue 5 (The green house is immediately to the left of the white house) and the house to its left cannot be green.
+  House 2 is not yellow: only house 2 can be blue.
+  House 2 is not white: only house 2 can be blue.
+  House 2 is not English: clue 2 (The Englishman lives in the red house) and house 2 cannot be red.
+  House 5 is not red: only house 5 can be white.
+  House 1 is not green: clue 5 (The green house is immediately to the left of the white house) and the house to its right cannot be white.
+  House 3 is not yellow: house 1 can only be yellow.
+  House 4 is not yellow: house 1 can only be yellow.
+  House 3 is not Dunhill: clue 8 (The yellow house owner smokes Dunhill) and house 3 cannot be yellow.
+  House 5 is not English: clue 2 (The Englishman lives in the red house) and house 5 cannot be red.
+  House 4 is not red: house 3 can only be red.
+  House 4 is not Dunhill: clue 8 (The yellow house owner smokes Dunhill) and house 4 cannot be yellow.
+  House 2 is not Dunhill: clue 8 (The yellow house owner smokes Dunhill) and house 2 cannot be yellow.
+  House 5 is not yellow: only house 5 can be white.
+  House 5 is not horses: clue 12 (The horse keeper lives next to the Dunhill smoker) and no neighbour of house 5 can be Dunhill.
+  House 3 is not horses: clue 12 (The horse keeper lives next to the Dunhill smoker) and no neighbour of house 3 can be Dunhill.
+  House 2 is not coffee: clue 6 (The green house owner drinks coffee) and house 2 cannot be green.
+  House 4 is not English: clue 2 (The Englishman lives in the red house) and house 4 cannot be red.
+  House 3 is not Swede: only house 3 can be English.
+  House 3 is not dogs: clue 3 (The Swede keeps dogs) and house 3 cannot be Swede.
+  House 5 is not Dunhill: clue 8 (The yellow house owner smokes Dunhill) and house 5 cannot be yellow.
+  House 1 is not PallMall: only house 1 can be Dunhill.
+  House 1 is not coffee: clue 6 (The green house owner drinks coffee) and house 1 cannot be green.
+  House 1 is not Blends: only house 1 can be Dunhill.
+  House 3 is not German: only house 3 can be English.
+  House 1 is not BlueMaster: only house 1 can be Dunhill.
+  House 1 is not beer: clue 13 (The BlueMaster smoker drinks beer) and house 1 cannot be BlueMaster.
+  House 1 is not horses: clue 12 (The horse keeper lives next to the Dunhill smoker) and no neighbour of house 1 can be Dunhill.
+  House 4 is not water: only house 4 can be coffee.
+  House 1 is not birds: clue 7 (The Pall Mall smoker rears birds) and house 1 cannot be PallMall.
+  House 4 is not beer: only house 4 can be coffee.
+  House 3 is not Prince: clue 14 (The German smokes Prince) and house 3 cannot be German.
+  House 4 is not tea: only house 4 can be coffee.
+  House 4 is not horses: clue 12 (The horse keeper lives next to the Dunhill smoker) and no neighbour of house 4 can be Dunhill.
+  House 2 is not cats: only house 2 can be horses.
+  House 2 is not water: house 1 can only be water.
+  House 2 is not dogs: only house 2 can be horses.
+  House 2 is not Swede: clue 3 (The Swede keeps dogs) and house 2 cannot be dogs.
+  House 2 is not zebra: only house 2 can be horses.
+  House 2 is not birds: only house 2 can be horses.
+  House 4 is not BlueMaster: clue 13 (The BlueMaster smoker drinks beer) and house 4 cannot be beer.
+  House 4 is not Dane: clue 4 (The Dane drinks tea) and house 4 cannot be tea.
+  House 2 is not PallMall: clue 7 (The Pall Mall smoker rears birds) and house 2 cannot be birds.
+  House 5 is not water: house 1 can only be water.
+
+No clue or single eliminates anything more. Elimination matrix (remaining candidates):
+color        1: yellow ;  2: blue ;  3: red ;  4: green ;  5: white 
+nationality  1: Norwegian ;  2: Dane German ;  3: English ;  4: Swede German ;  5: Swede Dane German 
+drink        1: water ;  2: tea beer ;  3: milk ;  4: coffee ;  5: tea beer 
+smoke        1: Dunhill ;  2: Blends BlueMaster Prince ;  3: PallMall Blends ;  4: PallMall Blends Prince ;  5: PallMall Blends BlueMaster Prince 
+pet          1: cats zebra ;  2: horses ;  3: birds cats zebra ;  4: dogs birds cats zebra ;  5: dogs birds cats zebra 
+
+
+Depth: C10: 1 remaining, 2
+  Branch: house 1, pet = cats. Look-ahead found that this choice leads to a complete solution.
+  House 4 is not cats: house 1 can only be cats.
+  House 3 is not Blends: clue 11 (The Blends smoker lives next to the cat keeper) and no neighbour of house 3 can be cats.
+  House 5 is not Blends: clue 11 (The Blends smoker lives next to the cat keeper) and no neighbour of house 5 can be cats.
+  House 5 is not cats: house 1 can only be cats.
+  House 5 is not PallMall: house 3 can only be PallMall.
+  House 4 is not PallMall: house 3 can only be PallMall.
+  House 3 is not cats: house 1 can only be cats.
+  House 5 is not birds: clue 7 (The Pall Mall smoker rears birds) and house 5 cannot be PallMall.
+  House 4 is not Blends: clue 11 (The Blends smoker lives next to the cat keeper) and no neighbour of house 4 can be cats.
+  House 2 is not Prince: house 4 can only be Prince.
+  House 5 is not Prince: house 4 can only be Prince.
+  House 2 is not BlueMaster: house 5 can only be BlueMaster.
+  House 2 is not beer: clue 13 (The BlueMaster smoker drinks beer) and house 2 cannot be BlueMaster.
+  House 5 is not tea: house 2 can only be tea.
+  House 2 is not German: clue 14 (The German smokes Prince) and house 2 cannot be Prince.
+  House 4 is not birds: clue 7 (The Pall Mall smoker rears birds) and house 4 cannot be PallMall.
+  House 5 is not German: clue 14 (The German smokes Prince) and house 5 cannot be Prince.
+  House 3 is not zebra: only house 3 can be birds.
+  House 5 is not Dane: clue 4 (The Dane drinks tea) and house 5 cannot be tea.
+  House 4 is not Swede: house 5 can only be Swede.
+  House 4 is not dogs: clue 3 (The Swede keeps dogs) and house 4 cannot be Swede.
+  House 5 is not zebra: only house 5 can be dogs.
+
+zebra achieved - success
+zebra achieved all desiredsInterrupt received.
+Solved. Final matrix:
+color        1: yellow ;  2: blue ;  3: red ;  4: green ;  5: white 
+nationality  1: Norwegian ;  2: Dane ;  3: English ;  4: German ;  5: Swede 
+drink        1: water ;  2: tea ;  3: milk ;  4: coffee ;  5: beer 
+smoke        1: Dunhill ;  2: Blends ;  3: PallMall ;  4: Prince ;  5: BlueMaster 
+pet          1: cats ;  2: horses ;  3: birds ;  4: zebra ;  5: dogs 
+
+1. Who drinks water? The Norwegian (house 1).
+2. Who owns the zebra? The German (house 4).
+
+Final answer: the Norwegian drinks water; the German owns the zebra.
+TASK-RESULT: success
+
+System halted.
+Interrupt received.This Agent halted.

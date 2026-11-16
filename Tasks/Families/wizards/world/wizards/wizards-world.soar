@@ -1,0 +1,121 @@
+##############################################################################
+## wizards: world, goal, problem space, end of episode
+## World objects (^type):
+##   puzzle   (handle puzzle): ^done 0/1, ^nviews (number of views); the original's state
+##            ^world structure (the attribute ^world now belongs to agent-world).
+##   view     (handle view-<vid>; the first A-view): ^vid ^owner (wizard whose view it is)
+##            ^depth, ^parent <view> (the view it is nested in).
+##   rec      (a wizard as seen in a view; handles A, B, C in the first view, rec-<vid>-<wiz>
+##            later): ^wiz ^mark (0 unknown, 1 white, 2 black) ^var ^modeled [^aguess]
+##            ^view <view> ^sib <rec> <rec> [^sub <rec>: the same wizard in a nested view]
+##            [^mv <markvar>].
+##   markvar  (handle markvar-<rec handle>): ^value ^assigned (vid) ^untried 1 2.
+## Links between world objects (^view ^parent ^sib ^sub ^mv) are object-valued attributes, as
+## in the original; this program does no look-ahead, so they are never copied.
+## Goal (^desireds): puzzle ^done 1.
+##############################################################################
+
+sp {wizards*propose*initialize-wizards
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-wizards
+        ^task-operator false)
+}
+
+sp {wizards*compare*initialize-wizards*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-wizards)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {wizards*apply*initialize-wizards
+   (state <s> ^operator.name initialize-wizards
+              ^world.objects <objs>)
+-->
+   (<s> ^name wizards
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^look-ahead-planning false)
+   (<objs> ^object <puzzle> <v1> <a> <b> <c>)
+   (<puzzle> ^object-handle puzzle ^anchored true ^type puzzle
+             ^done 0 ^nviews 1)
+   (<v1> ^object-handle A-view ^anchored true ^type view
+         ^vid 1 ^owner 1 ^depth 1)
+   (<a> ^object-handle A ^anchored true ^type rec
+        ^wiz 1 ^mark 0 ^var 0 ^modeled 0 ^aguess 0
+        ^view <v1> ^sib <b> <c>)
+   (<b> ^object-handle B ^anchored true ^type rec
+        ^wiz 2 ^mark 1 ^var 0 ^modeled 0 ^aguess 0
+        ^view <v1> ^sib <a> <c>)
+   (<c> ^object-handle C ^anchored true ^type rec
+        ^wiz 3 ^mark 1 ^var 0 ^modeled 0 ^aguess 0
+        ^view <v1> ^sib <a> <b>)
+   (<ds> ^desired <d> ^desired-count 1)
+   (<d> ^object <dp>)
+   (<dp> ^object-handle puzzle ^done 1)
+}
+
+sp {wizards*elaborate*problem-space
+   (state <s> ^name wizards)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name wizards
+        ^agent-world true)
+}
+
+### Achievement of object-property desireds (task-supplied, W-DBK-002)
+
+sp {wizards*elaborate*desireds*achieved
+   (state <s> ^problem-space.name wizards
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {wizards*elaborate*desireds*unachieved
+   (state <s> ^problem-space.name wizards
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### End of episode
+
+sp {wizards*halt*success
+   (state <s> ^superstate nil
+              ^name wizards
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

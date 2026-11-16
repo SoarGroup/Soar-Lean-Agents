@@ -1,0 +1,13 @@
+source elaborations.soar
+source init-local.soar
+source get-digit1.soar
+pushd get-digit1
+source get-digit1_source.soar
+popd
+source add-digits.soar
+source borrow-from.soar
+pushd borrow-from
+source borrow-from_source.soar
+popd
+source subtract-digits.soar
+source write-result.soar

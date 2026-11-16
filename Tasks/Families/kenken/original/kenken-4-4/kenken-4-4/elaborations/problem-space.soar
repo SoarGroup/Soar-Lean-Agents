@@ -1,0 +1,14 @@
+
+sp {kenken*elaborate*problem-space
+   (state <s> ^name kenken)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name kenken)
+   (<p> ^default-state-copy yes)
+   (<p> ^default-operator-copy yes)
+   (<p> ^two-level-attributes cell)
+   (<p> ^two-level-attributes cand)
+   (<p> ^two-level-attributes tuple)
+   (<p> ^two-level-attributes puzzle)
+   (<p> ^dont-copy ancestor)
+}

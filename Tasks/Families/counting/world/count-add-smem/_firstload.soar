@@ -1,0 +1,18 @@
+## Settings of the original: no chunking, smem with the successor facts 0..9; restore the
+## original's indifferent-selection policy (Soar default softmax), which
+## agent-world/_flags.soar changes to epsilon-greedy.
+chunk never
+decide indifferent-selection --softmax
+smem --set learning on
+smem --add {
+   (<l0> ^kind succ ^|symbol| 0 ^|next| 1)
+   (<l1> ^kind succ ^|symbol| 1 ^|next| 2)
+   (<l2> ^kind succ ^|symbol| 2 ^|next| 3)
+   (<l3> ^kind succ ^|symbol| 3 ^|next| 4)
+   (<l4> ^kind succ ^|symbol| 4 ^|next| 5)
+   (<l5> ^kind succ ^|symbol| 5 ^|next| 6)
+   (<l6> ^kind succ ^|symbol| 6 ^|next| 7)
+   (<l7> ^kind succ ^|symbol| 7 ^|next| 8)
+   (<l8> ^kind succ ^|symbol| 8 ^|next| 9)
+   (<l9> ^kind succ ^|symbol| 9 ^|next| 0)
+}

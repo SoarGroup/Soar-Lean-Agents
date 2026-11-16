@@ -1,0 +1,21 @@
+
+sp {left-right*propose*initialize-left-right
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-left-right)
+}
+
+sp {left-right*apply*initialize-left-right
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-left-right)
+-->
+   (<s> ^name left-right)
+   (<s> ^agent <x0>)
+   (<x0> ^location 0)
+   (<x0> ^moved 0)
+   (<s> ^desired <d>)
+   (<d> ^agent <dg>)
+   (<dg> ^moved 1)
+}

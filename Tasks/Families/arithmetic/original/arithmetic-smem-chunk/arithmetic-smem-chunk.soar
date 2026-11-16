@@ -1,0 +1,3 @@
+pushd arithmetic-smem-chunk
+source arithmetic-smem-chunk_source.soar
+popd

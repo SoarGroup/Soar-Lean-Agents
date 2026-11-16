@@ -1,0 +1,12 @@
+
+sp {eight-puzzle*select*reject-inverse
+   (state <s> ^name eight-puzzle)
+   (<s> ^operator <o> +)
+   (<o> ^name move-tile)
+   (<o> ^t <v1>)
+   (<s> ^last-move <l>)
+   (<l> ^name move-tile)
+   (<l> ^t <v1>)
+-->
+   (<s> ^operator <o> -)
+}

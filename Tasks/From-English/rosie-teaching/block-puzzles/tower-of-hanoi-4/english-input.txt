@@ -1,0 +1,24 @@
+Tower of Hanoi (4 blocks): English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is tower-of-hanoi-4.
+  2. Load init-tower4.   [world state: init-tower4.world]
+  3. Ok.
+  4. You can move a clear block onto a clear object that is larger than the block.
+  5. If a location is not below an object then it is clear.
+  6. If the volume of a block is more than the volume of an object then the block is larger than the object.
+  7. Load final-tower4.   [world state: final-tower4.world]
+  8. The goal is that there are two clear green locations.
+  9. Ok.
+ 10. Done.
+ 11. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1, green1); size (large1, medium1, small1, tiny1); volume (numeric, 1 to 5)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/block-puzzles/tower-of-hanoi-4/.

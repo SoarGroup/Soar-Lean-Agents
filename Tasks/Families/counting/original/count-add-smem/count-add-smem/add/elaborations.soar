@@ -1,0 +1,12 @@
+
+sp {add*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name add)
+   (<so> ^a <a>)
+-->
+   (<s> ^name add)
+   (<s> ^a <a>)
+}

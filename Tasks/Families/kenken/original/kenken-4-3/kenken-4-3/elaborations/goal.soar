@@ -1,0 +1,45 @@
+
+sp {kenken*elaborate*goal*success*substate
+   (state <s> ^name kenken)
+   (<s> ^desired <d>)
+   (<s> ^puzzle <x>)
+   (<d> ^puzzle <dx>)
+   (<dx> ^marks <g-marks>)
+   (<x> ^marks <g-marks>)
+   (<s> ^superstate <> nil)
+-->
+   (<s> ^success <d>)
+}
+
+sp {kenken*elaborate*goal*success*top*reached
+   (state <s> ^name kenken)
+   (<s> ^desired <d>)
+   (<s> ^puzzle <x>)
+   (<d> ^puzzle <dx>)
+   (<dx> ^marks <g-marks>)
+   (<x> ^marks <g-marks>)
+   (<s> ^superstate nil)
+-->
+   (<s> ^goal-reached <d>)
+}
+
+sp {kenken*elaborate*goal*success*after
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^goal-reached <d>)
+   (<s> ^puzzle <fin>)
+   (<fin> ^printed 4)
+-->
+   (<s> ^success <d>)
+}
+
+sp {kenken*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+   (<s> ^puzzle <fin>)
+   (<fin> ^printed 4)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

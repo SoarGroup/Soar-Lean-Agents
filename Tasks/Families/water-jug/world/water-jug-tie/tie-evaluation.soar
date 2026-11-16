@@ -1,0 +1,77 @@
+## Evaluation knowledge for ties among water-jug task operators.
+## The original program resolved ties in its own tie problem space with a heuristic based on
+## the last operator applied.  Here the tie is handled by the selection space of
+## selection-world: each tied operator is evaluated by evaluate-operator, and this task rule
+## supplies the evaluation directly in the selection state (no look-ahead):
+##   original "equal" -> symbolic-value indifferent      (indifferent preference)
+##   original "worst" -> symbolic-value partial-failure  (worst preference)
+##   original "best"  -> symbolic-value partial-success  (best preference)
+## Heuristic (as in the original):
+##   last-operator none : fill, empty, pour  equal
+##   last-operator pour : fill, empty equal;  pour worst
+##   last-operator fill or empty : pour best; fill, empty worst
+
+sp {selection*apply*evaluate-operator*water-jug*equal*none
+   (state <s> ^name selection
+              ^operator <o>
+              ^superstate <ss>)
+   (<ss> ^problem-space.name water-jug
+         ^last-operator none)
+   (<o> ^name evaluate-operator
+        ^evaluation <e>
+        ^super-operator.name << fill empty pour >>)
+-->
+   (<e> ^symbolic-value indifferent)
+}
+
+sp {selection*apply*evaluate-operator*water-jug*equal*after-pour
+   (state <s> ^name selection
+              ^operator <o>
+              ^superstate <ss>)
+   (<ss> ^problem-space.name water-jug
+         ^last-operator pour)
+   (<o> ^name evaluate-operator
+        ^evaluation <e>
+        ^super-operator.name << fill empty >>)
+-->
+   (<e> ^symbolic-value indifferent)
+}
+
+sp {selection*apply*evaluate-operator*water-jug*worst*pour-after-pour
+   (state <s> ^name selection
+              ^operator <o>
+              ^superstate <ss>)
+   (<ss> ^problem-space.name water-jug
+         ^last-operator pour)
+   (<o> ^name evaluate-operator
+        ^evaluation <e>
+        ^super-operator.name pour)
+-->
+   (<e> ^symbolic-value partial-failure)
+}
+
+sp {selection*apply*evaluate-operator*water-jug*best*pour-after-fill-empty
+   (state <s> ^name selection
+              ^operator <o>
+              ^superstate <ss>)
+   (<ss> ^problem-space.name water-jug
+         ^last-operator << fill empty >>)
+   (<o> ^name evaluate-operator
+        ^evaluation <e>
+        ^super-operator.name pour)
+-->
+   (<e> ^symbolic-value partial-success)
+}
+
+sp {selection*apply*evaluate-operator*water-jug*worst*fill-empty-after-fill-empty
+   (state <s> ^name selection
+              ^operator <o>
+              ^superstate <ss>)
+   (<ss> ^problem-space.name water-jug
+         ^last-operator << fill empty >>)
+   (<o> ^name evaluate-operator
+        ^evaluation <e>
+        ^super-operator.name << fill empty >>)
+-->
+   (<e> ^symbolic-value partial-failure)
+}

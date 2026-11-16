@@ -1,0 +1,3 @@
+pushd blocks-world-random
+source blocks-world-random_source.soar
+popd

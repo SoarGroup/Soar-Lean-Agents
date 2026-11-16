@@ -1,0 +1,20 @@
+
+sp {solve-problem*propose*process-column
+   (state <s> ^name solve-problem)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<ss> ^column <c>)
+   (<c> ^pos <c-pos>)
+   (<p> ^pid <p-pid>)
+   (<p> ^digits 6)
+   (<c> ^done { <c-done> <> <p-pid> })
+   -{ (<ss> ^column <none3>) (<none3> ^pos < <c-pos>) (<none3> ^done <> <p-pid>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name process-column)
+   (<o> ^c <c>)
+}

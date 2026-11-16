@@ -1,0 +1,125 @@
+
+sp {knights*propose*backup*1
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square { <p> <> <c> })
+   (<t> ^at <c>)
+   (<c> ^prev <p>)
+   (<c> ^visit <c-visit>)
+   (<t> ^done 0)
+   -{ (<c> ^move <lk5>) (<lk5> ^used 0) -{ (<lk5> ^tried <c-visit>) } }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+}
+
+sp {knights*propose*backup*2
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square { <p> <> <c> })
+   (<t> ^at <c>)
+   (<c> ^prev <p>)
+   (<t> ^done 0)
+   (<t> ^goal 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+}
+
+sp {knights*propose*backup*3
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square { <p> <> <c> })
+   (<t> ^at <c>)
+   (<c> ^prev <p>)
+   (<t> ^done 0)
+   (<t> ^depth { <t-depth> < 36 })
+   (<c> ^move <lk6x1>)
+   (<lk6x1> ^used 0)
+   (<lk6x1> ^degree 1)
+   (<c> ^move { <lk6x2> <> <lk6x1> })
+   (<lk6x2> ^used 0)
+   (<lk6x2> ^degree 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+}
+
+sp {knights*propose*backup*4
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square { <p> <> <c> })
+   (<t> ^at <c>)
+   (<c> ^prev <p>)
+   (<c> ^visit <c-visit>)
+   (<t> ^done 0)
+   (<c> ^move <lk5x1>)
+   (<lk5x1> ^tried <c-visit>)
+   (<lk5x1> ^degree 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+}
+
+sp {knights*apply*backup
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+   (<t> ^at <t-at>)
+   (<c> ^used <c-used>)
+   (<p> ^visit <p-visit>)
+   (<t> ^depth <t-depth>)
+   (<t> ^moves <t-moves>)
+   (<t> ^goal <t-goal>)
+-->
+   (<t> ^at <p>)
+   (<t> ^at <t-at> -)
+   (<c> ^used 0)
+   (<c> ^used <c-used> -)
+   (<c> ^tried <p-visit>)
+   (<t> ^depth (- <t-depth> 1))
+   (<t> ^depth <t-depth> -)
+   (<t> ^moves (+ <t-moves> 1))
+   (<t> ^moves <t-moves> -)
+   (<t> ^goal 0)
+   (<t> ^goal <t-goal> -)
+}
+
+sp {knights*apply*backup*each1
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name backup)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^p <p>)
+   (<z> ^degree <z-degree>)
+   (<c> ^visit <c-visit>)
+   (<c> ^move <z>)
+-->
+   (<z> ^degree (+ <z-degree> 1))
+   (<z> ^degree <z-degree> -)
+   (<z> ^tried <c-visit> -)
+}

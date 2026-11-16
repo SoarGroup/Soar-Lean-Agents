@@ -1,0 +1,37 @@
+Jigsawdoku: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is jigsawdoku-sudoku.
+  2. Load init-jigsawdoku.   [world state: init-jigsawdoku.world]
+  3. Ok.
+  4. The name of the action is write-1-to-4.
+  5. You can write a number that is between one and four onto an empty location.
+  6. If the value of a location is absent then the location is empty.
+  7. The solution has four steps.
+  8. Load fail-jigsawdoku.   [world state: fail-jigsawdoku.world]
+  9. The name of a failure is same-row-value.
+ 10. Ok.
+ 11. If the row of a location is the row of a location and the value of the former location is the value of the latter location then you lose.
+ 12. The name of a failure is same-col-value.
+ 13. Ok.
+ 14. If the column of a location is the column of a location and the value of the former location is the value of the latter location then you lose.
+ 15. The name of a failure is same-section-value.
+ 16. Ok.
+ 17. If the section of a location is the section of a location and the value of the former location is the value of the latter location then you lose.
+ 18. Load final-jigsawdoku.   [world state: final-jigsawdoku.world]
+ 19. The name of the goal is all-filled.
+ 20. Ok.
+ 21. The goal is that all locations are filled.
+ 22. If the value of a location is more than zero then the location is filled.
+ 23. Done.
+ 24. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: location
+  Object attributes: column (numeric, 1 to 4); row (numeric, 1 to 4); section (numeric, 1 to 4); value (numeric, 1 to 4)
+  Relations: none
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/logic-puzzles/jigsawdoku/.

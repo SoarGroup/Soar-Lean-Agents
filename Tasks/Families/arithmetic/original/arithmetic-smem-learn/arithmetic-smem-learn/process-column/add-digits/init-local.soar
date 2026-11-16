@@ -1,0 +1,27 @@
+
+sp {add-digits*propose*init-local
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   -(<s> ^sum <_v5>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {add-digits*apply*init-local
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+   (<ss> ^|d1| <ss-d1>)
+-->
+   (<s> ^sum <ss-d1>)
+   (<s> ^n 0)
+   (<s> ^stored 0)
+}

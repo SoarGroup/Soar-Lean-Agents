@@ -1,0 +1,48 @@
+
+sp {process-column*propose*add-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v8>)
+   (<ts> ^add-fact <f>)
+   (<p> ^operation 1)
+   (<s> ^adj 1)
+   (<s> ^r -1)
+   (<f> ^|d1| <s-d1>)
+   (<s> ^|d1| <s-d1>)
+   (<f> ^|d2| <s-d2>)
+   (<s> ^|d2| <s-d2>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-digits)
+   (<o> ^f <f>)
+}
+
+sp {process-column*apply*add-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name add-digits)
+   (<o> ^f <f>)
+   (<s> ^r <s-r>)
+   (<f> ^sum <f-sum>)
+   (<s> ^cout <s-cout>)
+   (<f> ^carry <f-carry>)
+-->
+   (<s> ^r <f-sum>)
+   (<s> ^r <s-r> -)
+   (<s> ^cout <f-carry>)
+   (<s> ^cout <s-cout> -)
+}

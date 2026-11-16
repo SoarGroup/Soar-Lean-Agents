@@ -1,0 +1,201 @@
+## Task operator add: adds digit2 to digit1 of the adder (counting digit3 up to digit2 with
+## successor facts retrieved from smem), sets the carry and marks the adder done.
+## Proposed while the adder is not done; it serves the unachieved desired on ^done.
+## No internal application rule: as in the original it is implemented in its operator
+## no-change substate (^name add, ^problem-space.name add from agent-world; the substate
+## shares the world). The substate's d1, d3, carry and phase are scratch state of the
+## implementation; its sub-operators are internal (^task-operator false).
+sp {count-add-smem*propose*add
+   (state <s> ^problem-space.name count-add-smem
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^done)
+   (<w> ^anchored-world true
+        ^objects.object <a>)
+   (<a> ^object-handle $ <h>
+        ^done 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name add
+        ^task-operator true
+        ^action-handle add
+        ^super-desired <d>
+        ^argument1 <a>
+        ^argument-count 1
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## init-local: d1 = adder digit1, d3 = 0, carry 0, phase 0.
+sp {add*propose*init-local
+   (state <s> ^problem-space.name add
+              ^argument1 <a>
+             -^|d1|)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local
+        ^task-operator false)
+}
+
+sp {add*apply*init-local
+   (state <s> ^problem-space.name add
+              ^operator.name init-local
+              ^argument1.object-handle $ <h>
+              ^world.objects.object <a>)
+   (<a> ^object-handle $ <h>
+        ^digit1 <d1>)
+-->
+   (<s> ^|d1| <d1>
+        ^|d3| 0
+        ^carry 0
+        ^phase 0)
+}
+
+## next-digit1 (phase 0, d3 not yet digit2): d1 = successor(d1) from smem; carry 1 when d1
+## was 9; phase 1.
+sp {add*propose*next-digit1
+   (state <s> ^problem-space.name add
+              ^argument1 <a>
+              ^|d1| <d1>
+              ^|d3| { <d3> <> <a-digit2> }
+              ^phase 0)
+   (<a> ^digit2 <a-digit2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name next-digit1
+        ^task-operator false)
+}
+
+sp {add*apply*next-digit1*query
+   (state <s> ^problem-space.name add
+              ^operator <o>
+             -^queried <o>
+              ^smem.command <smc>
+              ^|d1| <d1>)
+   (<o> ^name next-digit1)
+-->
+   (<s> ^queried <o>)
+   (<smc> ^query <q>)
+   (<q> ^kind succ
+        ^symbol <d1>)
+}
+
+sp {add*apply*next-digit1*carry
+   (state <s> ^problem-space.name add
+              ^operator.name next-digit1
+              ^smem <sm>
+              ^|d1| 9
+              ^carry <c>
+              ^phase <p>)
+   (<sm> ^result.retrieved.next <next>
+         ^command <smc>)
+   (<smc> ^query <q>)
+-->
+   (<s> ^|d1| 9 -
+              <next>
+        ^carry <c> -
+               1
+        ^phase <p> -
+               1)
+   (<smc> ^query <q> -)
+}
+
+sp {add*apply*next-digit1*no-carry
+   (state <s> ^problem-space.name add
+              ^operator.name next-digit1
+              ^smem <sm>
+              ^|d1| { <d1> <> 9 }
+              ^phase <p>)
+   (<sm> ^result.retrieved.next <next>
+         ^command <smc>)
+   (<smc> ^query <q>)
+-->
+   (<s> ^|d1| <d1> -
+              <next>
+        ^phase <p> -
+               1)
+   (<smc> ^query <q> -)
+}
+
+## next-digit3 (phase 1): d3 = successor(d3) from smem; phase 0.
+sp {add*propose*next-digit3
+   (state <s> ^problem-space.name add
+              ^argument1 <a>
+              ^|d1|
+              ^phase 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name next-digit3
+        ^task-operator false)
+}
+
+sp {add*apply*next-digit3*query
+   (state <s> ^problem-space.name add
+              ^operator <o>
+             -^queried <o>
+              ^smem.command <smc>
+              ^|d3| <d3>)
+   (<o> ^name next-digit3)
+-->
+   (<s> ^queried <o>)
+   (<smc> ^query <q>)
+   (<q> ^kind succ
+        ^symbol <d3>)
+}
+
+sp {add*apply*next-digit3
+   (state <s> ^problem-space.name add
+              ^operator.name next-digit3
+              ^smem <sm>
+              ^|d3| <d3>
+              ^phase <p>)
+   (<sm> ^result.retrieved.next <next>
+         ^command <smc>)
+   (<smc> ^query <q>)
+-->
+   (<s> ^|d3| <d3> -
+              <next>
+        ^phase <p> -
+               0)
+   (<smc> ^query <q> -)
+}
+
+## done (phase 0, d3 = digit2): write d1 and the carry into the adder and mark it done.
+sp {add*propose*done
+   (state <s> ^problem-space.name add
+              ^argument1 <a>
+              ^|d1|
+              ^|d3| <a-digit2>
+              ^phase 0)
+   (<a> ^digit2 <a-digit2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name done
+        ^task-operator false)
+}
+
+sp {add*apply*done
+   (state <s> ^problem-space.name add
+              ^operator.name done
+              ^argument1.object-handle $ <h>
+              ^world.objects.object <a>
+              ^|d1| <d1>
+              ^carry <c>)
+   (<a> ^object-handle $ <h>
+        ^digit1 <old-d1>
+        ^carry <old-c>
+        ^done <old-done>)
+-->
+   (<a> ^digit1 <old-d1> -
+                <d1>
+        ^carry <old-c> -
+               <c>
+        ^done <old-done> -
+              1)
+   (log 1 (crlf) |Apply add: | <h> | digit1 | <d1> | carry | <c>)
+}

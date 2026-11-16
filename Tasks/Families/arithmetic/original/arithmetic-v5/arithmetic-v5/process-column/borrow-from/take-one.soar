@@ -1,0 +1,38 @@
+
+sp {borrow-from*propose*take-one
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^|d1| <_v6>)
+   (<ts> ^sub-fact <f>)
+   (<s> ^r -1)
+   (<f> ^|d1| <s-d1>)
+   (<s> ^|d1| <s-d1>)
+   (<f> ^|d2| <s-d2>)
+   (<s> ^|d2| <s-d2>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name take-one)
+   (<o> ^f <f>)
+}
+
+sp {borrow-from*apply*take-one
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^operator <o>)
+   (<o> ^name take-one)
+   (<o> ^f <f>)
+   (<s> ^r <s-r>)
+   (<f> ^diff <f-diff>)
+-->
+   (<s> ^r <f-diff>)
+   (<s> ^r <s-r> -)
+}

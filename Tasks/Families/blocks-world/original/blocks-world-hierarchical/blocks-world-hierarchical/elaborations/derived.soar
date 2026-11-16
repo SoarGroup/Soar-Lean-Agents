@@ -1,0 +1,41 @@
+
+sp {blocks-world*elaborate*object*in-place*base
+   (state <s> ^name blocks-world)
+   (<s> ^object <self>)
+   (<self> ^table 1)
+-->
+   (<self> ^in-place 1)
+}
+
+sp {blocks-world*elaborate*object*in-place*via-on
+   (state <s> ^name blocks-world)
+   (<s> ^object <self>)
+   (<self> ^on <below>)
+   (<below> ^in-place 1)
+   (<s> ^desired <des0>)
+   (<des0> ^object <dx0>)
+   (<self> ^name <ko0>)
+   (<dx0> ^name <ko0>)
+   (<dx0> ^on <dt0>)
+   (<dt0> ^name <kt0>)
+   (<below> ^name <kt0>)
+-->
+   (<self> ^in-place 1)
+}
+
+sp {blocks-world*elaborate*object*clear*base*2
+   (state <s> ^name blocks-world)
+   (<s> ^object <self>)
+   (<self> ^table 1)
+-->
+   (<self> ^clear 1)
+}
+
+sp {blocks-world*elaborate*object*clear*base*3
+   (state <s> ^name blocks-world)
+   (<s> ^object <self>)
+   -{ (<s> ^object <none1>) (<none1> ^on <self>) }
+   -{ (<s> ^gripper <none2>) (<none2> ^empty 0) (<none2> ^holding <self>) }
+-->
+   (<self> ^clear 1)
+}

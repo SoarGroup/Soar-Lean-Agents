@@ -1,0 +1,46 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+sp {count-up*propose*initialize-count-up
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-count-up
+        ^task-operator false)
+}
+
+## initialize-agent-world (best, proposed while the top state has no ^name) stays acceptable
+## after it applies; prefer the task's initialization to it so that it is not reselected.
+sp {count-up*compare*initialize-count-up*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-count-up)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+## World: one counter object (value 0). Goal: counter value 100.
+sp {count-up*apply*initialize-count-up
+   (state <s> ^operator.name initialize-count-up
+              ^world.objects <objs>)
+-->
+   (<s> ^name count-up
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<ps> ^name count-up
+         ^agent-world true)
+   (<f> ^mea-operator-selection true)
+   (<objs> ^object <c>)
+   (<c> ^object-handle counter
+        ^anchored true
+        ^value 0)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle counter
+         ^value 100)
+}

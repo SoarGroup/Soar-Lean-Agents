@@ -1,0 +1,12 @@
+
+sp {fill*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name fill)
+   (<so> ^jug <jug>)
+-->
+   (<s> ^name fill)
+   (<s> ^jug <jug>)
+}

@@ -1,0 +1,16 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-wizards.soar
+source self-unknown.soar
+source consider-knows.soar
+source ascribe-mark.soar
+source ascribe-unknown.soar
+source ascribe-guess.soar
+source assume-black.soar
+source assume-white.soar
+source complement.soar
+source guess-white.soar
+source guess-black.soar
+source preferences.soar

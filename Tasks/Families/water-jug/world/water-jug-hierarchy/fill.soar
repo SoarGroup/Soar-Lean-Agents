@@ -1,0 +1,46 @@
+## fill <jug>: a composite task operator.  It has no application rule; it is implemented in
+## its operator-implementation substate (^problem-space.name fill, see
+## fill-implementation.soar) by pick-up, fill-jug and put-down.
+## No ^effect-desireds: agent-world makes the substate's ^desireds the same identifier as the
+## operator's ^effect-desireds, so the task's i-supported achieved/unachieved elaborations in
+## the substate become o-supported results on the superoperator and go stale (and are
+## chunked).  The substate is instead driven by the original proposal conditions, and fill
+## terminates when its proposal retracts (jug full and not held), as in the original.
+##
+## Proposal as in the original: the jug is not full, or it is full but still held
+## (fill is still being implemented).
+
+sp {water-jug*elaborate*fill-relevant*not-full
+   (state <s> ^problem-space.name water-jug
+              ^jug-free <jf>)
+   (<jf> ^jug <jug> ^free > 0)
+-->
+   (<s> ^fill-relevant <jug>)
+}
+
+sp {water-jug*elaborate*fill-relevant*held
+   (state <s> ^problem-space.name water-jug
+              ^jug-free <jf>
+              ^world.holding-object <jug>)
+   (<jf> ^jug <jug> ^free <= 0)
+-->
+   (<s> ^fill-relevant <jug>)
+}
+
+sp {water-jug*propose*fill
+   (state <s> ^problem-space.name water-jug
+              ^world <w>
+              ^desireds.desired <d>
+              ^fill-relevant <jug>)
+   (<w> ^anchored-world true
+        ^objects.object <jug>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name fill
+        ^task-operator true
+        ^super-desired <d>
+        ^argument1 <jug>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}

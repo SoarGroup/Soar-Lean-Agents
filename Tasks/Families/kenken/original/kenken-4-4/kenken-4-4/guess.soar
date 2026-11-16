@@ -1,0 +1,39 @@
+
+sp {kenken*propose*guess
+   (state <s> ^name kenken)
+   (<s> ^puzzle <p>)
+   (<s> ^cell <c>)
+   (<s> ^cand <x>)
+   (<c> ^cand <x>)
+   (<p> ^gcell <c-coord>)
+   (<c> ^coord <c-coord>)
+   (<x> ^alive 1)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name guess)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+}
+
+sp {kenken*apply*guess
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name guess)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+   (<c> ^mark <c-mark>)
+   (<x> ^value <x-value>)
+   (<p> ^marks <p-marks>)
+   (<p> ^gcell <p-gcell>)
+   (<c> ^coord <c-coord>)
+-->
+   (<c> ^mark <x-value>)
+   (<c> ^mark <c-mark> -)
+   (<p> ^marks (+ <p-marks> 1))
+   (<p> ^marks <p-marks> -)
+   (<p> ^gcell 0)
+   (<p> ^gcell <p-gcell> -)
+   (write |Guess: | <c-coord> | is | <x-value>)
+}

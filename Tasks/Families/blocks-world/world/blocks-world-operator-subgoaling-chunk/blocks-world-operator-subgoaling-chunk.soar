@@ -1,0 +1,18 @@
+## blocks-world-operator-subgoaling-chunk: blocks world under the world conventions (world conventions, ^environment none)
+## move-block with clear preconditions; MEA operator subgoaling by agent-world
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+## Task settings (after the library, which sets its own defaults)
+chunk always
+chunk add-osk on
+multi-attributes object 5
+decide indifferent-selection --softmax   # Soar default, restored after agent-world (-e)
+
+source initialize-blocks-world.soar
+source elaborations.soar
+source move-block.soar
+source preferences.soar

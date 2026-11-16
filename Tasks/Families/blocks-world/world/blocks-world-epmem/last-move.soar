@@ -1,0 +1,72 @@
+## The last move made in a task state (top state or look-ahead state) is recorded on that state.
+## The record carries the operator it was made for, so it is made once per application.
+sp {blocks-world*apply*move-block*last-move
+   (state <s> ^operator <o>
+              ^problem-space.name blocks-world)
+   (<o> ^name move-block
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <bh>
+        ^argument2.object-handle $ <dh>)
+  -(<s> ^last-move.recorded-for <o>)
+  -(<s> ^look-ahead-operator <o>)
+-->
+   (<s> ^last-move <n>)
+   (<n> ^block-handle <bh>
+        ^dest-handle <dh>
+        ^recorded-for <o>)
+}
+
+sp {blocks-world*apply*move-block*last-move*remove-old
+   (state <s> ^operator <o>
+              ^problem-space.name blocks-world
+              ^last-move <l>)
+   (<o> ^name move-block
+        ^pre-conditions-satisfied true)
+   (<l> -^recorded-for <o>)
+-->
+   (<s> ^last-move <l> -)
+}
+
+## In the original, a look-ahead state starts with the evaluated state's last move (the default
+## selection space copied it). selection-world copies only the world, so the look-ahead state
+## links to it as ^inherited-last-move until it makes a move of its own.
+sp {blocks-world*elaborate*look-ahead*inherited-last-move
+   (state <s> ^name evaluate-operator
+              ^superstate.superstate.last-move <l>)
+-->
+   (<s> ^inherited-last-move <l>)
+}
+
+sp {blocks-world*elaborate*look-ahead*inherited-last-move*chain
+   (state <s> ^name evaluate-operator
+              ^superstate.superstate <ts>)
+   (<ts> -^last-move
+          ^inherited-last-move <l>)
+-->
+   (<s> ^inherited-last-move <l>)
+}
+
+## Search control of the original, in look-ahead states only: never move the block that was
+## moved last.
+sp {blocks-world*select*reject-twice
+   (state <s> ^name evaluate-operator
+              ^problem-space.name blocks-world
+              ^operator <o> +
+              ^last-move.block-handle <bh>)
+   (<o> ^name move-block
+        ^argument1.object-handle $ <bh>)
+-->
+   (<s> ^operator <o> -)
+}
+
+sp {blocks-world*select*reject-twice*inherited
+   (state <s> ^name evaluate-operator
+              ^problem-space.name blocks-world
+              ^operator <o> +
+             -^last-move
+              ^inherited-last-move.block-handle <bh>)
+   (<o> ^name move-block
+        ^argument1.object-handle $ <bh>)
+-->
+   (<s> ^operator <o> -)
+}

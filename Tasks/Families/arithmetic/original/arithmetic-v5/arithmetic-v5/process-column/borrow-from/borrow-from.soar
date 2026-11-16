@@ -1,0 +1,22 @@
+
+sp {borrow-from*propose*borrow-from
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^|d1| <_v6>)
+   (<ts> ^column <m-sub>)
+   (<s> ^issub 1)
+   (<s> ^ten 0)
+   (<s> ^|d1| { <s-d1> < <s-d2> })
+   (<s> ^|d2| <s-d2>)
+   (<m-sub> ^pos <s-nxt>)
+   (<s> ^nxt <s-nxt>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name borrow-from)
+   (<o> ^m <m-sub>)
+}

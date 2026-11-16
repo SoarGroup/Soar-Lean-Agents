@@ -1,0 +1,18 @@
+
+sp {pyramid-hierarchical*elaborate*expand-pyramid-relevant*1
+   (state <s> ^name pyramid-hierarchical)
+   (<s> ^pyramid <pyramid>)
+   (<pyramid> ^height { <pyramid-height> >= 0 })
+-->
+   (<s> ^expand-pyramid-relevant <pyramid>)
+}
+
+sp {pyramid-hierarchical*propose*expand-pyramid
+   (state <s> ^name pyramid-hierarchical)
+   (<s> ^expand-pyramid-relevant <pyramid>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name expand-pyramid)
+   (<o> ^pyramid <pyramid>)
+}

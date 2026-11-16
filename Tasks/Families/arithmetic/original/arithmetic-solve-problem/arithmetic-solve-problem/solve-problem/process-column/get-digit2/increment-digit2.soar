@@ -1,0 +1,41 @@
+
+sp {get-digit2*propose*increment-digit2
+   (state <s> ^name get-digit2)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<ts> ^inc-fact <i>)
+   (<i> ^n <ss-d2>)
+   (<ss> ^|d2| <ss-d2>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name increment-digit2)
+   (<o> ^i <i>)
+}
+
+sp {get-digit2*apply*increment-digit2
+   (state <s> ^name get-digit2)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name increment-digit2)
+   (<o> ^i <i>)
+   (<ss> ^|d2| <ss-d2>)
+   (<i> ^next <i-next>)
+   (<ss> ^adj <ss-adj>)
+-->
+   (<ss> ^|d2| <i-next>)
+   (<ss> ^|d2| <ss-d2> -)
+   (<ss> ^adj 1)
+   (<ss> ^adj <ss-adj> -)
+}

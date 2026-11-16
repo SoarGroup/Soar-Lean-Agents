@@ -1,0 +1,148 @@
+## arithmetic-smem-learn: task situation, goal and knowledge tables (world conventions, the shared library)
+## The problem and its columns are world objects; the goal is ^desireds on the top state.
+## The task has no external environment: the top state is marked ^environment none.
+
+sp {arithmetic*propose*initialize-arithmetic
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-arithmetic
+        ^task-operator false)
+}
+
+sp {arithmetic*compare*initialize-arithmetic*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o> +
+              ^operator <iaw> +)
+   (<o> ^name initialize-arithmetic)
+   (<iaw> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o> > <iaw>)
+}
+
+sp {arithmetic*apply*initialize-arithmetic
+   (state <s> ^operator.name initialize-arithmetic
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name arithmetic
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <flags>
+        ^desireds <ds>)
+   (<ps> ^name arithmetic
+         ^agent-world true)
+   (<flags> ^mea-operator-selection false
+            ^look-ahead-planning false)
+   (<objs> ^object <p>)
+   (<p> ^object-handle problem
+        ^anchored true
+        ^operation 0
+        ^carry 0
+        ^count 2000
+        ^pid 1
+        ^digits 0)
+   (<objs> ^object <c1>)
+   (<c1> ^object-handle column1
+         ^anchored true
+         ^pos 1
+         ^last 0
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<objs> ^object <c2>)
+   (<c2> ^object-handle column2
+         ^anchored true
+         ^pos 2
+         ^last 0
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<objs> ^object <c3>)
+   (<c3> ^object-handle column3
+         ^anchored true
+         ^pos 3
+         ^last 1
+         ^digit1 0
+         ^digit2 0
+         ^result 0
+         ^gen1 0
+         ^gen2 0
+         ^done 0)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle problem
+         ^count 0)
+}
+
+## Fixed knowledge (digits): a lookup table on the top state, not part of the world.
+sp {arithmetic*elaborate*facts
+   (state <s> ^superstate nil)
+-->
+   (<s> ^facts <f>)
+   (<f> ^digit <dg0>) (<dg0> ^val 0)
+   (<f> ^digit <dg1>) (<dg1> ^val 1)
+   (<f> ^digit <dg2>) (<dg2> ^val 2)
+   (<f> ^digit <dg3>) (<dg3> ^val 3)
+   (<f> ^digit <dg4>) (<dg4> ^val 4)
+   (<f> ^digit <dg5>) (<dg5> ^val 5)
+   (<f> ^digit <dg6>) (<dg6> ^val 6)
+   (<f> ^digit <dg7>) (<dg7> ^val 7)
+   (<f> ^digit <dg8>) (<dg8> ^val 8)
+   (<f> ^digit <dg9>) (<dg9> ^val 9)
+}
+
+sp {arithmetic*elaborate*desireds*achieved*object-property
+   (state <s> ^problem-space.name arithmetic
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> anchored <> duplicate-of <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h>
+          ^anchored true
+          ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {arithmetic*elaborate*desireds*unachieved*object-property
+   (state <s> ^problem-space.name arithmetic
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> anchored <> duplicate-of <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h>
+           ^anchored true
+           ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+sp {arithmetic*apply*goal-completed*report
+   (state <s> ^superstate nil
+              ^name arithmetic
+              ^operator <o>)
+   (<o> ^name goal-completed)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}
+

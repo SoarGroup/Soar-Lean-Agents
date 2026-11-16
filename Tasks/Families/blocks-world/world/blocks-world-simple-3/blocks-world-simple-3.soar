@@ -1,0 +1,17 @@
+## blocks-world-simple-3: blocks world under the world conventions (world conventions, ^environment none)
+## one task-action operator (move-block) applied internally; no look-ahead
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+## Task settings (after the library, which sets its own defaults)
+chunk never
+multi-attributes object 5
+decide indifferent-selection --softmax   # Soar default, restored after agent-world (-e)
+
+source initialize-blocks-world.soar
+source elaborations.soar
+source move-block.soar
+source preferences.soar

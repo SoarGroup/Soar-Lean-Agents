@@ -1,0 +1,20 @@
+
+sp {left-right*elaborate*goal*success
+   (state <s> ^name left-right)
+   (<s> ^desired <d>)
+   (<s> ^agent <x>)
+   (<d> ^agent <dx>)
+   (<dx> ^moved <g-moved>)
+   (<x> ^moved <g-moved>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {left-right*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

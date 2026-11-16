@@ -1,0 +1,15 @@
+## tictactoe (both sides play random legal marks until a line or a draw ends the game) under
+## the world conventions (the shared library, no external environment: ^environment none).
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+chunk never
+multi-attributes object 20
+multi-attributes cell-handle 3
+
+source tictactoe-world.soar
+source tictactoe-operators.soar
+source tictactoe-monitor.soar

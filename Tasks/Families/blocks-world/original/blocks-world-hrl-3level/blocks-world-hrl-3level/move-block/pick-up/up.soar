@@ -1,0 +1,29 @@
+
+sp {pick-up*propose*up
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^position 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name up)
+}
+
+sp {pick-up*apply*up
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name up)
+   (<g> ^position <g-position>)
+-->
+   (<g> ^position 1)
+   (<g> ^position <g-position> -)
+}

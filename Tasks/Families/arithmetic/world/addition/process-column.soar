@@ -1,0 +1,232 @@
+## addition: implementation of process-column in its operator-implementation substate.
+## The column work (d1, d2, adj, r, cout, ten, ...) is local reasoning state of the substate,
+## not part of the world; only write-result (a task operator) changes the world.
+## Substate attributes ^argument1 (problem) and ^argument2 (column) are copied from the
+## process-column operator by agent-world.
+
+sp {process-column*propose*init-local
+   (state <s> ^name process-column
+              ^argument1 <p>
+              ^argument2 <c>
+             -^|d1|)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local
+        ^task-operator false)
+}
+
+sp {process-column*apply*init-local
+   (state <s> ^name process-column
+              ^operator.name init-local
+              ^argument1 <p>
+              ^argument2 <c>)
+   (<c> ^digit1 <c-digit1>
+        ^digit2 <c-digit2>)
+   (<p> ^carry <p-carry>)
+-->
+   (<s> ^|d1| <c-digit1>
+        ^|d2| <c-digit2>
+        ^adj (- 1 <p-carry>)
+        ^r -1
+        ^cout 0
+        ^ten 0)
+}
+
+sp {process-column*propose*get-digit2
+   (state <s> ^name process-column
+              ^|d1|
+              ^adj 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name get-digit2
+        ^task-operator false)
+}
+
+sp {get-digit2*propose*increment-digit2
+   (state <s> ^name get-digit2
+              ^superstate <ss>
+              ^top-state.facts.inc-fact <i>)
+   (<ss> ^|d2| <ss-d2>)
+   (<i> ^n <ss-d2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name increment-digit2
+        ^task-operator false
+        ^fact <i>)
+}
+
+sp {get-digit2*apply*increment-digit2
+   (state <s> ^name get-digit2
+              ^superstate <ss>
+              ^operator <o>)
+   (<o> ^name increment-digit2
+        ^fact <i>)
+   (<ss> ^|d2| <ss-d2>
+         ^adj <ss-adj>)
+   (<i> ^next <i-next>)
+-->
+   (<ss> ^|d2| <i-next>)
+   (<ss> ^|d2| <ss-d2> -)
+   (<ss> ^adj 1)
+   (<ss> ^adj <ss-adj> -)
+}
+
+sp {process-column*propose*add-digits
+   (state <s> ^name process-column
+              ^argument1 <p>
+              ^|d1| <s-d1>
+              ^|d2| <s-d2>
+              ^adj 1
+              ^r -1
+              ^top-state.facts.add-fact <f>)
+   (<p> ^operation 1)
+   (<f> ^|d1| <s-d1>
+        ^|d2| <s-d2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name add-digits
+        ^task-operator false
+        ^fact <f>)
+}
+
+sp {process-column*apply*add-digits
+   (state <s> ^name process-column
+              ^operator <o>
+              ^r <s-r>
+              ^cout <s-cout>)
+   (<o> ^name add-digits
+        ^fact <f>)
+   (<f> ^sum <f-sum>
+        ^carry <f-carry>)
+-->
+   (<s> ^r <f-sum>)
+   (<s> ^r <s-r> -)
+   (<s> ^cout <f-carry>)
+   (<s> ^cout <s-cout> -)
+}
+
+sp {process-column*propose*borrow
+   (state <s> ^name process-column
+              ^argument1 <p>
+              ^adj 1
+              ^ten 0
+              ^|d1| { <s-d1> < <s-d2> }
+              ^|d2| <s-d2>)
+   (<p> ^operation 2)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name borrow
+        ^task-operator false)
+}
+
+sp {borrow*propose*add-ten
+   (state <s> ^name borrow
+              ^superstate <ss>
+              ^top-state.facts.ten-fact <t>)
+   (<ss> ^|d1| <ss-d1>)
+   (<t> ^n <ss-d1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name add-ten
+        ^task-operator false
+        ^fact <t>)
+}
+
+sp {borrow*apply*add-ten
+   (state <s> ^name borrow
+              ^superstate <ss>
+              ^operator <o>)
+   (<o> ^name add-ten
+        ^fact <t>)
+   (<ss> ^|d1| <ss-d1>
+         ^ten <ss-ten>
+         ^cout <ss-cout>)
+   (<t> ^plus10 <t-plus10>)
+-->
+   (<ss> ^|d1| <t-plus10>)
+   (<ss> ^|d1| <ss-d1> -)
+   (<ss> ^ten 1)
+   (<ss> ^ten <ss-ten> -)
+   (<ss> ^cout 1)
+   (<ss> ^cout <ss-cout> -)
+}
+
+sp {process-column*propose*subtract-digits
+   (state <s> ^name process-column
+              ^argument1 <p>
+              ^|d1| <s-d1>
+              ^|d2| <s-d2>
+              ^adj 1
+              ^r -1
+              ^top-state.facts.sub-fact <f>)
+   (<p> ^operation 2)
+   (<f> ^|d1| <s-d1>
+        ^|d2| <s-d2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name subtract-digits
+        ^task-operator false
+        ^fact <f>)
+}
+
+sp {process-column*apply*subtract-digits
+   (state <s> ^name process-column
+              ^operator <o>
+              ^r <s-r>)
+   (<o> ^name subtract-digits
+        ^fact <f>)
+   (<f> ^diff <f-diff>)
+-->
+   (<s> ^r <f-diff>)
+   (<s> ^r <s-r> -)
+}
+
+sp {process-column*propose*write-result
+   (state <s> ^name process-column
+              ^argument1 <p>
+              ^argument2 <c>
+              ^|d1|
+              ^r <> -1
+              ^top-state.desireds.desired <d>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name write-result
+        ^task-operator true
+        ^action-handle write-result
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <p>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {process-column*apply*write-result*internal
+   (state <s> ^name process-column
+              ^operator <o>
+              ^internal-actions true
+              ^r <s-r>
+              ^cout <s-cout>)
+   (<o> ^name write-result
+        ^pre-conditions-satisfied true
+        ^argument1 <c>
+        ^argument2 <p>)
+   (<c> ^result <c-result>
+        ^done <c-done>
+        ^pos <c-pos>
+        ^digit1 <c-digit1>
+        ^digit2 <c-digit2>)
+   (<p> ^carry <p-carry>
+        ^pid <p-pid>
+        ^operation <p-operation>)
+-->
+   (log 1 (crlf) |Apply write-result: column | <c-pos>)
+   (<c> ^result <s-r>)
+   (<c> ^result <c-result> -)
+   (<p> ^carry <s-cout>)
+   (<p> ^carry <p-carry> -)
+   (<c> ^done <p-pid>)
+   (<c> ^done <c-done> -)
+   (write |column | <c-pos> | op | <p-operation> |: | <c-digit1> | | <c-digit2> | -> | <s-r> | carry | <s-cout>)
+}
+

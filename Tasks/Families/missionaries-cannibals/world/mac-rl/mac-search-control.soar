@@ -1,0 +1,11 @@
+## Selection among task operators: the original makes all move-boat operators
+## indifferent (random choice).  Kept as task search control, active only when look-ahead
+## planning is off (^flags.look-ahead-planning false), so that no tie impasse arises.
+sp {mac*select*task-operator*indifferent
+   (state <s> ^problem-space.name mac
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}

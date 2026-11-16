@@ -1,0 +1,23 @@
+## End of an episode: when the real top state's desireds are all achieved (^success,
+## computed by agent-world), a non-task operator reports the result and halts.
+
+sp {water-jug*propose*report-success
+   (state <s> ^superstate nil
+              ^name water-jug
+              ^desireds <ds>
+              ^success <ds>
+              ^world <w>)
+   (<w> ^real true ^anchored-world true)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name report-success
+        ^task-operator false)
+}
+
+sp {water-jug*apply*report-success
+   (state <s> ^operator.name report-success)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success| (crlf))
+   (halt)
+}

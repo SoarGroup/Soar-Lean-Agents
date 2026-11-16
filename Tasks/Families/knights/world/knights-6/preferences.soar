@@ -1,0 +1,57 @@
+## Search control of the original (task knowledge, not look-ahead).
+sp {knights*select*finish-first
+   (state <s> ^problem-space.name knights
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name finish-run)
+   (<o2> ^name << knight-move backup detect-goal >>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {knights*select*goal-before-backup
+   (state <s> ^problem-space.name knights
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name detect-goal)
+   (<o2> ^name << knight-move backup >>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {knights*select*backup-before-move
+   (state <s> ^problem-space.name knights
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name backup)
+   (<o2> ^name knight-move)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+## Prefer the knight move whose target has the lower current degree.
+sp {knights*select*lower-degree
+   (state <s> ^problem-space.name knights
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name knight-move
+        ^argument3 <y>)
+   (<o2> ^name knight-move
+         ^argument3 <other-y>)
+   (<y> ^degree { <y-d> < <other-y-d> })
+   (<other-y> ^degree <other-y-d>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+## A move to a degree-1 square (other than b23, the first square) is best.
+sp {knights*select*degree-one
+   (state <s> ^problem-space.name knights
+              ^operator <o> +)
+   (<o> ^name knight-move
+        ^argument3 <y>)
+   (<y> ^degree 1
+        ^coord <> 23)
+-->
+   (<s> ^operator <o> >)
+}

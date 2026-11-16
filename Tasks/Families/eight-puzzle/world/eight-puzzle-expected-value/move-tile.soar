@@ -1,0 +1,115 @@
+## Task operator move-tile (tile, from-cell, to-cell): slides a tile into the neighbouring
+## cell that holds the blank (t0). MEA proposal: serves the unachieved arrangement desired.
+## Only the acceptable preference is given, so the tied moves are chosen by look-ahead
+## (selection-world), as in the original (selection space).
+sp {eight-puzzle*propose*move-tile
+   (state <s> ^problem-space.name eight-puzzle
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ board)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>
+           ^object <k>
+           ^object <from>
+           ^object <to>)
+   (<t> ^object-handle $ <th>
+        ^number <> 0)
+   (<k> ^object-handle $ <kh>
+        ^number 0)
+   (<from> ^tile <th>
+           ^neighbor <toh>)
+   (<to> ^object-handle $ <toh>
+         ^tile <kh>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-tile
+        ^task-operator true
+        ^action-handle move-tile
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <from>
+        ^argument3 <to>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Internal application (real world and look-ahead copies alike): the from-cell gets the
+## to-cell's tile (the blank), the to-cell gets the moved tile. Objects are found by handle,
+## so the rule works on the copied world in look-ahead.
+sp {eight-puzzle*apply*move-tile*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name move-tile
+        ^pre-conditions-satisfied true
+        ^argument2.object-handle $ <fromh>
+        ^argument3.object-handle $ <toh>)
+   (<objs> ^object <from>
+           ^object <to>)
+   (<from> ^object-handle $ <fromh>
+           ^tile <ft>)
+   (<to> ^object-handle $ <toh>
+         ^tile <tt>)
+-->
+   (<from> ^tile <ft> -
+                 <tt>)
+   (<to> ^tile <tt> -
+               <ft>)
+}
+
+## Search-control history on the state (not in the world): the last move (tile, from, to).
+## It is recorded once per operator: the next move never moves the same tile (see
+## reject-inverse), so the test on the recorded tile is the once-per-operator guard.
+sp {eight-puzzle*apply*move-tile*last-move*replace
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^last-move <l>)
+   (<o> ^name move-tile
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>
+        ^argument2.object-handle $ <fromh>
+        ^argument3.object-handle $ <toh>)
+   (<l> ^tile <> <th>)
+-->
+   (<s> ^last-move <l> -
+                   <n>)
+   (<n> ^name move-tile
+        ^tile <th>
+        ^from <fromh>
+        ^to <toh>)
+}
+
+sp {eight-puzzle*apply*move-tile*last-move*first
+   (state <s> ^internal-actions true
+              ^operator <o>
+             -^last-move)
+   (<o> ^name move-tile
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>
+        ^argument2.object-handle $ <fromh>
+        ^argument3.object-handle $ <toh>)
+-->
+   (<s> ^last-move <n>)
+   (<n> ^name move-tile
+        ^tile <th>
+        ^from <fromh>
+        ^to <toh>)
+}
+
+## Do not move the tile that was moved last (it would undo the last move).
+sp {eight-puzzle*select*reject-inverse
+   (state <s> ^problem-space.name eight-puzzle
+              ^operator <o> +
+              ^last-move <l>)
+   (<o> ^name move-tile
+        ^argument1.object-handle $ <th>)
+   (<l> ^name move-tile
+        ^tile <th>)
+-->
+   (<s> ^operator <o> -)
+}

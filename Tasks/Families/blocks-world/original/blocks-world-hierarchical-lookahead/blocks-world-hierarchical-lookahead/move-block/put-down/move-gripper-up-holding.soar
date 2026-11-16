@@ -1,0 +1,34 @@
+
+sp {put-down*propose*move-gripper-up-holding
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^y <y>)
+   (<s> ^d <d>)
+   (<g> ^position 0)
+   (<g> ^above { <g-above> <> <d> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name move-gripper-up-holding)
+}
+
+sp {put-down*apply*move-gripper-up-holding
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^y <y>)
+   (<s> ^d <d>)
+   (<s> ^operator <o>)
+   (<o> ^name move-gripper-up-holding)
+   (<g> ^position <g-position>)
+-->
+   (<g> ^position 1)
+   (<g> ^position <g-position> -)
+}

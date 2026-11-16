@@ -1,0 +1,30 @@
+
+sp {put-down*propose*above-dest
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^position 1)
+   (<g> ^above { <g-above> <> <dest> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name above-dest)
+}
+
+sp {put-down*apply*above-dest
+   (state <s> ^name put-down)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name above-dest)
+   (<g> ^above <g-above>)
+-->
+   (<g> ^above <dest>)
+   (<g> ^above <g-above> -)
+}

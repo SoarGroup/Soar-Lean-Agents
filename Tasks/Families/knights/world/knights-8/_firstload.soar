@@ -1,0 +1,4 @@
+## Settings of the original (chunk never); restore the original's indifferent-selection
+## policy (Soar default softmax), which agent-world/_flags.soar changes to epsilon-greedy.
+chunk never
+decide indifferent-selection --softmax

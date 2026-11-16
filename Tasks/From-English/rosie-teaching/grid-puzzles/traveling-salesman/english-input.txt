@@ -1,0 +1,28 @@
+Traveling Salesman: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is traveling-salesman.
+  2. Load init-tourrc.   [world state: init-tourrc.world]
+  3. Ok.
+  4. The name of the action is move-salesman.
+  5. If a clear location is adjacent to a red block then you can move the red block onto the clear location and move a clear available blue block onto a location that was below the red block.
+  6. If a block is not on a location then it is available.
+  7. If a location is not below an object then it is clear.
+  8. If a location is next to an object but it is not diagonal with the object then it is adjacent to the object.
+  9. The solution has eleven steps.
+ 10. Load final-tourrc.   [world state: final-tourrc.world]
+ 11. The goal is that all locations are covered and a red block is adjacent to a green location.
+ 12. Ok.
+ 13. If a location is below an object then it is covered.
+ 14. Done.
+ 15. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1, green1, red1); column (numeric, 1 to 4); row (numeric, 1 to 3)
+  Relations: below1, diagonal-with1, near1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/grid-puzzles/traveling-salesman/.

@@ -1,0 +1,20 @@
+
+sp {knights*elaborate*goal*success
+   (state <s> ^name knights)
+   (<s> ^desired <d>)
+   (<s> ^tour <x>)
+   (<d> ^tour <dx>)
+   (<dx> ^done <g-done>)
+   (<x> ^done <g-done>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {knights*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

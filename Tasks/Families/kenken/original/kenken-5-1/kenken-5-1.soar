@@ -1,0 +1,3 @@
+pushd kenken-5-1
+source kenken-5-1_source.soar
+popd

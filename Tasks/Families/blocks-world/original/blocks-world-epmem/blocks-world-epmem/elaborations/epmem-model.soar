@@ -1,0 +1,176 @@
+
+sp {blocks-world*model*propose*query
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <e>)
+   (<e> ^name blocks-world)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   -(<s> ^queried yes)
+-->
+   (<s> ^operator <x> +)
+   (<s> ^operator <x> =)
+   (<x> ^name model-query)
+}
+
+sp {blocks-world*model*propose*next
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <e>)
+   (<e> ^name blocks-world)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   (<s> ^queried yes)
+   -(<s> ^stepped yes)
+   (<s> ^epmem <em>)
+   (<em> ^result <res>)
+   (<res> ^graph-match 1)
+-->
+   (<s> ^operator <x> +)
+   (<s> ^operator <x> =)
+   (<x> ^name model-next)
+}
+
+sp {blocks-world*model*propose*update
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <e>)
+   (<e> ^name blocks-world)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   (<s> ^stepped yes)
+   (<s> ^epmem <em>)
+   (<em> ^result <res>)
+   (<res> ^retrieved <_v9>)
+   -(<res> ^graph-match <_v10>)
+-->
+   (<s> ^operator <x> +)
+   (<s> ^operator <x> =)
+   (<x> ^name model-update)
+}
+
+sp {blocks-world*model*propose*unknown*no-match
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <e>)
+   (<e> ^name blocks-world)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   (<s> ^queried yes)
+   -(<s> ^stepped yes)
+   (<s> ^epmem <em>)
+   (<em> ^result <res>)
+   (<res> ^graph-match 0)
+-->
+   (<s> ^operator <x> +)
+   (<s> ^operator <x> =)
+   (<x> ^name model-unknown)
+}
+
+sp {blocks-world*model*propose*unknown*failure
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <e>)
+   (<e> ^name blocks-world)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   (<s> ^queried yes)
+   (<s> ^epmem <em>)
+   (<em> ^result <res>)
+   (<res> ^failure <_v9>)
+-->
+   (<s> ^operator <x> +)
+   (<s> ^operator <x> =)
+   (<x> ^name model-unknown)
+}
+
+sp {blocks-world*model*query*move-block
+   (state <s> ^operator <m>)
+   (<m> ^name model-query)
+   (<s> ^superstate <e>)
+   (<s> ^epmem <em>)
+   (<em> ^command <c>)
+   (<e> ^look-ahead-operator <o>)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+-->
+   (<c> ^query <q>)
+   (<q> ^operator <qo>)
+   (<qo> ^name move-block)
+   (<qo> ^block <block>)
+   (<qo> ^dest <dest>)
+   (<s> ^queried yes)
+}
+
+sp {blocks-world*model*query*object
+   (state <s> ^operator <m>)
+   (<m> ^name model-query)
+   (<s> ^superstate <e>)
+   (<s> ^epmem <em>)
+   (<em> ^command <c>)
+   (<c> ^query <q>)
+   (<e> ^object <x>)
+-->
+   (<q> ^object <x>)
+}
+
+sp {blocks-world*model*next
+   (state <s> ^operator <m>)
+   (<m> ^name model-next)
+   (<s> ^epmem <em>)
+   (<em> ^command <c>)
+   (<c> ^query <q>)
+-->
+   (<c> ^query <q> -)
+   (<c> ^next <n>)
+   (<s> ^stepped yes)
+}
+
+sp {blocks-world*model*update*object*on
+   (state <s> ^operator <m>)
+   (<m> ^name model-update)
+   (<s> ^superstate <e>)
+   (<s> ^epmem <em>)
+   (<em> ^result <res>)
+   (<res> ^retrieved <r>)
+   (<e> ^object <x>)
+   (<x> ^name <xk>)
+   (<x> ^on <cur>)
+   (<r> ^object <rx>)
+   (<rx> ^name <xk>)
+   (<rx> ^on <rt>)
+   (<cur> ^name <ck>)
+   (<rt> ^name { <> <ck> <tk> })
+   (<e> ^object <tt>)
+   (<tt> ^name <tk>)
+-->
+   (<x> ^on <cur> -)
+   (<x> ^on <tt>)
+}
+
+sp {blocks-world*model*update*tried
+   (state <s> ^operator <m>)
+   (<m> ^name model-update)
+   (<s> ^superstate <e>)
+   (<e> ^look-ahead-operator <o>)
+   (<e> ^operator <o>)
+   (<e> ^untried-tied-operator <o>)
+-->
+   (<e> ^tried-tied-operator <o>)
+   (<e> ^untried-tied-operator <o> -)
+}
+
+sp {blocks-world*model*unknown
+   (state <s> ^operator <m>)
+   (<m> ^name model-unknown)
+   (<s> ^superstate <e>)
+   (<e> ^superstate <sel>)
+   (<sel> ^operator <eo>)
+   (<eo> ^evaluation <ev>)
+-->
+   (<ev> ^symbolic-value partial-success)
+   (<ev> ^numeric-value 2.500000)
+}
+excise evaluate-operator*elaborate*state*tried-tied-operator
+excise evaluate-operator*elaborate*state*remove*untried-tied-operator

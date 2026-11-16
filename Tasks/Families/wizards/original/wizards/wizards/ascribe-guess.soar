@@ -1,0 +1,62 @@
+
+sp {wizards*propose*ascribe-guess*gv-0
+   (state <s> ^name wizards)
+   (<s> ^rec <x1>)
+   (<s> ^rec <x2>)
+   (<x1> ^sub <x2>)
+   -(<x2> ^own 1)
+   (<x1> ^aguess 0)
+   -(<x2> ^aguess 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name ascribe-guess)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^gv 0)
+}
+
+sp {wizards*propose*ascribe-guess*gv-1
+   (state <s> ^name wizards)
+   (<s> ^rec <x1>)
+   (<s> ^rec <x2>)
+   (<x1> ^sub <x2>)
+   -(<x2> ^own 1)
+   (<x1> ^aguess 1)
+   -(<x2> ^aguess 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name ascribe-guess)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^gv 1)
+}
+
+sp {wizards*propose*ascribe-guess*gv-2
+   (state <s> ^name wizards)
+   (<s> ^rec <x1>)
+   (<s> ^rec <x2>)
+   (<x1> ^sub <x2>)
+   -(<x2> ^own 1)
+   (<x1> ^aguess 2)
+   -(<x2> ^aguess 2)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name ascribe-guess)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^gv 2)
+}
+
+sp {wizards*apply*ascribe-guess
+   (state <s> ^name wizards)
+   (<s> ^operator <o>)
+   (<o> ^name ascribe-guess)
+   (<o> ^|x1| <x1>)
+   (<o> ^|x2| <x2>)
+   (<o> ^gv <gv>)
+-->
+   (<x2> ^aguess <gv>)
+}

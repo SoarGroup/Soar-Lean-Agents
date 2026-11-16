@@ -1,0 +1,39 @@
+N Queens: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is n-queens.
+  2. Load init-rooks.   [world state: init-rooks.world]
+  3. Ok.
+  4. The name of an action is place-block.
+  5. You can move a clear available block onto a clear location.
+  6. If a block is not on a location then it is available.
+  7. If a location is not below an object then it is clear.
+  8. The solution has four steps.
+  9. Load fail-queens.   [world state: fail-queens.world]
+ 10. The name of a failure is placed-same-row.
+ 11. Ok.
+ 12. If two of the blocks are placed and they have the same row then you lose.
+ 13. If a block is on a location then the block is placed.
+ 14. The name of a failure is place-same-col.
+ 15. Ok.
+ 16. If two of the blocks are placed and they have the same column then you lose.
+ 17. The name of a failure is place-same-diag.
+ 18. Ok.
+ 19. If two of the placed blocks are cross-diagonal then you lose.
+ 20. If the difference of the rows of the blocks is equal to the difference of the columns of they then they are cross-diagonal.
+ 21. Load final-queens.   [world state: final-queens.world]
+ 22. The name of the goal is all-placed.
+ 23. Ok.
+ 24. The goal is that all blocks are placed.
+ 25. Done.
+ 26. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1); column (numeric, 1 to 4); row (numeric, 1 to 4)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/chess-problems/n-queens/.

@@ -1,0 +1,42 @@
+## Search control of the original. In an MEA subgoal the desireds are ^clear object desireds; at
+## the top state they are the ^on desireds.
+sp {blocks-world*select*avoid-clobbering
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +
+              ^desireds.desired.object <do>)
+   (<do> ^clear true
+         ^object-handle $ <dh>)
+   (<o> ^name move-block
+        ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {blocks-world*select*prefer-ontop
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +
+              ^desireds.desired.on <dr>)
+   (<o> ^name move-block
+        ^argument1.object-handle $ <bh>
+        ^argument2.object-handle $ <dh>)
+   (<dr> ^argument1.object-handle $ <bh>
+         ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {blocks-world*select*prefer-clearing
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +
+              ^world <w>
+              ^desireds.desired.object <do>)
+   (<do> ^clear true
+         ^object-handle $ <uh>)
+   (<o> ^name move-block
+        ^argument1 <block>)
+   (<w> ^on <r>)
+   (<r> ^argument1 <block>
+        ^argument2.object-handle $ <uh>)
+-->
+   (<s> ^operator <o> >)
+}

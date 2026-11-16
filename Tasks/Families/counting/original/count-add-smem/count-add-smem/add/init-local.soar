@@ -1,0 +1,24 @@
+
+sp {add*propose*init-local
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   -(<s> ^|d1| <_v3>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {add*apply*init-local
+   (state <s> ^name add)
+   (<s> ^superstate <ss>)
+   (<s> ^a <a>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+   (<a> ^digit1 <a-digit1>)
+-->
+   (<s> ^|d1| <a-digit1>)
+   (<s> ^|d3| 0)
+   (<s> ^carry 0)
+   (<s> ^phase 0)
+}

@@ -1,0 +1,19 @@
+source elaborations.soar
+source init-local.soar
+source get-digit2.soar
+pushd get-digit2
+source get-digit2_source.soar
+popd
+source add-digits.soar
+pushd add-digits
+source add-digits_source.soar
+popd
+source borrow.soar
+pushd borrow
+source borrow_source.soar
+popd
+source subtract-digits.soar
+pushd subtract-digits
+source subtract-digits_source.soar
+popd
+source write-result.soar

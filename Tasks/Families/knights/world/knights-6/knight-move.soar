@@ -1,0 +1,98 @@
+## Task operator knight-move (tour, current square c, target square y): moves the knight
+## from c to an unused neighbour y not yet tried from c at its current visit number.
+## Proposals of all task operators serve the unachieved desired (tour ^done 1); they keep
+## the original's indifferent preference (selection is by the preference rules, not by
+## look-ahead).
+sp {knights*propose*knight-move
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^at <ch>
+        ^done 0)
+   (<objs> ^object <c>
+           ^object <y>)
+   (<c> ^object-handle $ <ch>
+        ^move <yh>
+        ^visit <c-visit>)
+   (<y> ^object-handle $ <yh>
+        ^used 0)
+  -(<y> ^tried <c-visit>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name knight-move
+        ^task-operator true
+        ^action-handle knight-move
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <c>
+        ^argument3 <y>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Internal application: the tour moves to y (frame, depth and move count + 1); y becomes
+## used, entered from c, with the new visit number.
+sp {knights*apply*knight-move*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name knight-move
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>
+        ^argument2.object-handle $ <ch>
+        ^argument3.object-handle $ <yh>)
+   (<objs> ^object <t>
+           ^object <y>)
+   (<t> ^object-handle $ <th>
+        ^at <t-at>
+        ^frame <t-frame>
+        ^depth <t-depth>
+        ^moves <t-moves>)
+   (<y> ^object-handle $ <yh>
+        ^used <y-used>
+        ^prev <y-prev>
+        ^visit <y-visit>)
+-->
+   (<t> ^at <yh>)
+   (<t> ^at <t-at> -)
+   (<y> ^used 1)
+   (<y> ^used <y-used> -)
+   (<y> ^prev <ch>)
+   (<y> ^prev <y-prev> -)
+   (<y> ^visit (+ <t-frame> 1))
+   (<y> ^visit <y-visit> -)
+   (<t> ^frame (+ <t-frame> 1))
+   (<t> ^frame <t-frame> -)
+   (<t> ^depth (+ <t-depth> 1))
+   (<t> ^depth <t-depth> -)
+   (<t> ^moves (+ <t-moves> 1))
+   (<t> ^moves <t-moves> -)
+}
+
+## Internal application, each neighbour z of y: degree - 1.
+sp {knights*apply*knight-move*internal*neighbour-degree
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name knight-move
+        ^pre-conditions-satisfied true
+        ^argument3.object-handle $ <yh>)
+   (<objs> ^object <y>
+           ^object <z>)
+   (<y> ^object-handle $ <yh>
+        ^move <zh>)
+   (<z> ^object-handle $ <zh>
+        ^degree <z-degree>)
+-->
+   (<z> ^degree (+ <z-degree> -1))
+   (<z> ^degree <z-degree> -)
+}

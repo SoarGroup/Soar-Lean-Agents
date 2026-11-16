@@ -1,0 +1,110 @@
+## Operator-implementation substate of fill (agent-world gives it ^problem-space.name fill
+## and copies the operator's attributes, ^argument1 <jug> and ^super-desired <d>, onto it).
+## Free capacity is read from the superstate (as the original read ^free on the jug), so
+## chunks test it rather than particular contents.
+## Task-action operators pick-up, fill-jug, put-down, each with an internal application.
+
+## pick-up: nothing is held
+sp {fill*propose*pick-up
+   (state <s> ^problem-space.name fill
+              ^argument1 <jug>
+              ^world <w>
+              ^super-desired <d>)
+   (<w> ^holding-object.object-handle $ none)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name pick-up
+        ^task-operator true
+        ^action-handle pick-up
+        ^super-desired <d>
+        ^argument1 <jug>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {fill*apply*pick-up*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<w> ^holding-object <none>
+        ^objects.object <jug>)
+   (<none> ^object-handle $ none)
+   (<o> ^name pick-up
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<jug> ^object-handle $ <h>)
+-->
+   (log 1 (crlf) |Apply pick-up: | <h>)
+   (<w> ^holding-object <none> - <jug>)
+}
+
+## fill-jug: the jug is held and not full
+sp {fill*propose*fill-jug
+   (state <s> ^problem-space.name fill
+              ^argument1 <jug>
+              ^world.holding-object <jug>
+              ^superstate.jug-free <jf>
+              ^super-desired <d>)
+   (<jf> ^jug <jug> ^free > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name fill-jug
+        ^task-operator true
+        ^action-handle fill-jug
+        ^super-desired <d>
+        ^argument1 <jug>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {fill*apply*fill-jug*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world.objects.object <jug>)
+   (<o> ^name fill-jug
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<jug> ^object-handle $ <h>
+          ^volume <v>
+          ^contents { <> <v> <c> })
+-->
+   (log 1 (crlf) |Apply fill-jug: | <h>)
+   (<jug> ^contents <c> - <v>)
+}
+
+## put-down: the jug is held and full
+sp {fill*propose*put-down
+   (state <s> ^problem-space.name fill
+              ^argument1 <jug>
+              ^world.holding-object <jug>
+              ^superstate.jug-free <jf>
+              ^super-desired <d>)
+   (<jf> ^jug <jug> ^free <= 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name put-down
+        ^task-operator true
+        ^action-handle put-down
+        ^super-desired <d>
+        ^argument1 <jug>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {fill*apply*put-down*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<w> ^holding-object <jug>)
+   (<o> ^name put-down
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<jug> ^object-handle $ <h>)
+-->
+   (log 1 (crlf) |Apply put-down: | <h>)
+   (<w> ^holding-object <jug> - <none>)
+   (<none> ^object-handle none)
+}

@@ -1,0 +1,92 @@
+##############################################################################
+## expand-pyramid (complex composite task operator)
+##   Proposed while the pyramid has height >= 0 (through an i-supported "relevant"
+##   elaboration, as in the original, so the operator is not re-proposed after each term).
+##   Effect: pyramid ^height -1, achieved in its implementation substate by expand-next-term.
+## expand-next-term (task-action operator, problem space expand-pyramid): makes a term object
+##   (index = pyramid ^terms, value = pyramid ^term), terms + 1, term - 1, height - 1, and
+##   prints " + <term>".
+##############################################################################
+
+sp {pyramid-hierarchical*elaborate*expand-pyramid-relevant
+   (state <s> ^problem-space.name pyramid-hierarchical
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^height >= 0)
+-->
+   (<s> ^expand-pyramid-relevant <p>)
+}
+
+sp {pyramid-hierarchical*propose*expand-pyramid
+   (state <s> ^problem-space.name pyramid-hierarchical
+              ^expand-pyramid-relevant <p>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name expand-pyramid
+        ^task-operator true
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired <d> ^desired-count 1)
+   (<d> ^object <dp>)
+   (<dp> ^object-handle pyramid ^height -1)
+}
+
+sp {expand-pyramid*propose*expand-next-term
+   (state <s> ^problem-space.name expand-pyramid
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^height >= 0)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name expand-next-term
+        ^task-operator true
+        ^action-handle expand-next-term
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {expand-pyramid*select*expand-next-term*indifferent
+   (state <s> ^problem-space.name expand-pyramid
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}
+
+## ^height >= 0 guards against a second firing while the operator stays selected.
+sp {apply*expand-next-term*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name expand-next-term
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <p>)
+   (<p> ^object-handle $ <h>
+        ^terms <terms>
+        ^term <term>
+        ^height { <height> >= 0 })
+-->
+   (log 1 (crlf) |Apply expand-next-term: | <term>)
+   (<objs> ^object <new>)
+   (<new> ^object-handle (concat |term-| <terms>)
+          ^anchored true
+          ^index <terms>
+          ^value <term>)
+   (<p> ^terms <terms> - (+ <terms> 1)
+        ^term <term> - (- <term> 1)
+        ^height <height> - (- <height> 1))
+   (write | + | <term>)
+}

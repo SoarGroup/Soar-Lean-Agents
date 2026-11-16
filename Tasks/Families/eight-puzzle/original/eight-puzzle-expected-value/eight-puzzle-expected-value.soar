@@ -1,0 +1,3 @@
+pushd eight-puzzle-expected-value
+source eight-puzzle-expected-value_source.soar
+popd

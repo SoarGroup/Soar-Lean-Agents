@@ -1,0 +1,21 @@
+
+sp {fill*propose*pick-up
+   (state <s> ^name fill)
+   (<s> ^superstate <ss>)
+   (<s> ^jug <jug>)
+   -(<ss> ^holding <_v3>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name pick-up)
+}
+
+sp {fill*apply*pick-up
+   (state <s> ^name fill)
+   (<s> ^superstate <ss>)
+   (<s> ^jug <jug>)
+   (<s> ^operator <o>)
+   (<o> ^name pick-up)
+-->
+   (<ss> ^holding <jug>)
+}

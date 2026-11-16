@@ -1,0 +1,23 @@
+
+sp {count-add-smem*propose*initialize-count-add-smem
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-count-add-smem)
+}
+
+sp {count-add-smem*apply*initialize-count-add-smem
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-count-add-smem)
+-->
+   (<s> ^name count-add-smem)
+   (<s> ^adder <x0>)
+   (<x0> ^digit1 9)
+   (<x0> ^digit2 9)
+   (<x0> ^carry 0)
+   (<x0> ^done 0)
+   (<s> ^desired <d>)
+   (<d> ^adder <dg>)
+   (<dg> ^done 1)
+}

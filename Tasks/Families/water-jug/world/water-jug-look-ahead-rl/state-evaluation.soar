@@ -1,0 +1,65 @@
+## Look-ahead (selection-world): a tie among task operators is resolved by evaluating each
+## tied operator in an evaluate-operator state, which is a hypothetical top state named
+## water-jug with a copy of ^world and a copy of ^desireds.  Success (goal reached in the
+## copy) is detected by agent-world from the task's achieved elaborations; this file adds the
+## original's failure knowledge.
+
+## Ancestors of a state (as in the original), used to detect a repeated situation.
+sp {water-jug*elaborate*ancestor*superstate
+   (state <s> ^superstate <ss>)
+   (<ss> ^superstate <_v1>)
+-->
+   (<s> ^ancestor <ss>)
+}
+
+sp {water-jug*elaborate*ancestor*inherit
+   (state <s> ^superstate <ss>)
+   (<ss> ^ancestor <a>)
+-->
+   (<s> ^ancestor <a>)
+}
+
+## After the evaluated operator has been applied in a look-ahead state, a world in which
+## every jug has the same contents as in the world of an ancestor water-jug state is a
+## partial failure (worst preference for the evaluated operator).
+sp {water-jug*evaluate*state*failure*duplicate
+   (state <s> ^name water-jug
+              ^tried-tied-operator <_v1>
+              ^desireds <ds>
+              ^world.objects.object <x0> { <> <x0> <x1> }
+              ^ancestor <a>)
+   (<a> ^name water-jug
+        ^world.objects.object <y0> { <> <y0> <y1> })
+   (<x0> ^object-handle $ <h0> ^contents <c0>)
+   (<x1> ^object-handle $ <h1> ^contents <c1>)
+   (<y0> ^object-handle $ <h0> ^contents <c0>)
+   (<y1> ^object-handle $ <h1> ^contents <c1>)
+-->
+   (<s> ^partial-failure <ds>)
+}
+
+## Avoided states (original water-jug*evaluate*state*avoid*1/2 of this variant): after the
+## evaluated operator has been applied, both jugs full or both jugs empty gives the look-ahead
+## state ^expected-value -1, which selection-world turns into a numeric-indifferent
+## preference (= -1) on the evaluated operator.
+sp {water-jug*evaluate*state*avoid*both-full
+   (state <s> ^name water-jug
+              ^tried-tied-operator <_v1>
+              ^desireds <ds>
+              ^world.objects.object <x0> { <> <x0> <x1> })
+   (<x0> ^volume 3 ^contents 3)
+   (<x1> ^volume 5 ^contents 5)
+-->
+   (<s> ^expected-value -1)
+}
+
+sp {water-jug*evaluate*state*avoid*both-empty
+   (state <s> ^name water-jug
+              ^tried-tied-operator <_v1>
+              ^desireds <ds>
+              ^world.objects.object <x0> { <> <x0> <x1> })
+   (<x0> ^volume 3 ^contents 0)
+   (<x1> ^volume 5 ^contents 0)
+-->
+   (<s> ^expected-value -1)
+}

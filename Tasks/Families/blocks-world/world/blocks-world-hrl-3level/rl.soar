@@ -1,0 +1,383 @@
+## RL in the pick-up and put-down spaces: gp expands one Q-value rule per (block, destination,
+## gripper position, open, empty or holding, object the gripper is above), as in the original.
+gp {pick-up*rl*up*empty
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name up)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*up*holding
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name up)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*down*empty
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name down)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*down*holding
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name down)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*above-block*empty
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name above-block)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*above-block*holding
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name above-block)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*close*empty
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name close)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*close*holding
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name close)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*open*empty
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name open)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*open*holding
+   (state <s> ^problem-space.name pick-up
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^superstate.argument2.object-handle [ table A B C ])
+   (<o> ^name open)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*up-holding*empty
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name up-holding)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*up-holding*holding
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name up-holding)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*down-holding*empty
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name down-holding)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*down-holding*holding
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name down-holding)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*above-dest*empty
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name above-dest)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*above-dest*holding
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name above-dest)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*release*empty
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name release)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {put-down*rl*release*holding
+   (state <s> ^problem-space.name put-down
+              ^operator <o> +
+              ^world <w>
+              ^argument1.object-handle [ table A B C ]
+              ^argument2.object-handle [ table A B C ])
+   (<o> ^name release)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle <> none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position [ up down ]
+        ^open [ true false ])
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+## Rewards (each substate's own reward-link), as in the original.
+sp {pick-up*reward*holding-block
+   (state <s> ^problem-space.name pick-up
+              ^reward-link <rl>
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^holding-object <a1>)
+-->
+   (<rl> ^reward <rw>)
+   (<rw> ^value 1)
+}
+
+sp {pick-up*reward*closed-empty
+   (state <s> ^problem-space.name pick-up
+              ^reward-link <rl>
+              ^world <w>)
+   (<w> ^objects.object <g>
+        ^holding-object.object-handle $ none)
+   (<g> ^class gripper
+        ^open false)
+-->
+   (<rl> ^reward <rw>)
+   (<rw> ^value -1)
+}
+
+sp {put-down*reward*placed
+   (state <s> ^problem-space.name put-down
+              ^reward-link <rl>
+              ^argument1 <a1>
+              ^argument2 <a2>
+              ^world <w>)
+   (<w> ^on <r>
+        ^holding-object.object-handle $ none)
+   (<r> ^argument1 <a1>
+        ^argument2 <a2>)
+-->
+   (<rl> ^reward <rw>)
+   (<rw> ^value 1)
+}

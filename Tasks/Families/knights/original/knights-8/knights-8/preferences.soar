@@ -1,0 +1,51 @@
+
+sp {knights*select*finish-first
+   (state <s> ^name knights)
+   (<s> ^operator <o> +)
+   (<o> ^name finish-run)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name << knight-move backup detect-goal >>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {knights*select*goal-before-backup
+   (state <s> ^name knights)
+   (<s> ^operator <o> +)
+   (<o> ^name detect-goal)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name << knight-move backup >>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {knights*select*backup-before-move
+   (state <s> ^name knights)
+   (<s> ^operator <o> +)
+   (<o> ^name backup)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name knight-move)
+   (<o2> ^t <other-t>)
+   (<o2> ^c <other-c>)
+   (<o2> ^y <other-y>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {knights*select*lower-original-degree
+   (state <s> ^name knights)
+   (<s> ^operator <o> +)
+   (<o> ^name knight-move)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^y <y>)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name knight-move)
+   (<o2> ^t <other-t>)
+   (<o2> ^c <other-c>)
+   (<o2> ^y <other-y>)
+   (<y> ^odeg { <y-odeg> < <other-y-odeg> })
+   (<other-y> ^odeg <other-y-odeg>)
+-->
+   (<s> ^operator <o> > <o2>)
+}

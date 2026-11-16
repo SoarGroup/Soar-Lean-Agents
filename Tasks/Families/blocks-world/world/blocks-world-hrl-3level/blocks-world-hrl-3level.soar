@@ -1,0 +1,22 @@
+## blocks-world-hrl-3level: blocks world under the world conventions (world conventions, ^environment none)
+## move-block (cCTO) > pick-up / put-down > gripper actions, applied internally
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+## Task settings (after the library, which sets its own defaults)
+chunk never
+multi-attributes object 6
+rl --set learning on
+rl --set learning-rate 0.300000
+rl --set discount-rate 0.900000
+indifferent-selection --epsilon-greedy
+
+source initialize-blocks-world.soar
+source elaborations.soar
+source move-block.soar
+source move-block-space.soar
+source gripper-actions.soar
+source rl.soar

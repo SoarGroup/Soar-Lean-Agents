@@ -144,14 +144,13 @@ sp {selection-world*propose*failure-evaluation*ground-wme*handle
 
 ## ---- failure-grounding counter and none (v2.28) ----
 ## The count lives on the real world (^real true): ^applied-count, set to 0 by initialize-agent-world and incremented once
-## per operator applied with ^pre-conditions-satisfied true in any state whose ^world is the real world (the top state,
-## and operator no-change substates that share the real world). A look-ahead world gets a copy of the count from the world
+## per operator applied with ^pre-conditions-satisfied true in the top state (v2.33; see below). A look-ahead world gets a copy of the count from the world
 ## it was copied from (elaborations.soar) and never increments it, so a result in look-ahead depends on the real count.
-## v2.32: the count is local to the state. The top state keeps its count on the real world (below). A substate that shares the
-## real world (an operator no-change substate, a different problem space) keeps its own ^applied-count and ^counted-operator on
-## the substate itself, starting from zero. Substates never share a count, not even in the same problem space, and a substate
-## never changes the count of the world or of another state (v2.31 and earlier: two states rewrote the one ^counted-operator on
-## the world without end, max-elaborations).
+## v2.33: only the top state counts. A substate that shares the real world (an operator no-change substate) keeps no count
+## and never changes the world's count. A count kept on the substate is o-supported and tests the substate's operator, so the
+## operator's proposal (which tests the world) enters the substate's goal dependency set, and the substate is removed after every
+## world change (v2.32: hierarchical tasks took 20-50% more decisions). A count kept on the superstate's operator is a result and
+## is chunked. An operator implemented in a substate is counted once, when it is applied in the top state.
 ## Caveat: the count changes when the operator is applied; with an external environment the world changes when the
 ## action completes, later.
 sp {selection-world*apply*world*applied-count*first
@@ -178,30 +177,6 @@ sp {selection-world*apply*world*applied-count
         ^counted-operator { <> <op> <old> })
 -->
    (<w> ^applied-count <n> - (+ <n> 1)
-        ^counted-operator <old> - <op>)}
-
-## Substate count (v2.32): on the state, not on the world.
-sp {selection-world*apply*state*applied-count*first
-   :default
-   (state <s> ^operator <op>
-              ^superstate <> nil
-              ^world.real true
-             -^applied-count)
-   (<op> ^pre-conditions-satisfied true)
--->
-   (<s> ^applied-count 1
-        ^counted-operator <op>)}
-
-sp {selection-world*apply*state*applied-count
-   :default
-   (state <s> ^operator <op>
-              ^superstate <> nil
-              ^world.real true
-              ^applied-count <n>
-              ^counted-operator { <> <op> <old> })
-   (<op> ^pre-conditions-satisfied true)
--->
-   (<s> ^applied-count <n> - (+ <n> 1)
         ^counted-operator <old> - <op>)}
 
 ## Every world has one ^stamp that names its current version (i-supported). It is elaborated only by the state that owns the

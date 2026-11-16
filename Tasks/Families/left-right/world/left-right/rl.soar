@@ -1,0 +1,43 @@
+## RL template: one numeric-indifferent value per (direction, location, moved) combination,
+## as in the original (the agent object is matched through the operator's argument).
+sp {left-right*rl*move
+   :template
+   (state <s> ^problem-space.name left-right
+              ^operator <o> +)
+   (<o> ^name move
+        ^argument1 <agent>
+        ^argument2 <direction>)
+   (<agent> ^location <agent-location>
+            ^moved <agent-moved>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+## Rewards from the world situation on the top state's reward-link.
+sp {left-right*reward*left
+   (state <s> ^superstate nil
+              ^problem-space.name left-right
+              ^reward-link <r>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <a>)
+   (<a> ^object-handle $ agent
+        ^location -1)
+-->
+   (<r> ^reward <rw>)
+   (<rw> ^value -1)
+}
+
+sp {left-right*reward*right
+   (state <s> ^superstate nil
+              ^problem-space.name left-right
+              ^reward-link <r>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <a>)
+   (<a> ^object-handle $ agent
+        ^location 1)
+-->
+   (<r> ^reward <rw>)
+   (<rw> ^value 1)
+}

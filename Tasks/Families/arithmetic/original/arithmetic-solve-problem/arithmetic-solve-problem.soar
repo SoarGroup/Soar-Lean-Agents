@@ -1,0 +1,3 @@
+pushd arithmetic-solve-problem
+source arithmetic-solve-problem_source.soar
+popd

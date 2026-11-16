@@ -1,0 +1,22 @@
+
+sp {water-jug*elaborate*goal*success
+   (state <s> ^name water-jug)
+   (<s> ^desired <d>)
+   (<s> ^jug <x>)
+   (<d> ^jug <dx>)
+   (<dx> ^volume <g-volume>)
+   (<dx> ^contents <g-contents>)
+   (<x> ^volume <g-volume>)
+   (<x> ^contents <g-contents>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {water-jug*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

@@ -1,0 +1,18 @@
+## mac-look-ahead (missionaries and cannibals, look-ahead search through selection-world,
+## failure on outnumbering and on repeated situations, chunking) under the world conventions
+## (the shared library, no external environment: ^environment none).
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+chunk always
+chunk add-osk on
+multi-attributes object 3
+multi-attributes ancestor 20
+
+source mac-world.soar
+source mac-move-boat.soar
+source mac-search-control.soar
+source mac-look-ahead-rules.soar

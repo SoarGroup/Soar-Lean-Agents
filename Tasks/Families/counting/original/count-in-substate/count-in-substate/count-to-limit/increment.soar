@@ -1,0 +1,24 @@
+
+sp {count-to-limit*propose*increment
+   (state <s> ^name count-to-limit)
+   (<s> ^superstate <ss>)
+   (<s> ^counter <counter>)
+   (<s> ^count <_v3>)
+   (<s> ^count { <s-count> < 75000 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name increment)
+}
+
+sp {count-to-limit*apply*increment
+   (state <s> ^name count-to-limit)
+   (<s> ^superstate <ss>)
+   (<s> ^counter <counter>)
+   (<s> ^operator <o>)
+   (<o> ^name increment)
+   (<s> ^count <s-count>)
+-->
+   (<s> ^count (+ <s-count> 1))
+   (<s> ^count <s-count> -)
+}

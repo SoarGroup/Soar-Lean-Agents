@@ -60,7 +60,7 @@ sp {agent-world*elaborate*flags*default*cost-metric
               ^flags <f>
              -^flag-override.cost-metric <any>)
 -->
-   (<f> ^cost-metric none)
+   (<f> ^cost-metric none)   # v2.34: unit alone changed no plan and raised decisions; set per task with optimize
 }
 
 ## Elaborate flags default min-step-cost -> sets min-step-cost (unit cost only).

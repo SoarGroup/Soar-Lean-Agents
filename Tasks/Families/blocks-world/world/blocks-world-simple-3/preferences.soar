@@ -1,0 +1,29 @@
+## Search control of the original, written over operator arguments (world objects).
+sp {blocks-world*select*out-of-place-to-table
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +)
+   (<o> ^name move-block
+        ^argument1 <block>
+        ^argument2 <dest>)
+  -(<s> ^in-place <block>)
+   (<dest> ^class table)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {blocks-world*select*onto-desired-in-place
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +
+              ^in-place <dest>
+              ^desireds.desired.on <dr>)
+   (<o> ^name move-block
+        ^argument1 <block>
+        ^argument2 <dest>)
+   (<block> ^object-handle $ <bh>)
+   (<dest> ^object-handle $ <dh>)
+   (<dr> ^argument1.object-handle $ <bh>
+         ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^operator <o> > <o2>)
+}

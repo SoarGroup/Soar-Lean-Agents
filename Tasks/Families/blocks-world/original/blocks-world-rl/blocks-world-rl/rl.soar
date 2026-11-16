@@ -1,0 +1,42 @@
+
+sp {blocks-world*rl*move-block
+   :template
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<block> ^name <block-name>)
+   (<block> ^table <block-table>)
+   (<dest> ^name <dest-name>)
+   (<dest> ^table <dest-table>)
+   (<s> ^object <w0>)
+   (<w0> ^name table)
+   (<s> ^object <w1>)
+   (<w1> ^name A)
+   (<w1> ^on <w1-on>)
+   (<w1-on> ^name <w1-on-name>)
+   (<s> ^object <w2>)
+   (<w2> ^name B)
+   (<w2> ^on <w2-on>)
+   (<w2-on> ^name <w2-on-name>)
+   (<s> ^object <w3>)
+   (<w3> ^name C)
+   (<w3> ^on <w3-on>)
+   (<w3-on> ^name <w3-on-name>)
+   (<s> ^object <w4>)
+   (<w4> ^name D)
+   (<w4> ^on <w4-on>)
+   (<w4-on> ^name <w4-on-name>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {blocks-world*reward*success
+   (state <s> ^name blocks-world)
+   (<s> ^reward-link <r>)
+   (<s> ^success <_v2>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value 1)
+}

@@ -1,0 +1,29 @@
+
+sp {kenken*elaborate*failure*1
+   (state <s> ^name kenken)
+   (<s> ^desired <d>)
+   (<s> ^cell <self>)
+   (<self> ^mark 0)
+   -{ (<self> ^cand <lk2>) (<lk2> ^alive 1) }
+-->
+   (<s> ^failure <d>)
+}
+
+sp {kenken*elaborate*failure*2
+   (state <s> ^name kenken)
+   (<s> ^desired <d>)
+   (<s> ^cell <self>)
+   (<self> ^mark { <self-mark> <> 0 })
+   -{ (<self> ^cand <lk2>) (<lk2> ^value <self-mark>) (<lk2> ^alive 1) }
+-->
+   (<s> ^failure <d>)
+}
+
+sp {kenken*halt*failure
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^failure <d>)
+-->
+   (write (crlf) |Failure state: the task has failed.|)
+   (halt)
+}

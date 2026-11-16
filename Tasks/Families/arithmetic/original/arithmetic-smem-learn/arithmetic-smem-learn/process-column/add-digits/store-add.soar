@@ -1,0 +1,47 @@
+
+sp {add-digits*propose*store-add
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^sum <_v5>)
+   (<s> ^n <ss-d2>)
+   (<ss> ^|d2| <ss-d2>)
+   (<s> ^stored 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name store-add)
+}
+
+sp {add-digits*apply*store-add
+   (state <s> ^name add-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name store-add)
+   (<s> ^stored <s-stored>)
+   (<up> ^|d1| <up-d1>)
+   (<up> ^|d2| <up-d2>)
+   (<local> ^sum <local-sum>)
+   (<s> ^smem <sms>)
+   (<sms> ^command <smsc>)
+-->
+   (<s> ^stored 1)
+   (<s> ^stored <s-stored> -)
+   (<smsc> ^store <st0>)
+   (<st0> ^kind add-fact)
+   (<st0> ^|d1| <up-d1>)
+   (<st0> ^|d2| <up-d2>)
+   (<st0> ^sum (- <local-sum> (* (div <local-sum> 10) 10)))
+   (<st0> ^carry (div <local-sum> 10))
+   (<smsc> ^store <st1>)
+   (<st1> ^kind add-fact)
+   (<st1> ^|d1| <up-d2>)
+   (<st1> ^|d2| <up-d1>)
+   (<st1> ^sum (- <local-sum> (* (div <local-sum> 10) 10)))
+   (<st1> ^carry (div <local-sum> 10))
+}

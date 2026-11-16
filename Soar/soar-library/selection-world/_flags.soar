@@ -43,7 +43,7 @@ sp {selection-world*elaborate*flags*default*optimize
               ^flags <f>
              -^flag-override.optimize <any>)
 -->
-   (<f> ^optimize false)
+   (<f> ^optimize false)   # v2.34: true found no better plan on tasks without costs and cost decisions everywhere; set per task
 }
 
 ## Elaborate flags default aspiration-step -> sets aspiration-step (only when ^flags.aspiration is set).

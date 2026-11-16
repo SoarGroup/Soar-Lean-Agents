@@ -1,0 +1,110 @@
+## RL features. Soar 9.6 builds wrong rules from templates that test several identifiers of the
+## same letter (world objects, relation objects: distinct identifiers are merged into one variable
+## and the learned rules never match again), so the features the original templates tested are
+## summarised as constants: ^rl-situation on the state and ^rl-action on the operator.
+
+## Top state: the gripper's position, open state, what it holds (or, when empty, what it last
+## held), what it is above, and the support of every block.
+sp {blocks-world*elaborate*rl-situation*gripper-empty
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>
+        ^holding-object.object-handle $ none
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position <gp>
+        ^open <go>
+        ^last-held <lh>)
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle $ <ah>)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^rl-situation (concat |gripper:| <gp> |,| <go> |,empty,last-held | <lh> |,above | <ah>
+                              | A:| <a-on> | B:| <b-on> | C:| <c-on>))
+}
+
+sp {blocks-world*elaborate*rl-situation*gripper-holding
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>
+        ^holding-object.object-handle { <> none <hh> }
+        ^above <ab>)
+   (<g> ^class gripper
+        ^position <gp>
+        ^open <go>)
+   (<ab> ^argument1 <g>
+         ^argument2.object-handle $ <ah>)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^rl-situation (concat |gripper:| <gp> |,| <go> |,holding | <hh> |,above | <ah>
+                              | A:| <a-on> | B:| <b-on> | C:| <c-on>))
+}
+
+## move-block space: the block and destination of the move-block being carried out.
+sp {move-block*elaborate*rl-situation
+   (state <s> ^problem-space.name move-block
+              ^argument1.object-handle $ <bh>
+              ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^rl-situation (concat <bh> |->| <dh>))
+}
+
+sp {blocks-world*rl*move-block
+   :template
+   (state <s> ^name blocks-world
+              ^operator <o> +
+              ^rl-situation <situation>)
+   (<o> ^name move-block
+        ^rl-action <action>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {move-block*rl*pick-up-put-down
+   :template
+   (state <s> ^name move-block
+              ^operator <o> +
+              ^rl-situation <situation>)
+   (<o> ^name << pick-up put-down >>
+        ^rl-action <action>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+## Reward at the top state: agent-world gives 1.0 when the top state's desireds succeed
+## (^flags.rl true, W-CHK-001), as the original did.
+
+## Rewards in the move-block space (the substate's own reward-link): +1 when the block is on the
+## destination, -1 while the gripper holds another block.
+sp {move-block*reward*block-on-destination
+   (state <s> ^problem-space.name move-block
+              ^reward-link <rl>
+              ^argument1.object-handle $ <bh>
+              ^argument2.object-handle $ <dh>
+              ^world <w>)
+   (<w> ^on <r>)
+   (<r> ^argument1.object-handle $ <bh>
+        ^argument2.object-handle $ <dh>)
+-->
+   (<rl> ^reward <rw>)
+   (<rw> ^value 1)
+}
+
+sp {move-block*reward*holding-other
+   (state <s> ^problem-space.name move-block
+              ^reward-link <rl>
+              ^argument1.object-handle $ <bh>
+              ^world <w>)
+   (<w> ^holding-object.object-handle { <> none <> <bh> })
+-->
+   (<rl> ^reward <rw>)
+   (<rw> ^value -1)
+}
