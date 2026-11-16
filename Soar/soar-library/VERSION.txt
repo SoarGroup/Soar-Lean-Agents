@@ -1,1 +1,1 @@
-2.30 (15 November 2026). Release notes: CHANGES.md. Load: pushd to this folder, source soar-library.soar (and thor.soar for Thor-Soar agents), popd.
+2.32 (15 November 2026). Release notes: CHANGES.md. Load: pushd to this folder, source soar-library.soar (and thor.soar for Thor-Soar agents), popd.

@@ -3,6 +3,11 @@
 From v2.14 the library tree is edited directly; build.py and patches.py remain as the record of the restructure. Each change below was
 checked with the regression test set (all tests unchanged with default flags, except as noted in the v2.23 and v2.24 entries) and, where new behavior was added, with new tests.
 
+## v2.32 — The applied count is local to the state  15 Nov 2026
+Fix. In v2.28 to v2.30 the rules `selection-world*apply*world*applied-count*first` and `...applied-count` also fired in a substate that shares the real world. The top state and the substate then each saw a `^counted-operator` on the world that was not their own operator and rewrote it in turn, without end (`Warning: reached max-elaborations` on every decision; it happens with `chunk never` too). Found when the step 6 task families were ported to the world conventions: arithmetic-solve-problem, arithmetic-v5, blocks-world-hierarchical, blocks-world-hierarchical-lookahead, blocks-world-hrl-3level and towers-of-hanoi-mea.
+The top state keeps the count on the real world, unchanged. A substate keeps its own `^applied-count` and `^counted-operator` on the substate, starting from zero, and does not change the count of the world or of any other state; two substates never share a count, even in the same problem space. (v2.31, replaced by this release, counted in the top state only, so operators applied in substates were not counted.)
+Not wired yet: the substate count is not part of any stamp, so a chunk built in a substate is not tied to the substate's count.
+
 ## v2.30 — Tie-impasse depth with a cost metric and optimize finds optimal solutions, with and without chunking  15 Nov 2026
 Applies with `^flags.iterative-step tie-impasse ^cost-metric unit|time ^optimize true` unless noted. Background: FINDING-chunking-overgeneral.md (update of 15 Nov) and World-Conventions-Spec-v6.
 - Fix (all modes with a cost metric): `agent-world/elaborations/cost.soar` no longer loops to max-elaborations; the step cost an operator states is copied to `^effective-step-cost`, with 1 as the default when none is stated, and the apply rules read that.
