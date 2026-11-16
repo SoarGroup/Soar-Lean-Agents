@@ -10115,11 +10115,6 @@
 "layer": 1
 },
 {
-"name": "duplicate-of",
-"toId": "ff0594b2b87a5b40a53c4b1b9758fcae",
-"layer": 1
-},
-{
 "name": "event-time",
 "toId": "2b67f14e3c915a9fbfc52d30d63b21e7",
 "layer": 4
@@ -10581,10 +10576,6 @@
 {
 "id": "075b55f5f45454d6a183746d7ce7b5e2",
 "type": "FLOAT"
-},
-{
-"id": "ff0594b2b87a5b40a53c4b1b9758fcae",
-"type": "STRING"
 },
 {
 "id": "2b67f14e3c915a9fbfc52d30d63b21e7",

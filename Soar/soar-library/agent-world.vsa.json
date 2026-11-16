@@ -927,10 +927,6 @@
       "toId": "a6c80c1259795252aadb63d0dbadbf3d"
      },
      {
-      "name": "duplicate-of",
-      "toId": "ff0594b2b87a5b40a53c4b1b9758fcae"
-     },
-     {
       "name": "object-handle",
       "toId": "41604c7f97a257f08bf81ce561d086c9"
      },
@@ -1010,10 +1006,6 @@
    },
    {
     "id": "4fd40f3dcf5e5e7d9c19e5b605a74659",
-    "type": "STRING"
-   },
-   {
-    "id": "ff0594b2b87a5b40a53c4b1b9758fcae",
     "type": "STRING"
    },
    {

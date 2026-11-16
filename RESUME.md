@@ -2,8 +2,8 @@
 
 ## Status (16 Nov 2026): library
 
-- **Library v2.34** is installed in `Soar/soar-library` (release zip in `Soar-library-dev/releases`).
-  No rule change from v2.33. Defaults: `^iterative-step operator`, `^cost-metric none`,
+- **Library v2.35** is installed in `Soar/soar-library` (release zip in `Soar-library-dev/releases`).
+  v2.35 changes only datamaps (`^duplicate-of` is an identifier); v2.34 had no rule change from v2.33. Defaults: `^iterative-step operator`, `^cost-metric none`,
   `^optimize false`. Search gains come from per-task `^flag-override`, chosen by measurement with
   `probe_settings.py` (`Soar-library-dev/docs/Search-Settings-Intake-Checklist-v1.md`).
 - Tasks that set `^iterative-step tie-impasse`: generated Blocks World (test set), mc

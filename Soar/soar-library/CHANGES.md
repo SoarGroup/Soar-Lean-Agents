@@ -3,6 +3,10 @@
 From v2.14 the library tree is edited directly; build.py and patches.py remain as the record of the restructure. Each change below was
 checked with the regression test set (all tests unchanged with default flags, except as noted in the v2.23 and v2.24 entries) and, where new behavior was added, with new tests.
 
+## v2.35 — Datamap: ^duplicate-of is an identifier  16 Nov 2026
+Datamap only; no rule change, so the test set was not rerun. Following the decision of 13 Nov (datamaps/datamap-conflicts.txt: duplicate-of is SOAR_ID, it points to the original), the remaining STRING `^duplicate-of` edge on the world object is removed from agent-world, object-world and selection-world (agent-world.vsa.json, object-world.vsa.json, selection-world.vsa.json and datamaps/library-datamap.json); the object keeps its SOAR_ID `^duplicate-of`. thor-soar and thor-tasks are not changed yet: their datamaps are brought up to date in the Thor-Soar pass (they still list a STRING `^duplicate-of` and the old `^holding-object none`).
+Packaging: from this release the zip's top folder is `soar-library/`, so deleting `Soar/soar-library` and unzipping the release in `Soar/` installs it.
+
 ## v2.34 — Search defaults confirmed; settings chosen per task  16 Nov 2026
 No rule changes. The defaults stay `^iterative-step operator`, `^cost-metric none`, `^optimize false`; comments in the three flag files now say why.
 Measured on the 171 library tests and the 68 step 6 world variants (seeds 1-3), against v2.33:
