@@ -1,0 +1,290 @@
+## Fox, goose and beans (goose-fox-beans), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. The name of an action is ferry-one.
+##   5. You can move the boat and a block on the current bank onto the opposite bank.
+##   6. If an object is below a boat then it is current.
+##   7. If a location is not below a boat then it is opposite.
+##   8. You can move a boat onto the opposite bank.
+##  10. If a red block is on an opposite bank and a yellow block is on the opposite bank then you lose.
+##  13. If a green block is on an opposite bank and a yellow block is on the opposite bank then you lose.
+##  18. The goal is that all the blocks are on a destination bank.
+## World: init-fox.world (bank-1; bank-2 named destination; red, yellow and green blocks and the boat, all on bank-1).
+##
+## Translation (rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operators ferry-one (statement 5; argument1 = the block, argument2 = the opposite bank) and cross (statement 8, not
+##     named in the dialog; argument1 = the boat, argument2 = the opposite bank). Moving an object onto a bank replaces its
+##     on and below relations; the block and the boat both move in ferry-one.
+##   - current (statement 6) is expanded in place: a bank is current when it is below the boat.
+##   - opposite (statement 7) tests absence and decides legality, so it is a maintained one-argument relation: each crossing
+##     moves opposite from the destination bank to the bank the boat left.
+##   - The two losing conditions (statements 10, 13) mark the state with ^failure; look-ahead returns it as a failure.
+##   - The goal (statement 18) is ^goal-met true on the task object when no block is on a bank other than the destination
+##     bank (A-F3: the boat is a block).
+
+sp {goose-fox-beans*propose*initialize-goose-fox-beans
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-goose-fox-beans ^task-operator false)
+}
+
+sp {goose-fox-beans*apply*initialize-goose-fox-beans
+   (state <s> ^operator.name initialize-goose-fox-beans ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name goose-fox-beans ^desireds <ds>)
+   (<objs> ^object <o-bank-1> <o-bank-2> <o-red-3> <o-yellow-4> <o-green-5> <o-boat-6> <o-task>)
+   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank)
+   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination)
+   (<o-red-3> ^object-handle red-3 ^anchored true ^type block ^color red)
+   (<o-yellow-4> ^object-handle yellow-4 ^anchored true ^type block ^color yellow)
+   (<o-green-5> ^object-handle green-5 ^anchored true ^type block ^color green)
+   (<o-boat-6> ^object-handle boat-6 ^anchored true ^type block ^shape boat)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-yellow-4> ^argument2 <o-bank-1>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-green-5> ^argument2 <o-bank-1>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-boat-6> ^argument2 <o-bank-1>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-red-3> ^argument2 <o-bank-1>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-bank-1> ^argument2 <o-yellow-4>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-bank-1> ^argument2 <o-green-5>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-bank-1> ^argument2 <o-boat-6>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-bank-1> ^argument2 <o-red-3>)
+   (<w> ^opposite <opposite-bank-2>)
+   (<opposite-bank-2> ^argument1 <o-bank-2>)
+   (log 1 (crlf) |Initialize goose-fox-beans.|)
+}
+
+sp {goose-fox-beans*elaborate*problem-space
+   (state <s> ^name goose-fox-beans)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name goose-fox-beans ^copy-relation below ^copy-relation opposite ^dont-copy-object-attribute goal-met)
+}
+
+sp {goose-fox-beans*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name goose-fox-beans ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name goose-fox-beans ^dont-copy-object-attribute goal-met)
+}
+
+sp {goose-fox-beans*elaborate*flags
+   (state <s> ^superstate nil ^name goose-fox-beans)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {goose-fox-beans*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {goose-fox-beans*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {goose-fox-beans*propose*ferry-one
+   (state <s> ^problem-space.name goose-fox-beans ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <x> <cur> <opp>)
+   (<boat> ^type block ^shape boat ^object-handle $ <bh>)
+   (<x> ^type block ^object-handle { <> <bh> <xh> })
+   (<cur> ^type location)
+   (<opp> ^type location ^object-handle $ <oh>)
+   (<w> ^below <bb> ^on <xo> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<xo> ^argument1 <x> ^argument2 <cur>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+sp {goose-fox-beans*propose*cross
+   (state <s> ^problem-space.name goose-fox-beans ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <opp>)
+   (<boat> ^type block ^shape boat ^object-handle $ <bh>)
+   (<opp> ^type location ^object-handle $ <oh>)
+   (<w> ^opposite <op-r>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name cross ^task-operator true ^action-handle cross ^argument1 <boat> ^argument2 <opp> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of ferry-one (look-ahead): the boat and the block are now on the destination bank.
+sp {goose-fox-beans*apply*ferry-one*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+}
+
+sp {goose-fox-beans*apply*ferry-one*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 <xh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+   (<pa> ^effect-applied true)
+   (write |Ferry boat and | <xh> | onto | <dh> (crlf))
+}
+
+## Effect of cross (look-ahead): the boat alone is now on the destination bank.
+sp {goose-fox-beans*apply*cross*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name cross ^pre-conditions-satisfied true ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+}
+
+sp {goose-fox-beans*apply*cross*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name cross ^status complete ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<pa> ^effect-applied true)
+   (write |Cross with the boat alone onto | <dh> (crlf))
+}
+
+## Failure (statements 10 and 13): a red and a yellow block, or a green and a yellow block, are on the opposite bank.
+sp {goose-fox-beans*elaborate*failure*red-and-yellow-on-opposite-bank
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^opposite <or> ^on <r1> <r2>)
+   (<objs> ^object <b1> <b2>)
+   (<b1> ^type block ^color red)
+   (<b2> ^type block ^color yellow)
+   (<or> ^argument1 <bank>)
+   (<r1> ^argument1 <b1> ^argument2 <bank>)
+   (<r2> ^argument1 <b2> ^argument2 <bank>)
+-->
+   (<s> ^failure <ds>)
+}
+
+sp {goose-fox-beans*elaborate*failure*green-and-yellow-on-opposite-bank
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^opposite <or> ^on <r1> <r2>)
+   (<objs> ^object <b1> <b2>)
+   (<b1> ^type block ^color green)
+   (<b2> ^type block ^color yellow)
+   (<or> ^argument1 <bank>)
+   (<r1> ^argument1 <b1> ^argument2 <bank>)
+   (<r2> ^argument1 <b2> ^argument2 <bank>)
+-->
+   (<s> ^failure <ds>)
+}
+
+## Goal (statement 18): all the blocks are on a destination bank. "All the blocks" is expanded over the blocks of the world
+## file (A-F4), so the test is positive: each block's on relation names the bank called destination.
+sp {goose-fox-beans*elaborate*goal*all-crossed
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <t> <dest> <b-red-3> <b-yellow-4> <b-green-5> <b-boat-6>)
+   (<t> ^type task)
+   (<dest> ^type location ^name destination)
+   (<b-red-3> ^object-handle red-3)
+   (<w> ^on <on-red-3>)
+   (<on-red-3> ^argument1 <b-red-3> ^argument2 <dest>)
+   (<b-yellow-4> ^object-handle yellow-4)
+   (<w> ^on <on-yellow-4>)
+   (<on-yellow-4> ^argument1 <b-yellow-4> ^argument2 <dest>)
+   (<b-green-5> ^object-handle green-5)
+   (<w> ^on <on-green-5>)
+   (<on-green-5> ^argument1 <b-green-5> ^argument2 <dest>)
+   (<b-boat-6> ^object-handle boat-6)
+   (<w> ^on <on-boat-6>)
+   (<on-boat-6> ^argument1 <b-boat-6> ^argument2 <dest>)
+-->
+   (<t> ^goal-met true)
+}

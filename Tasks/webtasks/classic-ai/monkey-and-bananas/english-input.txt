@@ -1,0 +1,16 @@
+Monkey and Bananas: English input
+
+Statements, numbered (the input to formalization):
+ 1. There are three places in a room: A, B and C.
+ 2. A monkey is at A. A box is at C. Bananas hang from the ceiling above B.
+ 3. The monkey is on the floor.
+ 4. The monkey can go from its place to another place if it is on the floor.
+ 5. The monkey can push the box from its place to another place if the box is at the monkey's place and the monkey is on the floor. The monkey and the box both end at the new place.
+ 6. The monkey can climb onto the box if the box is at the monkey's place and the monkey is on the floor.
+ 7. The monkey can climb down from the box onto the floor.
+ 8. The monkey can grasp the bananas if it is on the box and the box is at the place under the bananas.
+ 9. The goal is that the monkey has the bananas.
+
+Source of the task in AI research: STRIPS/OPS5 classic; McCarthy 1963.
+Kind of agent: Planning.
+Status: Fits the WorldSpec form (legal actions, goal). Being formalized first.

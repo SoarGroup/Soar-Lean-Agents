@@ -1,5 +1,5 @@
 ## lower-bound.soar -- selection-world: 2 elaborations, 6 applications (v2.30).
-## Lower bounds of evaluations (^flags.iterative-step tie-impasse, ^flags.optimize true, cost metric).
+## Lower bounds of evaluations (^flags.iterative-step tie-impasse or operator (operator from v2.40), ^flags.optimize true, cost metric).
 ## With tie-impasse depth the depth counts nested ties, not operators: after a nested tie is decided the look-ahead goes on applying
 ## operators, so the value of an operator is the result of one look-ahead path whose nested choices were made on partial information.
 ## A success on that path is a real cost (an upper bound); a failure or failure-cutoff on it does not prove the operator worse.
@@ -54,7 +54,7 @@ sp {selection-world*apply*evaluation*lower-bound*depth-exceeded
    (state <s> ^name selection
               ^flags <flags>
               ^evaluation <evaluation>)
-   (<flags> ^iterative-step tie-impasse
+   (<flags> ^iterative-step << tie-impasse operator >>
             ^optimize true
             ^cost-metric << unit time >>)
    (<evaluation> ^symbolic-value depth-exceeded
@@ -71,7 +71,7 @@ sp {selection-world*apply*evaluation*lower-bound*depth-exceeded*lower
    (state <s> ^name selection
               ^flags <flags>
               ^evaluation <evaluation>)
-   (<flags> ^iterative-step tie-impasse
+   (<flags> ^iterative-step << tie-impasse operator >>
             ^optimize true
             ^cost-metric << unit time >>)
    (<evaluation> ^symbolic-value depth-exceeded
@@ -90,7 +90,7 @@ sp {selection-world*apply*evaluation*lower-bound*pass-up*none
               ^flags <flags>
               ^superstate.evaluation <parent>
               ^evaluation.lower-bound { <bound> <> none })
-   (<flags> ^iterative-step tie-impasse
+   (<flags> ^iterative-step << tie-impasse operator >>
             ^optimize true
             ^cost-metric << unit time >>)
    (<parent> ^lower-bound none)
@@ -106,7 +106,7 @@ sp {selection-world*apply*evaluation*lower-bound*pass-up*lower
               ^flags <flags>
               ^superstate.evaluation <parent>
               ^evaluation.lower-bound { <bound> <> none })
-   (<flags> ^iterative-step tie-impasse
+   (<flags> ^iterative-step << tie-impasse operator >>
             ^optimize true
             ^cost-metric << unit time >>)
    (<parent> ^lower-bound { <old> > <bound> })

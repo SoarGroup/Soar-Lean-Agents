@@ -1,0 +1,216 @@
+## Jigsawdoku, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   1. The name of the puzzle is jigsawdoku-sudoku.
+##   4. The name of the action is write-1-to-4.
+##   5. You can write a number that is between one and four onto an empty location.
+##   6. If the value of a location is absent then the location is empty.
+##   7. The solution has four steps.
+##   9. The name of a failure is same-row-value.
+##  11. If the row of a location is the row of a location and the value of the former location is the value of the latter location then you lose.
+##  12. The name of a failure is same-col-value.
+##  14. If the column of a location is the column of a location and the value of the former location is the value of the latter location then you lose.
+##  15. The name of a failure is same-section-value.
+##  17. If the section of a location is the section of a location and the value of the former location is the value of the latter location then you lose.
+##  19. The name of the goal is all-filled.
+##  21. The goal is that all locations are filled.
+##  22. If the value of a location is more than zero then the location is filled.
+## World: init-jigsawdoku.world (a 4x4 grid in four sections, four empty)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - "a location ... a location ... the former ... the latter" are two different locations (A-L1).
+##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 4).
+
+sp {jigsawdoku-sudoku*propose*initialize-jigsawdoku-sudoku
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-jigsawdoku-sudoku ^task-operator false)
+}
+
+sp {jigsawdoku-sudoku*apply*initialize-jigsawdoku-sudoku
+   (state <s> ^operator.name initialize-jigsawdoku-sudoku ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name jigsawdoku-sudoku ^desireds <ds>)
+   (<objs> ^object <o-loc-1-1> <o-loc-2-1> <o-loc-3-1> <o-loc-4-1> <o-loc-1-2> <o-loc-2-2> <o-loc-3-2> <o-loc-4-2> <o-loc-1-3> <o-loc-2-3> <o-loc-3-3> <o-loc-4-3> <o-loc-1-4> <o-loc-2-4> <o-loc-3-4> <o-loc-4-4> <o-task> <o-number-1> <o-number-2> <o-number-3> <o-number-4>)
+   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1 ^value 3 ^section 1)
+   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^row 2 ^column 1 ^value 1 ^section 1)
+   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^row 3 ^column 1 ^value 2 ^section 1)
+   (<o-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^row 4 ^column 1 ^value 4 ^section 1)
+   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^row 1 ^column 2 ^value 4 ^section 2)
+   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^row 2 ^column 2 ^section 2)
+   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2 ^value 1 ^section 3)
+   (<o-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^row 4 ^column 2 ^value 3 ^section 3)
+   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^row 1 ^column 3 ^value 1 ^section 2)
+   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^row 2 ^column 3 ^section 2)
+   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3 ^value 4 ^section 3)
+   (<o-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^row 4 ^column 3 ^value 2 ^section 3)
+   (<o-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^row 1 ^column 4 ^section 4)
+   (<o-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^row 2 ^column 4 ^section 4)
+   (<o-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^row 3 ^column 4 ^value 3 ^section 4)
+   (<o-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^row 4 ^column 4 ^value 1 ^section 4)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
+   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
+   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
+   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^empty <empty-loc-2-2>)
+   (<empty-loc-2-2> ^argument1 <o-loc-2-2>)
+   (<w> ^empty <empty-loc-2-3>)
+   (<empty-loc-2-3> ^argument1 <o-loc-2-3>)
+   (<w> ^empty <empty-loc-1-4>)
+   (<empty-loc-1-4> ^argument1 <o-loc-1-4>)
+   (<w> ^empty <empty-loc-2-4>)
+   (<empty-loc-2-4> ^argument1 <o-loc-2-4>)
+   (log 1 (crlf) |Initialize jigsawdoku-sudoku.|)
+}
+
+sp {jigsawdoku-sudoku*elaborate*problem-space
+   (state <s> ^name jigsawdoku-sudoku)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name jigsawdoku-sudoku ^copy-relation below ^copy-relation empty ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {jigsawdoku-sudoku*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name jigsawdoku-sudoku ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name jigsawdoku-sudoku ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {jigsawdoku-sudoku*elaborate*flags
+   (state <s> ^superstate nil ^name jigsawdoku-sudoku)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {jigsawdoku-sudoku*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {jigsawdoku-sudoku*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {jigsawdoku-sudoku*propose*write
+   (state <s> ^problem-space.name jigsawdoku-sudoku ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l> <n>)
+   (<l> ^type location ^object-handle $ <lh>)
+   (<n> ^type number ^number <k> ^object-handle $ <nh>)
+   (<w> ^empty <e>)
+   (<e> ^argument1 <l>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of write (look-ahead): the location has the value; it is no longer empty.
+sp {jigsawdoku-sudoku*apply*write*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <lh> ^argument2.object-handle $ <nh>)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+}
+
+## Effect of a completed write command on the real world (once per command).
+sp {jigsawdoku-sudoku*apply*write*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name write ^status complete ^argument1 <lh> ^argument2 <nh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+   (<pa> ^effect-applied true)
+   (write |Write | <k> | on | <lh> (crlf))
+}
+## Failure (same-row-value): two different locations with the same row have the same value.
+sp {jigsawdoku-sudoku*elaborate*failure*same-row-value
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l1> <l2>)
+   (<l1> ^type location ^row <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^row <a> ^value <v> ^object-handle { <> <h1> })
+-->
+   (<s> ^failure <ds>)
+}
+## Failure (same-column-value): two different locations with the same column have the same value.
+sp {jigsawdoku-sudoku*elaborate*failure*same-column-value
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l1> <l2>)
+   (<l1> ^type location ^column <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^column <a> ^value <v> ^object-handle { <> <h1> })
+-->
+   (<s> ^failure <ds>)
+}
+## Failure (same-section-value): two different locations with the same section have the same value.
+sp {jigsawdoku-sudoku*elaborate*failure*same-section-value
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l1> <l2>)
+   (<l1> ^type location ^section <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^section <a> ^value <v> ^object-handle { <> <h1> })
+-->
+   (<s> ^failure <ds>)
+}
+## Goal: all locations are filled (expanded over the locations of the world file; filled: value more than zero).
+sp {jigsawdoku-sudoku*elaborate*goal*all-filled
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <t> <l-loc-1-1> <l-loc-2-1> <l-loc-3-1> <l-loc-4-1> <l-loc-1-2> <l-loc-2-2> <l-loc-3-2> <l-loc-4-2> <l-loc-1-3> <l-loc-2-3> <l-loc-3-3> <l-loc-4-3> <l-loc-1-4> <l-loc-2-4> <l-loc-3-4> <l-loc-4-4>)
+   (<t> ^type task)
+   (<l-loc-1-1> ^object-handle loc-1-1 ^value > 0)
+   (<l-loc-2-1> ^object-handle loc-2-1 ^value > 0)
+   (<l-loc-3-1> ^object-handle loc-3-1 ^value > 0)
+   (<l-loc-4-1> ^object-handle loc-4-1 ^value > 0)
+   (<l-loc-1-2> ^object-handle loc-1-2 ^value > 0)
+   (<l-loc-2-2> ^object-handle loc-2-2 ^value > 0)
+   (<l-loc-3-2> ^object-handle loc-3-2 ^value > 0)
+   (<l-loc-4-2> ^object-handle loc-4-2 ^value > 0)
+   (<l-loc-1-3> ^object-handle loc-1-3 ^value > 0)
+   (<l-loc-2-3> ^object-handle loc-2-3 ^value > 0)
+   (<l-loc-3-3> ^object-handle loc-3-3 ^value > 0)
+   (<l-loc-4-3> ^object-handle loc-4-3 ^value > 0)
+   (<l-loc-1-4> ^object-handle loc-1-4 ^value > 0)
+   (<l-loc-2-4> ^object-handle loc-2-4 ^value > 0)
+   (<l-loc-3-4> ^object-handle loc-3-4 ^value > 0)
+   (<l-loc-4-4> ^object-handle loc-4-4 ^value > 0)
+-->
+   (<t> ^goal-met true)
+}

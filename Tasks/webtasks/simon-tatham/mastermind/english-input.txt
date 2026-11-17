@@ -1,0 +1,9 @@
+Mastermind (Guess): English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Deduce a hidden colour code; each guess is scored with counts of right-colour-right-place and
+right-colour-wrong-place pegs.
+
+Source of the task in AI research: Tatham Portable Puzzle Collection; PUZZLES RL benchmark
+(Estermann et al., NeurIPS 2024); Knuth 1977.
+Kind of agent: Hidden-information search.

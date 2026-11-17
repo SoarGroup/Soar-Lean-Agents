@@ -1,4 +1,4 @@
-## search-control.soar -- thor-soar: 7 elaborations, 5 compares.
+## search-control.soar -- thor-soar: 6 elaborations, 5 compares.
 
 ## Preference for task-operator-smem-query find-object.
 sp {thor-soar*compare*task-operator-smem-query*find-object
@@ -87,20 +87,6 @@ sp {thor-soar*elaborations*compute-distances*single-destination-operators
               ^io.input-link.self.pose <pos>)
    (<op1> ^name << break-object clean-object close-container dirty-object empty-object
                    fill-object open-container turn-on turn-off >>
-          ^argument1 <arg1>)
-   (<pos> ^x <x> ^y <y>)
-   (<arg1> ^x <x1> ^y <y1>)
--->
-   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <y>) (* 100.0 <x1>) (* 100.0 <y1>))))
-}
-
-## Elaborate compute-distances single-destination-operators goto guardrails -> sets expected-distance.
-sp {thor-soar*elaborations*compute-distances*single-destination-operators*goto*guardrails
-    :default
-   (state <s> ^operator <op1> +
-              ^flags.guardrails true
-              ^world.self.pose <pos>)
-   (<op1> ^name go-to
           ^argument1 <arg1>)
    (<pos> ^x <x> ^y <y>)
    (<arg1> ^x <x1> ^y <y1>)

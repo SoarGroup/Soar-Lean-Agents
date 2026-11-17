@@ -1,0 +1,12 @@
+Counterfeit coin (12 coins): English input
+
+Statements, numbered (the input to formalization):
+ 1. There are twelve coins that look the same. One of them is counterfeit: it is either heavier or lighter than the others, which all weigh the same.
+ 2. You have a balance. A weighing puts some coins on the left pan and the same number on the right pan, and shows whether the left side is heavier, the right side is heavier, or they balance.
+ 3. You may choose each weighing after seeing the results of the earlier ones.
+ 4. The goal is to find the counterfeit coin, and whether it is heavier or lighter, using at most three weighings, whatever the results are.
+
+Source of the task in AI research: Classic puzzle; used in planning under uncertainty.
+Kind of agent: Conditional planning.
+Status: A contingent plan (a tree of weighings), not a sequence of actions. Specification gap,
+raised with John.

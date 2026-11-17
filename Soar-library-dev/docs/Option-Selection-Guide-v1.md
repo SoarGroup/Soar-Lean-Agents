@@ -1,6 +1,9 @@
-# Option selection guide: cost and search options for tasks generated from English (v1.1, 14 Nov 2026)
+# Option selection guide: cost and search options for tasks generated from English (v1.2, 16 Nov 2026)
 
-Applies to the default-world libraries v2.22 or later (agent-world, selection-world). Read it before encoding any task whose English mentions cost, time, effort,
+Applies to the Soar library (`Soar/soar-library`) v2.22 or later (agent-world, selection-world); current: v2.41. v1.2 brings the guide and
+`check_options.py` up to date with library v2.37 to v2.41: `iterative-step cost` without a cost metric now gets `cost-metric unit`
+(v2.37), a task operator without `^step-cost` costs 1, and `optimize true` guarantees the cheapest plan (positive step costs,
+admissible estimates) under operator depth as well as tie-impasse depth (v2.40). Read it before encoding any task whose English mentions cost, time, effort,
 "cheapest", "fastest", "best", "value" or "optimal", and run sections 3 to 5 for every task, because a task that does not need cost options must be recorded as such.
 
 ## 1. Defaults and what they give
@@ -37,8 +40,8 @@ Errors (E) block delivery; warnings (W) go in the README with the reason they ar
 | Id | Rule |
 |---|---|
 | O1 | Flag values must be allowed ones (`cost-metric` none/unit/time, `optimize` true/false, `iterative-step` operator/tie-impasse/cost, `termination` depth/progress); numeric flags numeric |
-| O2 | optimize, heuristic-weight, cost-weight, cost-quantum, min-step-cost, aspiration need cost-metric unit or time; `iterative-step cost` too |
-| O3 | cost-metric unit needs `^step-cost` on task operators (E); step-cost or h with cost-metric none is ignored (W) |
+| O2 | optimize, heuristic-weight, cost-weight, cost-quantum, min-step-cost, aspiration need cost-metric unit or time; `iterative-step cost` with `cost-metric none` set explicitly is an error (left unset, the library gives unit since v2.37) |
+| O3 | cost-metric unit without `^step-cost` on any task operator: every operator costs 1, so the cost is the operator count (W); step-cost or h with cost-metric none is ignored (W) |
 | O4 | h is used only with optimize true or `iterative-step cost`; heuristic-weight without h does nothing |
 | O5 | Reminder to run P2 whenever h is present |
 | O6 | Zero step-cost with cost-cap iteration and no h |
@@ -60,8 +63,8 @@ Errors (E) block delivery; warnings (W) go in the README with the reason they ar
 - Decisions, 8-node graph seed 4 (unit or time): depth+optimize 434, depth+optimize+h 359, cost-cap 2200, cost-cap+h 468. The heuristic cut decisions 17 to 80 percent. Depth with optimize and h was cheapest here; cost-cap is for cases where a depth bound is impractical.
 - Not discriminating (cheapest = shortest, P1 false): weighted water jug, weighted Eight Puzzle, grids with step costs. Do not add cost flags to such tasks.
 - Task models (graph_models.py, run by task_options.py): Eight Puzzle (2 and 3 moves), water jug, Hanoi (2 and 3 discs), unit and weighted step costs. P1 false in all ten cases (weighted: cost of tile t = t; litres moved; disc size), so none of these takes cost options. Hanoi 3 discs: P4 reports a score decrease on every solution, as measured. Model and agent agree except Hanoi 2 discs seeds 1 and 4 (P0).
-- Known limits: a stale worst preference can demote the best operator under default flags (Hanoi 2 discs; Soar-library-dev/findings/FINDING-stale-worst-preference.md); cost-cap without h on a zero-cost cycle (slow, not infinite; mitigated by P3 above); progress termination on non-monotone scores; net value with optimize; tie-impasse with cost; time mode with scheduled future events (measured on a model with unattended jobs: see CHANGES v2.23; the library's own future-event machinery needs an environment clock and is not measured).
-- P5 helper: `probe_graph.p5_compare(runs, optimum)` returns the configurations that reached the optimum, cheapest in decisions first; `p5_costgraph.py` in `Soar-library-dev/tools/worldgen-v18.zip` is the driver for the cost-graph family.
+- Known limits: a stale worst preference could demote the best operator under default flags (Hanoi 2 discs; Soar-library-dev/findings/FINDING-stale-worst-preference.md; addressed by failure grounding from v2.24, and since v2.39 a failure gives a reject preference); cost-cap without h on a zero-cost cycle (slow, not infinite; mitigated by P3 above); progress termination on non-monotone scores; net value with optimize; tie-impasse with cost; time mode with scheduled future events (measured on a model with unattended jobs: see CHANGES v2.23; the library's own future-event machinery needs an environment clock and is not measured).
+- P5 helper: `probe_graph.p5_compare(runs, optimum)` returns the configurations that reached the optimum, cheapest in decisions first; `p5_costgraph.py` in `Soar-library-dev/tools/worldgen-v19.zip` is the driver for the cost-graph family.
 
 ## 7. Pipeline hooks
 0. The task generator provides a model of its task (graph_models.py shows the form: edges, start, goals, optional h and score); `task_options.py` runs P0 to P4 on it and writes options.json.

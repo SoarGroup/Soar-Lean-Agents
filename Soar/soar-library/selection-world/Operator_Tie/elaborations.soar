@@ -1,4 +1,4 @@
-## elaborations.soar -- selection-world: 20 elaborations, 22 compares.
+## elaborations.soar -- selection-world: 21 elaborations, 22 compares.
 
 ## ---- elaborations ----
 
@@ -18,14 +18,14 @@ sp {selection-world*elaborate*selection*top-selection
    (<s> ^top-selection true)
 }
 
-## Elaborate selection bound-check true: a top selection with tie-impasse depth, a cost metric and optimize true checks the cost bounds
+## Elaborate selection bound-check true: a top selection with tie-impasse or operator depth (operator from v2.40), a cost metric and optimize true checks the cost bounds
 ## of its evaluations (strategies/iterative-deepening/Impasse__Operator_Tie/lower-bound.soar) before it lets one operator win.
 sp {selection-world*elaborate*selection*bound-check*true
    :default
    (state <s> ^name selection
               ^top-selection true
               ^flags <flags>)
-   (<flags> ^iterative-step tie-impasse
+   (<flags> ^iterative-step << tie-impasse operator >>
             ^optimize true
             ^cost-metric << unit time >>)
 -->
@@ -47,11 +47,11 @@ sp {selection-world*elaborate*selection*bound-check*false*cost-metric
 -->
    (<s> ^bound-check false)}
 
-## Elaborate selection bound-check false: operator or cost iterative step.
+## Elaborate selection bound-check false: cost iterative step (v2.40: operator depth now checks bounds with optimize, like tie-impasse).
 sp {selection-world*elaborate*selection*bound-check*false*iterative-step
    :default
    (state <s> ^name selection
-              ^flags.iterative-step << operator cost >>)
+              ^flags.iterative-step cost)
 -->
    (<s> ^bound-check false)}
 
@@ -79,11 +79,12 @@ sp {selection-world*elaborate*selection*unary-success-best*cost-metric
 -->
    (<s> ^unary-success-best true)}
 
-## Elaborate selection unary-success-best: operator or cost iterative step (a success becomes a best preference, first-success strategy).
+## Elaborate selection unary-success-best: cost iterative step (a success becomes a best preference, first-success strategy).
+## v2.40: operator step dropped, so operator depth with a cost metric and optimize true compares costs like tie-impasse.
 sp {selection-world*elaborate*selection*unary-success-best*iterative-step
    :default
    (state <s> ^name selection
-              ^flags.iterative-step << operator cost >>)
+              ^flags.iterative-step cost)
 -->
    (<s> ^unary-success-best true)}
 
@@ -238,6 +239,7 @@ sp {selection-world*compare*selection*higher-evaluation-better
    (<evaluation2> ^super-operator <operator2>
                   ^numeric-value { < <v> <> no-value }
                   ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^closed true)
 -->
    (<superstate> ^operator <operator2> < <operator1>)}
 
@@ -341,7 +343,7 @@ sp {selection-world*compare*selection*partial-failure-evaluation-better-than-fai
               ^superstate <superstate>
               ^evaluation <evaluation1>
                           { <> <evaluation1> <evaluation2> })
-   (<superstate> ^desireds <desired>)
+   (<superstate> ^desireds <desireds>)
    (<evaluation1> ^super-operator <x>
                   ^symbolic-value partial-failure
                   ^desireds.duplicate-of <desireds>)
@@ -402,6 +404,11 @@ sp {selection-world*compare*selection*success-evaluation-equal-failure
    (<ss> ^operator <x> = <y>)}
 
 ## Preference for selection select failure-evaluation-becomes-reject-preference.
+## v2.38: a reject again (v2.36 renamed it ...-becomes-worst-preference when it made a worst preference). An operator whose
+## look-ahead ends in a loss is never chosen: with a worst preference the soar-base tie-breaker
+## (soar-base*compare*default*select*indifferent-and-worst*tied) could still choose it when a nested selection reached a
+## state no-change, and a success in the same evaluation (a state that reaches the goal and loses) made it best. Reject
+## outranks best, so losing takes precedence over reaching the goal.
 sp {selection-world*compare*selection*select*failure-evaluation-becomes-reject-preference
    :default
    (state <s> ^name selection
@@ -413,7 +420,7 @@ sp {selection-world*compare*selection*select*failure-evaluation-becomes-reject-p
                   ^super-operator <operator1>)
    (<evaluation1> ^closed true)
 -->
-   (<superstate> ^operator <operator1> <)}
+   (<superstate> ^operator <operator1> -)}
 
 ## Preference for selection select exhaustion-failure-evaluation-becomes-worst-preference.
 ## No chunking over exhaustion-failure
@@ -468,6 +475,7 @@ sp {selection-world*compare*selection*select*partial-failure-evaluation-becomes-
    (<evaluation> ^symbolic-value partial-failure
                  ^desireds.duplicate-of <desireds>
                  ^super-operator <operator1>)
+   (<evaluation> ^closed true)
 -->
    (<superstate> ^operator <operator1> <)}
 
@@ -566,5 +574,17 @@ sp {selection-world*compare*selection*no-value-evaluation-always-worse
    (<evaluation2> ^super-operator <operator2>
                   ^numeric-value <> no-value
                   ^desireds.duplicate-of <desireds>)
+   (<evaluation1> ^closed true)
 -->
    (<superstate> ^operator <operator2> > <operator1>)}
+
+## Elaborate selection evaluation desireds better -> copies the orientation of numeric values (^better) to the evaluation's desireds (v2.40).
+sp {selection-world*elaborate*selection*evaluation*desireds*better
+   :default
+   (state <s> ^superstate.desireds <desireds>
+              ^evaluation <e>)
+   (<e> ^desireds <new-desireds>)
+   (<new-desireds> ^duplicate-of <desireds>)
+   (<desireds> ^better <better>)
+-->
+   (<new-desireds> ^better <better>)}

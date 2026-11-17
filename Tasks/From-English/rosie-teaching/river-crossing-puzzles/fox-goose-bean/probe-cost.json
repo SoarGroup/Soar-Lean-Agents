@@ -1,0 +1,163 @@
+{
+ "task": "./goose-fox-beans-rules.soar",
+ "library": "/home/claude/repo/Soar/soar-library",
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "cap": 100000,
+ "fixed_by_task": {},
+ "configs": [
+  {
+   "config": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 6097,
+     "operators": 11,
+     "wall_s": 1.59,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 3437,
+     "operators": 7,
+     "wall_s": 1.18,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 16517,
+     "operators": 25,
+     "wall_s": 6.31,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 26051,
+   "quality": 43,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "operator",
+    "unit",
+    "true"
+   ],
+   "effective": [
+    "operator",
+    "unit",
+    "true"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 33018,
+     "operators": 43,
+     "wall_s": 12.94,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 5253,
+     "operators": 7,
+     "wall_s": 1.87,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 13637,
+     "operators": 19,
+     "wall_s": 5.52,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 51908,
+   "quality": 69,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "tie-impasse",
+    "unit",
+    "true"
+   ],
+   "effective": [
+    "tie-impasse",
+    "unit",
+    "true"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 16030,
+     "operators": 23,
+     "wall_s": 5.9,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 1965,
+     "operators": 7,
+     "wall_s": 0.67,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 35241,
+     "operators": 11,
+     "wall_s": 13.83,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 53236,
+   "quality": 41,
+   "quality_kind": "operators"
+  }
+ ],
+ "recommended": {
+  "effective": {
+   "iterative-step": "tie-impasse",
+   "cost-metric": "unit",
+   "optimize": "true"
+  },
+  "override": {
+   "iterative-step": "tie-impasse",
+   "cost-metric": "unit",
+   "optimize": "true"
+  },
+  "solved_all": true,
+  "rule": "(<f> ^iterative-step tie-impasse ^cost-metric unit ^optimize true)"
+ },
+ "warnings": []
+}

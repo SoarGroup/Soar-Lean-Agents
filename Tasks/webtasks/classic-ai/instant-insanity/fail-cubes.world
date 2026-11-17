@@ -1,0 +1,684 @@
+objid 1
+category ground
+name ground
+
+objid 2
+category pose
+name ground-pose
+
+objid 3
+category cube
+name cube-a
+
+objid 4
+category orientation
+name a-o0x
+front red
+back green
+left blue
+right white
+
+objid 5
+category orientation
+name a-o1x
+front red
+back green
+left white
+right blue
+
+objid 6
+category orientation
+name a-o2x
+front green
+back red
+left blue
+right white
+
+objid 7
+category orientation
+name a-o3x
+front green
+back red
+left white
+right blue
+
+objid 8
+category orientation
+name a-o4x
+front red
+back green
+left red
+right yellow
+
+objid 9
+category orientation
+name a-o5x
+front red
+back green
+left yellow
+right red
+
+objid 10
+category orientation
+name a-o6x
+front green
+back red
+left red
+right yellow
+
+objid 11
+category orientation
+name a-o7x
+front green
+back red
+left yellow
+right red
+
+objid 12
+category orientation
+name a-o8x
+front blue
+back white
+left red
+right green
+
+objid 13
+category orientation
+name a-o9x
+front blue
+back white
+left green
+right red
+
+objid 14
+category orientation
+name a-o10x
+front white
+back blue
+left red
+right green
+
+objid 15
+category orientation
+name a-o11x
+front white
+back blue
+left green
+right red
+
+objid 16
+category orientation
+name a-o12x
+front blue
+back white
+left red
+right yellow
+
+objid 17
+category orientation
+name a-o13x
+front blue
+back white
+left yellow
+right red
+
+objid 18
+category orientation
+name a-o14x
+front white
+back blue
+left red
+right yellow
+
+objid 19
+category orientation
+name a-o15x
+front white
+back blue
+left yellow
+right red
+
+objid 20
+category orientation
+name a-o16x
+front red
+back yellow
+left red
+right green
+
+objid 21
+category orientation
+name a-o17x
+front red
+back yellow
+left green
+right red
+
+objid 22
+category orientation
+name a-o18x
+front yellow
+back red
+left red
+right green
+
+objid 23
+category orientation
+name a-o19x
+front yellow
+back red
+left green
+right red
+
+objid 24
+category orientation
+name a-o20x
+front red
+back yellow
+left blue
+right white
+
+objid 25
+category orientation
+name a-o21x
+front red
+back yellow
+left white
+right blue
+
+objid 26
+category orientation
+name a-o22x
+front yellow
+back red
+left blue
+right white
+
+objid 27
+category orientation
+name a-o23x
+front yellow
+back red
+left white
+right blue
+
+objid 28
+category cube
+name cube-b
+
+objid 29
+category orientation
+name b-o0x
+front green
+back blue
+left yellow
+right red
+
+objid 30
+category orientation
+name b-o1x
+front green
+back blue
+left red
+right yellow
+
+objid 31
+category orientation
+name b-o2x
+front blue
+back green
+left yellow
+right red
+
+objid 32
+category orientation
+name b-o3x
+front blue
+back green
+left red
+right yellow
+
+objid 33
+category orientation
+name b-o4x
+front green
+back blue
+left white
+right white
+
+objid 34
+category orientation
+name b-o5x
+front blue
+back green
+left white
+right white
+
+objid 35
+category orientation
+name b-o6x
+front yellow
+back red
+left green
+right blue
+
+objid 36
+category orientation
+name b-o7x
+front yellow
+back red
+left blue
+right green
+
+objid 37
+category orientation
+name b-o8x
+front red
+back yellow
+left green
+right blue
+
+objid 38
+category orientation
+name b-o9x
+front red
+back yellow
+left blue
+right green
+
+objid 39
+category orientation
+name b-o10x
+front yellow
+back red
+left white
+right white
+
+objid 40
+category orientation
+name b-o11x
+front red
+back yellow
+left white
+right white
+
+objid 41
+category orientation
+name b-o12x
+front white
+back white
+left green
+right blue
+
+objid 42
+category orientation
+name b-o13x
+front white
+back white
+left blue
+right green
+
+objid 43
+category orientation
+name b-o14x
+front white
+back white
+left yellow
+right red
+
+objid 44
+category orientation
+name b-o15x
+front white
+back white
+left red
+right yellow
+
+objid 45
+category cube
+name cube-c
+
+objid 46
+category orientation
+name c-o0x
+front yellow
+back white
+left green
+right red
+
+objid 47
+category orientation
+name c-o1x
+front yellow
+back white
+left red
+right green
+
+objid 48
+category orientation
+name c-o2x
+front white
+back yellow
+left green
+right red
+
+objid 49
+category orientation
+name c-o3x
+front white
+back yellow
+left red
+right green
+
+objid 50
+category orientation
+name c-o4x
+front yellow
+back white
+left blue
+right blue
+
+objid 51
+category orientation
+name c-o5x
+front white
+back yellow
+left blue
+right blue
+
+objid 52
+category orientation
+name c-o6x
+front green
+back red
+left yellow
+right white
+
+objid 53
+category orientation
+name c-o7x
+front green
+back red
+left white
+right yellow
+
+objid 54
+category orientation
+name c-o8x
+front red
+back green
+left yellow
+right white
+
+objid 55
+category orientation
+name c-o9x
+front red
+back green
+left white
+right yellow
+
+objid 56
+category orientation
+name c-o10x
+front green
+back red
+left blue
+right blue
+
+objid 57
+category orientation
+name c-o11x
+front red
+back green
+left blue
+right blue
+
+objid 58
+category orientation
+name c-o12x
+front blue
+back blue
+left yellow
+right white
+
+objid 59
+category orientation
+name c-o13x
+front blue
+back blue
+left white
+right yellow
+
+objid 60
+category orientation
+name c-o14x
+front blue
+back blue
+left green
+right red
+
+objid 61
+category orientation
+name c-o15x
+front blue
+back blue
+left red
+right green
+
+objid 62
+category cube
+name cube-d
+
+objid 63
+category orientation
+name d-o0x
+front blue
+back red
+left white
+right yellow
+
+objid 64
+category orientation
+name d-o1x
+front blue
+back red
+left yellow
+right white
+
+objid 65
+category orientation
+name d-o2x
+front red
+back blue
+left white
+right yellow
+
+objid 66
+category orientation
+name d-o3x
+front red
+back blue
+left yellow
+right white
+
+objid 67
+category orientation
+name d-o4x
+front blue
+back red
+left green
+right green
+
+objid 68
+category orientation
+name d-o5x
+front red
+back blue
+left green
+right green
+
+objid 69
+category orientation
+name d-o6x
+front white
+back yellow
+left blue
+right red
+
+objid 70
+category orientation
+name d-o7x
+front white
+back yellow
+left red
+right blue
+
+objid 71
+category orientation
+name d-o8x
+front yellow
+back white
+left blue
+right red
+
+objid 72
+category orientation
+name d-o9x
+front yellow
+back white
+left red
+right blue
+
+objid 73
+category orientation
+name d-o10x
+front white
+back yellow
+left green
+right green
+
+objid 74
+category orientation
+name d-o11x
+front yellow
+back white
+left green
+right green
+
+objid 75
+category orientation
+name d-o12x
+front green
+back green
+left blue
+right red
+
+objid 76
+category orientation
+name d-o13x
+front green
+back green
+left red
+right blue
+
+objid 77
+category orientation
+name d-o14x
+front green
+back green
+left white
+right yellow
+
+objid 78
+category orientation
+name d-o15x
+front green
+back green
+left yellow
+right white
+
+predicate orient
+4 3
+5 3
+6 3
+7 3
+8 3
+9 3
+10 3
+11 3
+12 3
+13 3
+14 3
+15 3
+16 3
+17 3
+18 3
+19 3
+20 3
+21 3
+22 3
+23 3
+24 3
+25 3
+26 3
+27 3
+29 28
+30 28
+31 28
+32 28
+33 28
+34 28
+35 28
+36 28
+37 28
+38 28
+39 28
+40 28
+41 28
+42 28
+43 28
+44 28
+46 45
+47 45
+48 45
+49 45
+50 45
+51 45
+52 45
+53 45
+54 45
+55 45
+56 45
+57 45
+58 45
+59 45
+60 45
+61 45
+63 62
+64 62
+65 62
+66 62
+67 62
+68 62
+69 62
+70 62
+71 62
+72 62
+73 62
+74 62
+75 62
+76 62
+77 62
+78 62
+
+predicate prev
+3 1
+28 3
+45 28
+62 45
+
+predicate placed
+1 2
+3 13
+28 31

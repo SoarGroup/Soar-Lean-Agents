@@ -1,0 +1,702 @@
+{
+  "format": "worldspec-1",
+  "name": "monkey-and-bananas",
+  "title": "Monkey and bananas (monkey-and-bananas)",
+  "statements": [
+    [
+      1,
+      "There are three places in a room: A, B and C."
+    ],
+    [
+      2,
+      "A monkey is at A. A box is at C. Bananas hang from the ceiling above B."
+    ],
+    [
+      3,
+      "The monkey is on the floor."
+    ],
+    [
+      4,
+      "The monkey can go from its place to another place if it is on the floor."
+    ],
+    [
+      5,
+      "The monkey can push the box from its place to another place if the box is at the monkey's place and the monkey is on the floor. The monkey and the box both end at the new place."
+    ],
+    [
+      6,
+      "The monkey can climb onto the box if the box is at the monkey's place and the monkey is on the floor."
+    ],
+    [
+      7,
+      "The monkey can climb down from the box onto the floor."
+    ],
+    [
+      8,
+      "The monkey can grasp the bananas if it is on the box and the box is at the place under the bananas."
+    ],
+    [
+      9,
+      "The goal is that the monkey has the bananas."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-MB1",
+      "kind": "intent",
+      "text": "\"Bananas hang from the ceiling above B\": the bananas are at B, so \"the place under the bananas\" is the place the bananas are at.",
+      "stmts": [
+        2,
+        8
+      ]
+    },
+    {
+      "id": "A-MB2",
+      "kind": "intent",
+      "text": "The floor is an object; being on the floor or on the box is an on relation from the monkey.",
+      "stmts": [
+        3,
+        6,
+        7
+      ]
+    },
+    {
+      "id": "A-MB3",
+      "kind": "intent",
+      "text": "\"has the bananas\" is a holds relation from the monkey to the bananas, added by grasp.",
+      "stmts": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": "A-MB4",
+      "kind": "intent",
+      "text": "The actions are named go, push, climb-up, climb-down and grasp.",
+      "stmts": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "place-a",
+      "type": "location",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "place-a"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "place-b",
+      "type": "location",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "place-b"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "place-c",
+      "type": "location",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "place-c"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "monkey",
+      "type": "animal",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "monkey"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "box",
+      "type": "box",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "box"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "bananas",
+      "type": "food",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "bananas"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "floor",
+      "type": "floor",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "floor"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "at",
+      [
+        "monkey",
+        "place-a"
+      ]
+    ],
+    [
+      "at",
+      [
+        "box",
+        "place-c"
+      ]
+    ],
+    [
+      "at",
+      [
+        "bananas",
+        "place-b"
+      ]
+    ],
+    [
+      "on",
+      [
+        "monkey",
+        "floor"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "go",
+      "params": [
+        [
+          "to",
+          "location"
+        ]
+      ],
+      "stmts": [
+        4
+      ],
+      "pre": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "h": "floor"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "from",
+            "to"
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Go to "
+        },
+        {
+          "handle": "to"
+        }
+      ]
+    },
+    {
+      "name": "push",
+      "params": [
+        [
+          "to",
+          "location"
+        ]
+      ],
+      "stmts": [
+        5
+      ],
+      "pre": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "obj": "bx",
+          "type": "box"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "h": "floor"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bx"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "p",
+            "to"
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "obj": "bx",
+          "type": "box"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bx"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bx"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Push the box to "
+        },
+        {
+          "handle": "to"
+        }
+      ]
+    },
+    {
+      "name": "climb-up",
+      "params": [
+        [
+          "bx",
+          "box"
+        ]
+      ],
+      "stmts": [
+        6
+      ],
+      "pre": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "h": "floor"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bx"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "m",
+          "type": "animal"
+        }
+      ],
+      "effects": [
+        {
+          "change": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "h": "floor"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "bx"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Climb onto "
+        },
+        {
+          "handle": "bx"
+        }
+      ]
+    },
+    {
+      "name": "climb-down",
+      "params": [
+        [
+          "f",
+          "floor"
+        ]
+      ],
+      "stmts": [
+        7
+      ],
+      "pre": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "obj": "bx",
+          "type": "box"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "bx"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "obj": "bx",
+          "type": "box"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "bx"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "bx"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "f"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Climb down onto "
+        },
+        {
+          "handle": "f"
+        }
+      ]
+    },
+    {
+      "name": "grasp",
+      "params": [
+        [
+          "fd",
+          "food"
+        ]
+      ],
+      "stmts": [
+        8
+      ],
+      "pre": [
+        {
+          "obj": "m",
+          "type": "animal"
+        },
+        {
+          "obj": "bx",
+          "type": "box"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "bx"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bx"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "fd"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "m",
+          "type": "animal"
+        }
+      ],
+      "effects": [
+        {
+          "add": "holds",
+          "args": [
+            {
+              "var": "m"
+            },
+            {
+              "var": "fd"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "Grasp "
+        },
+        {
+          "handle": "fd"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "m",
+        "type": "animal"
+      },
+      {
+        "obj": "fd",
+        "type": "food"
+      },
+      {
+        "rel": "holds",
+        "args": [
+          {
+            "var": "m"
+          },
+          {
+            "var": "fd"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    9
+  ],
+  "failures": []
+}

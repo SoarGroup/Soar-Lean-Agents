@@ -3,10 +3,12 @@
 ## ---- operator proposal ----
 
 ## Propose cutoff-search.
-## Did not really help
+## Stops a look-ahead branch whose path cost already exceeds the selection's minimum numeric value (cost metric only).
+## Measured on test set v1.32 (v2.38, 16 Nov 2026): same plans on all 20 affected tests; without it decisions rise,
+## most under tie-impasse with optimize (water jug 435/909/461 -> 878/1,047/981; cost graph c 933/215/1,095 -> 1,603/395/1,179).
 sp {agent-world*propose*evaluate-operator*cutoff-search
    :default
-   (state <s> ###qui### ^quiescence t  ### TEST
+   (state <s> ^quiescence t
               ^selection-superstate <superstate>
               ^world.path-cost { <world-time> > <mnv> })
    (<superstate> ^evaluation <evaluation>

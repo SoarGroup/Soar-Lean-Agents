@@ -1,4 +1,4 @@
-## elaborations.soar -- agent-world: 1 elaboration, 2 compares.
+## elaborations.soar -- agent-world: 1 elaboration, 1 compare.
 
 ## ---- elaborations ----
 
@@ -22,16 +22,6 @@ sp {agent-world*elaborate*selection*select*constraint-failure-print-out
 }
 
 ## ---- evaluate / compare ----
-
-## Preference for selection evaluate force-conflict worse.
-sp {agent-world*compare*selection*evaluate*force-conflict*worse
-   :default
-   (state <s> ^name selection
-              ^operator <o> +)
-   (<o> ^name evaluate-operator
-        ^super-operator.name force-conflict)
--->
-   (<s> ^operator <o> < )}
 
 ## Preference for selection select constraint-failure-becomes-reject.
 ## Constraint-failure

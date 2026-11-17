@@ -1,0 +1,13 @@
+Vacuum world: English input
+
+Statements, numbered (the input to formalization):
+ 1. The world has two squares, Left and Right, side by side.
+ 2. A vacuum cleaner is in the Left square. Both squares are dirty.
+ 3. The vacuum can move to the other square.
+ 4. The vacuum can suck, which makes the square it is in clean.
+ 5. Each action costs one step.
+ 6. The goal is that both squares are clean, in as few steps as possible.
+
+Source of the task in AI research: AIMA (Russell & Norvig).
+Kind of agent: Planning / search.
+Status: Fits the WorldSpec form. Being formalized.

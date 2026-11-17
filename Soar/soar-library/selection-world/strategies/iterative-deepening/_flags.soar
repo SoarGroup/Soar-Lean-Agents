@@ -21,3 +21,14 @@ sp {selection-world*elaborate*flags*default*init-evaluation-depth
 -->
    (<f> ^init-evaluation-depth one)
 }
+
+## Elaborate flags default max-evaluation-depth -> sets max-evaluation-depth (v2.37; the value was fixed in the rules before).
+## The depth at which iterative deepening stops and achieved-max-depth breaks the tie. Not used with iterative-step cost (1000).
+sp {selection-world*elaborate*flags*default*max-evaluation-depth
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.max-evaluation-depth <any>)
+-->
+   (<f> ^max-evaluation-depth 12)
+}

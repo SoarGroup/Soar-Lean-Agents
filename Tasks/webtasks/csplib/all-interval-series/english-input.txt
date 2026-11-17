@@ -1,0 +1,7 @@
+All-interval series: English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Order 0..n-1 so the absolute differences between neighbours are a permutation of 1..n-1.
+
+Source of the task in AI research: CSPLib prob007.
+Kind of agent: CSP.

@@ -58,9 +58,23 @@ sp {agent-world*elaborate*flags*default*cost-metric
    :default
    (state <s> ^superstate nil
               ^flags <f>
+             -^flag-override.iterative-step cost
              -^flag-override.cost-metric <any>)
 -->
    (<f> ^cost-metric none)   # v2.34: unit alone changed no plan and raised decisions; set per task with optimize
+}
+
+## Elaborate flags default cost-metric, cost step -> sets cost-metric unit (v2.37).
+## iterative-step cost iterates on a cost cap, which needs a path cost: without a metric no success could be passed back
+## and a look-ahead that reached the goal was recorded as a failure. A task that sets the cost step and no metric gets unit cost.
+sp {agent-world*elaborate*flags*default*cost-metric*cost-step
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flag-override.iterative-step cost
+             -^flag-override.cost-metric <any>)
+-->
+   (<f> ^cost-metric unit)
 }
 
 ## Elaborate flags default min-step-cost -> sets min-step-cost (unit cost only).

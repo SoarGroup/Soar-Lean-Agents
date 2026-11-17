@@ -1,0 +1,46 @@
+## EXPERIMENT (not part of the library): option 2, losing takes precedence over the goal, enforced in selection-world.
+## A look-ahead state that holds both ^success and ^failure returns both symbolic values to its evaluation
+## (symbolic-evaluation*from-subgoal and ...*from-subgoal*success both fire). Today success becomes best and failure
+## becomes worst, so the success wins. This rule rejects the operator instead. Both tests are positive, so the
+## chunks built for the two values stay correct on their own and the reject follows whenever both chunks fire.
+sp {experiment*compare*selection*success-and-failure-becomes-reject
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^symbolic-value success
+                 ^symbolic-value << lose failure >>
+                 ^desireds.duplicate-of <desireds>
+                 ^super-operator <operator>)
+-->
+   (<superstate> ^operator <operator> -)}
+
+## Part B: the top state does not halt with success when it also holds a failure (halt*failure fires alone).
+## The negation is on the top state, which returns no results, so no chunk is built from these rules.
+## Proposed as an added condition on the two library rules; here as same-named replacements.
+sp {selection-world*apply*top-goal*halt*success
+   :default
+   (state <s> ^name <name>
+              ^desireds <desireds>
+              ^superstate nil
+              ^<< required-success success >> <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)
+  -(<desireds> ^next-desireds)
+-->
+   (write (crlf)   <name>  | achieved - success|)
+   (interrupt)}
+
+sp {selection-world*apply*top-goal*halt*success*desireds-count
+    :default
+   (state <s> ^name <name>
+              ^superstate nil
+              ^desireds <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)
+   (<desireds> ^unachieved-desireds-count 0
+               ^achieved-desireds-count <count>
+               ^desired-count <count>
+              -^next-desireds <n>)
+-->
+   (write (crlf)  <name>  | achieved all desireds|)
+   (interrupt)}

@@ -276,19 +276,7 @@
    {
     "id": "59e69c99d32d4542a7ccd60c2b877eb6",
     "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "name",
-      "toId": "e4ea1a8fc1604b91a54211d05a967c80"
-     }
-    ]
-   },
-   {
-    "choices": [
-     "force-conflict"
-    ],
-    "id": "e4ea1a8fc1604b91a54211d05a967c80",
-    "type": "ENUMERATION"
+    "outEdges": []
    },
    {
     "id": "5fab42ae48b84ca2895e16368c5bca95",

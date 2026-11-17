@@ -674,18 +674,6 @@
       "toId": "dd5e88b0b20748cfb0cbcf2b74fe875d"
      },
      {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
-     },
-     {
-      "name": "verify",
-      "toId": "f06d9856a9054df88d31ce824dadb309"
-     },
-     {
-      "name": "verify-done",
-      "toId": "a3c30abc42a24f868df2ce787b05508d"
-     },
-     {
       "name": "world-context",
       "toId": "38eff57613884d79a4ab341f3ee4cd12"
      },
@@ -720,10 +708,6 @@
      {
       "name": "desireds-list",
       "toId": "617ad6fadc334e18bed5d22196da76b0"
-     },
-     {
-      "name": "action",
-      "toId": "4b1af952ae5552c2863490df72f401b7"
      },
      {
       "name": "action-handle",
@@ -784,10 +768,6 @@
      {
       "name": "learn",
       "toId": "1810f43aae37507684059a373f922833"
-     },
-     {
-      "name": "safety",
-      "toId": "06490057488e5d398febace0de1b3821"
      },
      {
       "name": "selection-value",
@@ -874,10 +854,6 @@
      {
       "name": "on",
       "toId": "2edc859a532c46bb8153c84964d607da"
-     },
-     {
-      "name": "safety",
-      "toId": "340a19158ebf48d0b13a8e5d71636fa7"
      },
      {
       "name": "selection-value",
@@ -2940,10 +2916,6 @@
     "type": "SOAR_ID",
     "outEdges": [
      {
-      "name": "action",
-      "toId": "4b1af952ae5552c2863490df72f401b7"
-     },
-     {
       "name": "action-handle",
       "toId": "1aa0099bd4105a5c9ce29edee35659df"
      },
@@ -3024,10 +2996,6 @@
       "toId": "8eb81d5e31d551388ded1fbc3f34bf73"
      },
      {
-      "name": "safety",
-      "toId": "06490057488e5d398febace0de1b3821"
-     },
-     {
       "name": "selection-value",
       "toId": "e640ac5bd47a5331b637266071980a3a"
      },
@@ -3047,13 +3015,6 @@
       "name": "visited-all-objects",
       "toId": "9ee668c93e49571e820d6e1017f38c37"
      }
-    ]
-   },
-   {
-    "id": "4b1af952ae5552c2863490df72f401b7",
-    "type": "ENUMERATION",
-    "choices": [
-     "be-careful"
     ]
    },
    {
@@ -4589,10 +4550,6 @@
     "type": "STRING"
    },
    {
-    "id": "06490057488e5d398febace0de1b3821",
-    "type": "STRING"
-   },
-   {
     "id": "e640ac5bd47a5331b637266071980a3a",
     "type": "INTEGER"
    },
@@ -5001,10 +4958,6 @@
     "type": "STRING"
    },
    {
-    "id": "340a19158ebf48d0b13a8e5d71636fa7",
-    "type": "STRING"
-   },
-   {
     "id": "08dde600757c49789b3fd0da8b1d9249",
     "type": "STRING"
    },
@@ -5146,14 +5099,6 @@
    },
    {
     "id": "d1b668caad574a80a2158bdae0155320",
-    "type": "STRING"
-   },
-   {
-    "id": "f06d9856a9054df88d31ce824dadb309",
-    "type": "STRING"
-   },
-   {
-    "id": "a3c30abc42a24f868df2ce787b05508d",
     "type": "STRING"
    },
    {
@@ -6161,14 +6106,6 @@
       "toId": "512406950a4a4c20828f24528251fdc1"
      },
      {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
-     },
-     {
-      "name": "guardrails",
-      "toId": "03a9d3b72ccd5cd29af3b312073227c1"
-     },
-     {
       "name": "hierarchical-properties",
       "toId": "c2308781a94d550589f78d4e0d4456f5"
      },
@@ -6305,14 +6242,6 @@
     ],
     "id": "512406950a4a4c20828f24528251fdc1",
     "type": "ENUMERATION"
-   },
-   {
-    "id": "03a9d3b72ccd5cd29af3b312073227c1",
-    "type": "ENUMERATION",
-    "choices": [
-     "false",
-     "true"
-    ]
    },
    {
     "id": "c2308781a94d550589f78d4e0d4456f5",
@@ -8038,10 +7967,6 @@
      {
       "name": "copied-from",
       "toId": "7b4ad2e45c504371bef6827cb83f64e1"
-     },
-     {
-      "name": "name",
-      "toId": "e4ea1a8fc1604b91a54211d05a967c80"
      }
     ]
    },
@@ -8077,13 +8002,6 @@
     "id": "4b2273dc8b114a9dbadc80bf4a160213",
     "type": "SOAR_ID",
     "outEdges": []
-   },
-   {
-    "choices": [
-     "force-conflict"
-    ],
-    "id": "e4ea1a8fc1604b91a54211d05a967c80",
-    "type": "ENUMERATION"
    },
    {
     "id": "5fab42ae48b84ca2895e16368c5bca95",
@@ -10214,14 +10132,6 @@
      {
       "name": "smem-store",
       "toId": "512406950a4a4c20828f24528251fdc1"
-     },
-     {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
-     },
-     {
-      "name": "guardrails",
-      "toId": "03a9d3b72ccd5cd29af3b312073227c1"
      },
      {
       "name": "hierarchical-properties",
@@ -13952,12 +13862,6 @@
       "file": "find-object__assume-successful-grounding.soar",
       "id": "6839021e1a505c118cb1481c4bbaaec5",
       "name": "find-object__assume-successful-grounding",
-      "type": "FILE_OPERATOR"
-     },
-     {
-      "file": "force-conflict.soar",
-      "id": "ef36416a53b75ab985c5d3ee6c372a2c",
-      "name": "force-conflict",
       "type": "FILE_OPERATOR"
      }
     ]

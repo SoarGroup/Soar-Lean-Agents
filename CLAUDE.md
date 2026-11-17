@@ -1,6 +1,6 @@
 # CLAUDE.md: working in Soar-Lean-Agents
 
-Read `README.md` for the layout and `RESUME.md` for where things stand. `Soar/SOAR-LEAN-CONTEXT.md` is the Lean specification's own CLAUDE.md (a different project); this file is the one for this repository.
+Read `README.md` for the layout and `RESUME.md` for where things stand. `Soar/lean-spec/SOAR-LEAN-CONTEXT.md` is the Lean specification's own CLAUDE.md (a different project); this file is the one for this repository.
 
 ## Where the specification is silent: stop and surface (issue 6)
 

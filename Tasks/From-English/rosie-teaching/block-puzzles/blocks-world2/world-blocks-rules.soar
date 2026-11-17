@@ -1,0 +1,173 @@
+## Blocks world (world-blocks), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. You can move a clear block onto a clear object.
+##   5. If a location is not below an object then it is clear.
+##   7. The goal is that a blue block is on a purple block and the blue block is below a yellow block.
+## World: init-blocksworld2.world (three locations; three colored blocks in one stack)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator move (argument1 = the block, argument2 = the object it is moved onto).
+##   - clear is a maintained one-argument relation, for blocks and locations (A-H1).
+##   - The goal is ^goal-met true on the task object when some blue block is on some purple block and the same blue
+##     block is below some yellow block.
+
+sp {world-blocks*propose*initialize-world-blocks
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-world-blocks ^task-operator false)
+}
+
+sp {world-blocks*apply*initialize-world-blocks
+   (state <s> ^operator.name initialize-world-blocks ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name world-blocks ^desireds <ds>)
+   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-block-4> <o-block-5> <o-block-6> <o-task>)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location)
+   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^color blue)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color purple)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color yellow)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-block-4> ^argument2 <o-block-5>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-block-5> ^argument2 <o-block-6>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-block-6> ^argument2 <o-location-1>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-block-5> ^argument2 <o-block-4>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-block-6> ^argument2 <o-block-5>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-location-1> ^argument2 <o-block-6>)
+   (<w> ^clear <clear-location-2>)
+   (<clear-location-2> ^argument1 <o-location-2>)
+   (<w> ^clear <clear-location-3>)
+   (<clear-location-3> ^argument1 <o-location-3>)
+   (<w> ^clear <clear-block-4>)
+   (<clear-block-4> ^argument1 <o-block-4>)
+   (log 1 (crlf) |Initialize world-blocks.|)
+}
+
+sp {world-blocks*elaborate*problem-space
+   (state <s> ^name world-blocks)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name world-blocks ^copy-relation below ^copy-relation clear ^dont-copy-object-attribute goal-met)
+}
+
+sp {world-blocks*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name world-blocks ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name world-blocks ^dont-copy-object-attribute goal-met)
+}
+
+sp {world-blocks*elaborate*flags
+   (state <s> ^superstate nil ^name world-blocks)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {world-blocks*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {world-blocks*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {world-blocks*propose*move
+   (state <s> ^problem-space.name world-blocks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cb> <cd>)
+   (<cb> ^argument1 <b>)
+   (<cd> ^argument1 <d>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of move (look-ahead).
+sp {world-blocks*apply*move*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <r> ^below <bl> ^clear <cd>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+   (<cd> ^argument1 <d>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <old>)
+}
+
+## Effect of a completed move command on the real world (once per command).
+sp {world-blocks*apply*move*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <r> ^below <bl> ^clear <cd>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+   (<cd> ^argument1 <d>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <old>)
+   (<pa> ^effect-applied true)
+   (write |Move | <bh> | onto | <dh> (crlf))
+}
+## Goal: a blue block is on a purple block and the blue block is below a yellow block.
+sp {world-blocks*elaborate*goal*stack
+   (state <s> ^world <w>)
+   (<w> ^objects <objs> ^on <r1> ^below <r2>)
+   (<objs> ^object <t> <a> <b> <c>)
+   (<t> ^type task)
+   (<a> ^type block ^color blue)
+   (<b> ^type block ^color purple)
+   (<c> ^type block ^color yellow)
+   (<r1> ^argument1 <a> ^argument2 <b>)
+   (<r2> ^argument1 <a> ^argument2 <c>)
+-->
+   (<t> ^goal-met true)
+}

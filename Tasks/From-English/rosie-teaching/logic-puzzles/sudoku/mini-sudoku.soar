@@ -1,0 +1,7 @@
+# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
+# The path assumes this folder sits at Tasks/From-English/rosie-teaching/<category>/<task>.
+# To use another library location: SOAR_LIBRARY=/path/to/soar-library python3 gen.py
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+source mini-sudoku-rules.soar

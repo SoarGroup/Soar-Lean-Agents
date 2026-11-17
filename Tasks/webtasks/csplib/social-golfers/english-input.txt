@@ -1,0 +1,7 @@
+Social golfers: English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Schedule golfers into groups over several weeks so no two golfers play in the same group twice.
+
+Source of the task in AI research: CSPLib prob010.
+Kind of agent: CSP.

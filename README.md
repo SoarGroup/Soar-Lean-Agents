@@ -4,8 +4,8 @@ Soar agents created from English -> Lean -> Soar, with the shared Soar library t
 
 Start here:
 - `RESUME.md`: current status and next steps of the English-to-Soar and library work.
-- `Soar/docs/Soar-Lean-Agents-Manual-draft-v1.docx`: the manual, which includes how to set up Claude, Soar and a session to generate a Soar agent from English (Chapter 6), how to interface to an external environment (Chapter 7) and a worked Water Jug example (Appendices I to K).
-- `Soar/soar-library/`: the Soar library every project loads (v2.35, 16 November 2026).
+- `Soar/docs/Soar-Lean-Agents-Manual-draft-v2.docx`: the manual, which includes how to set up Claude, Soar and a session to generate a Soar agent from English (Chapter 6), how to interface to an external environment (Chapter 7) and a worked Water Jug example (Appendices I to K).
+- `Soar/soar-library/`: the Soar library every project loads (v2.42, 17 November 2026).
 - `CMC/cmcsoar-release-2026-11-14.zip`: the Lean specifications of the CMC and of Soar (see `RELEASE.md` inside it); `STATUS.md` here is a copy of its status file.
 - `Slides/From-English-to-Soar-CIC.pptx`: the main deck.
 
@@ -32,27 +32,28 @@ Each library release is a numbered zip in `Soar-library-dev/releases` (`soar-lib
 
 ### `Soar/`
 Using Soar and the shared library. `Soar/README.md` lists the contents.
-- `soar-library/`: the shared library (v2.35). Projects: soar-base, selection-world (with iterative deepening), agent-world, object-world, thor-soar and thor-tasks, each a VisualSoar project with its datamap; `tools/` holds the build scripts (parser, datamaps, chunker).
-- `docs/`: `Soar-Lean-Agents-Manual-draft-v1.docx` (draft manual; it supersedes the former setup guide `English-to-Soar-Setup.docx`), `Visual Soar User's Manual.html`.
-- `bugs/`: `Soar-9.6.5-Kernel-Defects.docx` (defects found in the Soar 9.6.5 kernel, with their status in 9.6.6) and `soar-dollar-bugs.zip` (two defects with `$`: repro programs, code locations, proposed fixes).
+- `soar-library/`: the shared library (v2.42). Projects: soar-base, selection-world (with iterative deepening), agent-world, object-world, thor-soar and thor-tasks, each a VisualSoar project with its datamap; `tools/` holds the build scripts (parser, datamaps, chunker).
+- `docs/`: `Soar-Lean-Agents-Manual-draft-v2.docx` (draft manual; it supersedes the former setup guide `English-to-Soar-Setup.docx`), `Visual Soar User's Manual.html`.
+- `bugs/`: `Soar-9.6.5-Kernel-Defects.docx` (defects found in the Soar 9.6.5 kernel, with their status in 9.6.6) and `soar-dollar-bugs/` (two defects with `$`: repro programs, code locations, proposed fixes).
 - `lean-spec/`: `Soar-on-CMC-Lean.docx` (and `.pdf`), `Soar-Lean-map.xlsx` (copies of those in the Lean release's `doc/`), `SOAR-LEAN-CONTEXT.md` (the release's `CLAUDE.md`; rename to `CLAUDE.md` to have it loaded), `Value of Lean Soar.docx`.
 
 ### `Soar-library-dev/`
 Development of the shared library (formerly `Default-conversion`, the conversion of the Soar default libraries). `Soar-library-dev/README.md` lists the contents and the release policy.
-- `releases/`: numbered library releases; current `soar-library-restructured-v2.35.zip` (same content as `Soar/soar-library`). Library defaults: `^iterative-step operator`, `^cost-metric none`, `^optimize false`; each task sets better search settings in `^flag-override`.
-- `testset/`: numbered regression test sets; current `soar-library-testset-v1.28.zip` (296 tests, baselines for v2.34; v2.35 changed only datamaps).
-- `docs/`: `Soar-Library-Refactoring-Proposal-v3.docx`, `Restructure-Build-Report-v1.md`, `Cost-Aware-Evaluation-Plan-v2.docx`, `Option-Selection-Guide-v1.md`, `Search-Settings-Intake-Checklist-v1.md` (choosing a task's search settings).
+- `releases/`: numbered library releases; current `soar-library-restructured-v2.42.zip` (same content as `Soar/soar-library`; v2.42 removes the nested-selection preference that kept cost graph r4x8 from finishing under tie-impasse). Library defaults: `^iterative-step operator`, `^cost-metric none`, `^optimize false`; each task sets better search settings in `^flag-override`.
+- `testset/`: numbered regression test sets; current `soar-library-testset-v1.35.zip` (515 tests, for v2.42; v1.29 added the world-convention step 6 task families, v1.30 tie-impasse search with a cost metric, v1.31 re-baselined for v2.37, v1.32 the first tests of the unachieved-desireds starting depth, v1.33 re-baselined for v2.40, v1.34 README corrections only, v1.35 re-baselined for v2.42).
+- `docs/`: `Soar-Library-Refactoring-Proposal-v3.docx`, `Restructure-Build-Report-v1.md`, `Cost-Aware-Evaluation-Plan-v2.docx`, `Option-Selection-Guide-v1.md`, `Search-Settings-Intake-Checklist-v1.md` (choosing a task's search settings), `History-verify-guardrails-force-conflict.md` (removed in v2.38, kept for reintroduction).
 - `findings/`: `FINDING-chunking-overgeneral.md`, `FINDING-early-failure-propagation.md`, `FINDING-stale-worst-preference.md`, `FINDING-tie-impasse-unbounded-continuation.md`, and the findings of 10 November (`Library-Findings.docx`, `Library-Findings-Review.xlsx`).
 - `tools/`: `worldgen-v19.zip` (generators for the generated test tasks), `restructure-tools-v2.22.zip`, `option-selection/` (option-selection tools, unpacked, including `probe_settings.py`), `soar-lint/` (the linter with its step-0 report and baseline).
 - `studies/`: `water-jug-79-v4.zip` (the water jug 7/9 study), `Families-Results.xlsx`.
 
 ### `SoarLean/`
-- `soarlean-agentgen-2026-11-16.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, plus the Python world-rule back end. `README.md` says how to build and use it.
+- `soarlean-agentgen-2026-11-16b.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, WorldSpec and rosiegen, plus the Python world-rule back end. `README.md` says how to build and use it.
+- `install-lean-sandbox.sh`: installs Lean 4.35.0 in a Claude cloud workspace (where elan cannot download toolchains).
 
 ### `Conventions/`
 - `World-Conventions-Spec-v6.md`: the world conventions specification, including the chunking conventions W-CHK-009 to W-CHK-011.
 - `IO-Conventions-Proposed.md`: proposed input/output conventions (draft).
-- `World-Conventions-v5.xlsx`: the world conventions workbook (state and `^world` representation, desireds, operators, capacities, cost, chunking), with reviewer columns, defects and change log.
+- `World-Conventions-v6.xlsx`: the world conventions workbook (state and `^world` representation, desireds, operators, capacities, cost, chunking), with the REW reviewer column; it holds where it and the specification differ.
 - `Soar-Conventions.xlsx`: conventions derived from existing Soar programs.
 - `VisualSoar-Project-Conventions.docx`: conventions for laying out an agent as a VisualSoar project.
 

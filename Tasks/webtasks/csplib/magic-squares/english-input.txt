@@ -1,0 +1,7 @@
+Magic squares: English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Place 1..n^2 in an n x n grid so every row, column and main diagonal has the same sum.
+
+Source of the task in AI research: CSPLib prob019.
+Kind of agent: CSP.

@@ -6,7 +6,8 @@ sp {selection-world*apply*top-goal*halt*success
    (state <s> ^name <name>
               ^desireds <desireds>
               ^superstate nil
-              ^<< required-success success >> <desireds>)
+              ^<< required-success success >> <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)   # v2.38: a lost state does not halt with success
   -(<desireds> ^next-desireds)
 -->
    (write (crlf)   <name>  | achieved - success|)
@@ -18,7 +19,8 @@ sp {selection-world*apply*top-goal*halt*success*desireds-count
     :default
    (state <s> ^name <name>
               ^superstate nil
-              ^desireds <desireds>)
+              ^desireds <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)   # v2.38: a lost state does not halt with success
    (<desireds> ^unachieved-desireds-count 0
                ^achieved-desireds-count <count>
                ^desired-count <count>

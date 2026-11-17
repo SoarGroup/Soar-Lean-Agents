@@ -3,9 +3,8 @@
 Each agent here was written from an English task description alone, with no Lean step and no existing
 Soar agent as a source. The English input for each is in `english-input.txt` in its folder.
 
-`rosie-teaching/` holds a further 54 games and puzzles as English input only (no agents yet): the
-restricted-English teaching dialogs and world states from the Rosie IJCAI 2019 teaching data. See
-`rosie-teaching/README.md`.
+`rosie-teaching/` holds a further 54 games and puzzles: the restricted-English teaching dialogs and world
+states from the Rosie IJCAI 2019 teaching data. Twenty-seven of them have agents generated from the instructor statements (16 Nov 2026): tic-tac-toe, the nine block puzzles, the five river crossings and the twelve logic puzzles; three of them also through Lean (`rosie-teaching/LEAN-PATHS.md`). See `rosie-teaching/README.md` and `rosie-teaching/PILOT.md`.
 
 | Folder | Task | Conventions | Library | How it runs |
 |---|---|---|---|---|

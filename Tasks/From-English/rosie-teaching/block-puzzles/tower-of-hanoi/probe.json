@@ -1,0 +1,114 @@
+{
+ "task": "./tower-of-hanoi-rules.soar",
+ "library": "/home/claude/repo/Soar/soar-library",
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "cap": 400000,
+ "fixed_by_task": {},
+ "configs": [
+  {
+   "config": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 35392,
+     "operators": 7,
+     "wall_s": 12.33,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 44437,
+     "operators": 7,
+     "wall_s": 14.62,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 46450,
+     "operators": 7,
+     "wall_s": 16.22,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 126279,
+   "quality": 21,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 89110,
+     "operators": 49,
+     "wall_s": 29.93,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 135560,
+     "operators": 91,
+     "wall_s": 49.93,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 120038,
+     "operators": 76,
+     "wall_s": 44.23,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 344708,
+   "quality": 216,
+   "quality_kind": "operators"
+  }
+ ],
+ "recommended": {
+  "effective": {
+   "iterative-step": "operator",
+   "cost-metric": "none",
+   "optimize": "false"
+  },
+  "override": {},
+  "solved_all": true,
+  "rule": "no override: library defaults"
+ },
+ "warnings": []
+}

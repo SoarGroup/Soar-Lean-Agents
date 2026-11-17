@@ -1,4 +1,4 @@
-## elaborations.soar -- selection-world: 6 elaborations, 13 compares.
+## elaborations.soar -- selection-world: 6 elaborations, 12 compares.
 
 ## ---- elaborations ----
 
@@ -131,7 +131,8 @@ sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*
    (<superstate> ^operator <x> = <y>)}
 
 ## Preference for selection reject high-estimated-total-cost (optimize true only).
-## A branch whose cost bound exceeds the best numeric value found so far cannot improve on it.
+## A branch whose cost bound exceeds the best numeric value found so far cannot improve on it. The evaluation must be closed (v2.40):
+## ^estimated-total-cost is the bound of the one branch its look-ahead followed; ^lower-bound is the lowest bound below it.
 sp {selection-world*compare*selection*reject*high-estimated-total-cost
    :default
    (state <s> ^name selection
@@ -141,7 +142,8 @@ sp {selection-world*compare*selection*reject*high-estimated-total-cost
               -^superstate.desireds.better higher
               ^evaluation <evaluation>)
    (<evaluation> ^super-operator <operator>
-                 ^estimated-total-cost { <cost> > <mnv> })
+                 ^estimated-total-cost { <cost> > <mnv> }
+                 ^closed true)
 -->
    (log 1 (crlf) |Reject: | <operator> | ^estimated-total-cost | <cost> | greater than minimum value: | <mnv>)
    (<superstate> ^operator <operator> -)}
@@ -223,7 +225,8 @@ sp {selection-world*compare*selection*success-within-cap-better-than-depth-excee
    (<superstate> ^operator <x> > <y>)}
 
 ## Preference for selection success-dominates-bound (cost metric, optimize true).
-## A success whose cost does not exceed a depth-exceeded branch's cost bound dominates that branch.
+## A success whose cost does not exceed a depth-exceeded branch's cost bound dominates that branch. The branch must be closed (v2.40),
+## as above: its ^estimated-total-cost alone is not a bound on everything below it.
 sp {selection-world*compare*selection*success-dominates-cost-bound
    :default
    (state <s> ^name selection
@@ -241,32 +244,8 @@ sp {selection-world*compare*selection*success-dominates-cost-bound
    (<e2> ^super-operator { <> <x> <y> }
          ^symbolic-value depth-exceeded
          ^estimated-total-cost >= <c>
-         ^desireds.duplicate-of <desireds>)
--->
-   (<superstate> ^operator <x> > <y>)}
-
-## Preference for selection lower-bound-better-than-success (cost metric, optimize true; nested selections).
-## A depth-exceeded branch whose cost bound is below a success's cost may hold a cheaper path, so the look-ahead follows it and reports its bound.
-## Not at the top level: there a depth-exceeded branch means "search deeper", not "choose".
-sp {selection-world*compare*selection*lower-bound-better-than-success
-   :default
-   (state <s> ^name selection
-              ^selection-superstate <selection-superstate>
-              ^flags.cost-metric << unit time >>
-              ^flags.optimize true
-              ^superstate <superstate>
-              ^evaluation <e1>
-              ^evaluation { <> <e1> <e2> })
-   (<superstate> ^desireds <desireds>)
-  -(<desireds> ^better higher)
-   (<e1> ^super-operator <x>
-         ^symbolic-value depth-exceeded
-         ^estimated-total-cost <bound>
-         ^desireds.duplicate-of <desireds>)
-   (<e2> ^super-operator { <> <x> <y> }
-         ^symbolic-value success
-         ^numeric-value { > <bound> <> no-value }
-         ^desireds.duplicate-of <desireds>)
+         ^desireds.duplicate-of <desireds>
+         ^closed true)
 -->
    (<superstate> ^operator <x> > <y>)}
 

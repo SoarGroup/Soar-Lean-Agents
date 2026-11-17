@@ -270,14 +270,6 @@
       "toId": "dd5e88b0b20748cfb0cbcf2b74fe875d"
      },
      {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
-     },
-     {
-      "name": "verify",
-      "toId": "f06d9856a9054df88d31ce824dadb309"
-     },
-     {
       "name": "equal",
       "toId": "9a6bf44c95a250eb865f66b85685d72f"
      },
@@ -335,14 +327,6 @@
     "id": "241dc5ffe7694167ae4ae5fecb6ce3a5",
     "type": "SOAR_ID",
     "outEdges": []
-   },
-   {
-    "id": "d1b668caad574a80a2158bdae0155320",
-    "type": "STRING"
-   },
-   {
-    "id": "f06d9856a9054df88d31ce824dadb309",
-    "type": "STRING"
    },
    {
     "id": "9a6bf44c95a250eb865f66b85685d72f",
@@ -1083,12 +1067,24 @@
     "type": "SOAR_ID",
     "outEdges": [
      {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
+      "name": "aspiration",
+      "toId": "6b610597981c5822adaed0d4fc007e41"
      },
      {
-      "name": "guardrails",
-      "toId": "03a9d3b72ccd5cd29af3b312073227c1"
+      "name": "aspiration-step",
+      "toId": "fa80c6872534564b95230ab022e82fa7"
+     },
+     {
+      "name": "cost-metric",
+      "toId": "52178b9b8ddd5b5cb8a5c13e22c2e285"
+     },
+     {
+      "name": "cost-quantum",
+      "toId": "5f49d12e9b51529eb7047839f4bf8d64"
+     },
+     {
+      "name": "heuristic-weight",
+      "toId": "726547afe0d3538e845e635a8b5e6c6f"
      },
      {
       "name": "hierarchical-properties",
@@ -1103,49 +1099,25 @@
       "toId": "bc65d102e60a5f97b4601bdd111a2027"
      },
      {
-      "name": "cost-metric",
-      "toId": "52178b9b8ddd5b5cb8a5c13e22c2e285"
+      "name": "max-evaluation-depth",
+      "toId": "85445abc08155d03c1f7f06001504496"
      },
      {
       "name": "optimize",
       "toId": "a20d45b670645cd9b1fd5d27abf7ee5e"
      },
      {
-      "name": "cost-quantum",
-      "toId": "5f49d12e9b51529eb7047839f4bf8d64"
-     },
-     {
-      "name": "heuristic-weight",
-      "toId": "726547afe0d3538e845e635a8b5e6c6f"
-     },
-     {
-      "name": "termination",
-      "toId": "59bca268fbce5699995c15806fd7c95a"
+      "name": "progress-score",
+      "toId": "c4b1f87a49da5395ad6156f05aeb8afd"
      },
      {
       "name": "progress-threshold",
       "toId": "55ac186e1aca55ad86d978a9d212f314"
      },
      {
-      "name": "progress-score",
-      "toId": "c4b1f87a49da5395ad6156f05aeb8afd"
-     },
-     {
-      "name": "aspiration",
-      "toId": "6b610597981c5822adaed0d4fc007e41"
-     },
-     {
-      "name": "aspiration-step",
-      "toId": "fa80c6872534564b95230ab022e82fa7"
+      "name": "termination",
+      "toId": "59bca268fbce5699995c15806fd7c95a"
      }
-    ]
-   },
-   {
-    "id": "03a9d3b72ccd5cd29af3b312073227c1",
-    "type": "ENUMERATION",
-    "choices": [
-     "false",
-     "true"
     ]
    },
    {
@@ -1572,19 +1544,7 @@
    {
     "id": "59e69c99d32d4542a7ccd60c2b877eb6",
     "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "name",
-      "toId": "e4ea1a8fc1604b91a54211d05a967c80"
-     }
-    ]
-   },
-   {
-    "choices": [
-     "force-conflict"
-    ],
-    "id": "e4ea1a8fc1604b91a54211d05a967c80",
-    "type": "ENUMERATION"
+    "outEdges": []
    },
    {
     "id": "5fab42ae48b84ca2895e16368c5bca95",
@@ -2297,12 +2257,24 @@
     "type": "SOAR_ID",
     "outEdges": [
      {
-      "name": "verify",
-      "toId": "d1b668caad574a80a2158bdae0155320"
+      "name": "aspiration",
+      "toId": "6b610597981c5822adaed0d4fc007e41"
      },
      {
-      "name": "guardrails",
-      "toId": "03a9d3b72ccd5cd29af3b312073227c1"
+      "name": "aspiration-step",
+      "toId": "fa80c6872534564b95230ab022e82fa7"
+     },
+     {
+      "name": "cost-metric",
+      "toId": "52178b9b8ddd5b5cb8a5c13e22c2e285"
+     },
+     {
+      "name": "cost-quantum",
+      "toId": "5f49d12e9b51529eb7047839f4bf8d64"
+     },
+     {
+      "name": "heuristic-weight",
+      "toId": "726547afe0d3538e845e635a8b5e6c6f"
      },
      {
       "name": "hierarchical-properties",
@@ -2317,40 +2289,24 @@
       "toId": "bc65d102e60a5f97b4601bdd111a2027"
      },
      {
-      "name": "cost-metric",
-      "toId": "52178b9b8ddd5b5cb8a5c13e22c2e285"
+      "name": "max-evaluation-depth",
+      "toId": "1f13666f779f61fa4c1b7ccb16856789"
      },
      {
       "name": "optimize",
       "toId": "a20d45b670645cd9b1fd5d27abf7ee5e"
      },
      {
-      "name": "cost-quantum",
-      "toId": "5f49d12e9b51529eb7047839f4bf8d64"
-     },
-     {
-      "name": "heuristic-weight",
-      "toId": "726547afe0d3538e845e635a8b5e6c6f"
-     },
-     {
-      "name": "termination",
-      "toId": "59bca268fbce5699995c15806fd7c95a"
+      "name": "progress-score",
+      "toId": "c4b1f87a49da5395ad6156f05aeb8afd"
      },
      {
       "name": "progress-threshold",
       "toId": "55ac186e1aca55ad86d978a9d212f314"
      },
      {
-      "name": "progress-score",
-      "toId": "c4b1f87a49da5395ad6156f05aeb8afd"
-     },
-     {
-      "name": "aspiration",
-      "toId": "6b610597981c5822adaed0d4fc007e41"
-     },
-     {
-      "name": "aspiration-step",
-      "toId": "fa80c6872534564b95230ab022e82fa7"
+      "name": "termination",
+      "toId": "59bca268fbce5699995c15806fd7c95a"
      }
     ]
    },
@@ -3159,10 +3115,6 @@
       "toId": "438b3538ba425fbd8fd640b33ae3002c"
      },
      {
-      "name": "operator",
-      "toId": "ac07ee22d9e8549ebe122efd8e2328b1"
-     },
-     {
       "name": "quiescence",
       "toId": "164f7a18f64055d091481c70778b3574"
      },
@@ -3240,23 +3192,6 @@
     "type": "ENUMERATION",
     "choices": [
      "all-evaluations-failed"
-    ]
-   },
-   {
-    "id": "ac07ee22d9e8549ebe122efd8e2328b1",
-    "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "name",
-      "toId": "ebd2f9f08ec455ceb0833ad274a317f7"
-     }
-    ]
-   },
-   {
-    "id": "ebd2f9f08ec455ceb0833ad274a317f7",
-    "type": "ENUMERATION",
-    "choices": [
-     "no-more-evaluations"
     ]
    },
    {
@@ -4214,19 +4149,7 @@
    {
     "id": "d9bcea4f12c45103bc3d00601da22cd7",
     "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "name",
-      "toId": "7e5d9170d5d05cb982fa1cb18a673c31"
-     }
-    ]
-   },
-   {
-    "id": "7e5d9170d5d05cb982fa1cb18a673c31",
-    "type": "ENUMERATION",
-    "choices": [
-     "force-conflict"
-    ]
+    "outEdges": []
    },
    {
     "id": "877741078b3e51c8b1078482306ace5b",
@@ -5155,6 +5078,14 @@
     "choices": [
      "state"
     ]
+   },
+   {
+    "id": "85445abc08155d03c1f7f06001504496",
+    "type": "INTEGER"
+   },
+   {
+    "id": "1f13666f779f61fa4c1b7ccb16856789",
+    "type": "INTEGER"
    }
   ]
  },
@@ -5456,12 +5387,6 @@
               "file": "all-evaluations-failed.soar",
               "id": "096b88bcfe8a5caab051edfa6cf3e15e",
               "name": "all-evaluations-failed",
-              "type": "FILE_OPERATOR"
-             },
-             {
-              "file": "no-more-evaluations.soar",
-              "id": "9dffb563c7ee510d85aefa63020e97e3",
-              "name": "no-more-evaluations",
               "type": "FILE_OPERATOR"
              }
             ],

@@ -1,4 +1,4 @@
-## elaborations.soar -- selection-world: 28 elaborations, 1 proposal, 9 applications.
+## elaborations.soar -- selection-world: 27 elaborations, 1 proposal, 9 applications.
 
 ## ---- elaborations ----
 
@@ -333,30 +333,6 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-self
    (<new-self> ^mobile <mobile>)
 }
 
-## Elaborate evaluate-operator default-state-copy-self io pose.
-sp {selection-world*elaborate*evaluate-operator*default-state-copy-self*io*pose
-   :default
-   (state <s> ^deep-copy-world true
-              ^flags.guardrails true
-              ^selection-superstate.top-state.io.input-link.self.pose <pose>
-              ^world <new-world>)
-   (<new-world> ^self <new-self>)
--->
-   (<new-self> ^pose <pose>)
-}
-
-## Elaborate evaluate-operator default-state-copy-self pose.
-sp {selection-world*elaborate*evaluate-operator*default-state-copy-self*pose
-   :default
-   (state <s> ^deep-copy-world true
-              ^flags.guardrails true
-              ^world <new-world>)
-   (<new-world> ^duplicate-of.self.pose <pose>
-                ^self <new-self>)
--->
-   (<new-self> ^pose <pose>)
-}
-
 ## Elaborate evaluate-operator default-state-copy-relation future-event -> sets future-event, duplicate-of, argument1 ....
 sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*future-event
    :default
@@ -616,3 +592,15 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*con
 -->
    (<evaluation> ^symbolic-value constraint-failure
                  ^failure-string <failure-string>)}
+
+## Elaborate evaluate-operator state desireds better -> copies ^better to the look-ahead desireds, so nested selections
+## compare numeric values the way the top selection does (v2.40).
+sp {selection-world*elaborate*evaluate-operator*state*desireds*better
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^desireds <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^better <better>)
+-->
+   (<desireds2> ^better <better>)}

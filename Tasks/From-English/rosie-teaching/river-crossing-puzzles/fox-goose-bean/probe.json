@@ -1,0 +1,114 @@
+{
+ "task": "./goose-fox-beans-rules.soar",
+ "library": "/home/claude/repo/Soar/soar-library",
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "cap": 100000,
+ "fixed_by_task": {},
+ "configs": [
+  {
+   "config": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 6097,
+     "operators": 11,
+     "wall_s": 2.7,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 3437,
+     "operators": 7,
+     "wall_s": 1.59,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 16517,
+     "operators": 25,
+     "wall_s": 6.79,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 26051,
+   "quality": 43,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 5670,
+     "operators": 37,
+     "wall_s": 2.37,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 2517,
+     "operators": 19,
+     "wall_s": 0.85,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 2086,
+     "operators": 11,
+     "wall_s": 0.71,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 10273,
+   "quality": 67,
+   "quality_kind": "operators"
+  }
+ ],
+ "recommended": {
+  "effective": {
+   "iterative-step": "operator",
+   "cost-metric": "none",
+   "optimize": "false"
+  },
+  "override": {},
+  "solved_all": true,
+  "rule": "no override: library defaults"
+ },
+ "warnings": []
+}

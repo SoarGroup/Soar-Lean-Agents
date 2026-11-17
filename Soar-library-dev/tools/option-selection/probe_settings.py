@@ -20,11 +20,13 @@ What it does
   4. It writes probe.json and, with --options, merges the recommendation into options.json under "measured" and "search".
 
 The flags the task already sets itself are not overridden: those configurations are run with the task's own values and
-reported as such ("fixed"). Defaults (library v2.34): iterative-step operator, cost-metric none, optimize false.
+reported as such ("fixed"). Defaults (library v2.34 to v2.41): iterative-step operator, cost-metric none, optimize false; the depth limit is
+the max-evaluation-depth flag (library v2.37 on), default 12.
 """
 import argparse, json, os, re, subprocess, sys, tempfile, time
 
 DEFAULT = ('operator', 'none', 'false')
+DEPTH_LIMIT = 12  # library default of ^flags.max-evaluation-depth (v2.37 on)
 SETS = {
     'default': [DEFAULT, ('tie-impasse', 'none', 'false')],
     'cost':    [DEFAULT, ('operator', 'unit', 'true'), ('tie-impasse', 'unit', 'true')],
@@ -105,11 +107,11 @@ def choice_profile(edges, start, goals):
     path.reverse()
     choices = sum(1 for s in path[:-1] if len(edges.get(s, [])) > 1)
     steps = len(path) - 1
-    advice = ('tie-impasse' if steps > 12 and choices <= 12 or (steps and choices / steps < 0.34)
+    advice = ('tie-impasse' if steps > DEPTH_LIMIT and choices <= DEPTH_LIMIT or (steps and choices / steps < 0.34)
               else 'operator')
     return dict(solvable=True, steps=steps, choices=choices, forced=steps - choices, advice=advice,
-                reason='%d choices in %d steps; the depth limit is 12 and operator depth counts every step, tie-impasse only choices'
-                       % (choices, steps))
+                reason='%d choices in %d steps; the depth limit (max-evaluation-depth) is %d and operator depth counts every step, tie-impasse only choices'
+                       % (choices, steps, DEPTH_LIMIT))
 
 
 def main():

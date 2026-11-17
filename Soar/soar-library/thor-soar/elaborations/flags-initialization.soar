@@ -25,8 +25,6 @@ sp {elaborate*init-thor-soar*flags
             ^hierarchical-properties false    # true is problematic. When true, reachable desireds are always achieved in lookahead
             ^explore false                    # Will explore room looking for objects - only needed if view-frustum true
             ^explore-receptacles false        # Will open all closed receptacles and look to see what is inside
-            ^guardrails false
-            ^verify false                     # true external-action
             ^hide-in-container-objects true  # If true, then cannot see into a container to see a contained object. If false, will see inside a container.
             ^scan-room true                 # Scans room when wakes up. Need for view-frustum true
             ^view-frustum true)

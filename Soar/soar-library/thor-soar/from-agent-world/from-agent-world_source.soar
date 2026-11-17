@@ -5,4 +5,3 @@ source elaborations__future-event.soar
 source find-object-direct.soar
 source find-object.soar
 source find-object__assume-successful-grounding.soar
-source force-conflict.soar

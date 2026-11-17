@@ -57,7 +57,8 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*dep
               ^flags.cost-metric << unit time >>
              -^progress-cut true
               ^world <world>)
-   (<world> ^path-cost <cost>
+   (<world> ^anchored-world true
+            ^path-cost <cost>
            -^estimated-remaining-cost)
    (<superstate> ^operator <so>
                  ^evaluation <evaluation>)
@@ -76,7 +77,8 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*dep
              -^progress-cut true
               ^flags.heuristic-weight <weight>
               ^world <world>)
-   (<world> ^path-cost <cost>
+   (<world> ^anchored-world true
+            ^path-cost <cost>
             ^estimated-remaining-cost <rem>)
    (<superstate> ^operator <so>
                  ^evaluation <evaluation>)

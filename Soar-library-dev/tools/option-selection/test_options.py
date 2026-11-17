@@ -3,8 +3,8 @@ def rules(flags, extra=''):
     return '(<f> %s)\n%s' % (' '.join(f'^{k} {v}' for k, v in flags.items()), extra)
 SC = '(<op> ^step-cost 2)'; H = '(<w> ^estimated-remaining-cost 3)'
 cases = [
- ({'optimize': 'true'}, SC, 'O2', 'E'), ({'iterative-step': 'cost'}, '', 'O2', 'E'),
- ({'cost-metric': 'unit'}, '', 'O3', 'E'), ({'cost-metric': 'speed'}, SC, 'O1', 'E'),
+ ({'optimize': 'true'}, SC, 'O2', 'E'), ({'iterative-step': 'cost', 'cost-metric': 'none'}, '', 'O2', 'E'),
+ ({'cost-metric': 'unit'}, '', 'O3', 'W'), ({'cost-metric': 'speed'}, SC, 'O1', 'E'),
  ({'cost-metric': 'unit', 'optimize': 'true'}, SC + '(<s> ^state-value 4)', 'O7', 'E'),
  ({'cost-metric': 'unit', 'heuristic-weight': '2'}, SC, 'O4', 'W'),
  ({'cost-metric': 'unit', 'iterative-step': 'cost'}, '(<op> ^step-cost 0) ' + '', 'O6', 'W'),
@@ -19,4 +19,6 @@ for fl, ex, rid, lvl in cases:
 ok = rules({'cost-metric': 'unit', 'optimize': 'true'}, SC)
 assert not [x for x in C.check(ok) if x[1] == 'E']
 assert not [x for x in C.check(rules({'mea-operator-selection': 'true'}, ''))]
-print('check_options: %d negative cases and 2 positive cases pass' % len(cases))
+# library v2.37: iterative-step cost without a cost metric gets unit, so it is not an error
+assert not [x for x in C.check(rules({'iterative-step': 'cost'}, SC)) if x[1] == 'E']
+print('check_options: %d negative cases and 3 positive cases pass' % len(cases))

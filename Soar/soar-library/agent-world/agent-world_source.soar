@@ -2,7 +2,6 @@
 source _flags.soar
 source _readme.soar
 source external-operator-application.soar
-source force-conflict.soar
 source initialize-agent-world.soar
 source Impasse__Operator_Conflict.soar
 pushd Impasse__Operator_Conflict

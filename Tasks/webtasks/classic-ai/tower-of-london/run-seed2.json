@@ -1,0 +1,1 @@
+{"outcome": "success", "decisions": 8802, "actions": [["move", "blue-ball", "c-low"], ["move", "green-ball", "b-low"], ["move", "red-ball", "b-top"], ["move", "blue-ball", "a-low"], ["move", "red-ball", "a-mid"]], "n_actions": 5, "seconds": 11.6, "cpu": "7.514"}

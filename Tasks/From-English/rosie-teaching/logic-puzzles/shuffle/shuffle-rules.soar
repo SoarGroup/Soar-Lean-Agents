@@ -1,0 +1,269 @@
+## Shuffle, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   1. The name of the puzzle is shuffle.
+##   4. The name of the action is write-1-to-9.
+##   5. You can write a number that is between one and nine onto an empty location.
+##   6. If the value of a location is absent then the location is empty.
+##   7. The solution has three steps.
+##   9. The name of the goal is all-filled.
+##  11. The goal is that all locations are filled.
+##  12. If the value of a location is more than zero then the location is filled.
+##  14. The name of a failure is file-sum.
+##  16. If the green locations in a file are filled and the sum of the values of the file is not the value of a location that is beneath the file then you lose.
+##  17. If the blocks have the same column then they are in a file.
+##  18. If a block is blue and the column of the block is the column of a location then the block is beneath the location.
+##  19. The name of a failure is rank-sum.
+##  21. If the green locations in a rank are filled and the sum of the values of the rank is not the value of a location that is beside the rank then you lose.
+##  22. If the blocks have the same row then they are in a rank.
+##  23. If a block is blue and the row of the block is the row of a location then the block is beside the location.
+## World: init-shuffle.world (a 4x4 grid: green cells, blue clues in the first row and the last column, one black cell)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - file (rank): the green locations of one column (row); the sum is over those green locations, and its target is the blue location of that column (row): "beneath" ("beside") (A-L3, A-L4).
+##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 9).
+
+sp {shuffle*propose*initialize-shuffle
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-shuffle ^task-operator false)
+}
+
+sp {shuffle*apply*initialize-shuffle
+   (state <s> ^operator.name initialize-shuffle ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name shuffle ^desireds <ds>)
+   (<objs> ^object <o-loc-1-1> <o-loc-2-1> <o-loc-3-1> <o-loc-4-1> <o-loc-1-2> <o-loc-2-2> <o-loc-3-2> <o-loc-4-2> <o-loc-1-3> <o-loc-2-3> <o-loc-3-3> <o-loc-4-3> <o-loc-1-4> <o-loc-2-4> <o-loc-3-4> <o-loc-4-4> <o-task> <o-number-1> <o-number-2> <o-number-3> <o-number-4> <o-number-5> <o-number-6> <o-number-7> <o-number-8> <o-number-9> <o-file-1> <o-file-2> <o-file-3> <o-rank-2> <o-rank-3> <o-rank-4>)
+   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1 ^value 16 ^color blue)
+   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^row 2 ^column 1 ^value 6 ^color green)
+   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^row 3 ^column 1 ^color green)
+   (<o-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^row 4 ^column 1 ^value 3 ^color green)
+   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^row 1 ^column 2 ^value 15 ^color blue)
+   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^row 2 ^column 2 ^value 2 ^color green)
+   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2 ^value 5 ^color green)
+   (<o-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^row 4 ^column 2 ^color green)
+   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^row 1 ^column 3 ^value 14 ^color blue)
+   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^row 2 ^column 3 ^color green)
+   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3 ^value 4 ^color green)
+   (<o-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^row 4 ^column 3 ^value 1 ^color green)
+   (<o-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^row 1 ^column 4 ^value 1 ^color black)
+   (<o-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^row 2 ^column 4 ^value 17 ^color blue)
+   (<o-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^row 3 ^column 4 ^value 16 ^color blue)
+   (<o-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^row 4 ^column 4 ^value 12 ^color blue)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
+   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
+   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
+   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<o-number-5> ^object-handle number-5 ^anchored true ^type number ^number 5)
+   (<o-number-6> ^object-handle number-6 ^anchored true ^type number ^number 6)
+   (<o-number-7> ^object-handle number-7 ^anchored true ^type number ^number 7)
+   (<o-number-8> ^object-handle number-8 ^anchored true ^type number ^number 8)
+   (<o-number-9> ^object-handle number-9 ^anchored true ^type number ^number 9)
+   (<o-file-1> ^object-handle file-1 ^anchored true ^type group ^size 3)
+   (<o-file-2> ^object-handle file-2 ^anchored true ^type group ^size 3)
+   (<o-file-3> ^object-handle file-3 ^anchored true ^type group ^size 3)
+   (<o-rank-2> ^object-handle rank-2 ^anchored true ^type group ^size 3)
+   (<o-rank-3> ^object-handle rank-3 ^anchored true ^type group ^size 3)
+   (<o-rank-4> ^object-handle rank-4 ^anchored true ^type group ^size 3)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^empty <empty-loc-3-1>)
+   (<empty-loc-3-1> ^argument1 <o-loc-3-1>)
+   (<w> ^empty <empty-loc-4-2>)
+   (<empty-loc-4-2> ^argument1 <o-loc-4-2>)
+   (<w> ^empty <empty-loc-2-3>)
+   (<empty-loc-2-3> ^argument1 <o-loc-2-3>)
+   (<w> ^member <member-file-1-loc-2-1>)
+   (<member-file-1-loc-2-1> ^argument1 <o-file-1> ^argument2 <o-loc-2-1>)
+   (<w> ^member <member-file-1-loc-3-1>)
+   (<member-file-1-loc-3-1> ^argument1 <o-file-1> ^argument2 <o-loc-3-1>)
+   (<w> ^member <member-file-1-loc-4-1>)
+   (<member-file-1-loc-4-1> ^argument1 <o-file-1> ^argument2 <o-loc-4-1>)
+   (<w> ^sum-target <target-file-1>)
+   (<target-file-1> ^argument1 <o-file-1> ^argument2 <o-loc-1-1>)
+   (<w> ^member <member-file-2-loc-2-2>)
+   (<member-file-2-loc-2-2> ^argument1 <o-file-2> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-file-2-loc-3-2>)
+   (<member-file-2-loc-3-2> ^argument1 <o-file-2> ^argument2 <o-loc-3-2>)
+   (<w> ^member <member-file-2-loc-4-2>)
+   (<member-file-2-loc-4-2> ^argument1 <o-file-2> ^argument2 <o-loc-4-2>)
+   (<w> ^sum-target <target-file-2>)
+   (<target-file-2> ^argument1 <o-file-2> ^argument2 <o-loc-1-2>)
+   (<w> ^member <member-file-3-loc-2-3>)
+   (<member-file-3-loc-2-3> ^argument1 <o-file-3> ^argument2 <o-loc-2-3>)
+   (<w> ^member <member-file-3-loc-3-3>)
+   (<member-file-3-loc-3-3> ^argument1 <o-file-3> ^argument2 <o-loc-3-3>)
+   (<w> ^member <member-file-3-loc-4-3>)
+   (<member-file-3-loc-4-3> ^argument1 <o-file-3> ^argument2 <o-loc-4-3>)
+   (<w> ^sum-target <target-file-3>)
+   (<target-file-3> ^argument1 <o-file-3> ^argument2 <o-loc-1-3>)
+   (<w> ^member <member-rank-2-loc-2-1>)
+   (<member-rank-2-loc-2-1> ^argument1 <o-rank-2> ^argument2 <o-loc-2-1>)
+   (<w> ^member <member-rank-2-loc-2-2>)
+   (<member-rank-2-loc-2-2> ^argument1 <o-rank-2> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-rank-2-loc-2-3>)
+   (<member-rank-2-loc-2-3> ^argument1 <o-rank-2> ^argument2 <o-loc-2-3>)
+   (<w> ^sum-target <target-rank-2>)
+   (<target-rank-2> ^argument1 <o-rank-2> ^argument2 <o-loc-2-4>)
+   (<w> ^member <member-rank-3-loc-3-1>)
+   (<member-rank-3-loc-3-1> ^argument1 <o-rank-3> ^argument2 <o-loc-3-1>)
+   (<w> ^member <member-rank-3-loc-3-2>)
+   (<member-rank-3-loc-3-2> ^argument1 <o-rank-3> ^argument2 <o-loc-3-2>)
+   (<w> ^member <member-rank-3-loc-3-3>)
+   (<member-rank-3-loc-3-3> ^argument1 <o-rank-3> ^argument2 <o-loc-3-3>)
+   (<w> ^sum-target <target-rank-3>)
+   (<target-rank-3> ^argument1 <o-rank-3> ^argument2 <o-loc-3-4>)
+   (<w> ^member <member-rank-4-loc-4-1>)
+   (<member-rank-4-loc-4-1> ^argument1 <o-rank-4> ^argument2 <o-loc-4-1>)
+   (<w> ^member <member-rank-4-loc-4-2>)
+   (<member-rank-4-loc-4-2> ^argument1 <o-rank-4> ^argument2 <o-loc-4-2>)
+   (<w> ^member <member-rank-4-loc-4-3>)
+   (<member-rank-4-loc-4-3> ^argument1 <o-rank-4> ^argument2 <o-loc-4-3>)
+   (<w> ^sum-target <target-rank-4>)
+   (<target-rank-4> ^argument1 <o-rank-4> ^argument2 <o-loc-4-4>)
+   (log 1 (crlf) |Initialize shuffle.|)
+}
+
+sp {shuffle*elaborate*problem-space
+   (state <s> ^name shuffle)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name shuffle ^copy-relation below ^copy-relation empty ^copy-relation member ^copy-relation sum-target ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {shuffle*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name shuffle ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name shuffle ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {shuffle*elaborate*flags
+   (state <s> ^superstate nil ^name shuffle)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {shuffle*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {shuffle*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {shuffle*propose*write
+   (state <s> ^problem-space.name shuffle ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l> <n>)
+   (<l> ^type location ^object-handle $ <lh>)
+   (<n> ^type number ^number <k> ^object-handle $ <nh>)
+   (<w> ^empty <e>)
+   (<e> ^argument1 <l>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of write (look-ahead): the location has the value; it is no longer empty.
+sp {shuffle*apply*write*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <lh> ^argument2.object-handle $ <nh>)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+}
+
+## Effect of a completed write command on the real world (once per command).
+sp {shuffle*apply*write*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name write ^status complete ^argument1 <lh> ^argument2 <nh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+   (<pa> ^effect-applied true)
+   (write |Write | <k> | on | <lh> (crlf))
+}
+## Sum of a group of 3 locations, once every member has a value (derived; not copied into look-ahead worlds).
+sp {shuffle*elaborate*group*sum*3
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3>)
+   (<g> ^type group ^size 3)
+   (<r1> ^argument1 <g> ^argument2 <l1>)
+   (<l1> ^value <v1> ^object-handle $ <h1>)
+   (<r2> ^argument1 <g> ^argument2 <l2>)
+   (<l2> ^value <v2> ^object-handle { <> <h1> <h2> })
+   (<r3> ^argument1 <g> ^argument2 <l3>)
+   (<l3> ^value <v3> ^object-handle { <> <h1> <> <h2> <h3> })
+-->
+   (<g> ^sum (+ <v1> <v2> <v3>))
+}
+## Failure: the locations of a group are filled and their sum is not the value of the group's target.
+sp {shuffle*elaborate*failure*group-sum-target
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects.object <g> ^sum-target <st>)
+   (<st> ^argument1 <g> ^argument2 <tg>)
+   (<g> ^type group ^sum <sum>)
+   (<tg> ^value { <> <sum> })
+-->
+   (<s> ^failure <ds>)
+}
+## Goal: all locations are filled (expanded over the locations of the world file; filled: value more than zero).
+sp {shuffle*elaborate*goal*all-filled
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <t> <l-loc-1-1> <l-loc-2-1> <l-loc-3-1> <l-loc-4-1> <l-loc-1-2> <l-loc-2-2> <l-loc-3-2> <l-loc-4-2> <l-loc-1-3> <l-loc-2-3> <l-loc-3-3> <l-loc-4-3> <l-loc-1-4> <l-loc-2-4> <l-loc-3-4> <l-loc-4-4>)
+   (<t> ^type task)
+   (<l-loc-1-1> ^object-handle loc-1-1 ^value > 0)
+   (<l-loc-2-1> ^object-handle loc-2-1 ^value > 0)
+   (<l-loc-3-1> ^object-handle loc-3-1 ^value > 0)
+   (<l-loc-4-1> ^object-handle loc-4-1 ^value > 0)
+   (<l-loc-1-2> ^object-handle loc-1-2 ^value > 0)
+   (<l-loc-2-2> ^object-handle loc-2-2 ^value > 0)
+   (<l-loc-3-2> ^object-handle loc-3-2 ^value > 0)
+   (<l-loc-4-2> ^object-handle loc-4-2 ^value > 0)
+   (<l-loc-1-3> ^object-handle loc-1-3 ^value > 0)
+   (<l-loc-2-3> ^object-handle loc-2-3 ^value > 0)
+   (<l-loc-3-3> ^object-handle loc-3-3 ^value > 0)
+   (<l-loc-4-3> ^object-handle loc-4-3 ^value > 0)
+   (<l-loc-1-4> ^object-handle loc-1-4 ^value > 0)
+   (<l-loc-2-4> ^object-handle loc-2-4 ^value > 0)
+   (<l-loc-3-4> ^object-handle loc-3-4 ^value > 0)
+   (<l-loc-4-4> ^object-handle loc-4-4 ^value > 0)
+-->
+   (<t> ^goal-met true)
+}

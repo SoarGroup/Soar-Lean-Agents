@@ -51,8 +51,43 @@
 "id": "043849fd211c4ad7b436d77243f8edb1",
 "outEdges": [
 {
+"name": "above-computed",
+"toId": "780b8f9ba04d5b24b8adcc1ab52122d4",
+"layer": 4
+},
+{
 "name": "agent-mode",
 "toId": "088e2c4bc9e94a5cb16ce2e61ac8c975",
+"layer": 2
+},
+{
+"name": "aspiration",
+"toId": "6b610597981c5822adaed0d4fc007e41",
+"layer": 1
+},
+{
+"name": "aspiration-step",
+"toId": "fa80c6872534564b95230ab022e82fa7",
+"layer": 1
+},
+{
+"name": "clean-up-on-success",
+"toId": "8da1ed3212945b219438741ccc211a14",
+"layer": 4
+},
+{
+"name": "cost-metric",
+"toId": "52178b9b8ddd5b5cb8a5c13e22c2e285",
+"layer": 1
+},
+{
+"name": "cost-quantum",
+"toId": "5f49d12e9b51529eb7047839f4bf8d64",
+"layer": 1
+},
+{
+"name": "cost-weight",
+"toId": "807d8b2ec4e15a2c9f046abedc2ea768",
 "layer": 2
 },
 {
@@ -61,9 +96,19 @@
 "layer": 2
 },
 {
+"name": "desired-selection",
+"toId": "1f2322d5036f5e2e947290e6f9e08727",
+"layer": 4
+},
+{
 "name": "desireds-source",
 "toId": "e6467a0959a14011877041e9e43b6541",
 "layer": 2
+},
+{
+"name": "epmem-retrieve",
+"toId": "7e444dc65c2153a387c5e7ae793740c1",
+"layer": 4
 },
 {
 "name": "explore",
@@ -71,34 +116,24 @@
 "layer": 2
 },
 {
+"name": "explore-receptacles",
+"toId": "da2efaba8c8d5ca6abc652fa27615cb0",
+"layer": 4
+},
+{
 "name": "gps-desired-ordering",
 "toId": "d1b668caad574a80a2158bdae0155320",
 "layer": 2
 },
 {
+"name": "heuristic-weight",
+"toId": "726547afe0d3538e845e635a8b5e6c6f",
+"layer": 1
+},
+{
 "name": "hide-in-container-objects",
 "toId": "82af3ba57c49439d90775b736ca901a7",
 "layer": 4
-},
-{
-"name": "rl",
-"toId": "d1b668caad574a80a2158bdae0155320",
-"layer": 2
-},
-{
-"name": "smem-store",
-"toId": "512406950a4a4c20828f24528251fdc1",
-"layer": 2
-},
-{
-"name": "verify",
-"toId": "d1b668caad574a80a2158bdae0155320",
-"layer": 1
-},
-{
-"name": "guardrails",
-"toId": "03a9d3b72ccd5cd29af3b312073227c1",
-"layer": 1
 },
 {
 "name": "hierarchical-properties",
@@ -109,36 +144,6 @@
 "name": "init-evaluation-depth",
 "toId": "0cf45c1c42015d44806ca7c7271d875c",
 "layer": 1
-},
-{
-"name": "iterative-step",
-"toId": "bc65d102e60a5f97b4601bdd111a2027",
-"layer": 1
-},
-{
-"name": "above-computed",
-"toId": "780b8f9ba04d5b24b8adcc1ab52122d4",
-"layer": 4
-},
-{
-"name": "clean-up-on-success",
-"toId": "8da1ed3212945b219438741ccc211a14",
-"layer": 4
-},
-{
-"name": "desired-selection",
-"toId": "1f2322d5036f5e2e947290e6f9e08727",
-"layer": 4
-},
-{
-"name": "epmem-retrieve",
-"toId": "7e444dc65c2153a387c5e7ae793740c1",
-"layer": 4
-},
-{
-"name": "explore-receptacles",
-"toId": "da2efaba8c8d5ca6abc652fa27615cb0",
-"layer": 4
 },
 {
 "name": "initialize-scene-with-smem",
@@ -156,14 +161,49 @@
 "layer": 4
 },
 {
+"name": "iterative-step",
+"toId": "bc65d102e60a5f97b4601bdd111a2027",
+"layer": 1
+},
+{
+"name": "max-evaluation-depth",
+"toId": "85445abc08155d03c1f7f06001504496",
+"layer": 1
+},
+{
 "name": "mea-operator-selection",
 "toId": "51ce2e0b0e4d52598082ab6621de6844",
 "layer": 4
 },
 {
+"name": "min-step-cost",
+"toId": "8ebd2baf6850559eb7bed5a360cc6dd0",
+"layer": 2
+},
+{
+"name": "optimize",
+"toId": "a20d45b670645cd9b1fd5d27abf7ee5e",
+"layer": 1
+},
+{
 "name": "profile",
 "toId": "bdfc31680a2f5bbb9a3f732021b263af",
 "layer": 4
+},
+{
+"name": "progress-score",
+"toId": "c4b1f87a49da5395ad6156f05aeb8afd",
+"layer": 1
+},
+{
+"name": "progress-threshold",
+"toId": "55ac186e1aca55ad86d978a9d212f314",
+"layer": 1
+},
+{
+"name": "rl",
+"toId": "d1b668caad574a80a2158bdae0155320",
+"layer": 2
 },
 {
 "name": "scan-room",
@@ -176,44 +216,14 @@
 "layer": 4
 },
 {
+"name": "smem-store",
+"toId": "512406950a4a4c20828f24528251fdc1",
+"layer": 2
+},
+{
 "name": "task-search-control",
 "toId": "761d21798da557b386f1a13c90666e3e",
 "layer": 4
-},
-{
-"name": "view-frustum",
-"toId": "d12cc0f416e35e84ba6d7ac7c0637c5a",
-"layer": 4
-},
-{
-"name": "cost-metric",
-"toId": "52178b9b8ddd5b5cb8a5c13e22c2e285",
-"layer": 1
-},
-{
-"name": "optimize",
-"toId": "a20d45b670645cd9b1fd5d27abf7ee5e",
-"layer": 1
-},
-{
-"name": "cost-quantum",
-"toId": "5f49d12e9b51529eb7047839f4bf8d64",
-"layer": 1
-},
-{
-"name": "min-step-cost",
-"toId": "8ebd2baf6850559eb7bed5a360cc6dd0",
-"layer": 2
-},
-{
-"name": "cost-weight",
-"toId": "807d8b2ec4e15a2c9f046abedc2ea768",
-"layer": 2
-},
-{
-"name": "heuristic-weight",
-"toId": "726547afe0d3538e845e635a8b5e6c6f",
-"layer": 1
 },
 {
 "name": "termination",
@@ -221,24 +231,9 @@
 "layer": 1
 },
 {
-"name": "progress-threshold",
-"toId": "55ac186e1aca55ad86d978a9d212f314",
-"layer": 1
-},
-{
-"name": "progress-score",
-"toId": "c4b1f87a49da5395ad6156f05aeb8afd",
-"layer": 1
-},
-{
-"name": "aspiration",
-"toId": "6b610597981c5822adaed0d4fc007e41",
-"layer": 1
-},
-{
-"name": "aspiration-step",
-"toId": "fa80c6872534564b95230ab022e82fa7",
-"layer": 1
+"name": "view-frustum",
+"toId": "d12cc0f416e35e84ba6d7ac7c0637c5a",
+"layer": 4
 }
 ],
 "type": "SOAR_ID"
@@ -1454,11 +1449,6 @@
 "layer": 2
 },
 {
-"name": "safety",
-"toId": "340a19158ebf48d0b13a8e5d71636fa7",
-"layer": 2
-},
-{
 "name": "selection-value",
 "toId": "08dde600757c49789b3fd0da8b1d9249",
 "layer": 2
@@ -2577,10 +2567,6 @@
 }
 ],
 "type": "SOAR_ID"
-},
-{
-"id": "340a19158ebf48d0b13a8e5d71636fa7",
-"type": "STRING"
 },
 {
 "id": "34d6768d4b82467a99fecc85d4277b64",
@@ -3731,11 +3717,6 @@
 "name": "copied-from",
 "toId": "7b4ad2e45c504371bef6827cb83f64e1",
 "layer": 2
-},
-{
-"name": "name",
-"toId": "e4ea1a8fc1604b91a54211d05a967c80",
-"layer": 0
 }
 ],
 "type": "SOAR_ID"
@@ -4230,21 +4211,6 @@
 "layer": 1
 },
 {
-"name": "verify",
-"toId": "d1b668caad574a80a2158bdae0155320",
-"layer": 1
-},
-{
-"name": "verify",
-"toId": "f06d9856a9054df88d31ce824dadb309",
-"layer": 1
-},
-{
-"name": "verify-done",
-"toId": "a3c30abc42a24f868df2ce787b05508d",
-"layer": 2
-},
-{
 "name": "world-context",
 "toId": "38eff57613884d79a4ab341f3ee4cd12",
 "layer": 2
@@ -4308,11 +4274,6 @@
 "name": "updated-time",
 "toId": "3a81f59f90585b00b205f51ad773e3e3",
 "layer": 4
-},
-{
-"name": "action",
-"toId": "4b1af952ae5552c2863490df72f401b7",
-"layer": 2
 },
 {
 "name": "action-handle",
@@ -4403,11 +4364,6 @@
 "name": "run-time-grounding",
 "toId": "ff754f8de3a25cb391f3c66bc08ca25e",
 "layer": 4
-},
-{
-"name": "safety",
-"toId": "06490057488e5d398febace0de1b3821",
-"layer": 2
 },
 {
 "name": "selection-value",
@@ -5773,10 +5729,6 @@
 }
 ],
 "type": "SOAR_ID"
-},
-{
-"id": "a3c30abc42a24f868df2ce787b05508d",
-"type": "STRING"
 },
 {
 "choices": [
@@ -7516,11 +7468,6 @@
 "type": "SOAR_ID",
 "outEdges": [
 {
-"name": "action",
-"toId": "4b1af952ae5552c2863490df72f401b7",
-"layer": null
-},
-{
 "name": "action-handle",
 "toId": "1aa0099bd4105a5c9ce29edee35659df",
 "layer": null
@@ -7633,11 +7580,6 @@
 {
 "name": "run-time-grounding",
 "toId": "ff754f8de3a25cb391f3c66bc08ca25e",
-"layer": null
-},
-{
-"name": "safety",
-"toId": "06490057488e5d398febace0de1b3821",
 "layer": null
 },
 {
@@ -7826,13 +7768,6 @@
 }
 ],
 "type": "SOAR_ID"
-},
-{
-"choices": [
-"force-conflict"
-],
-"id": "e4ea1a8fc1604b91a54211d05a967c80",
-"type": "ENUMERATION"
 },
 {
 "id": "e5b2e27f8115460581099e2bf4e9d12a",
@@ -8056,10 +7991,6 @@
 }
 ],
 "type": "SOAR_ID"
-},
-{
-"id": "f06d9856a9054df88d31ce824dadb309",
-"type": "STRING"
 },
 {
 "id": "f0864b92e52941a1a2057bc2294be9b5",
@@ -9216,14 +9147,6 @@
 },
 {
 "id": "7212798c9cef51ceaeebb90efc23f3a4",
-"type": "ENUMERATION",
-"choices": [
-"false",
-"true"
-]
-},
-{
-"id": "03a9d3b72ccd5cd29af3b312073227c1",
 "type": "ENUMERATION",
 "choices": [
 "false",
@@ -11747,11 +11670,6 @@
 "type": "SOAR_ID",
 "outEdges": [
 {
-"name": "action",
-"toId": "4b1af952ae5552c2863490df72f401b7",
-"layer": 2
-},
-{
 "name": "action-handle",
 "toId": "1aa0099bd4105a5c9ce29edee35659df",
 "layer": 2
@@ -11867,11 +11785,6 @@
 "layer": 4
 },
 {
-"name": "safety",
-"toId": "06490057488e5d398febace0de1b3821",
-"layer": 2
-},
-{
 "name": "selection-value",
 "toId": "e640ac5bd47a5331b637266071980a3a",
 "layer": 2
@@ -11896,13 +11809,6 @@
 "toId": "9ee668c93e49571e820d6e1017f38c37",
 "layer": 4
 }
-]
-},
-{
-"id": "4b1af952ae5552c2863490df72f401b7",
-"type": "ENUMERATION",
-"choices": [
-"be-careful"
 ]
 },
 {
@@ -13506,10 +13412,6 @@
 },
 {
 "id": "1810f43aae37507684059a373f922833",
-"type": "STRING"
-},
-{
-"id": "06490057488e5d398febace0de1b3821",
 "type": "STRING"
 },
 {
@@ -15747,8 +15649,43 @@
 "type": "SOAR_ID",
 "outEdges": [
 {
+"name": "above-computed",
+"toId": "780b8f9ba04d5b24b8adcc1ab52122d4",
+"layer": 4
+},
+{
 "name": "agent-mode",
 "toId": "088e2c4bc9e94a5cb16ce2e61ac8c975",
+"layer": 2
+},
+{
+"name": "aspiration",
+"toId": "6b610597981c5822adaed0d4fc007e41",
+"layer": 1
+},
+{
+"name": "aspiration-step",
+"toId": "fa80c6872534564b95230ab022e82fa7",
+"layer": 1
+},
+{
+"name": "clean-up-on-success",
+"toId": "8da1ed3212945b219438741ccc211a14",
+"layer": 4
+},
+{
+"name": "cost-metric",
+"toId": "52178b9b8ddd5b5cb8a5c13e22c2e285",
+"layer": 1
+},
+{
+"name": "cost-quantum",
+"toId": "5f49d12e9b51529eb7047839f4bf8d64",
+"layer": 1
+},
+{
+"name": "cost-weight",
+"toId": "807d8b2ec4e15a2c9f046abedc2ea768",
 "layer": 2
 },
 {
@@ -15757,9 +15694,19 @@
 "layer": 2
 },
 {
+"name": "desired-selection",
+"toId": "1f2322d5036f5e2e947290e6f9e08727",
+"layer": 4
+},
+{
 "name": "desireds-source",
 "toId": "e6467a0959a14011877041e9e43b6541",
 "layer": 2
+},
+{
+"name": "epmem-retrieve",
+"toId": "7e444dc65c2153a387c5e7ae793740c1",
+"layer": 4
 },
 {
 "name": "explore",
@@ -15767,34 +15714,24 @@
 "layer": 2
 },
 {
+"name": "explore-receptacles",
+"toId": "da2efaba8c8d5ca6abc652fa27615cb0",
+"layer": 4
+},
+{
 "name": "gps-desired-ordering",
 "toId": "d1b668caad574a80a2158bdae0155320",
 "layer": 2
 },
 {
+"name": "heuristic-weight",
+"toId": "726547afe0d3538e845e635a8b5e6c6f",
+"layer": 1
+},
+{
 "name": "hide-in-container-objects",
 "toId": "82af3ba57c49439d90775b736ca901a7",
 "layer": 4
-},
-{
-"name": "rl",
-"toId": "d1b668caad574a80a2158bdae0155320",
-"layer": 2
-},
-{
-"name": "smem-store",
-"toId": "512406950a4a4c20828f24528251fdc1",
-"layer": 2
-},
-{
-"name": "verify",
-"toId": "d1b668caad574a80a2158bdae0155320",
-"layer": 1
-},
-{
-"name": "guardrails",
-"toId": "03a9d3b72ccd5cd29af3b312073227c1",
-"layer": 1
 },
 {
 "name": "hierarchical-properties",
@@ -15805,36 +15742,6 @@
 "name": "init-evaluation-depth",
 "toId": "0cf45c1c42015d44806ca7c7271d875c",
 "layer": 1
-},
-{
-"name": "iterative-step",
-"toId": "bc65d102e60a5f97b4601bdd111a2027",
-"layer": 1
-},
-{
-"name": "above-computed",
-"toId": "780b8f9ba04d5b24b8adcc1ab52122d4",
-"layer": 4
-},
-{
-"name": "clean-up-on-success",
-"toId": "8da1ed3212945b219438741ccc211a14",
-"layer": 4
-},
-{
-"name": "desired-selection",
-"toId": "1f2322d5036f5e2e947290e6f9e08727",
-"layer": 4
-},
-{
-"name": "epmem-retrieve",
-"toId": "7e444dc65c2153a387c5e7ae793740c1",
-"layer": 4
-},
-{
-"name": "explore-receptacles",
-"toId": "da2efaba8c8d5ca6abc652fa27615cb0",
-"layer": 4
 },
 {
 "name": "initialize-scene-with-smem",
@@ -15852,14 +15759,49 @@
 "layer": 2
 },
 {
+"name": "iterative-step",
+"toId": "bc65d102e60a5f97b4601bdd111a2027",
+"layer": 1
+},
+{
+"name": "max-evaluation-depth",
+"toId": "1f13666f779f61fa4c1b7ccb16856789",
+"layer": 1
+},
+{
 "name": "mea-operator-selection",
 "toId": "51ce2e0b0e4d52598082ab6621de6844",
 "layer": 4
 },
 {
+"name": "min-step-cost",
+"toId": "8ebd2baf6850559eb7bed5a360cc6dd0",
+"layer": 2
+},
+{
+"name": "optimize",
+"toId": "a20d45b670645cd9b1fd5d27abf7ee5e",
+"layer": 1
+},
+{
 "name": "profile",
 "toId": "bdfc31680a2f5bbb9a3f732021b263af",
 "layer": 4
+},
+{
+"name": "progress-score",
+"toId": "c4b1f87a49da5395ad6156f05aeb8afd",
+"layer": 1
+},
+{
+"name": "progress-threshold",
+"toId": "55ac186e1aca55ad86d978a9d212f314",
+"layer": 1
+},
+{
+"name": "rl",
+"toId": "d1b668caad574a80a2158bdae0155320",
+"layer": 2
 },
 {
 "name": "scan-room",
@@ -15872,44 +15814,14 @@
 "layer": 4
 },
 {
+"name": "smem-store",
+"toId": "512406950a4a4c20828f24528251fdc1",
+"layer": 2
+},
+{
 "name": "task-search-control",
 "toId": "761d21798da557b386f1a13c90666e3e",
 "layer": 4
-},
-{
-"name": "view-frustum",
-"toId": "d12cc0f416e35e84ba6d7ac7c0637c5a",
-"layer": 4
-},
-{
-"name": "cost-metric",
-"toId": "52178b9b8ddd5b5cb8a5c13e22c2e285",
-"layer": 1
-},
-{
-"name": "optimize",
-"toId": "a20d45b670645cd9b1fd5d27abf7ee5e",
-"layer": 1
-},
-{
-"name": "cost-quantum",
-"toId": "5f49d12e9b51529eb7047839f4bf8d64",
-"layer": 1
-},
-{
-"name": "min-step-cost",
-"toId": "8ebd2baf6850559eb7bed5a360cc6dd0",
-"layer": 2
-},
-{
-"name": "cost-weight",
-"toId": "807d8b2ec4e15a2c9f046abedc2ea768",
-"layer": 2
-},
-{
-"name": "heuristic-weight",
-"toId": "726547afe0d3538e845e635a8b5e6c6f",
-"layer": 1
 },
 {
 "name": "termination",
@@ -15917,24 +15829,9 @@
 "layer": 1
 },
 {
-"name": "progress-threshold",
-"toId": "55ac186e1aca55ad86d978a9d212f314",
-"layer": 1
-},
-{
-"name": "progress-score",
-"toId": "c4b1f87a49da5395ad6156f05aeb8afd",
-"layer": 1
-},
-{
-"name": "aspiration",
-"toId": "6b610597981c5822adaed0d4fc007e41",
-"layer": 1
-},
-{
-"name": "aspiration-step",
-"toId": "fa80c6872534564b95230ab022e82fa7",
-"layer": 1
+"name": "view-frustum",
+"toId": "d12cc0f416e35e84ba6d7ac7c0637c5a",
+"layer": 4
 }
 ]
 },
@@ -16842,11 +16739,6 @@
 "layer": null
 },
 {
-"name": "operator",
-"toId": "ac07ee22d9e8549ebe122efd8e2328b1",
-"layer": null
-},
-{
 "name": "quiescence",
 "toId": "164f7a18f64055d091481c70778b3574",
 "layer": null
@@ -16934,24 +16826,6 @@
 "type": "ENUMERATION",
 "choices": [
 "all-evaluations-failed"
-]
-},
-{
-"id": "ac07ee22d9e8549ebe122efd8e2328b1",
-"type": "SOAR_ID",
-"outEdges": [
-{
-"name": "name",
-"toId": "ebd2f9f08ec455ceb0833ad274a317f7",
-"layer": null
-}
-]
-},
-{
-"id": "ebd2f9f08ec455ceb0833ad274a317f7",
-"type": "ENUMERATION",
-"choices": [
-"no-more-evaluations"
 ]
 },
 {
@@ -17982,20 +17856,7 @@
 {
 "id": "d9bcea4f12c45103bc3d00601da22cd7",
 "type": "SOAR_ID",
-"outEdges": [
-{
-"name": "name",
-"toId": "7e5d9170d5d05cb982fa1cb18a673c31",
-"layer": null
-}
-]
-},
-{
-"id": "7e5d9170d5d05cb982fa1cb18a673c31",
-"type": "ENUMERATION",
-"choices": [
-"force-conflict"
-]
+"outEdges": []
 },
 {
 "id": "877741078b3e51c8b1078482306ace5b",
@@ -22230,6 +22091,14 @@
 "choices": [
 "state"
 ]
+},
+{
+"id": "85445abc08155d03c1f7f06001504496",
+"type": "INTEGER"
+},
+{
+"id": "1f13666f779f61fa4c1b7ccb16856789",
+"type": "INTEGER"
 }
 ],
 "substates": {

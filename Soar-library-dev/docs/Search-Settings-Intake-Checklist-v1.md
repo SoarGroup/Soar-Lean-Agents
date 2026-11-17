@@ -2,7 +2,10 @@
 
 For every task the pipeline generates. It decides three flags: `^iterative-step`, `^cost-metric` and `^optimize`. It extends the Option Selection Guide (Soar-library-dev/docs/Option-Selection-Guide-v1.md): that guide's questions Q1 to Q9 and probes P0 to P5 still apply to the cost options. This checklist adds the choice of depth unit, the measured probe (P6) and the rule for choosing among the measured configurations.
 
-Library defaults (v2.34): `iterative-step operator`, `cost-metric none`, `optimize false`. A task sets something else only through `^flag-override`, written by the generator from options.json.
+Library defaults (v2.34 to v2.41): `iterative-step operator`, `cost-metric none`, `optimize false`. Since v2.37 the depth limit is the
+`max-evaluation-depth` flag (default 12) and `iterative-step cost` without a cost metric gets `cost-metric unit`; since v2.40 `optimize true`
+guarantees the cheapest plan (positive step costs, admissible estimates) under operator depth as well as tie-impasse depth. Checked against
+library v2.41 on 16 Nov 2026; the measurements below predate v2.37 and were not rerun. A task sets something else only through `^flag-override`, written by the generator from options.json.
 
 ## 1. Questions at intake (ask the person one at a time; skip any the English answers)
 
@@ -11,7 +14,7 @@ Library defaults (v2.34): `iterative-step operator`, `cost-metric none`, `optimi
 | S1 | Does the English ask for the cheapest, fastest, shortest or best solution, or give actions a cost? (= Q1 of the guide) | yes: candidates with `cost-metric unit` (or `time`) and `optimize true`. no: no cost options are tried. |
 | S2 | Is there exactly one solution, or is any solution acceptable (a puzzle with a unique answer, constraint satisfaction)? | yes: never `optimize true`; it only adds the cost of proving that nothing cheaper exists. |
 | S3 | In a typical state, how many actions apply: usually several real alternatives (moves, fills, crossings), or mostly one forced step (propagation, bookkeeping, inference) with an occasional guess? | several at almost every step: operator depth. Mostly forced with rare guesses: tie-impasse. |
-| S4 | Roughly how many actions does a solution take, and how many of them are real choices? | more than 12 steps but at most 12 choices: tie-impasse (operator depth would hit the depth limit of 12). |
+| S4 | Roughly how many actions does a solution take, and how many of them are real choices? | more than 12 steps but at most 12 choices: tie-impasse (operator depth would hit the depth limit, `max-evaluation-depth`, default 12). |
 | S5 | Do operators carry effect-desireds so that means-ends selection removes most ties (`^mea-operator-selection true`)? | yes: ties are rare, which favours tie-impasse; confirm with P6. |
 
 Record each answer with the English sentence it rests on. An answer from Claude's own reading is an assumption for review, as in section 2 of the guide.

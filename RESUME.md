@@ -1,19 +1,28 @@
-# Resume: Soar-Lean-Agents (updated 16 Nov 2026)
+# Resume: Soar-Lean-Agents (updated 17 Nov 2026)
 
-## Status (16 Nov 2026): library
+## Status (17 Nov 2026): library
 
-- **Library v2.35** is installed in `Soar/soar-library` (release zip in `Soar-library-dev/releases`).
-  v2.35 changes only datamaps (`^duplicate-of` is an identifier); v2.34 had no rule change from v2.33. Defaults: `^iterative-step operator`, `^cost-metric none`,
+- **Library v2.42** is installed in `Soar/soar-library` (release zip in `Soar-library-dev/releases`).
+  v2.42 removes `selection-world*compare*selection*lower-bound-better-than-success`: in nested selections it preferred depth-exceeded branches over a success, which kept cost graph r4x8 from ever taking the goal edge under tie-impasse (lower bounds already pass up from every nested evaluation, so the cost guarantee does not need it). v2.41 corrects comments only (readme rule counts; the agent-world doc no longer asks for `^agent-world true`). v2.40: `^optimize true` guarantees the cheapest plan under operator depth as well as tie-impasse (bound checking, `^better` copied to look-ahead desireds); all-evaluations-failed up to 10 items. v2.39: failed operators are rejected; a lost top state does not halt with success (Rosie findings). v2.38 removes the verify and guardrails flags and the force-conflict mechanism (25 rules; history in `Soar-library-dev/docs/History-verify-guardrails-force-conflict.md`); the unachieved-desireds starting depth stays at the count. v2.37 adopts three search changes from the selection-world review: `^iterative-step cost` now defaults `^cost-metric unit`; the loser of an evaluation comparison is marked `^closed`; `^max-evaluation-depth` is a flag (default 12). v2.36 makes four corrections from the selection-world review (no behaviour change); v2.35 changed only datamaps (`^duplicate-of` is an identifier); v2.34 had no rule change from v2.33. Defaults: `^iterative-step operator`, `^cost-metric none`,
   `^optimize false`. Search gains come from per-task `^flag-override`, chosen by measurement with
   `probe_settings.py` (`Soar-library-dev/docs/Search-Settings-Intake-Checklist-v1.md`).
 - Tasks that set `^iterative-step tie-impasse`: generated Blocks World (test set), mc
   (`Tasks/From-English/mc-world` and test set), and in `Tasks/Families`: blocks-world-look-ahead,
   kenken-4-5, kenken-6-1, 6-2, 6-3. water-jug-look-ahead keeps operator depth
   (`Soar-library-dev/findings/FINDING-tie-impasse-unbounded-continuation.md`).
-- **Test set v1.28** (296 tests) holds the v2.34 baselines. Known regression: artists-3 (all three
+- **Test set v1.35** (515 tests) holds the v2.42 baselines (v1.35: 20 tests re-baselined, all plans unchanged, r4x8 tie-impasse now solves with the optimal plan, cap 10,000; recorded with PyPI soar-sml 9.6.5; v1.34 corrects the README only; v1.33: 28 cost-graph tests change under optimize with operator depth, all still solve, no plan worse; v1.32 added 6 tests of `init-evaluation-depth unachieved-desireds`). v1.29 added 174 tests of the world-convention
+  step 6 task families (58 variants, seeds 1-3); v1.30 added 39 tests of tie-impasse search with a cost
+  metric. Known regression: artists-3 (all three
   seeds) does not solve within 20,000 decisions.
-- **Tools:** worldgen v19; `SoarLean/soarlean-agentgen-2026-11-16.zip` (agentgen with the
-  `vsproject.py` settings option and the v18 `wg.py`).
+- **Tools:** worldgen v19; `SoarLean/soarlean-agentgen-2026-11-16b.zip` (agentgen with the
+  `vsproject.py` settings option, the v18 `wg.py`, WorldSpec and rosiegen; reserved operator names in
+  `World/Check.lean` match the library); `SoarLean/install-lean-sandbox.sh`; option tools in
+  `Soar-library-dev/tools/option-selection/` updated for v2.37 to v2.41.
+- **Consistency check (16 Nov 2026, evening):** the library, test set, conventions (specification v6,
+  workbook v6, VisualSoar project conventions), SoarLean, the manual (draft v2), the option-selection
+  guide (v1.2), the intake checklist and these top-level files were brought into line with v2.41.
+  Not done: loading the generated agents in Soar 9.6.6 with v2.41, and rechecking measurements made on
+  earlier library versions (marked as such in the documents).
 
 ## Open (library)
 

@@ -1,0 +1,21 @@
+objid 1
+category square
+name left
+
+objid 2
+category square
+name right
+
+objid 3
+category agent
+name vacuum
+
+predicate at
+3 2
+
+predicate dirty
+2
+
+predicate next
+1 2
+2 1

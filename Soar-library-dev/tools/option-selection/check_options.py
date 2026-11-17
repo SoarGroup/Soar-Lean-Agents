@@ -16,7 +16,8 @@ def flags(text):
 def check(text):
     f = flags(text); r = []
     def add(i, lvl, msg): r.append((i, lvl, msg))
-    cm = f.get('cost-metric', 'none'); it = f.get('iterative-step', 'operator'); opt = f.get('optimize', 'false') == 'true'
+    it = f.get('iterative-step', 'operator'); cm = f.get('cost-metric', 'unit' if it == 'cost' else 'none')  # library v2.37: iterative-step cost implies unit
+    opt = f.get('optimize', 'false') == 'true'
     h = bool(re.search(r'\^estimated-remaining-cost\s+[\d.]', text)); nv = bool(re.search(r'\^better\s+higher', text)); sv = '^state-value' in text
     sc = bool(re.search(r'\^step-cost\b', text)); zero = bool(re.search(r'\^step-cost\s+0(\.0+)?[\s)]', text))
     ps = '^progress-score' in text
@@ -25,8 +26,8 @@ def check(text):
         if k in NUM and not re.fullmatch(r'-?\d+(\.\d+)?', v): add('O1', 'E', f'^{k} {v}: must be a number')
     for k in sorted(NEEDS_COST & set(f)):
         if cm == 'none': add('O2', 'E', f'^{k} needs ^cost-metric unit or time (it has no effect with none)')
-    if it == 'cost' and cm == 'none': add('O2', 'E', '^iterative-step cost needs ^cost-metric unit or time')
-    if cm == 'unit' and not sc: add('O3', 'E', 'cost-metric unit but no operator carries ^step-cost')
+    if it == 'cost' and cm == 'none': add('O2', 'E', '^iterative-step cost with ^cost-metric none: cost-cap iteration has no path cost (leave cost-metric unset, which gives unit since library v2.37, or set unit or time)')
+    if cm == 'unit' and not sc: add('O3', 'W', 'cost-metric unit but no operator carries ^step-cost: every task operator costs 1 (the library default), so the cost is the number of operators')
     if cm == 'none' and (sc or h): add('O3', 'W', 'task supplies ^step-cost or ^estimated-remaining-cost but cost-metric is none: they are ignored')
     if h and cm != 'none' and not (opt or it == 'cost'): add('O4', 'W', '^estimated-remaining-cost is used only with optimize true or iterative-step cost')
     if h and f.get('heuristic-weight', '1') not in ('1', '1.0') and not h: add('O4', 'W', 'heuristic-weight without ^estimated-remaining-cost')

@@ -1,0 +1,255 @@
+## Map coloring with numbers, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   1. The name of the puzzle is number-map-color.
+##   4. The name of the action is write-1-to-4.
+##   5. You can write a number that is between one and four onto an empty location.
+##   6. If the value of a location is absent then the location is empty.
+##   8. If the value of a location is the value of an object that is next to the location then you lose.
+##  10. The solution has three steps.
+##  12. The name of the goal is all-filled.
+##  14. The goal is that all locations are filled.
+##  15. If the value of a location is more than zero then the location is filled.
+## World: init-map-ncolor3rc.world (a 3x3 grid of locations, six filled; near relation between neighbors)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - "an object that is next to the location": the near relation of the world file (A-L2).
+##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 4).
+
+sp {number-map-color*propose*initialize-number-map-color
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-number-map-color ^task-operator false)
+}
+
+sp {number-map-color*apply*initialize-number-map-color
+   (state <s> ^operator.name initialize-number-map-color ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name number-map-color ^desireds <ds>)
+   (<objs> ^object <o-loc-1-1> <o-loc-1-2> <o-loc-1-3> <o-loc-2-1> <o-loc-2-2> <o-loc-2-3> <o-loc-3-1> <o-loc-3-2> <o-loc-3-3> <o-task> <o-number-1> <o-number-2> <o-number-3> <o-number-4>)
+   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1)
+   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^value 2 ^row 1 ^column 2)
+   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^value 4 ^row 1 ^column 3)
+   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^value 3 ^row 2 ^column 1)
+   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^value 1 ^row 2 ^column 2)
+   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^value 3 ^row 2 ^column 3)
+   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^value 4 ^row 3 ^column 1)
+   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2)
+   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
+   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
+   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
+   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^empty <empty-loc-1-1>)
+   (<empty-loc-1-1> ^argument1 <o-loc-1-1>)
+   (<w> ^empty <empty-loc-3-2>)
+   (<empty-loc-3-2> ^argument1 <o-loc-3-2>)
+   (<w> ^empty <empty-loc-3-3>)
+   (<empty-loc-3-3> ^argument1 <o-loc-3-3>)
+   (<w> ^near <near-0>)
+   (<near-0> ^argument1 <o-loc-1-1> ^argument2 <o-loc-1-2>)
+   (<w> ^near <near-1>)
+   (<near-1> ^argument1 <o-loc-1-1> ^argument2 <o-loc-2-1>)
+   (<w> ^near <near-2>)
+   (<near-2> ^argument1 <o-loc-1-1> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-3>)
+   (<near-3> ^argument1 <o-loc-1-2> ^argument2 <o-loc-1-1>)
+   (<w> ^near <near-4>)
+   (<near-4> ^argument1 <o-loc-1-2> ^argument2 <o-loc-1-3>)
+   (<w> ^near <near-5>)
+   (<near-5> ^argument1 <o-loc-1-2> ^argument2 <o-loc-2-1>)
+   (<w> ^near <near-6>)
+   (<near-6> ^argument1 <o-loc-1-2> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-7>)
+   (<near-7> ^argument1 <o-loc-1-2> ^argument2 <o-loc-2-3>)
+   (<w> ^near <near-8>)
+   (<near-8> ^argument1 <o-loc-1-3> ^argument2 <o-loc-1-2>)
+   (<w> ^near <near-9>)
+   (<near-9> ^argument1 <o-loc-1-3> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-10>)
+   (<near-10> ^argument1 <o-loc-1-3> ^argument2 <o-loc-2-3>)
+   (<w> ^near <near-11>)
+   (<near-11> ^argument1 <o-loc-2-1> ^argument2 <o-loc-1-1>)
+   (<w> ^near <near-12>)
+   (<near-12> ^argument1 <o-loc-2-1> ^argument2 <o-loc-1-2>)
+   (<w> ^near <near-13>)
+   (<near-13> ^argument1 <o-loc-2-1> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-14>)
+   (<near-14> ^argument1 <o-loc-2-1> ^argument2 <o-loc-3-1>)
+   (<w> ^near <near-15>)
+   (<near-15> ^argument1 <o-loc-2-1> ^argument2 <o-loc-3-2>)
+   (<w> ^near <near-16>)
+   (<near-16> ^argument1 <o-loc-2-2> ^argument2 <o-loc-1-1>)
+   (<w> ^near <near-17>)
+   (<near-17> ^argument1 <o-loc-2-2> ^argument2 <o-loc-1-2>)
+   (<w> ^near <near-18>)
+   (<near-18> ^argument1 <o-loc-2-2> ^argument2 <o-loc-1-3>)
+   (<w> ^near <near-19>)
+   (<near-19> ^argument1 <o-loc-2-2> ^argument2 <o-loc-2-1>)
+   (<w> ^near <near-20>)
+   (<near-20> ^argument1 <o-loc-2-2> ^argument2 <o-loc-2-3>)
+   (<w> ^near <near-21>)
+   (<near-21> ^argument1 <o-loc-2-2> ^argument2 <o-loc-3-1>)
+   (<w> ^near <near-22>)
+   (<near-22> ^argument1 <o-loc-2-2> ^argument2 <o-loc-3-2>)
+   (<w> ^near <near-23>)
+   (<near-23> ^argument1 <o-loc-2-2> ^argument2 <o-loc-3-3>)
+   (<w> ^near <near-24>)
+   (<near-24> ^argument1 <o-loc-2-3> ^argument2 <o-loc-1-2>)
+   (<w> ^near <near-25>)
+   (<near-25> ^argument1 <o-loc-2-3> ^argument2 <o-loc-1-3>)
+   (<w> ^near <near-26>)
+   (<near-26> ^argument1 <o-loc-2-3> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-27>)
+   (<near-27> ^argument1 <o-loc-2-3> ^argument2 <o-loc-3-2>)
+   (<w> ^near <near-28>)
+   (<near-28> ^argument1 <o-loc-2-3> ^argument2 <o-loc-3-3>)
+   (<w> ^near <near-29>)
+   (<near-29> ^argument1 <o-loc-3-1> ^argument2 <o-loc-2-1>)
+   (<w> ^near <near-30>)
+   (<near-30> ^argument1 <o-loc-3-1> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-31>)
+   (<near-31> ^argument1 <o-loc-3-1> ^argument2 <o-loc-3-2>)
+   (<w> ^near <near-32>)
+   (<near-32> ^argument1 <o-loc-3-2> ^argument2 <o-loc-3-1>)
+   (<w> ^near <near-33>)
+   (<near-33> ^argument1 <o-loc-3-2> ^argument2 <o-loc-2-1>)
+   (<w> ^near <near-34>)
+   (<near-34> ^argument1 <o-loc-3-2> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-35>)
+   (<near-35> ^argument1 <o-loc-3-2> ^argument2 <o-loc-2-3>)
+   (<w> ^near <near-36>)
+   (<near-36> ^argument1 <o-loc-3-2> ^argument2 <o-loc-3-3>)
+   (<w> ^near <near-37>)
+   (<near-37> ^argument1 <o-loc-3-3> ^argument2 <o-loc-3-2>)
+   (<w> ^near <near-38>)
+   (<near-38> ^argument1 <o-loc-3-3> ^argument2 <o-loc-2-2>)
+   (<w> ^near <near-39>)
+   (<near-39> ^argument1 <o-loc-3-3> ^argument2 <o-loc-2-3>)
+   (log 1 (crlf) |Initialize number-map-color.|)
+}
+
+sp {number-map-color*elaborate*problem-space
+   (state <s> ^name number-map-color)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name number-map-color ^copy-relation below ^copy-relation near ^copy-relation empty ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {number-map-color*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name number-map-color ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name number-map-color ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+}
+
+sp {number-map-color*elaborate*flags
+   (state <s> ^superstate nil ^name number-map-color)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {number-map-color*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {number-map-color*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {number-map-color*propose*write
+   (state <s> ^problem-space.name number-map-color ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <l> <n>)
+   (<l> ^type location ^object-handle $ <lh>)
+   (<n> ^type number ^number <k> ^object-handle $ <nh>)
+   (<w> ^empty <e>)
+   (<e> ^argument1 <l>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of write (look-ahead): the location has the value; it is no longer empty.
+sp {number-map-color*apply*write*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <lh> ^argument2.object-handle $ <nh>)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+}
+
+## Effect of a completed write command on the real world (once per command).
+sp {number-map-color*apply*write*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name write ^status complete ^argument1 <lh> ^argument2 <nh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs> ^empty <e>)
+   (<objs> ^object <l> <n>)
+   (<l> ^object-handle $ <lh>)
+   (<n> ^object-handle $ <nh> ^number <k>)
+   (<e> ^argument1 <l>)
+-->
+   (<l> ^value <k>)
+   (<w> ^empty <e> -)
+   (<pa> ^effect-applied true)
+   (write |Write | <k> | on | <lh> (crlf))
+}
+## Failure: the value of a location is the value of an object that is next to it (the near relation of the world file).
+sp {number-map-color*elaborate*failure*same-value-as-neighbor
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^near <r>)
+   (<r> ^argument1 <l> ^argument2 <o>)
+   (<l> ^type location ^value <v>)
+   (<o> ^value <v>)
+-->
+   (<s> ^failure <ds>)
+}
+## Goal: all locations are filled (expanded over the locations of the world file; filled: value more than zero).
+sp {number-map-color*elaborate*goal*all-filled
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <t> <l-loc-1-1> <l-loc-1-2> <l-loc-1-3> <l-loc-2-1> <l-loc-2-2> <l-loc-2-3> <l-loc-3-1> <l-loc-3-2> <l-loc-3-3>)
+   (<t> ^type task)
+   (<l-loc-1-1> ^object-handle loc-1-1 ^value > 0)
+   (<l-loc-1-2> ^object-handle loc-1-2 ^value > 0)
+   (<l-loc-1-3> ^object-handle loc-1-3 ^value > 0)
+   (<l-loc-2-1> ^object-handle loc-2-1 ^value > 0)
+   (<l-loc-2-2> ^object-handle loc-2-2 ^value > 0)
+   (<l-loc-2-3> ^object-handle loc-2-3 ^value > 0)
+   (<l-loc-3-1> ^object-handle loc-3-1 ^value > 0)
+   (<l-loc-3-2> ^object-handle loc-3-2 ^value > 0)
+   (<l-loc-3-3> ^object-handle loc-3-3 ^value > 0)
+-->
+   (<t> ^goal-met true)
+}

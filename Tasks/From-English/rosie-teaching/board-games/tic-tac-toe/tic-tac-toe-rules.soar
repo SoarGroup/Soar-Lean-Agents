@@ -1,0 +1,460 @@
+## Tic-tac-toe, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. You can move a clear available red block onto a clear location.
+##   5. If a block is not on a location then it is available.
+##   6. If a location is not below an object then it is clear.
+##  10. The name of the goal is three-in-row.
+##  12. The goal is that three of the captured locations are in a line.
+##  13. If a location is below a red block then it is captured.
+##  14. If the locations are linear then they are in a line.
+##  16. The name of the failure is opponent-three.
+##  18. If three of the occupied locations are in a line then you lose.
+##  19. If a location is below a blue block then it is occupied.
+## World: init-tictactoerc.world (9 locations with row and column; 3 red and 3 blue blocks in two stacks off the board;
+## the predicate-set linear lists the 8 lines).
+##
+## Translation (rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator move (statement 4; argument1 = the red block, argument2 = the location). Only red moves are taught.
+##   - available (statement 5) and clear (statement 6) test absence and decide legality, so both are maintained one-argument
+##     relations, changed by every move (red's own and blue's).
+##   - captured (13), occupied (19) and in a line (14) are expanded in place in the goal and failure tests. Each line of the
+##     predicate-set linear is a world object of type line with a member relation to each of its three locations.
+##   - The goal (12) is ^goal-met true on the task object; the failure (18) marks the state with ^failure.
+##   - Opponent (decided by JL, 16 Nov 2026): the environment plays blue. Blue's moves arrive on the input-link
+##     (^opponent-move with ^block, ^location, ^number; ^turn; ^blue-moves); input.soar-style rules copy them onto the state
+##     (IO-019) and apply them to the world. The agent proposes a move only when the environment says it is red's turn and
+##     it has applied every blue move reported (IO-021). Look-ahead covers red's own moves only.
+
+sp {tic-tac-toe*propose*initialize-tic-tac-toe
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-tic-tac-toe ^task-operator false)
+}
+
+sp {tic-tac-toe*apply*initialize-tic-tac-toe
+   (state <s> ^operator.name initialize-tic-tac-toe ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name tic-tac-toe ^desireds <ds>)
+   (<objs> ^object <o-loc-1-1> <o-loc-1-2> <o-loc-1-3> <o-loc-2-1> <o-loc-2-2> <o-loc-2-3> <o-loc-3-1> <o-loc-3-2> <o-loc-3-3> <o-red-10> <o-red-11> <o-red-12> <o-blue-13> <o-blue-14> <o-blue-15> <o-task> <o-line-1> <o-line-2> <o-line-3> <o-line-4> <o-line-5> <o-line-6> <o-line-7> <o-line-8>)
+   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1)
+   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^row 1 ^column 2)
+   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^row 1 ^column 3)
+   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^row 2 ^column 1)
+   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^row 2 ^column 2)
+   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^row 2 ^column 3)
+   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^row 3 ^column 1)
+   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2)
+   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3)
+   (<o-red-10> ^object-handle red-10 ^anchored true ^type block ^color red)
+   (<o-red-11> ^object-handle red-11 ^anchored true ^type block ^color red)
+   (<o-red-12> ^object-handle red-12 ^anchored true ^type block ^color red)
+   (<o-blue-13> ^object-handle blue-13 ^anchored true ^type block ^color blue)
+   (<o-blue-14> ^object-handle blue-14 ^anchored true ^type block ^color blue)
+   (<o-blue-15> ^object-handle blue-15 ^anchored true ^type block ^color blue)
+   (<o-task> ^object-handle task ^anchored true ^type task ^blue-moves-applied 0)
+   (<o-line-1> ^object-handle line-1 ^anchored true ^type line)
+   (<o-line-2> ^object-handle line-2 ^anchored true ^type line)
+   (<o-line-3> ^object-handle line-3 ^anchored true ^type line)
+   (<o-line-4> ^object-handle line-4 ^anchored true ^type line)
+   (<o-line-5> ^object-handle line-5 ^anchored true ^type line)
+   (<o-line-6> ^object-handle line-6 ^anchored true ^type line)
+   (<o-line-7> ^object-handle line-7 ^anchored true ^type line)
+   (<o-line-8> ^object-handle line-8 ^anchored true ^type line)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-red-10> ^argument2 <o-red-11>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-red-11> ^argument2 <o-red-12>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-blue-13> ^argument2 <o-blue-14>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-blue-14> ^argument2 <o-blue-15>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-red-11> ^argument2 <o-red-10>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-red-12> ^argument2 <o-red-11>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-blue-14> ^argument2 <o-blue-13>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-blue-15> ^argument2 <o-blue-14>)
+   (<w> ^available <available-red-10>)
+   (<available-red-10> ^argument1 <o-red-10>)
+   (<w> ^available <available-red-11>)
+   (<available-red-11> ^argument1 <o-red-11>)
+   (<w> ^available <available-red-12>)
+   (<available-red-12> ^argument1 <o-red-12>)
+   (<w> ^available <available-blue-13>)
+   (<available-blue-13> ^argument1 <o-blue-13>)
+   (<w> ^available <available-blue-14>)
+   (<available-blue-14> ^argument1 <o-blue-14>)
+   (<w> ^available <available-blue-15>)
+   (<available-blue-15> ^argument1 <o-blue-15>)
+   (<w> ^clear <clear-loc-1-1>)
+   (<clear-loc-1-1> ^argument1 <o-loc-1-1>)
+   (<w> ^clear <clear-loc-1-2>)
+   (<clear-loc-1-2> ^argument1 <o-loc-1-2>)
+   (<w> ^clear <clear-loc-1-3>)
+   (<clear-loc-1-3> ^argument1 <o-loc-1-3>)
+   (<w> ^clear <clear-loc-2-1>)
+   (<clear-loc-2-1> ^argument1 <o-loc-2-1>)
+   (<w> ^clear <clear-loc-2-2>)
+   (<clear-loc-2-2> ^argument1 <o-loc-2-2>)
+   (<w> ^clear <clear-loc-2-3>)
+   (<clear-loc-2-3> ^argument1 <o-loc-2-3>)
+   (<w> ^clear <clear-loc-3-1>)
+   (<clear-loc-3-1> ^argument1 <o-loc-3-1>)
+   (<w> ^clear <clear-loc-3-2>)
+   (<clear-loc-3-2> ^argument1 <o-loc-3-2>)
+   (<w> ^clear <clear-loc-3-3>)
+   (<clear-loc-3-3> ^argument1 <o-loc-3-3>)
+   (<w> ^clear <clear-red-10>)
+   (<clear-red-10> ^argument1 <o-red-10>)
+   (<w> ^clear <clear-blue-13>)
+   (<clear-blue-13> ^argument1 <o-blue-13>)
+   (<w> ^member <member-1-loc-1-1>)
+   (<member-1-loc-1-1> ^argument1 <o-line-1> ^argument2 <o-loc-1-1>)
+   (<w> ^member <member-1-loc-1-2>)
+   (<member-1-loc-1-2> ^argument1 <o-line-1> ^argument2 <o-loc-1-2>)
+   (<w> ^member <member-1-loc-1-3>)
+   (<member-1-loc-1-3> ^argument1 <o-line-1> ^argument2 <o-loc-1-3>)
+   (<w> ^member <member-2-loc-1-1>)
+   (<member-2-loc-1-1> ^argument1 <o-line-2> ^argument2 <o-loc-1-1>)
+   (<w> ^member <member-2-loc-2-2>)
+   (<member-2-loc-2-2> ^argument1 <o-line-2> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-2-loc-3-3>)
+   (<member-2-loc-3-3> ^argument1 <o-line-2> ^argument2 <o-loc-3-3>)
+   (<w> ^member <member-3-loc-1-1>)
+   (<member-3-loc-1-1> ^argument1 <o-line-3> ^argument2 <o-loc-1-1>)
+   (<w> ^member <member-3-loc-2-1>)
+   (<member-3-loc-2-1> ^argument1 <o-line-3> ^argument2 <o-loc-2-1>)
+   (<w> ^member <member-3-loc-3-1>)
+   (<member-3-loc-3-1> ^argument1 <o-line-3> ^argument2 <o-loc-3-1>)
+   (<w> ^member <member-4-loc-2-1>)
+   (<member-4-loc-2-1> ^argument1 <o-line-4> ^argument2 <o-loc-2-1>)
+   (<w> ^member <member-4-loc-2-2>)
+   (<member-4-loc-2-2> ^argument1 <o-line-4> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-4-loc-2-3>)
+   (<member-4-loc-2-3> ^argument1 <o-line-4> ^argument2 <o-loc-2-3>)
+   (<w> ^member <member-5-loc-3-1>)
+   (<member-5-loc-3-1> ^argument1 <o-line-5> ^argument2 <o-loc-3-1>)
+   (<w> ^member <member-5-loc-3-2>)
+   (<member-5-loc-3-2> ^argument1 <o-line-5> ^argument2 <o-loc-3-2>)
+   (<w> ^member <member-5-loc-3-3>)
+   (<member-5-loc-3-3> ^argument1 <o-line-5> ^argument2 <o-loc-3-3>)
+   (<w> ^member <member-6-loc-1-2>)
+   (<member-6-loc-1-2> ^argument1 <o-line-6> ^argument2 <o-loc-1-2>)
+   (<w> ^member <member-6-loc-2-2>)
+   (<member-6-loc-2-2> ^argument1 <o-line-6> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-6-loc-3-2>)
+   (<member-6-loc-3-2> ^argument1 <o-line-6> ^argument2 <o-loc-3-2>)
+   (<w> ^member <member-7-loc-1-3>)
+   (<member-7-loc-1-3> ^argument1 <o-line-7> ^argument2 <o-loc-1-3>)
+   (<w> ^member <member-7-loc-2-3>)
+   (<member-7-loc-2-3> ^argument1 <o-line-7> ^argument2 <o-loc-2-3>)
+   (<w> ^member <member-7-loc-3-3>)
+   (<member-7-loc-3-3> ^argument1 <o-line-7> ^argument2 <o-loc-3-3>)
+   (<w> ^member <member-8-loc-1-3>)
+   (<member-8-loc-1-3> ^argument1 <o-line-8> ^argument2 <o-loc-1-3>)
+   (<w> ^member <member-8-loc-2-2>)
+   (<member-8-loc-2-2> ^argument1 <o-line-8> ^argument2 <o-loc-2-2>)
+   (<w> ^member <member-8-loc-3-1>)
+   (<member-8-loc-3-1> ^argument1 <o-line-8> ^argument2 <o-loc-3-1>)
+   (log 1 (crlf) |Initialize tic-tac-toe.|)
+}
+
+sp {tic-tac-toe*elaborate*problem-space
+   (state <s> ^name tic-tac-toe)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name tic-tac-toe ^copy-relation below ^copy-relation available ^copy-relation clear ^copy-relation member ^dont-copy-object-attribute goal-met)
+}
+
+sp {tic-tac-toe*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name tic-tac-toe ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name tic-tac-toe ^dont-copy-object-attribute goal-met)
+}
+
+sp {tic-tac-toe*elaborate*flags
+   (state <s> ^superstate nil ^name tic-tac-toe)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {tic-tac-toe*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {tic-tac-toe*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {tic-tac-toe*propose*move
+   (state <s> ^problem-space.name tic-tac-toe ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^type block ^color red ^object-handle $ <bh>)
+   (<l> ^type location ^object-handle $ <lh>)
+   (<w> ^clear <cb> <cl> ^available <ab>)
+   (<cb> ^argument1 <b>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of red's move in look-ahead.
+sp {tic-tac-toe*apply*move*internal*from-block
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<r> ^argument2 <old> - <l>)
+   (<bl> ^argument1 <old> - <l>)
+   (<w> ^clear <nc>)
+   (<nc> ^argument1 <old>)
+}
+
+sp {tic-tac-toe*apply*move*internal*from-nothing
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<w> ^on <nr> ^below <nb>)
+   (<nr> ^argument1 <b> ^argument2 <l>)
+   (<nb> ^argument1 <l> ^argument2 <b>)
+}
+## Effect of a completed red move on the real world (once per command).
+sp {tic-tac-toe*apply*move*environment-effect*from-block
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<r> ^argument2 <old> - <l>)
+   (<bl> ^argument1 <old> - <l>)
+   (<w> ^clear <nc>)
+   (<nc> ^argument1 <old>)
+   (<pa> ^effect-applied true)
+   (write |Place | <bh> | on | <lh> (crlf))
+}
+
+sp {tic-tac-toe*apply*move*environment-effect*from-nothing
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<w> ^on <nr> ^below <nb>)
+   (<nr> ^argument1 <b> ^argument2 <l>)
+   (<nb> ^argument1 <l> ^argument2 <b>)
+   (<pa> ^effect-applied true)
+   (write |Place | <bh> | on | <lh> (crlf))
+}
+## Input (IO-019): the environment's turn signal and blue's last move, copied onto the top state.
+sp {tic-tac-toe*elaborate*input*turn
+   (state <s> ^superstate nil ^io.input-link <il>)
+   (<il> ^turn <c> ^blue-moves <n>)
+-->
+   (<s> ^env-turn <c> ^env-blue-moves <n>)
+}
+
+sp {tic-tac-toe*elaborate*input*opponent-move
+   (state <s> ^superstate nil ^io.input-link.opponent-move <m>)
+   (<m> ^block <bh> ^location <lh> ^number <n>)
+-->
+   (<s> ^opponent-move <om>)
+   (<om> ^block <bh> ^location <lh> ^number <n>)
+}
+
+sp {tic-tac-toe*elaborate*input*game-over
+   (state <s> ^superstate nil ^io.input-link.game-over <r>)
+-->
+   (<s> ^env-game-over <r>)
+}
+
+## Red may act only when the environment says it is red's turn and every blue move reported has been applied (IO-021).
+sp {tic-tac-toe*elaborate*my-turn
+   (state <s> ^superstate nil ^env-turn red ^env-blue-moves <n> ^world <w>)
+   (<w> ^objects.object <t>)
+   (<t> ^type task ^blue-moves-applied <n>)
+-->
+   (<s> ^my-turn true)
+}
+
+sp {tic-tac-toe*reject*move*not-my-turn
+   (state <s> ^superstate nil ^operator <op> + -^my-turn true)
+   (<op> ^task-operator true)
+-->
+   (<s> ^operator <op> -)
+}
+
+## The environment's end-of-episode signal ends the run (IO-022), once every blue move reported has been applied.
+sp {tic-tac-toe*propose*game-over
+   (state <s> ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w>)
+   (<w> ^objects.object <t>)
+   (<t> ^type task ^blue-moves-applied <n>)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name game-over ^result <r>)
+}
+
+sp {tic-tac-toe*apply*game-over
+   (state <s> ^operator <o>)
+   (<o> ^name game-over ^result <r>)
+-->
+   (write |Game over: | <r> (crlf))
+   (halt)
+}
+## Effect of blue's move (reported by the environment) on the real world, once per move number.
+sp {tic-tac-toe*apply*opponent-move*from-block
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^opponent-move <om>)
+   (<om> ^block <bh> ^location <lh> ^number <n>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+   (<objs> ^object <t>)
+   (<t> ^type task ^blue-moves-applied { <k> < <n> })
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<r> ^argument2 <old> - <l>)
+   (<bl> ^argument1 <old> - <l>)
+   (<w> ^clear <nc>)
+   (<nc> ^argument1 <old>)
+   (<t> ^blue-moves-applied <k> - <n>)
+   (write |Opponent places | <bh> | on | <lh> (crlf))
+}
+
+sp {tic-tac-toe*apply*opponent-move*from-nothing
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^opponent-move <om>)
+   (<om> ^block <bh> ^location <lh> ^number <n>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
+   (<w> ^clear <cl> ^available <ab>)
+   (<cl> ^argument1 <l>)
+   (<ab> ^argument1 <b>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+   (<objs> ^object <t>)
+   (<t> ^type task ^blue-moves-applied { <k> < <n> })
+-->
+   (<w> ^clear <cl> - ^available <ab> -)
+   (<w> ^on <nr> ^below <nb>)
+   (<nr> ^argument1 <b> ^argument2 <l>)
+   (<nb> ^argument1 <l> ^argument2 <b>)
+   (<t> ^blue-moves-applied <k> - <n>)
+   (write |Opponent places | <bh> | on | <lh> (crlf))
+}
+## Goal (statements 12-14): three different captured locations (each below a red block) are members of one line.
+sp {tic-tac-toe*elaborate*goal*three-in-row
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^member <m1> <m2> <m3> ^below <b1> <b2> <b3>)
+   (<objs> ^object <t> <line>)
+   (<t> ^type task)
+   (<line> ^type line)
+   (<m1> ^argument1 <line> ^argument2 <l1>)
+   (<m2> ^argument1 <line> ^argument2 { <> <l1> <l2> })
+   (<m3> ^argument1 <line> ^argument2 { <> <l1> <> <l2> <l3> })
+   (<b1> ^argument1 <l1> ^argument2 <r1>)
+   (<b2> ^argument1 <l2> ^argument2 <r2>)
+   (<b3> ^argument1 <l3> ^argument2 <r3>)
+   (<r1> ^type block ^color red)
+   (<r2> ^type block ^color red)
+   (<r3> ^type block ^color red)
+-->
+   (<t> ^goal-met true)
+}
+
+## Failure (statements 18-19): three different occupied locations (each below a blue block) are members of one line.
+sp {tic-tac-toe*elaborate*failure*opponent-three
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^member <m1> <m2> <m3> ^below <b1> <b2> <b3>)
+   (<objs> ^object <line>)
+   (<line> ^type line)
+   (<m1> ^argument1 <line> ^argument2 <l1>)
+   (<m2> ^argument1 <line> ^argument2 { <> <l1> <l2> })
+   (<m3> ^argument1 <line> ^argument2 { <> <l1> <> <l2> <l3> })
+   (<b1> ^argument1 <l1> ^argument2 <r1>)
+   (<b2> ^argument1 <l2> ^argument2 <r2>)
+   (<b3> ^argument1 <l3> ^argument2 <r3>)
+   (<r1> ^type block ^color blue)
+   (<r2> ^type block ^color blue)
+   (<r3> ^type block ^color blue)
+-->
+   (<s> ^failure <ds>)
+}
