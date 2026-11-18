@@ -32,8 +32,8 @@ DESC = """## Tic-tac-toe, generated from the Rosie teaching script (english-inpu
 ##   - The goal (12) is ^goal-met true on the task object; the failure (18) marks the state with ^failure.
 ##   - Opponent (decided by JL, 16 Nov 2026): the environment plays blue. Blue's moves arrive on the input-link
 ##     (^opponent-move with ^block, ^location, ^number; ^turn; ^blue-moves); input.soar-style rules copy them onto the state
-##     (IO-019) and apply them to the world. The agent proposes a move only when the environment says it is red's turn and
-##     it has applied every blue move reported (IO-021). Look-ahead covers red's own moves only.
+##     (L3-092) and apply them to the world. The agent proposes a move only when the environment says it is red's turn and
+##     it has applied every blue move reported (former IO-021, deleted 18 Nov 2026). Look-ahead covers red's own moves only.
 """
 
 def handle(i, a):
@@ -110,7 +110,7 @@ t.add('## Effect of a completed red move on the real world (once per command).' 
     '''
    (<pa> ^effect-applied true)
    (write |Place | <bh> | on | <lh> (crlf))''', ''))
-t.add('''## Input (IO-019): the environment's turn signal and blue's last move, copied onto the top state.
+t.add('''## Input (L3-092): the environment's turn signal and blue's last move, copied onto the top state.
 sp {tic-tac-toe*elaborate*input*turn
    (state <s> ^superstate nil ^io.input-link <il>)
    (<il> ^turn <c> ^blue-moves <n>)
@@ -132,7 +132,7 @@ sp {tic-tac-toe*elaborate*input*game-over
    (<s> ^env-game-over <r>)
 }
 
-## Red may act only when the environment says it is red's turn and every blue move reported has been applied (IO-021).
+## Red may act only when the environment says it is red's turn and every blue move reported has been applied (former IO-021, deleted 18 Nov 2026).
 sp {tic-tac-toe*elaborate*my-turn
    (state <s> ^superstate nil ^env-turn red ^env-blue-moves <n> ^world <w>)
    (<w> ^objects.object <t>)
@@ -148,7 +148,7 @@ sp {tic-tac-toe*reject*move*not-my-turn
    (<s> ^operator <op> -)
 }
 
-## The environment's end-of-episode signal ends the run (IO-022), once every blue move reported has been applied.
+## The environment's signal that the task instance has ended ends the run (L3-093), once every blue move reported has been applied.
 sp {tic-tac-toe*propose*game-over
    (state <s> ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w>)
    (<w> ^objects.object <t>)

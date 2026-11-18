@@ -28,7 +28,7 @@ Each task's `gen.py` (operators, effects, maintenance of each concept, goal and 
 
 ## Deviations and open points
 
-- Tic-tac-toe: the application of a move by a block that sits on nothing tests the absence of an on relation (local negation in a look-ahead application, W-CHK-009, Should). It has no effect with chunking off.
+- Tic-tac-toe: the application of a move by a block that sits on nothing tests the absence of an on relation (local negation in a look-ahead application, L11-003, Should). It has no effect with chunking off.
 - Turn order (red first) and draws (neither side can move) are environment choices; the dialog has neither.
 - The world conventions have no three-argument relation. Rosie's `linear` sets became line objects with a binary `member` relation, which is within the conventions.
 

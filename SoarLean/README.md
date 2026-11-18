@@ -1,4 +1,4 @@
-# SoarLean: agentgen, the World library and worldcheck (16 November 2026, revision b)
+# SoarLean: agentgen, the World library and worldcheck (16 November 2026, revision b; updated 18 November 2026)
 
 One Lean package that holds the Lean tools of the English-to-Soar pipeline, plus the Python
 back end that writes world-convention rules. It replaces `agentgen-bundle.zip` and
@@ -54,7 +54,7 @@ above ran; the generated Water Jug rules (33 rules) pass `check_derived.py` and 
 ## Updated 15 November 2026 (afternoon)
 
 `worldgen/wg.py` is the worldgen v18 version (`Soar-library-dev/tools/worldgen-v18.zip`): object-handle
-tests in generated rules carry `$` (World-Conventions-Spec-v6, W-CHK-011). `world_backend.py` and
+tests in generated rules carry `$` (World-Conventions-Spec-v6, L11-005). `world_backend.py` and
 `check_derived.py` are unchanged. Checked: the Water Jug description generates 33 rules, 3 of them with
 `$` handle tests; they pass `check_derived.py` and load without error after Soar library v2.30
 (`Soar/soar-library`) in Soar 9.6.6.
@@ -80,7 +80,7 @@ search settings sets them in `^flag-override`, chosen with `probe_settings.py`
   tests).
 - The `World` compiler (`World/Compile.lean`) is superseded and not built; use `WorldSpec/Compile.lean` or
   `worldgen/world_backend.py`.
-- `worldcheck --lib` on library v2.41 reports 56 violations, mostly W-TOP-001 (library operators have no
+- `worldcheck --lib` on library v2.41 reports 56 violations, mostly L9-001 (library operators have no
   `^task-operator`); library rules need exemptions that the 10 to 11 November checks do not have.
 
 ## Provenance
@@ -111,7 +111,7 @@ repository. Supersedes `soarlean-agentgen-2026-11-16.zip` and `soarlean-agentgen
   operator gets a reject preference instead of worst (v2.39); `^optimize true` guarantees the cheapest plan
   (positive step costs, admissible estimates) under operator depth as well as tie-impasse depth (v2.40); v2.41 changed
   comments only. Library defaults are still `^iterative-step operator`, `^cost-metric none`, `^optimize false`.
-- `World/Check.lean`: the reserved operator names (W-NAM-006) now match the library: `remove-object` and
+- `World/Check.lean`: the reserved operator names (L6-005) now match the library: `remove-object` and
   `force-conflict` (removed from the library) and `copy-task-state`, `apply-task-operator`,
   `evaluate-task-state` (never in it) dropped; selection-world's failure-evaluation operators
   (`initialize-failure-evaluation`, `count-object`, `count-relation`, `count-desired-object`,
@@ -127,3 +127,13 @@ and `lake build rosiegen` succeed; the Water Jug commands under Use give the sam
 report as before the change; a probe confirms `remove-object` is no longer flagged and `count-object` is.
 Not checked here: loading the generated rules with library v2.41 in Soar (the workspace has only Soar 9.6.5,
 which lacks `$`).
+
+## Updated 18 November 2026: conventions of the 18 Nov workbook review
+
+Package: `soarlean-agentgen-2026-11-18.zip`. The generators follow the conventions decided on 18 Nov 2026 (World-Conventions-v6 / Soar-Conventions, level-based IDs):
+- `worldgen/convpass.py` (also in worldgen v21): a final pass over generated rules. L3-005: every rule tests, in its first condition, the name of its state or of its problem space (world and desired elaborations, internal applications and environment-effect rules now test `^problem-space.name`); exceptions are initialization, the problem-space elaborations and rules that only pass superstate structure into substates. L3-012: a rule group without an English comment gets one. `wg.py` (worldgen v21) and `spec_backend.py` (path B) call it.
+- `agentgen/World/Compile.lean` and `agentgen/WorldSpec/Compile.lean` (rosiegen path A) write the same `^problem-space.name` tests; `World/Compile.lean` puts a comment line before every rule.
+- `agentgen/Agent/Compile.lean` (tie-heuristic agents): ^last-operator is now a structure with the operator's name and parameters, written by one application rule per operator that also removes the previous record (L3-021, L4-005); initialization creates `(^last-operator.name none)`; the heuristics test `^last-operator.name`.
+- `agentgen/tools/vsproject.py` passes every written file through `tools/convpass.py`, which adds a comment per rule group (agentgen rules already test the state name).
+Checked: `lake build agentgen worldcheck rosiegen` succeeds; the nine Water Jug agentgen variants run with the same decision counts as before (srand 1); rosiegen path A for tower-of-hanoi differs only in the five `^problem-space.name` tests (it reaches the 20,000-decision cap without a move on library v2.42 before and after the change).
+- Convention IDs cited in the Lean sources and in checker messages are still the IDs from before the 18 Nov renumbering; `Conventions/id-renumbering-map-2026-11-18.csv` maps them.

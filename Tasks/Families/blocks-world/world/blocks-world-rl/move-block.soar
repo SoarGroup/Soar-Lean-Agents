@@ -68,7 +68,7 @@ sp {blocks-world*propose*move-block*block
    (<pre> ^desired-count 0)
 }
 
-## Internal application (W-APP-001/010): with ^environment none it runs in every state,
+## Internal application (W-APP-010): with ^environment none it runs in every state,
 ## including the top state, in the decision the operator is selected. Arguments are matched by
 ## object handle, so the rule also works on look-ahead copies of the world (W-TOP-029). The test
 ## that the block is not yet on the destination makes it fire once per selection.

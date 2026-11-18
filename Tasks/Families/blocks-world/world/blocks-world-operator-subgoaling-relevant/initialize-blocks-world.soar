@@ -1,4 +1,4 @@
-## Task initialisation (W-WLD-002): proposed after agent-world has created ^world; gives the top
+## Task initialisation (W-WLD-026): proposed after agent-world has created ^world; gives the top
 ## state its ^name, ^environment none (no external environment: every task operator is applied
 ## internally), ^flags and the goal as ^desireds. World objects carry ^object-handle and
 ## ^anchored true; ^on relations are world relation objects (W-REL-001).

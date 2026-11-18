@@ -37,7 +37,7 @@ The shortest-plan column comes from `rosiegen explore`, a breadth-first search i
 
 - **A typed description.** It holds the instructor's statement numbers and the assumption ledger; the rules are derived from it rather than written by hand.
 - **Proved well-formedness.** `Task.wellFormed = []` is proved by `decide` for each task. It covers three checks:
-  - no negation in a compiled condition (W-CHK-009);
+  - no negation in a compiled condition (L11-003);
   - effects and reports use only bound variables;
   - no open `gap` or `tooling` assumption (CLAUDE.md, issue 6).
 - **A semantics independent of Soar.** It does four jobs:

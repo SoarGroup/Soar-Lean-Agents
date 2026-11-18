@@ -1,0 +1,586 @@
+old_id,new_id,level,topic,in_soar,in_world
+SYN-002,L0-001,L0 Definitional,Rule syntax/naming,True,True
+SYN-003,L0-002,L0 Definitional,Rule syntax/naming,True,True
+SYN-004,L0-003,L0 Definitional,Rule syntax/naming,True,True
+SYN-005,L0-004,L0 Definitional,Rule syntax/naming,True,True
+SYN-006,L0-005,L0 Definitional,Rule syntax/naming,True,True
+SYN-007,L0-006,L0 Definitional,Rule syntax/naming,True,True
+SYN-008,L0-007,L0 Definitional,Rule syntax/naming,True,True
+SYN-009,L0-008,L0 Definitional,Rule syntax/naming,True,True
+SYN-010,L0-009,L0 Definitional,Rule syntax/naming,True,True
+SYN-011,L0-010,L0 Definitional,Rule syntax/naming,True,True
+SYN-012,L0-011,L0 Definitional,Rule syntax/naming,True,True
+SYN-013,L0-012,L0 Definitional,Rule syntax/naming,True,True
+SYN-014,L0-013,L0 Definitional,Rule syntax/naming,True,True
+SYN-015,L0-014,L0 Definitional,Rule syntax/naming,True,True
+SYN-016,L0-015,L0 Definitional,Rule syntax/naming,True,True
+SYN-017,L0-016,L0 Definitional,Rule syntax/naming,True,True
+SYN-018,L0-017,L0 Definitional,Rule syntax/naming,True,True
+SYN-019,L0-018,L0 Definitional,Rule syntax/naming,True,True
+SYN-020,L0-019,L0 Definitional,Rule syntax/naming,True,True
+SYN-021,L0-020,L0 Definitional,Rule syntax/naming,True,True
+SYN-051,L0-021,L0 Definitional,Rule syntax/naming,True,True
+STA-001,L0-022,L0 Definitional,State representation,True,True
+STA-002,L0-023,L0 Definitional,State representation,True,True
+STA-003,L0-024,L0 Definitional,State representation,True,True
+OPR-001,L0-025,L0 Definitional,Operator WM representation,True,True
+OPR-002,L0-026,L0 Definitional,Operator WM representation,True,True
+OPR-003,L0-027,L0 Definitional,Operator WM representation,True,True
+ELB-001,L0-028,L0 Definitional,Rule: state elaboration,True,True
+PRO-001,L0-029,L0 Definitional,Rule: operator proposal,True,True
+OEL-001,L0-030,L0 Definitional,Rule: operator elaboration,True,True
+EVA-001,L0-031,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-002,L0-032,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-003,L0-033,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-004,L0-034,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-005,L0-035,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-006,L0-036,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-007,L0-037,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-008,L0-038,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-009,L0-039,L0 Definitional,Rule: operator evaluation/selection,True,True
+EVA-010,L0-040,L0 Definitional,Rule: operator evaluation/selection,True,True
+APP-001,L0-041,L0 Definitional,Rule: operator application,True,True
+APP-002,L0-042,L0 Definitional,Rule: operator application,True,True
+APP-003,L0-043,L0 Definitional,Rule: operator application,True,True
+APP-004,L0-044,L0 Definitional,Rule: operator application,True,True
+APP-005,L0-045,L0 Definitional,Rule: operator application,True,True
+APP-006,L0-046,L0 Definitional,Rule: operator application,True,True
+MON-001,L0-047,L0 Definitional,Rule: monitoring/output,True,True
+IMP-001,L0-048,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-002,L0-049,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-003,L0-050,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-004,L0-051,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-005,L0-052,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-006,L0-053,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-007,L0-054,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-008,L0-055,L0 Definitional,Rule: impasse/substate handling,True,True
+IMP-022,L0-056,L0 Definitional,Rule: impasse/substate handling,True,True
+SUB-001,L0-057,L0 Definitional,Substate representation,True,True
+SUB-002,L0-058,L0 Definitional,Substate representation,True,True
+SUB-003,L0-059,L0 Definitional,Substate representation,True,True
+SUB-004,L0-060,L0 Definitional,Substate representation,True,True
+RES-001,L0-061,L0 Definitional,Rule: results,True,True
+RES-002,L0-062,L0 Definitional,Rule: results,True,True
+RES-003,L0-063,L0 Definitional,Rule: results,True,True
+RES-004,L0-064,L0 Definitional,Rule: results,True,True
+RES-005,L0-065,L0 Definitional,Rule: results,True,True
+SMM-001,L0-066,L0 Definitional,Semantic memory,True,True
+SMM-002,L0-067,L0 Definitional,Semantic memory,True,True
+SMM-003,L0-068,L0 Definitional,Semantic memory,True,True
+SMM-004,L0-069,L0 Definitional,Semantic memory,True,True
+SMM-005,L0-070,L0 Definitional,Semantic memory,True,True
+SMM-006,L0-071,L0 Definitional,Semantic memory,True,True
+SMM-007,L0-072,L0 Definitional,Semantic memory,True,True
+SMM-008,L0-073,L0 Definitional,Semantic memory,True,True
+SMM-009,L0-074,L0 Definitional,Semantic memory,True,True
+SMM-010,L0-075,L0 Definitional,Semantic memory,True,True
+EPM-001,L0-076,L0 Definitional,Episodic memory,True,True
+EPM-002,L0-077,L0 Definitional,Episodic memory,True,True
+EPM-003,L0-078,L0 Definitional,Episodic memory,True,True
+EPM-004,L0-079,L0 Definitional,Episodic memory,True,True
+EPM-005,L0-080,L0 Definitional,Episodic memory,True,True
+EPM-006,L0-081,L0 Definitional,Episodic memory,True,True
+EPM-007,L0-082,L0 Definitional,Episodic memory,True,True
+EPM-008,L0-083,L0 Definitional,Episodic memory,True,True
+EPM-012,L0-084,L0 Definitional,Episodic memory,True,True
+CHK-001,L0-085,L0 Definitional,Learning: chunking,True,True
+CHK-002,L0-086,L0 Definitional,Learning: chunking,True,True
+CHK-003,L0-087,L0 Definitional,Learning: chunking,True,True
+CHK-004,L0-088,L0 Definitional,Learning: chunking,True,True
+CHK-005,L0-089,L0 Definitional,Learning: chunking,True,True
+CHK-006,L0-090,L0 Definitional,Learning: chunking,True,True
+CHK-007,L0-091,L0 Definitional,Learning: chunking,True,True
+CHK-008,L0-092,L0 Definitional,Learning: chunking,True,True
+CHK-009,L0-093,L0 Definitional,Learning: chunking,True,True
+CHK-010,L0-094,L0 Definitional,Learning: chunking,True,True
+CHK-011,L0-095,L0 Definitional,Learning: chunking,True,True
+CHK-012,L0-096,L0 Definitional,Learning: chunking,True,True
+CHK-023,L0-097,L0 Definitional,Learning: chunking,True,True
+CHK-024,L0-098,L0 Definitional,Learning: chunking,True,True
+CHK-025,L0-099,L0 Definitional,Learning: chunking,True,True
+RL-001,L0-100,L0 Definitional,Learning: RL,True,True
+RL-002,L0-101,L0 Definitional,Learning: RL,True,True
+RL-003,L0-102,L0 Definitional,Learning: RL,True,True
+RL-004,L0-103,L0 Definitional,Learning: RL,True,True
+RL-005,L0-104,L0 Definitional,Learning: RL,True,True
+RL-006,L0-105,L0 Definitional,Learning: RL,True,True
+RL-007,L0-106,L0 Definitional,Learning: RL,True,True
+RL-022,L0-107,L0 Definitional,Learning: RL,True,True
+RL-023,L0-108,L0 Definitional,Learning: RL,True,True
+IO-001,L0-109,L0 Definitional,Input/output link,True,True
+IO-002,L0-110,L0 Definitional,Input/output link,True,True
+IO-003,L0-111,L0 Definitional,Input/output link,True,True
+IO-004,L0-112,L0 Definitional,Input/output link,True,True
+SET-001,L0-113,L0 Definitional,Settings/commands,True,True
+SYN-022,L1-001,L1 Architectural,Rule syntax/naming,True,True
+SYN-023,L1-002,L1 Architectural,Rule syntax/naming,True,True
+SYN-024,L1-003,L1 Architectural,Rule syntax/naming,True,True
+SYN-050,L1-004,L1 Architectural,Rule syntax/naming,True,True
+STA-004,L1-005,L1 Architectural,State representation,True,True
+STA-005,L1-006,L1 Architectural,State representation,True,True
+OPR-004,L1-007,L1 Architectural,Operator WM representation,True,True
+ELB-002,L1-008,L1 Architectural,Rule: state elaboration,True,True
+ELB-003,L1-009,L1 Architectural,Rule: state elaboration,True,True
+ELB-004,L1-010,L1 Architectural,Rule: state elaboration,True,True
+OEL-002,L1-011,L1 Architectural,Rule: operator elaboration,True,True
+APP-007,L1-012,L1 Architectural,Rule: operator application,True,True
+APP-027,L1-013,L1 Architectural,Rule: operator application,True,True
+IMP-009,L1-014,L1 Architectural,Rule: impasse/substate handling,True,True
+IMP-010,L1-015,L1 Architectural,Rule: impasse/substate handling,True,True
+SMM-012,L1-016,L1 Architectural,Semantic memory,True,True
+SMM-019,L1-017,L1 Architectural,Semantic memory,True,True
+RL-008,L1-018,L1 Architectural,Learning: RL,True,True
+IO-005,L1-019,L1 Architectural,Input/output link,True,True
+IO-006,L1-020,L1 Architectural,Input/output link,True,True
+IO-007,L1-021,L1 Architectural,Input/output link,True,True
+IO-008,L1-022,L1 Architectural,Input/output link,True,True
+SET-003,L1-023,L1 Architectural,Settings/commands,True,True
+SET-004,L1-024,L1 Architectural,Settings/commands,True,True
+ORG-001,L2-001,L2 Universal practice,Project/file organization,True,True
+ORG-002,L2-002,L2 Universal practice,Project/file organization,True,True
+SYN-025,L2-003,L2 Universal practice,Rule syntax/naming,True,True
+SYN-026,L2-004,L2 Universal practice,Rule syntax/naming,True,True
+STA-006,L2-005,L2 Universal practice,State representation,True,True
+OPR-005,L2-006,L2 Universal practice,Operator WM representation,True,True
+OPR-006,L2-007,L2 Universal practice,Operator WM representation,True,True
+PRO-002,L2-008,L2 Universal practice,Rule: operator proposal,True,True
+PRO-003,L2-009,L2 Universal practice,Rule: operator proposal,True,True
+APP-008,L2-010,L2 Universal practice,Rule: operator application,True,True
+APP-009,L2-011,L2 Universal practice,Rule: operator application,True,True
+APP-010,L2-012,L2 Universal practice,Rule: operator application,True,True
+RL-009,L2-013,L2 Universal practice,Learning: RL,True,True
+IO-010,L2-014,L2 Universal practice,Input/output link,True,True
+ORG-004,L3-001,L3 Guidance,Project/file organization,True,True
+ORG-006,L3-002,L3 Guidance,Project/file organization,True,True
+SYN-001,L3-003,L3 Guidance,Rule syntax/naming,True,True
+SYN-030,L3-004,L3 Guidance,Rule syntax/naming,True,True
+SYN-033,L3-005,L3 Guidance,Rule syntax/naming,True,True
+SYN-040,L3-006,L3 Guidance,Rule syntax/naming,True,True
+SYN-041,L3-007,L3 Guidance,Rule syntax/naming,True,True
+SYN-042,L3-008,L3 Guidance,Rule syntax/naming,True,True
+SYN-043,L3-009,L3 Guidance,Rule syntax/naming,True,True
+SYN-044,L3-010,L3 Guidance,Rule syntax/naming,True,True
+SYN-047,L3-011,L3 Guidance,Rule syntax/naming,True,True
+SYN-048,L3-012,L3 Guidance,Rule syntax/naming,True,True
+SYN-049,L3-013,L3 Guidance,Rule syntax/naming,True,True
+STA-016,L3-014,L3 Guidance,State representation,True,True
+STA-017,L3-015,L3 Guidance,State representation,True,True
+STA-018,L3-016,L3 Guidance,State representation,True,True
+STA-020,L3-017,L3 Guidance,State representation,True,True
+STA-021,L3-018,L3 Guidance,State representation,True,True
+STA-022,L3-019,L3 Guidance,State representation,True,True
+STA-023,L3-020,L3 Guidance,State representation,True,True
+STA-025,L3-021,L3 Guidance,State representation,True,True
+STA-026,L3-022,L3 Guidance,State representation,True,True
+STA-029,L3-023,L3 Guidance,State representation,True,True
+GOL-012,L3-024,L3 Guidance,Goal/desired representation,True,True
+GOL-015,L3-025,L3 Guidance,Goal/desired representation,True,True
+OPR-012,L3-026,L3 Guidance,Operator WM representation,True,True
+OPR-013,L3-027,L3 Guidance,Operator WM representation,True,True
+OPR-014,L3-028,L3 Guidance,Operator WM representation,True,True
+OPR-015,L3-029,L3 Guidance,Operator WM representation,True,True
+OPR-016,L3-030,L3 Guidance,Operator WM representation,True,True
+ELB-011,L3-031,L3 Guidance,Rule: state elaboration,True,True
+OPR-017,L3-032,L3 Guidance,Rule: operator proposal,True,True
+PRO-004,L3-033,L3 Guidance,Rule: operator proposal,True,True
+PRO-007,L3-034,L3 Guidance,Rule: operator proposal,True,True
+PRO-010,L3-035,L3 Guidance,Rule: operator proposal,True,True
+PRO-015,L3-036,L3 Guidance,Rule: operator proposal,True,True
+PRO-016,L3-037,L3 Guidance,Rule: operator proposal,True,True
+PRO-017,L3-038,L3 Guidance,Rule: operator proposal,True,True
+PRO-019,L3-039,L3 Guidance,Rule: operator proposal,True,True
+PRO-020,L3-040,L3 Guidance,Rule: operator proposal,True,True
+PRO-023,L3-041,L3 Guidance,Rule: operator proposal,True,True
+PRO-024,L3-042,L3 Guidance,Rule: operator proposal,True,True
+OEL-004,L3-043,L3 Guidance,Rule: operator elaboration,True,True
+EVA-016,L3-044,L3 Guidance,Rule: operator evaluation/selection,True,True
+EVA-017,L3-045,L3 Guidance,Rule: operator evaluation/selection,True,True
+EVA-018,L3-046,L3 Guidance,Rule: operator evaluation/selection,True,True
+EVA-019,L3-047,L3 Guidance,Rule: operator evaluation/selection,True,True
+EVA-021,L3-048,L3 Guidance,Rule: operator evaluation/selection,True,True
+APP-021,L3-049,L3 Guidance,Rule: operator application,True,True
+APP-022,L3-050,L3 Guidance,Rule: operator application,True,True
+APP-025,L3-051,L3 Guidance,Rule: operator application,True,True
+APP-026,L3-052,L3 Guidance,Rule: operator application,True,True
+MON-002,L3-053,L3 Guidance,Rule: monitoring/output,True,True
+MON-003,L3-054,L3 Guidance,Rule: monitoring/output,True,True
+MON-004,L3-055,L3 Guidance,Rule: monitoring/output,True,True
+MON-006,L3-056,L3 Guidance,Rule: monitoring/output,True,True
+IMP-013,L3-057,L3 Guidance,Rule: impasse/substate handling,True,True
+IMP-020,L3-058,L3 Guidance,Rule: impasse/substate handling,True,True
+IMP-021,L3-059,L3 Guidance,Rule: impasse/substate handling,True,True
+SET-014,L3-060,L3 Guidance,Rule: impasse/substate handling,True,True
+SUB-012,L3-061,L3 Guidance,Substate representation,True,True
+RES-011,L3-062,L3 Guidance,Rule: results,True,True
+RES-012,L3-063,L3 Guidance,Rule: results,True,True
+RES-013,L3-064,L3 Guidance,Rule: results,True,True
+RES-015,L3-065,L3 Guidance,Rule: results,True,True
+RES-018,L3-066,L3 Guidance,Rule: results,True,True
+SET-010,L3-067,L3 Guidance,Semantic memory,True,True
+SMM-011,L3-068,L3 Guidance,Semantic memory,True,True
+SMM-017,L3-069,L3 Guidance,Semantic memory,True,True
+SMM-018,L3-070,L3 Guidance,Semantic memory,True,True
+EPM-010,L3-071,L3 Guidance,Episodic memory,True,True
+EPM-011,L3-072,L3 Guidance,Episodic memory,True,True
+CHK-018,L3-073,L3 Guidance,Learning: chunking,True,True
+CHK-019,L3-074,L3 Guidance,Learning: chunking,True,True
+CHK-021,L3-075,L3 Guidance,Learning: chunking,True,True
+CHK-022,L3-076,L3 Guidance,Learning: chunking,True,True
+CHK-026,L3-077,L3 Guidance,Learning: chunking,True,True
+SET-005,L3-078,L3 Guidance,Learning: chunking,True,True
+SET-007,L3-079,L3 Guidance,Learning: chunking,True,True
+SET-015,L3-080,L3 Guidance,Learning: chunking,True,True
+RL-015,L3-081,L3 Guidance,Learning: RL,True,True
+RL-018,L3-082,L3 Guidance,Learning: RL,True,True
+RL-019,L3-083,L3 Guidance,Learning: RL,True,True
+RL-020,L3-084,L3 Guidance,Learning: RL,True,True
+RL-021,L3-085,L3 Guidance,Learning: RL,True,True
+SET-002,L3-086,L3 Guidance,Learning: RL,True,True
+SET-009,L3-087,L3 Guidance,Learning: RL,True,True
+SET-017,L3-088,L3 Guidance,Learning: RL,True,True
+IO-009,L3-089,L3 Guidance,Input/output link,True,True
+IO-012,L3-090,L3 Guidance,Input/output link,True,True
+IO-016,L3-091,L3 Guidance,Input/output link,True,True
+IO-019,L3-092,L3 Guidance,Input/output link,True,True
+IO-022,L3-093,L3 Guidance,Input/output link,True,True
+SET-008,L3-094,L3 Guidance,Settings/commands,True,True
+SET-011,L3-095,L3 Guidance,Settings/commands,True,True
+SET-012,L3-096,L3 Guidance,Settings/commands,True,True
+SET-013,L3-097,L3 Guidance,Settings/commands,True,True
+SET-018,L3-098,L3 Guidance,Settings/commands,True,True
+STA-030,L3S-001,L3S Guidance (Soar only),State representation,True,False
+GOL-011,L3S-002,L3S Guidance (Soar only),Goal/desired representation,True,False
+GOL-013,L3S-003,L3S Guidance (Soar only),Goal/desired representation,True,False
+PRO-011,L3S-004,L3S Guidance (Soar only),Rule: operator proposal,True,False
+SYN-027,L4-001,L4 Default rules,Rule syntax/naming,True,False
+SYN-028,L4-002,L4 Default rules,Rule syntax/naming,True,True
+STA-007,L4-003,L4 Default rules,State representation,True,True
+EVA-011,L4-004,L4 Default rules,Rule: operator evaluation/selection,True,False
+EVA-012,L4-005,L4 Default rules,Rule: operator evaluation/selection,True,True
+IMP-011,L4-006,L4 Default rules,Rule: impasse/substate handling,True,True
+IMP-012,L4-007,L4 Default rules,Rule: impasse/substate handling,True,False
+SUB-005,L4-008,L4 Default rules,Substate representation,True,True
+IO-011,L4-009,L4 Default rules,Input/output link,True,True
+ORG-003,L5-001,L5 Selection space (classic),Project/file organization,True,False
+SYN-029,L5-002,L5 Selection space (classic),Rule syntax/naming,True,False
+STA-008,L5-003,L5 Selection space (classic),State representation,True,False
+STA-009,L5-004,L5 Selection space (classic),State representation,True,True
+STA-010,L5-005,L5 Selection space (classic),State representation,True,False
+STA-011,L5-006,L5 Selection space (classic),State representation,True,False
+GOL-001,L5-007,L5 Selection space (classic),Goal/desired representation,True,False
+GOL-002,L5-008,L5 Selection space (classic),Goal/desired representation,True,True
+GOL-003,L5-009,L5 Selection space (classic),Goal/desired representation,True,False
+GOL-004,L5-010,L5 Selection space (classic),Goal/desired representation,True,False
+GOL-005,L5-011,L5 Selection space (classic),Goal/desired representation,True,False
+OPR-007,L5-012,L5 Selection space (classic),Operator WM representation,True,False
+ELB-005,L5-013,L5 Selection space (classic),Rule: state elaboration,True,True
+PRO-005,L5-014,L5 Selection space (classic),Rule: operator proposal,True,True
+PRO-006,L5-015,L5 Selection space (classic),Rule: operator proposal,True,True
+EVA-013,L5-016,L5 Selection space (classic),Rule: operator evaluation/selection,True,False
+APP-011,L5-017,L5 Selection space (classic),Rule: operator application,True,True
+IMP-014,L5-018,L5 Selection space (classic),Rule: impasse/substate handling,True,True
+SUB-006,L5-019,L5 Selection space (classic),Substate representation,True,True
+SUB-007,L5-020,L5 Selection space (classic),Substate representation,True,False
+SET-016,L5-021,L5 Selection space (classic),Learning: chunking,True,True
+ORG-005,L6P-001,L6P Project (constrained),Project/file organization,True,False
+W-NAM-001,L6-001,L6 Program organization,Naming and files,False,True
+W-NAM-002,L6-002,L6 Program organization,Naming and files,False,True
+W-NAM-003,L6-003,L6 Program organization,Naming and files,False,True
+W-NAM-004,L6-004,L6 Program organization,Naming and files,False,True
+W-NAM-005,L6-005,L6 Program organization,Naming and files,False,True
+W-NAM-006,L6-006,L6 Program organization,Naming and files,False,True
+W-FLG-001,L6-007,L6 Program organization,Flags and constants,False,True
+W-FLG-002,L6-008,L6 Program organization,Flags and constants,False,True
+STA-012,L6P-002,L6P Project (constrained),State representation,True,False
+STA-013,L6P-003,L6P Project (constrained),State representation,True,False
+GOL-006,L6P-004,L6P Project (constrained),Goal/desired representation,True,False
+ELB-006,L6P-005,L6P Project (constrained),Rule: state elaboration,True,False
+ELB-007,L6P-006,L6P Project (constrained),Rule: state elaboration,True,False
+ELB-008,L6P-007,L6P Project (constrained),Rule: state elaboration,True,False
+PRO-008,L6P-008,L6P Project (constrained),Rule: operator proposal,True,False
+PRO-009,L6P-009,L6P Project (constrained),Rule: operator proposal,True,False
+EVA-014,L6P-010,L6P Project (constrained),Rule: operator evaluation/selection,True,False
+SUB-008,L6P-011,L6P Project (constrained),Substate representation,True,False
+CHK-013,L6P-012,L6P Project (constrained),Learning: chunking,True,False
+IO-013,L6P-013,L6P Project (constrained),Input/output link,True,False
+IO-014,L6P-014,L6P Project (constrained),Input/output link,True,False
+W-OTH-001,L6-009,L6 Program organization,Other,False,True
+W-WLD-001,L7-001,L7 World state,World/state,False,True
+W-WLD-002,L7-002,L7 World state,World/state,False,True
+W-WLD-003,L7-003,L7 World state,World/state,False,True
+W-WLD-004,L7-004,L7 World state,World/state,False,True
+W-WLD-005,L7-005,L7 World state,World/state,False,True
+W-WLD-006,L7-006,L7 World state,World/state,False,True
+W-WLD-007,L7-007,L7 World state,World/state,False,True
+W-WLD-008,L7-008,L7 World state,World/state,False,True
+W-WLD-009,L7-009,L7 World state,World/state,False,True
+W-WLD-010,L7-010,L7 World state,World/state,False,True
+W-WLD-011,L7-011,L7 World state,World/state,False,True
+W-OBJ-001,L7-012,L7 World state,Objects,False,True
+W-OBJ-002,L7-013,L7 World state,Objects,False,True
+W-OBJ-003,L7-014,L7 World state,Objects,False,True
+W-OBJ-004,L7-015,L7 World state,Objects,False,True
+W-REL-001,L7-016,L7 World state,Relations,False,True
+W-DES-001,L8-001,L8 Desireds,Desireds,False,True
+W-DES-002,L8-002,L8 Desireds,Desireds,False,True
+W-DES-003,L8-003,L8 Desireds,Desireds,False,True
+W-DES-004,L8-004,L8 Desireds,Desireds,False,True
+W-DES-005,L8-005,L8 Desireds,Desireds,False,True
+W-DES-006,L8-006,L8 Desireds,Desireds,False,True
+W-DES-007,L8-007,L8 Desireds,Desireds,False,True
+W-DES-008,L8-008,L8 Desireds,Desireds,False,True
+W-DES-009,L8-009,L8 Desireds,Desireds,False,True
+W-DES-010,L8-010,L8 Desireds,Desireds,False,True
+W-DES-011,L8-011,L8 Desireds,Desireds,False,True
+W-DES-012,L8-012,L8 Desireds,Desireds,False,True
+W-DES-013,L8-013,L8 Desireds,Desireds,False,True
+W-DES-014,L8-014,L8 Desireds,Desireds,False,True
+W-DES-015,L8-015,L8 Desireds,Desireds,False,True
+W-DES-016,L8-016,L8 Desireds,Desireds,False,True
+W-DBK-001,L8-017,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-002,L8-018,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-003,L8-019,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-004,L8-020,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-005,L8-021,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-006,L8-022,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-007,L8-023,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-008,L8-024,L8 Desireds,Desireds bookkeeping,False,True
+W-DBK-009,L8-025,L8 Desireds,Desireds bookkeeping,False,True
+W-TOP-001,L9-001,L9 Operators,Task operators,False,True
+W-TOP-002,L9-002,L9 Operators,Task operators,False,True
+W-TOP-003,L9-003,L9 Operators,Task operators,False,True
+W-TOP-004,L9-004,L9 Operators,Task operators,False,True
+W-TOP-005,L9-005,L9 Operators,Task operators,False,True
+W-TOP-006,L9-006,L9 Operators,Task operators,False,True
+W-TOP-007,L9-007,L9 Operators,Task operators,False,True
+W-TOP-008,L9-008,L9 Operators,Task operators,False,True
+W-TOP-009,L9-009,L9 Operators,Task operators,False,True
+W-TOP-010,L9-010,L9 Operators,Task operators,False,True
+W-TOP-011,L9-011,L9 Operators,Task operators,False,True
+W-TOP-012,L9-012,L9 Operators,Task operators,False,True
+W-TOP-013,L9-013,L9 Operators,Task operators,False,True
+W-TOP-014,L9-014,L9 Operators,Task operators,False,True
+W-TOP-015,L9-015,L9 Operators,Task operators,False,True
+W-COP-001,L9-016,L9 Operators,Composite operators,False,True
+W-COP-002,L9-017,L9 Operators,Composite operators,False,True
+W-COP-003,L9-018,L9 Operators,Composite operators,False,True
+W-COP-004,L9-019,L9 Operators,Composite operators,False,True
+W-COP-005,L9-020,L9 Operators,Composite operators,False,True
+W-COP-006,L9-021,L9 Operators,Composite operators,False,True
+W-COP-007,L9-022,L9 Operators,Composite operators,False,True
+W-NOP-001,L9-023,L9 Operators,Non-task operators,False,True
+W-NOP-002,L9-024,L9 Operators,Non-task operators,False,True
+W-NOP-003,L9-025,L9 Operators,Non-task operators,False,True
+W-APP-001,L10-001,L10 Application and output,Operator application (internal/external),False,True
+W-APP-002,L10-002,L10 Application and output,Operator application (internal/external),False,True
+W-APP-003,L10-003,L10 Application and output,Operator application (internal/external),False,True
+W-APP-004,L10-004,L10 Application and output,Operator application (internal/external),False,True
+W-APP-005,L10-005,L10 Application and output,Operator application (internal/external),False,True
+W-APP-006,L10-006,L10 Application and output,Operator application (internal/external),False,True
+W-APP-007,L10-007,L10 Application and output,Operator application (internal/external),False,True
+W-APP-008,L10-008,L10 Application and output,Operator application (internal/external),False,True
+W-APP-009,L10-009,L10 Application and output,Operator application (internal/external),False,True
+W-OUT-001,L10-010,L10 Application and output,Output and events,False,True
+W-OUT-002,L10-011,L10 Application and output,Output and events,False,True
+W-OUT-003,L10-012,L10 Application and output,Output and events,False,True
+W-OUT-004,L10-013,L10 Application and output,Output and events,False,True
+W-OUT-005,L10-014,L10 Application and output,Output and events,False,True
+W-OUT-006,L10-015,L10 Application and output,Output and events,False,True
+W-OUT-007,L10-016,L10 Application and output,Output and events,False,True
+W-CHK-002,L11-001,L11 Learning,Learning: chunking,False,True
+W-CHK-003,L11-002,L11 Learning,Learning: chunking,False,True
+W-CHK-004,L11-003,L11 Learning,Learning: chunking,False,True
+W-CHK-005,L11-004,L11 Learning,Learning: chunking,False,True
+W-CHK-006,L11-005,L11 Learning,Learning: chunking,False,True
+W-CHK-001,L11-006,L11 Learning,Learning: RL,False,True
+W-WLD-012,L12-001,L12 Scene and attention,World/state,False,True
+W-WLD-013,L12-002,L12 Scene and attention,World/state,False,True
+W-WLD-014,L12-003,L12 Scene and attention,World/state,False,True
+W-WLD-015,L12-004,L12 Scene and attention,World/state,False,True
+W-NAM-007,L13-001,L13 Grounding,Naming and files,False,True
+W-NOP-004,L13-002,L13 Grounding,Non-task operators,False,True
+W-SCT-001,L13-003,L13 Grounding,Search control,False,True
+W-SCT-002,L13-004,L13 Grounding,Search control,False,True
+W-GRD-001,L13-005,L13 Grounding,Grounding,False,True
+W-GRD-002,L13-006,L13 Grounding,Grounding,False,True
+W-GRD-003,L13-007,L13 Grounding,Grounding,False,True
+W-GRD-004,L13-008,L13 Grounding,Grounding,False,True
+W-GRD-005,L13-009,L13 Grounding,Grounding,False,True
+W-GRD-006,L13-010,L13 Grounding,Grounding,False,True
+W-GRD-007,L13-011,L13 Grounding,Grounding,False,True
+W-GRD-008,L13-012,L13 Grounding,Grounding,False,True
+W-GRD-009,L13-013,L13 Grounding,Grounding,False,True
+W-GRD-010,L13-014,L13 Grounding,Grounding,False,True
+W-NAM-008,L14-001,L14 Selection space,Naming and files,False,True
+W-NAM-009,L14-002,L14 Selection space,Naming and files,False,True
+W-FLG-003,L14-003,L14 Selection space,Flags and constants,False,True
+W-FLG-004,L14-004,L14 Selection space,Flags and constants,False,True
+W-WLD-016,L14-005,L14 Selection space,World/state,False,True
+W-WLD-017,L14-006,L14 Selection space,World/state,False,True
+W-REL-002,L14-007,L14 Selection space,Relations,False,True
+W-DES-018,L14-008,L14 Selection space,Desireds,False,True
+W-DES-019,L14-009,L14 Selection space,Desireds,False,True
+W-DBK-010,L14-010,L14 Selection space,Desireds bookkeeping,False,True
+W-DBK-011,L14-011,L14 Selection space,Desireds bookkeeping,False,True
+W-DBK-012,L14-012,L14 Selection space,Desireds bookkeeping,False,True
+W-TOP-016,L14-013,L14 Selection space,Task operators,False,True
+W-TOP-017,L14-014,L14 Selection space,Task operators,False,True
+W-TOP-018,L14-015,L14 Selection space,Task operators,False,True
+W-SCT-003,L14-016,L14 Selection space,Search control,False,True
+W-SUB-001,L14-017,L14 Selection space,Substates (general),False,True
+W-SEL-001,L14-018,L14 Selection space,Selection space,False,True
+W-SEL-002,L14-019,L14 Selection space,Selection space,False,True
+W-SEL-003,L14-020,L14 Selection space,Selection space,False,True
+W-SEL-004,L14-021,L14 Selection space,Selection space,False,True
+W-SEL-005,L14-022,L14 Selection space,Selection space,False,True
+W-SEL-006,L14-023,L14 Selection space,Selection space,False,True
+W-SEL-007,L14-024,L14 Selection space,Selection space,False,True
+W-SEL-008,L14-025,L14 Selection space,Selection space,False,True
+W-SEL-009,L14-026,L14 Selection space,Selection space,False,True
+W-LAH-001,L14-027,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-002,L14-028,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-003,L14-029,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-004,L14-030,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-005,L14-031,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-006,L14-032,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-007,L14-033,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-008,L14-034,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-009,L14-035,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-010,L14-036,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-011,L14-037,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-012,L14-038,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-013,L14-039,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-014,L14-040,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-015,L14-041,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-016,L14-042,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-017,L14-043,L14 Selection space,Look-ahead / evaluation,False,True
+W-LAH-018,L14-044,L14 Selection space,Look-ahead / evaluation,False,True
+W-CHK-007,L14-045,L14 Selection space,Learning: chunking,False,True
+W-CHK-008,L14-046,L14 Selection space,Learning: chunking,False,True
+W-CHK-009,L14-047,L14 Selection space,Learning: chunking,False,True
+W-OTH-002,L14-048,L14 Selection space,Other,False,True
+W-SCT-004,L15-001,"L15 Substates, search and look-ahead",Search control,False,True
+W-SCT-005,L15-002,"L15 Substates, search and look-ahead",Search control,False,True
+W-SCT-006,L15-003,"L15 Substates, search and look-ahead",Search control,False,True
+W-SCT-007,L15-004,"L15 Substates, search and look-ahead",Search control,False,True
+W-SCT-008,L15-005,"L15 Substates, search and look-ahead",Search control,False,True
+W-SUB-002,L15-006,"L15 Substates, search and look-ahead",Substates (general),False,True
+W-SUB-003,L15-007,"L15 Substates, search and look-ahead",Substates (general),False,True
+W-SUB-004,L15-008,"L15 Substates, search and look-ahead",Substates (general),False,True
+W-SUB-005,L15-009,"L15 Substates, search and look-ahead",Substates (general),False,True
+W-LAH-019,L15-010,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-020,L15-011,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-021,L15-012,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-022,L15-013,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-023,L15-014,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-024,L15-015,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-025,L15-016,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-026,L15-017,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-027,L15-018,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-LAH-028,L15-019,"L15 Substates, search and look-ahead",Look-ahead / evaluation,False,True
+W-COS-001,L15-020,"L15 Substates, search and look-ahead",Cost,False,True
+W-COS-002,L15-021,"L15 Substates, search and look-ahead",Cost,False,True
+W-COS-003,L15-022,"L15 Substates, search and look-ahead",Cost,False,True
+W-COS-004,L15-023,"L15 Substates, search and look-ahead",Cost,False,True
+W-NAM-010,L16-001,L16 Iterative deepening,Naming and files,False,True
+W-NAM-011,L16-002,L16 Iterative deepening,Naming and files,False,True
+W-FLG-005,L16-003,L16 Iterative deepening,Flags and constants,False,True
+W-FLG-006,L16-004,L16 Iterative deepening,Flags and constants,False,True
+W-WLD-018,L16-005,L16 Iterative deepening,World/state,False,True
+W-DBK-013,L16-006,L16 Iterative deepening,Desireds bookkeeping,False,True
+W-DBK-014,L16-007,L16 Iterative deepening,Desireds bookkeeping,False,True
+W-TOP-019,L16-008,L16 Iterative deepening,Task operators,False,True
+W-OUT-008,L16-009,L16 Iterative deepening,Output and events,False,True
+W-SUB-006,L16-010,L16 Iterative deepening,Substates (general),False,True
+W-SEL-010,L16-011,L16 Iterative deepening,Selection space,False,True
+W-SEL-011,L16-012,L16 Iterative deepening,Selection space,False,True
+W-SEL-012,L16-013,L16 Iterative deepening,Selection space,False,True
+W-SEL-013,L16-014,L16 Iterative deepening,Selection space,False,True
+W-LAH-029,L16-015,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-030,L16-016,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-031,L16-017,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-032,L16-018,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-033,L16-019,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-034,L16-020,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-035,L16-021,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-LAH-036,L16-022,L16 Iterative deepening,Look-ahead / evaluation,False,True
+W-IDP-001,L16-023,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-002,L16-024,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-003,L16-025,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-004,L16-026,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-005,L16-027,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-006,L16-028,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-007,L16-029,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-008,L16-030,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-009,L16-031,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-010,L16-032,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-011,L16-033,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-012,L16-034,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-013,L16-035,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-014,L16-036,L16 Iterative deepening,Iterative deepening,False,True
+W-IDP-015,L16-037,L16 Iterative deepening,Iterative deepening,False,True
+W-MEA-001,L16-038,L16 Iterative deepening,MEA operator subgoaling,False,True
+W-CHK-010,L16-039,L16 Iterative deepening,Learning: chunking,False,True
+W-MEA-002,L17-001,L17 MEA operator subgoaling,MEA operator subgoaling,False,True
+W-MEA-003,L17-002,L17 MEA operator subgoaling,MEA operator subgoaling,False,True
+W-MEA-004,L17-003,L17 MEA operator subgoaling,MEA operator subgoaling,False,True
+W-MEA-005,L17-004,L17 MEA operator subgoaling,MEA operator subgoaling,False,True
+W-DBK-015,L18-001,L18 Time and future events,Desireds bookkeeping,False,True
+W-OUT-009,L18-002,L18 Time and future events,Output and events,False,True
+W-TIM-001,L18-003,L18 Time and future events,Time and future events,False,True
+W-TIM-002,L18-004,L18 Time and future events,Time and future events,False,True
+W-TIM-003,L18-005,L18 Time and future events,Time and future events,False,True
+W-TIM-004,L18-006,L18 Time and future events,Time and future events,False,True
+W-TIM-005,L18-007,L18 Time and future events,Time and future events,False,True
+W-TIM-006,L18-008,L18 Time and future events,Time and future events,False,True
+W-TIM-007,L18-009,L18 Time and future events,Time and future events,False,True
+W-TIM-008,L18-010,L18 Time and future events,Time and future events,False,True
+W-TIM-009,L18-011,L18 Time and future events,Time and future events,False,True
+W-TIM-010,L18-012,L18 Time and future events,Time and future events,False,True
+W-DBK-016,L19-001,L19 Goal completion and memory storage,Desireds bookkeeping,False,True
+W-DBK-017,L19-002,L19 Goal completion and memory storage,Desireds bookkeeping,False,True
+W-DBK-018,L19-003,L19 Goal completion and memory storage,Desireds bookkeeping,False,True
+W-DBK-019,L19-004,L19 Goal completion and memory storage,Desireds bookkeeping,False,True
+W-SCT-009,L19-005,L19 Goal completion and memory storage,Search control,False,True
+W-OTH-003,L19-006,L19 Goal completion and memory storage,Other,False,True
+W-FLG-007,L20-001,L20 Thor-Soar,Flags and constants,False,True
+W-FLG-008,L20-002,L20 Thor-Soar,Flags and constants,False,True
+W-FLG-009,L20-003,L20 Thor-Soar,Flags and constants,False,True
+W-WLD-019,L20-004,L20 Thor-Soar,World/state,False,True
+W-WLD-020,L20-005,L20 Thor-Soar,World/state,False,True
+W-OBJ-005,L20-006,L20 Thor-Soar,Objects,False,True
+W-OBJ-006,L20-007,L20 Thor-Soar,Objects,False,True
+W-REL-003,L20-008,L20 Thor-Soar,Relations,False,True
+W-DES-020,L20-009,L20 Thor-Soar,Desireds,False,True
+W-TOP-020,L20-010,L20 Thor-Soar,Task operators,False,True
+W-TOP-021,L20-011,L20 Thor-Soar,Task operators,False,True
+W-TOP-022,L20-012,L20 Thor-Soar,Task operators,False,True
+W-COP-008,L20-013,L20 Thor-Soar,Composite operators,False,True
+W-NOP-005,L20-014,L20 Thor-Soar,Non-task operators,False,True
+W-NOP-006,L20-015,L20 Thor-Soar,Non-task operators,False,True
+W-SCT-010,L20-016,L20 Thor-Soar,Search control,False,True
+W-SCT-011,L20-017,L20 Thor-Soar,Search control,False,True
+W-SCT-012,L20-018,L20 Thor-Soar,Search control,False,True
+W-APP-010,L20-019,L20 Thor-Soar,Operator application (internal/external),False,True
+W-APP-011,L20-020,L20 Thor-Soar,Operator application (internal/external),False,True
+W-APP-012,L20-021,L20 Thor-Soar,Operator application (internal/external),False,True
+W-APP-013,L20-022,L20 Thor-Soar,Operator application (internal/external),False,True
+W-SUB-007,L20-023,L20 Thor-Soar,Substates (general),False,True
+W-LAH-037,L20-024,L20 Thor-Soar,Look-ahead / evaluation,False,True
+W-LAH-038,L20-025,L20 Thor-Soar,Look-ahead / evaluation,False,True
+W-GRD-011,L20-026,L20 Thor-Soar,Grounding,False,True
+W-GRD-012,L20-027,L20 Thor-Soar,Grounding,False,True
+W-GRD-013,L20-028,L20 Thor-Soar,Grounding,False,True
+W-GRD-014,L20-029,L20 Thor-Soar,Grounding,False,True
+W-GRD-015,L20-030,L20 Thor-Soar,Grounding,False,True
+W-GRD-016,L20-031,L20 Thor-Soar,Grounding,False,True
+W-TIM-011,L20-032,L20 Thor-Soar,Time and future events,False,True
+W-TIM-012,L20-033,L20 Thor-Soar,Time and future events,False,True
+W-TIM-013,L20-034,L20 Thor-Soar,Time and future events,False,True
+W-TIM-014,L20-035,L20 Thor-Soar,Time and future events,False,True
+W-TIM-015,L20-036,L20 Thor-Soar,Time and future events,False,True
+W-TIM-016,L20-037,L20 Thor-Soar,Time and future events,False,True
+W-OTH-004,L20-038,L20 Thor-Soar,Other,False,True
+W-OTH-005,L20-039,L20 Thor-Soar,Other,False,True
+W-OTH-006,L20-040,L20 Thor-Soar,Other,False,True
+W-OTH-007,L20-041,L20 Thor-Soar,Other,False,True

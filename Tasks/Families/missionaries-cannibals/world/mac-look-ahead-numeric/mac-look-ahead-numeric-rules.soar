@@ -83,7 +83,7 @@ sp {mac*evaluate*state*score
 
 ## The original's selection library turns a failure evaluation into a reject; selection-world
 ## turns it into a worst preference.  To keep the reject, a failure found in look-ahead is also
-## reported as a constraint failure (W-LAH-023), which agent-world turns into a reject.  It is
+## reported as a constraint failure (W-LAH-011), which agent-world turns into a reject.  It is
 ## elaborated in the same wave as ^failure (by testing the failure condition, not ^failure),
 ## so that it reaches the evaluation before the evaluation substate is removed.
 sp {mac*evaluate*state*failure*outnumbered*reject

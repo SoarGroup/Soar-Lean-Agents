@@ -40,30 +40,31 @@ Using Soar and the shared library. `Soar/README.md` lists the contents.
 ### `Soar-library-dev/`
 Development of the shared library (formerly `Default-conversion`, the conversion of the Soar default libraries). `Soar-library-dev/README.md` lists the contents and the release policy.
 - `releases/`: numbered library releases; current `soar-library-restructured-v2.42.zip` (same content as `Soar/soar-library`; v2.42 removes the nested-selection preference that kept cost graph r4x8 from finishing under tie-impasse). Library defaults: `^iterative-step operator`, `^cost-metric none`, `^optimize false`; each task sets better search settings in `^flag-override`.
-- `testset/`: numbered regression test sets; current `soar-library-testset-v1.35.zip` (515 tests, for v2.42; v1.29 added the world-convention step 6 task families, v1.30 tie-impasse search with a cost metric, v1.31 re-baselined for v2.37, v1.32 the first tests of the unachieved-desireds starting depth, v1.33 re-baselined for v2.40, v1.34 README corrections only, v1.35 re-baselined for v2.42).
+- `testset/`: numbered regression test sets; current `soar-library-testset-v1.37.zip` (515 tests, for v2.42; v1.29 added the world-convention step 6 task families, v1.30 tie-impasse search with a cost metric, v1.31 re-baselined for v2.37, v1.32 the first tests of the unachieved-desireds starting depth, v1.33 re-baselined for v2.40, v1.34 README corrections only, v1.35 re-baselined for v2.42, v1.36 the worldgen duplicate-proposal fix, v1.37 the 18 Nov conventions in the generated programs).
 - `docs/`: `Soar-Library-Refactoring-Proposal-v3.docx`, `Restructure-Build-Report-v1.md`, `Cost-Aware-Evaluation-Plan-v2.docx`, `Option-Selection-Guide-v1.md`, `Search-Settings-Intake-Checklist-v1.md` (choosing a task's search settings), `History-verify-guardrails-force-conflict.md` (removed in v2.38, kept for reintroduction).
 - `findings/`: `FINDING-chunking-overgeneral.md`, `FINDING-early-failure-propagation.md`, `FINDING-stale-worst-preference.md`, `FINDING-tie-impasse-unbounded-continuation.md`, and the findings of 10 November (`Library-Findings.docx`, `Library-Findings-Review.xlsx`).
-- `tools/`: `worldgen-v19.zip` (generators for the generated test tasks), `restructure-tools-v2.22.zip`, `option-selection/` (option-selection tools, unpacked, including `probe_settings.py`), `soar-lint/` (the linter with its step-0 report and baseline).
+- `tools/`: `worldgen-v21.zip` (generators for the generated test tasks; v21 applies the 18 Nov conventions through `convpass.py`), `restructure-tools-v2.22.zip`, `option-selection/` (option-selection tools, unpacked, including `probe_settings.py`), `soar-lint/` (the linter with its step-0 report and baseline).
 - `studies/`: `water-jug-79-v4.zip` (the water jug 7/9 study), `Families-Results.xlsx`.
 
 ### `SoarLean/`
-- `soarlean-agentgen-2026-11-16b.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, WorldSpec and rosiegen, plus the Python world-rule back end. `README.md` says how to build and use it.
+- `soarlean-agentgen-2026-11-18.zip`: one Lean package with agentgen (task-design language and generator), the World library and worldcheck, WorldSpec and rosiegen, plus the Python world-rule back end; updated 18 Nov 2026 for the conventions of the workbook review. `README.md` says how to build and use it. The three `soarlean-agentgen-2026-11-16-*.zip` variants (classicai, extensions, knowledge) are the 16 Nov packages for those task sets.
 - `install-lean-sandbox.sh`: installs Lean 4.35.0 in a Claude cloud workspace (where elan cannot download toolchains).
 
 ### `Conventions/`
-- `World-Conventions-Spec-v6.md`: the world conventions specification, including the chunking conventions W-CHK-009 to W-CHK-011.
-- `IO-Conventions-Proposed.md`: proposed input/output conventions (draft).
-- `World-Conventions-v6.xlsx`: the world conventions workbook (state and `^world` representation, desireds, operators, capacities, cost, chunking), with the REW reviewer column; it holds where it and the specification differ.
-- `Soar-Conventions.xlsx`: conventions derived from existing Soar programs.
+Both workbooks were reorganized on 18 Nov 2026: rows sorted by level and then by topic (in the order a Soar system is developed), and renumbered with level-based IDs (L0-001 ..., L3S for Soar-only guidance, L6P for project conventions, L20 for Thor), numbered jointly across the two workbooks.
+- `World-Conventions-v6.xlsx`: the world conventions workbook (552 rows: 511 conventions and 41 Thor-specific).
+- `Soar-Conventions.xlsx`: conventions for Soar programs in general; its World-Conventions column marks rows shared with, or moved to, the world conventions.
+- `World-Conventions-Spec-v7.md`, `Soar-Conventions-Spec.md`: reference specifications generated from the workbooks by `gen_spec.py` (rebuild after every workbook change).
+- `id-renumbering-map-2026-11-18.csv` (old ID to new ID, 18 Nov) and `id-renumbering-map.csv` (17 Nov): IDs in older documents and in zips go through these maps.
 - `VisualSoar-Project-Conventions.docx`: conventions for laying out an agent as a VisualSoar project.
 
 ### `Tasks/`
 Task agents that load `Soar/soar-library`.
 - `From-English/`: agents written directly from English under the world conventions: `artists-world/`, `zebra-world/`, `mc-world/` (sets `^iterative-step tie-impasse`, v2.34), `wizards-world/`; also `Three-mens-morris/`, `UWM/` (the UWM task descriptions and first versions) and `rosie-teaching.zip` (54 games and puzzles as English input). `From-English/README.md` lists them.
-- `Families/`: the 68 step 6 task agents in 14 families, each as the original program and the world-convention version, with `Families-Results.xlsx` and the harness (`run.py`, `list.txt`). `step6-families-world.zip` is the same folder as a zip. Five world variants set `^iterative-step tie-impasse` (v2.34; see `Families/README.md`).
+- `Families/`: the 68 step 6 task agents in 14 families, each as the original program and the world-convention version, with `Families-Results.xlsx` and the harness (`run.py`, `list.txt`); see `Families/README.md`. The world-v6 versions (rewritten under World-Conventions v6, regenerated 18 Nov 2026 with the conventions of that day) are in `families-world-v6.zip`, made by the generators in `families-v6-tools.zip`; the originals brought into line with Soar-Conventions are in `families-soar-conv.zip`. `README-v6.md` and `Families-Results-v6.xlsx` compare the four groups (original, world, world-v6, soar-conv).
 - `STEP6/`: the blind round trip of 68 tasks (`Blind-Round-Trip-68.xlsx`, `blind-round-trip-68.zip`) and the step 6 package (`step6-consolidated-2026-11-08.zip`); these use the libraries of early November.
 - `hps-tasks.zip`: PDDL task sets derived for replicating Langley, Barley and Meadows (2018): blocks world, five puzzle, kinship and logistics, 52 problems.
-- `io-reference-and-conventions.zip`: an input/output reference agent (`io-guess`) and `IO-Conventions-Proposed.md` (also in `Conventions/`).
+- `io-reference-and-conventions.zip`: an input/output reference agent (`io-guess`) and `IO-Conventions-Proposed.md`.
 - `Issues-Priority-2026-11-15.xlsx`: open issues by priority.
 - `soar-agents-default-libraries.zip`, `soar-agents-working.zip`, `soar-agents-other-issues.zip`: agent library test results (early November).
 

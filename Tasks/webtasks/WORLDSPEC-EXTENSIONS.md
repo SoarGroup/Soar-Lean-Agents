@@ -42,7 +42,7 @@ Decided by JL (16 Nov 2026): knowledge is represented explicitly, so it is teste
 |---|---|---|
 | `Task.derived : List Derived` | `name(vars)` holds for every binding that meets `defn`; the definition may use negation (`none`, `lacks`) and earlier derived relations | an i-supported elaboration per relation on each world; never copied into look-ahead (not in `^copy-relation`), so every world recomputes it |
 | `Eff.each atoms eff` | the inner effect for every match of the atoms (positive only), judged on the state before the action | an apply rule of its own (look-ahead and real world), firing once per match |
-| `Task.wellFormed` | negation stays out of operators, `each` conditions, goals and losing conditions (W-CHK-009 unchanged for them); no `each` inside an `each`; no effect changes a derived relation; `dr` added to the reserved names | |
+| `Task.wellFormed` | negation stays out of operators, `each` conditions, goals and losing conditions (L11-003 unchanged for them); no `each` inside an `each`; no effect changes a derived relation; `dr` added to the reserved names | |
 
 Both puzzles run on seeds 1-3 (Cheryl: July 16 in 21-22 decisions; muddy children: Amy and Ben say yes in round 2, Cal in round 3, 15 decisions), with Lean proofs, matching JSON and rules on paths A and B, 6 of 6 example states agreeing in Lean, Python and Soar, and every run replayed in Lean. The new well-formedness check caught a variable named `w` in the first muddy-children description.
 
