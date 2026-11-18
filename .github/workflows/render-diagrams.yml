@@ -1,0 +1,50 @@
+# Copy this file to .github/workflows/render-diagrams.yml in the repo.
+name: Render pipeline diagrams
+
+# When the Mermaid source changes on the default branch, re-render the PNGs in
+# Diagrams/ and commit them back. The Confluence page embeds those PNGs by URL,
+# so nothing needs to be uploaded to Confluence.
+on:
+  push:
+    branches: [main]            # change if the default branch is named differently
+    paths:
+      - "Diagrams/agentgen-pipeline-dataflow.md"
+      - "Diagrams/render.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: write               # needed to push the rendered PNGs
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render PNGs
+        env:
+          # Chrome on GitHub runners needs --no-sandbox
+          PUPPETEER_CONFIG: ${{ github.workspace }}/Diagrams/.puppeteer-ci.json
+        run: |
+          echo '{"args":["--no-sandbox"]}' > "$PUPPETEER_CONFIG"
+          bash ./Diagrams/render.sh
+          rm -f "$PUPPETEER_CONFIG"
+
+      - name: Commit updated PNGs
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Diagrams/*.png
+          if git diff --cached --quiet; then
+            echo "No diagram changes."
+          else
+            git commit -m "Re-render pipeline diagrams [skip ci]"
+            git push
+          fi
