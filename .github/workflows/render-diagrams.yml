@@ -26,8 +26,8 @@ jobs:
           node-version: 22
 
       - name: Install Mermaid CLI
-        run: npm install -g @mermaid-js/mermaid-cli
-
+        run: npm install -g @mermaid-js/mermaid-cli@11.16.0
+        
       - name: Render PNGs
         env:
           # Chrome on GitHub runners needs --no-sandbox
