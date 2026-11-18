@@ -1,0 +1,19 @@
+## mac-rl (missionaries and cannibals, Q-learning over move-boat) under the world conventions
+## (the shared library, no external environment: ^environment none).
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+chunk never
+rl --set learning on
+rl --set learning-rate 0.100000
+rl --set discount-rate 0.500000
+indifferent-selection --epsilon-greedy
+multi-attributes object 3
+
+source mac-world.soar
+source mac-move-boat.soar
+source mac-search-control.soar
+source mac-rl-rules.soar

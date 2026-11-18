@@ -1,0 +1,152 @@
+## find-object__assume-successful-grounding.soar -- thor-soar: 2 proposals, 2 applications.
+
+## Propose assume-successful-grounding.
+sp {evaluate-operator*propose*assume-successful-grounding
+   :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds.desired <desired>)
+   (<world> ^anchored-world true
+           -^real true
+            ^duplicate-of)
+   (<desired> ^info.unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>)
+#  -{(<s> ^external-top-state.scene.objects.object <anchored-object>)  # real-object ?? Why is this tested? Should do direct in this case??
+#    (<anchored-object> ^anchored true
+#                       ^class <class>)}
+  -(<world> ^<< in on controlled-by >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<world> ^info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name assume-successful-grounding
+         ^task-operator true
+         ^action-time 2000  # about 4 actions to find it
+         ^argument1 <unanchored-object>
+         ^pre-conditions-satisfied true)
+}
+
+## Propose assume-successful-grounding.
+sp {evaluate-operator*propose*assume-successful-grounding*in-on
+   :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds.desired <desired>)
+   (<world> ^anchored-world true
+           -^real true
+            ^duplicate-of)
+   (<desired> ^info.unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>)
+#  -{(<s> ^external-top-state.scene.objects.object <anchored-object>)  # real-object ?? Why is this tested?
+#    (<anchored-object> ^anchored true
+#                       ^class <class>)}
+   (<world> ^<< in on >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<world> ^info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name assume-successful-grounding
+         ^task-operator true
+         ^action-time 2000  # about 4 actions to find it
+         ^argument1 <unanchored-object>
+         ^pre-conditions-satisfied true)
+}
+
+## Apply assume-successful-grounding -> sets info, object, unanchored-object ....
+sp {apply*assume-successful-grounding*not-sliced
+   :default
+   (state <s> ^operator <op>
+             -^constants.transformations.<class>
+              ^world <world1> <world2>)
+   (<world1> ^objects <objects>
+             ^anchored-world true)
+   (<world2> ^objects <objects2>)
+   (<objects2> ^object <unanchored-object>)
+   (<op> ^name assume-successful-grounding
+         ^argument1 <unanchored-object>)
+   (<unanchored-object> ^object-handle <faked-object-handle>
+                        ^class <class>)
+  -{(<s> ^superstate <superstate>)
+    (<superstate> ^desireds <desireds>
+                  ^duplicate-look-ahead-operator <operator>
+                  ^operator <operator>
+                  ^name evaluate-operator)
+    (<operator> ^name find-object)}
+-->
+   (<world1> ^info <info>)
+   (<objects2> ^object <unanchored-object> -  # had issues if just modified <unanchored-object> with justifications that were created - had anchored true and false
+                       <unanchored-object1>)
+   (<info> ^unanchored-object <unanchored-object1>
+           ^anchored-object <fake-anchored-object>)
+   (<objects> ^object <unanchored-object1>
+                      <unanchored-object> -)
+   (<unanchored-object1> ^reachable true
+                        ^accessible true
+                        ^accessible true
+                        ^openable true
+                        ^open true
+                        ^fake true
+                        ^temperature room-temp
+                        ^class <class>
+                        ^object-handle <faked-object-handle>
+                        ^anchored true)
+   (<fake-anchored-object> ^anchored true  # create new object that doesn't exist
+                           ^reachable true
+                           ^accessible true
+                           ^openable true
+                           ^open true
+                           ^fake true
+                           ^temperature room-temp
+                           ^class <class>
+                           ^object-handle  (concat <faked-object-handle> |-fake|))
+}
+
+## Apply assume-successful-grounding -> sets info, unanchored-object, anchored-object ....
+sp {apply*assume-successful-grounding*sliced
+   :default
+   (state <s> ^operator <op>
+              ^constants.transformations.<class>
+              ^world <world1> <world2>)
+   (<world1> ^objects <objects>
+             ^anchored-world true)
+   (<world2> ^objects <objects2>)
+   (<objects2> ^object <unanchored-object>)
+   (<op> ^name assume-successful-grounding
+         ^argument1 <unanchored-object2>)
+   (<unanchored-object> -^anchored true
+                         ^object-handle <faked-object-handle>
+                        ^class <class>)  # Is an object that was sliced
+   (<unanchored-object2> -^anchored true # ^object-handle <faked-object-handle>
+                        ^class <class>)  # Is an object that was sliced
+  -{(<s> ^superstate <superstate>)
+    (<superstate> ^desireds <desireds>
+                  ^duplicate-look-ahead-operator <operator>
+                  ^operator <operator>
+                  ^name evaluate-operator)
+    (<operator> ^name find-object)}
+-->
+   (<world1> ^info <info>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <fake-anchored-object>)
+   (<objects> ^object <unanchored-object>)
+   (<unanchored-object> ^anchored true  # are these necessary?
+                                  false -
+                        ^reachable true  # are these necessary?
+                        ^accessible true  # are these necessary?
+                        ^fake true
+                        ^sliced true
+                        ^cookable true
+                        ^cook-state raw
+                        ^temperature room-temp
+                        ^class <class>
+                        ^object-handle <faked-object-handle>)
+   (<fake-anchored-object> ^anchored true  # Create new fake object to use in look ahead
+                                     false -
+                           ^reachable true
+                           ^accessible true
+                           ^fake true
+                           ^class <class>
+                           ^sliced true
+                           ^cookable true
+                           ^cook-state raw
+                           ^temperature room-temp
+                           ^object-handle  (concat <faked-object-handle> |-fake|))
+}

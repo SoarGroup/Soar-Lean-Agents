@@ -1,0 +1,34 @@
+## distance.soar -- thor-soar: 2 elaborations.
+
+## Elaborate objects distance -> sets distance.
+sp {thor-soar*elaborate*objects*distance
+   :o-support
+    :default
+   (state <s> ^name thor-soar
+              ^svs.command.extract.result.record <record>
+              ^scene.objects.object <object>)
+   (<object> ^object-handle <object-handle>)
+   (<record> ^value <distance>
+             ^params <params>)
+   (<params> ^distance_type hull
+             ^b <object-handle>)
+-->
+   (<object> ^distance <distance>)
+}
+
+## Elaborate objects distance remove-old -> sets distance.
+sp {thor-soar*elaborate*objects*distance*remove-old
+   :o-support
+    :default
+   (state <s> ^name thor-soar
+              ^svs.command.extract.result.record <record>
+              ^scene.objects.object <object>)
+   (<object> ^object-handle <object-handle>
+             ^distance { <distance-old> <> <distance> })
+   (<record> ^value <distance>
+             ^params <params>)
+   (<params> ^distance_type hull
+             ^b <object-handle>)
+-->
+   (<object> ^distance <distance-old> -)
+}

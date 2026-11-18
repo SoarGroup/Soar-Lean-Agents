@@ -1,0 +1,63 @@
+
+sp {move-block*rl*pick-up
+   :template
+   (state <s> ^name move-block)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o> +)
+   (<o> ^name pick-up)
+   (<o> ^x <op-x>)
+   (<op-x> ^name <op-x-k>)
+   (<block> ^name <block-k>)
+   (<dest> ^name <dest-k>)
+   (<g> ^name <g-k>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {move-block*rl*put-down
+   :template
+   (state <s> ^name move-block)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o> +)
+   (<o> ^name put-down)
+   (<o> ^y <op-y>)
+   (<op-y> ^name <op-y-k>)
+   (<o> ^d <op-d>)
+   (<op-d> ^name <op-d-k>)
+   (<block> ^name <block-k>)
+   (<dest> ^name <dest-k>)
+   (<g> ^name <g-k>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {move-block*reward*1
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^reward-link <rl>)
+   (<block> ^on <dest>)
+-->
+   (<rl> ^reward <w>)
+   (<w> ^value 1)
+}
+
+sp {move-block*reward*2
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^reward-link <rl>)
+   (<g> ^empty 0)
+   (<g> ^holding { <g-holding> <> <block> })
+-->
+   (<rl> ^reward <w>)
+   (<w> ^value -1)
+}

@@ -1,0 +1,3 @@
+pushd mac-look-ahead
+source mac-look-ahead_source.soar
+popd

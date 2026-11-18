@@ -1,0 +1,96 @@
+## visit-all-objects.soar -- thor-soar: 1 elaboration, 1 proposal, 2 applications.
+
+## Propose visit-all-objects.
+## MEA Selection
+sp {propose*visit-all-objects*object-handle*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^flags.view-frustum false
+              ^flags.mea-operator-selection true
+              ^scene.objects.object <object>
+              ^desireds <desireds>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>
+             ^class { <> soapbottle <> houseplant <> floor <class-handle> }
+            -^visited true
+            -^surface true
+            -^receptacle true
+             ^anchored true)
+  -(<s> ^scene.in.argument1 <object>)
+  -{(<s> ^scene.objects.object <object1>)
+    (<object1> -^visited true
+               -^surface true
+               -^receptacle true
+                ^class { <> soapbottle <> houseplant <> floor }
+                ^object-handle < <object-handle>)
+   -(<s> ^scene.in.argument1 <object1>)}
+   (<desireds> ^desired <desired>
+              -^achieved <desired>)
+   (<desired> ^visited-all-objects true)
+-->
+   (<s> ^operator <operator> +, <, =)
+   (<operator> ^name visit-all-objects
+               ^task-operator true
+               ^super-desired <desired>
+               ^desireds <desireds2>
+               ^argument1 <object>
+               ^argument-count 1)
+   (<desireds2> ^desired-count 2
+                ^desired.self.mobile true
+                ^desired.object <desired2>)
+   (<desired2> ^object-handle <object-handle>
+               ^accessible true)
+}
+
+## Apply approach -> sets perform-action, object.
+sp {apply*visit-all-objects*external*in-view
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name visit-all-objects
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>)
+-->
+   (log 1 (crlf) |Apply Approach: | <object-handle> | external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name approach
+              ^object <object-handle>)
+}
+
+## Apply visit-all-objects -> sets visited.
+sp {apply*visit-all-objects*external*achieved
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions false)
+   (<operator> ^name visit-all-objects
+               ^argument1 <argument1>
+               ^pre-conditions-satisfied true)
+   (<argument1> ^reachable true)
+-->
+   (<argument1> ^visited true)
+}
+
+## Elaborate visit-all-objects object-handle mea -> sets achieved.
+sp {elaborate*visit-all-objects*object-handle*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds <desireds>
+              ^real true
+              ^flags.view-frustum false)
+  -{(<s> ^scene.objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^class { <> soapbottle <> houseplant <> floor <class-handle> }
+             ^object-handle <object-handle>
+            -^visited true
+            -^surface true
+            -^receptacle true
+             ^anchored true)
+  -(<s> ^scene.in.argument1 <object>)}
+   (<desireds> ^desired <desired>)
+   (<desired> ^visited-all-objects true)
+-->
+   (<desireds> ^achieved <desired>)
+}

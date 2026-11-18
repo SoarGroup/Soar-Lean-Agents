@@ -1,0 +1,183 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+sp {eight-puzzle*propose*initialize-eight-puzzle
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-eight-puzzle
+        ^task-operator false)
+}
+
+## initialize-agent-world (best, proposed while the top state has no ^name) stays acceptable
+## after it applies; prefer the task's initialization to it so that it is not reselected.
+sp {eight-puzzle*compare*initialize-eight-puzzle*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-eight-puzzle)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+## World: one object per cell (handle c11 ..., with ^id, the handles of its neighbour
+## cells and the handle of the tile it holds, ^tile), one object per tile (handle t0 ...,
+## ^number; t0 is the blank) and the board (handle board).
+## Goal: a single desired on the board, ^arrangement: the tile wanted in each cell
+## (^binding ^cell <cell-handle> ^tile <tile-handle>). The original goal is one conjunction of
+## 9 cell bindings; agent-world desireds hold at most 6 desired, so the conjunction is
+## kept inside one desired whose achievement is computed by the task (elaborations.soar).
+## Numeric evaluations: higher is better (^better higher on the desireds).
+sp {eight-puzzle*apply*initialize-eight-puzzle
+   (state <s> ^operator.name initialize-eight-puzzle
+              ^world.objects <objs>)
+-->
+   (<s> ^name eight-puzzle
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^mea-operator-selection true
+        ^look-ahead-planning true)
+   (<objs> ^object <board>)
+   (<board> ^object-handle board
+            ^anchored true)
+   (<ds> ^desired <d>
+         ^desired-count 1
+         ^better higher)
+   (<d> ^object <do>)
+   (<do> ^object-handle board
+         ^arrangement <arr>)
+   (<objs> ^object <x0>)
+   (<x0> ^object-handle c11
+         ^anchored true
+         ^id 11
+         ^neighbor c21
+         ^neighbor c12
+         ^tile t2)
+   (<objs> ^object <x1>)
+   (<x1> ^object-handle c12
+         ^anchored true
+         ^id 12
+         ^neighbor c22
+         ^neighbor c11
+         ^neighbor c13
+         ^tile t1)
+   (<objs> ^object <x2>)
+   (<x2> ^object-handle c13
+         ^anchored true
+         ^id 13
+         ^neighbor c23
+         ^neighbor c12
+         ^tile t7)
+   (<objs> ^object <x3>)
+   (<x3> ^object-handle c21
+         ^anchored true
+         ^id 21
+         ^neighbor c11
+         ^neighbor c31
+         ^neighbor c22
+         ^tile t8)
+   (<objs> ^object <x4>)
+   (<x4> ^object-handle c22
+         ^anchored true
+         ^id 22
+         ^neighbor c12
+         ^neighbor c32
+         ^neighbor c21
+         ^neighbor c23
+         ^tile t6)
+   (<objs> ^object <x5>)
+   (<x5> ^object-handle c23
+         ^anchored true
+         ^id 23
+         ^neighbor c13
+         ^neighbor c33
+         ^neighbor c22
+         ^tile t0)
+   (<objs> ^object <x6>)
+   (<x6> ^object-handle c31
+         ^anchored true
+         ^id 31
+         ^neighbor c21
+         ^neighbor c32
+         ^tile t3)
+   (<objs> ^object <x7>)
+   (<x7> ^object-handle c32
+         ^anchored true
+         ^id 32
+         ^neighbor c22
+         ^neighbor c31
+         ^neighbor c33
+         ^tile t4)
+   (<objs> ^object <x8>)
+   (<x8> ^object-handle c33
+         ^anchored true
+         ^id 33
+         ^neighbor c23
+         ^neighbor c32
+         ^tile t5)
+   (<objs> ^object <x9>)
+   (<x9> ^object-handle t0
+         ^anchored true
+         ^number 0)
+   (<objs> ^object <x10>)
+   (<x10> ^object-handle t1
+         ^anchored true
+         ^number 1)
+   (<objs> ^object <x11>)
+   (<x11> ^object-handle t2
+         ^anchored true
+         ^number 2)
+   (<objs> ^object <x12>)
+   (<x12> ^object-handle t3
+         ^anchored true
+         ^number 3)
+   (<objs> ^object <x13>)
+   (<x13> ^object-handle t4
+         ^anchored true
+         ^number 4)
+   (<objs> ^object <x14>)
+   (<x14> ^object-handle t5
+         ^anchored true
+         ^number 5)
+   (<objs> ^object <x15>)
+   (<x15> ^object-handle t6
+         ^anchored true
+         ^number 6)
+   (<objs> ^object <x16>)
+   (<x16> ^object-handle t7
+         ^anchored true
+         ^number 7)
+   (<objs> ^object <x17>)
+   (<x17> ^object-handle t8
+         ^anchored true
+         ^number 8)
+   (<arr> ^binding <dg0>)
+   (<dg0> ^cell c11
+         ^tile t1)
+   (<arr> ^binding <dg1>)
+   (<dg1> ^cell c12
+         ^tile t8)
+   (<arr> ^binding <dg2>)
+   (<dg2> ^cell c13
+         ^tile t7)
+   (<arr> ^binding <dg3>)
+   (<dg3> ^cell c21
+         ^tile t2)
+   (<arr> ^binding <dg4>)
+   (<dg4> ^cell c22
+         ^tile t0)
+   (<arr> ^binding <dg5>)
+   (<dg5> ^cell c23
+         ^tile t6)
+   (<arr> ^binding <dg6>)
+   (<dg6> ^cell c31
+         ^tile t3)
+   (<arr> ^binding <dg7>)
+   (<dg7> ^cell c32
+         ^tile t4)
+   (<arr> ^binding <dg8>)
+   (<dg8> ^cell c33
+         ^tile t5)
+}

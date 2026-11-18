@@ -1,0 +1,130 @@
+## elaborations__future-event.soar -- thor-soar: 6 elaborations, 1 compare.
+
+## Elaborate clear future-event -> sets future-event.
+## These apply even in look-ahead
+## Clear out-of-date future event
+sp {agent-world*apply*clear*future-event
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^top-state <s>)
+   (<world> ^future-event <event>
+           -^time < <time>)
+   (<event> ^completion-time <time>
+           -^type broken-egg)  # Don't do it for broken egg because ???
+-->
+   (<world> ^future-event <event> -)
+}
+
+## Elaborate complete future-event change-property external-not-visible.
+## Change property of an object because future-event is reached
+## Only non-visible objects.
+sp {agent-world*apply*complete*future-event*change-property*external-not-visible
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value { <> no-value <original-property-value> }
+                      ^new-property-value <new-property-value>)
+   (<object> -^derived-from-input.visible true
+              ^<property-handle> <original-property-value>)
+-->
+   (<object> ^<property-handle> <original-property-value> -
+                                <new-property-value>)
+}
+
+## Elaborate complete future-event change-property external-not-visible property-not-exist.
+## Only non-visible objects.
+sp {agent-world*apply*complete*future-event*change-property*external-not-visible*property-not-exist
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value <x>
+                      ^new-property-value <new-property-value>)
+   (<object> -^derived-from-input.visible true
+             -^<property-handle>)
+-->
+   (<object> ^<property-handle> <new-property-value>)
+}
+
+## Elaborate complete future-event change-property external-not-visible no-value.
+sp {agent-world*apply*complete*future-event*change-property*external-not-visible*no-value
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value no-value
+                      ^new-property-value <new-property-value>)
+   (<object> -^derived-from-input.visible true)
+-->
+   (<object> ^<property-handle> <new-property-value>)
+}
+
+## Elaborate complete future-event add-desired external-not-visible -> sets desired, required-desired, desired-count.
+## New desired - will fail if try to add more than 1 at once - count will be wrong
+sp {agent-world*apply*complete*future-event*add-desired*external-not-visible
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^desireds <desireds>
+              ^superstate nil)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^new-desired <new-desired>)
+   (<desireds> ^desired-count $ <d-count>
+              -^desired <new-desired>)
+-->
+   (<desireds> ^desired <new-desired>
+               ^required-desired <new-desired>
+               ^desired-count <d-count> -
+                              (+ 1 <d-count>))
+}
+
+## Elaborate reject operators disturbing future-event -> sets future-event-disruption.
+sp {agent-world*reject*operators*disturbing*future-event
+   :default
+   (state <s> ^operator <op1> +
+              ^world.future-event.<< argument1 argument2 >> <argument>)
+   (<op1> ^<< argument1 argument2 argument3 >> <argument>
+          ^name <> go-to)
+-->
+   (<op1> ^future-event-disruption true)
+}
+
+## Preference for future-event2.
+sp {agent-world*compare*future-event2
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name
+         -^future-event-disruption true
+          ^name go-to)
+   (<op2> ^name
+          ^future-event-disruption true)
+-->
+   (<s> ^operator <op2> <)
+}

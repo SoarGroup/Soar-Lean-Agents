@@ -1,0 +1,35 @@
+
+sp {borrow-from*propose*write-borrow
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^|d1| <_v6>)
+   (<s> ^r { <s-r> <> -1 })
+   (<s> ^wrote 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name write-borrow)
+}
+
+sp {borrow-from*apply*write-borrow
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^operator <o>)
+   (<o> ^name write-borrow)
+   (<m> ^newd1 <m-newd1>)
+   (<s> ^r <s-r>)
+   (<s> ^wrote <s-wrote>)
+-->
+   (<m> ^newd1 <s-r>)
+   (<m> ^newd1 <m-newd1> -)
+   (<s> ^wrote 1)
+   (<s> ^wrote <s-wrote> -)
+}

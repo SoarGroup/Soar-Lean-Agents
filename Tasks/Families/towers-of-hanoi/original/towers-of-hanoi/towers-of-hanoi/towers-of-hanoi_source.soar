@@ -1,0 +1,6 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-towers-of-hanoi.soar
+source move-disk.soar

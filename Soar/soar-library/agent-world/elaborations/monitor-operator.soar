@@ -1,0 +1,50 @@
+## monitor-operator.soar -- agent-world: 4 applications.
+
+## Apply operator one-argument monitor.
+sp {agent-world*apply*operator*one-argument*monitor
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name <operator-name>
+               ^argument-count 1
+               ^argument1.object-handle <argument1-handle>)
+-->
+   (log 1 (crlf) |Select | <operator-name> |: | <argument1-handle>)
+}
+
+## Apply operator two-argument monitor.
+sp {agent-world*apply*operator*two-argument*monitor
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name <operator-name>
+               ^argument-count 2
+               ^argument1.object-handle <argument1-handle>
+               ^argument2.object-handle <argument2-handle>)
+-->
+   (log 1 (crlf) |Select | <operator-name> |: | <argument1-handle> |, | <argument2-handle>)
+}
+
+## Apply operator two-argument no-handle monitor fill.
+sp {agent-world*apply*operator*two-argument*no-handle*monitor*fill
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name <operator-name>
+               ^argument-count 2
+               ^argument1 <argument1>
+               ^argument2.object-handle <argument2-handle>)
+   (<argument1> -^object-handle)
+-->
+   (log 1 (crlf) |Select | <operator-name> |: | <argument1> |, | <argument2-handle>)
+}
+
+## Apply operator two-argument no-handle monitor open.
+sp {agent-world*apply*operator*two-argument*no-handle*monitor*open
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name <operator-name>
+               ^argument-count 2
+               ^argument1.object-handle <argument1-handle>
+               ^argument2 <argument2>)
+   (<argument2> -^object-handle)
+-->
+   (log 1 (crlf) |Select | <operator-name> |: | <argument1-handle> |, | <argument2>)
+}

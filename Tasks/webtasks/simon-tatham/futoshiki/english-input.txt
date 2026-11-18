@@ -1,0 +1,8 @@
+Futoshiki (Unequal): English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Fill a Latin square respecting the given inequality signs between adjacent cells.
+
+Source of the task in AI research: Tatham Portable Puzzle Collection; PUZZLES RL benchmark
+(Estermann et al., NeurIPS 2024); Reasoning Gym (Stojanovski et al., NeurIPS 2025).
+Kind of agent: CSP.

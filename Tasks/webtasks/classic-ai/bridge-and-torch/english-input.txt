@@ -1,0 +1,15 @@
+Bridge and torch: English input
+
+Statements, numbered (the input to formalization):
+ 1. Four people must cross a bridge at night. They start on the near side.
+ 2. They have one torch. Anyone on the bridge must have the torch with them.
+ 3. At most two people can be on the bridge at once.
+ 4. Crossing takes Ann 1 minute, Bob 2 minutes, Cy 5 minutes and Di 10 minutes.
+ 5. Two people crossing together go at the speed of the slower one.
+ 6. One or two people on the side with the torch can cross with the torch to the other side.
+ 7. The goal is that all four people are on the far side within 17 minutes.
+
+Source of the task in AI research: Classic puzzle; Rote 2002 analysis.
+Kind of agent: State-space search.
+Status: Needs adding minutes to a running total; WorldSpec has no arithmetic effect. Specification
+gap, raised with John.

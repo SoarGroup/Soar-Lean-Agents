@@ -1,0 +1,38 @@
+
+sp {borrow*propose*add-ten
+   (state <s> ^name borrow)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<ts> ^ten-fact <t>)
+   (<t> ^n <ss-d1>)
+   (<ss> ^|d1| <ss-d1>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-ten)
+   (<o> ^t <t>)
+}
+
+sp {borrow*apply*add-ten
+   (state <s> ^name borrow)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name add-ten)
+   (<o> ^t <t>)
+   (<ss> ^|d1| <ss-d1>)
+   (<t> ^plus10 <t-plus10>)
+   (<ss> ^ten <ss-ten>)
+   (<ss> ^cout <ss-cout>)
+-->
+   (<ss> ^|d1| <t-plus10>)
+   (<ss> ^|d1| <ss-d1> -)
+   (<ss> ^ten 1)
+   (<ss> ^ten <ss-ten> -)
+   (<ss> ^cout 1)
+   (<ss> ^cout <ss-cout> -)
+}

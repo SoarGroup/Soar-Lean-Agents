@@ -1,0 +1,31 @@
+## find-object.soar -- thor-soar: 1 compare.
+
+## Preference for find-object better-if-ready.
+## If find-object is ready to go, just select it.
+sp {agent-world*compare*find-object*better-if-ready
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <w-object>)
+   (<w-object> ^class <class>
+               ^accessible true)
+   (<desireds> ^world-context <world-context>)
+   (<world-context> ^objects.object <object>
+                    ^anchored-world false)
+   (<object> ^accessible true
+             ^anchored false
+             ^class <class>
+                    )#^object-handle <object-handle>)
+   (<op1> ^name { <> find-object <> smem-query <> init-scene-smem <> find-object-direct }
+          ^argument-count 2)
+  -(<op1> ^argument1.anchored true
+          ^argument2.anchored true)
+   (<op2> ^name find-object
+       #   ^argument1.object-handle <un-object-handle>
+          ^argument2 <object>)
+-->
+   (<s> ^operator <op1> < <op2>)
+}

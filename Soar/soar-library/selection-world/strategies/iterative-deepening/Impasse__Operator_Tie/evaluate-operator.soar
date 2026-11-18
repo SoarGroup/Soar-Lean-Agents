@@ -1,0 +1,78 @@
+## evaluate-operator.soar -- selection-world: 1 elaboration, 3 applications.
+
+## ---- elaborations ----
+
+## Elaborate selection evaluate-operator current-evaluation-depth -> sets current-evaluation-depth, remaining-operators.
+## Modification of original
+## Add test for current-evaluation-depth and instantiate operator with it
+sp {selection-world*elaborate*selection*evaluate-operator*current-evaluation-depth
+   :default
+   (state <s> ^name selection
+              ^operator <operator> +
+              ^current-evaluation-depth.value <value>
+              ^remaining-operators <remaining-operators>)
+   (<operator> ^name evaluate-operator
+               ^super-operator <item>)
+  -{(state <s> ^evaluation <evaluation>)
+    (<evaluation> ^super-operator <item>
+                  ^current-evaluation-depth.value <value>
+                  ^value true)}
+  -{(state <s> ^evaluation <evaluation>)
+    (<evaluation> ^remaining-operators <remaining-operators>
+                  ^current-evaluation-depth.value <value>
+                  ^value true)}
+-->
+   (<operator> ^current-evaluation-depth.value <value>
+               ^remaining-operators <remaining-operators>)}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> sets evaluation.
+sp {selection-world*apply*evaluate-operator*clean-up-evaluations
+   :default
+   (state <s> ^operator <operator>
+              ^evaluation <evaluation2>)
+   (<operator> ^name evaluate-operator
+               ^current-evaluation-depth.value <value>
+               ^super-operator <super>
+               ^remaining-operators <remaining-operators>)
+   (<evaluation2> ^value true
+                  ^super-operator <super>
+                 -^symbolic-value success
+                 -^numeric-value
+                 -^current-evaluation-depth.value <value>)
+-->
+   (<s> ^evaluation <evaluation2> -)
+}
+
+## Apply selection (o-support) -> sets current-evaluation-depth.
+sp {selection-world*apply*selection*evaluate-operator*remaining-operators*current-evaluation-depth
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^current-evaluation-depth.value <value>
+              ^remaining-operators <remaining-operators>
+              ^operator <operator>
+              ^evaluation <evaluation>)
+   (<operator> ^name evaluate-operator
+               ^evaluation <evaluation>
+              -^current-evaluation-depth.value <value>)
+   (<evaluation> -^current-evaluation-depth.value <value>)
+-->
+   (<evaluation> ^current-evaluation-depth.value <value>)}
+
+## Apply selection (o-support) -> sets remaining-operators.
+sp {selection-world*apply*selection*evaluate-operator*remaining-operators*current-evaluation-depth2
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^current-evaluation-depth.value <value>
+              ^remaining-operators <remaining-operators>
+              ^operator <operator>
+              ^evaluation <evaluation>)
+   (<operator> ^name evaluate-operator
+               ^evaluation <evaluation>
+               ^current-evaluation-depth.value <value>)
+  -(<evaluation> ^remaining-operators <remaining-operators>)
+-->
+   (<evaluation> ^remaining-operators <remaining-operators>)}

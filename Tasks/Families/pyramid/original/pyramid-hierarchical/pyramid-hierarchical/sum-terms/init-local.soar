@@ -1,0 +1,21 @@
+
+sp {sum-terms*propose*init-local
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   -(<s> ^sum <_v3>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {sum-terms*apply*init-local
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+-->
+   (<s> ^sum 0)
+   (<s> ^next 0)
+}

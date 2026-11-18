@@ -1,0 +1,179 @@
+## Task operator backup (tour, current square c, previous square p): returns the knight
+## from c to p (depth - 1, move count + 1, goal flag cleared); c becomes unused and is marked
+## tried at p's visit number.
+## backup*1: no unused neighbour of c remains untried at c's visit number.
+sp {knights*propose*backup*1
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^at <ch>
+        ^done 0)
+   (<objs> ^object <c>
+           ^object <p>)
+   (<c> ^object-handle $ <ch>
+        ^prev { <ph> <> <ch> }
+        ^visit <c-visit>)
+   (<p> ^object-handle $ <ph>)
+  -{(<c> ^move <lkh>)
+    (<objs> ^object <lk>)
+    (<lk> ^object-handle <lkh>
+          ^used 0)
+   -(<lk> ^tried <c-visit>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name backup
+        ^task-operator true
+        ^action-handle backup
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <c>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## backup*2: a solution was just detected.
+sp {knights*propose*backup*2
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^at <ch>
+        ^done 0
+        ^goal 1)
+   (<objs> ^object <c>
+           ^object <p>)
+   (<c> ^object-handle $ <ch>
+        ^prev { <ph> <> <ch> })
+   (<p> ^object-handle $ <ph>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name backup
+        ^task-operator true
+        ^action-handle backup
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <c>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## backup*3: before the last square, two unused neighbours of c have degree 1.
+sp {knights*propose*backup*3
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^at <ch>
+        ^done 0
+        ^depth < 64)
+   (<objs> ^object <c>
+           ^object <p>)
+   (<c> ^object-handle $ <ch>
+        ^prev { <ph> <> <ch> }
+        ^move <a1h>
+        ^move { <a2h> <> <a1h> })
+   (<p> ^object-handle $ <ph>)
+   (<objs> ^object <a1>
+           ^object <a2>)
+   (<a1> ^object-handle $ <a1h>
+         ^used 0
+         ^degree 1)
+   (<a2> ^object-handle $ <a2h>
+         ^used 0
+         ^degree 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name backup
+        ^task-operator true
+        ^action-handle backup
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <c>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+sp {knights*apply*backup*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name backup
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>
+        ^argument2.object-handle $ <ch>
+        ^argument3.object-handle $ <ph>)
+   (<objs> ^object <t>
+           ^object <c>
+           ^object <p>)
+   (<t> ^object-handle $ <th>
+        ^at <t-at>
+        ^depth <t-depth>
+        ^moves <t-moves>
+        ^goal <t-goal>)
+   (<c> ^object-handle $ <ch>
+        ^used <c-used>)
+   (<p> ^object-handle $ <ph>
+        ^visit <p-visit>)
+-->
+   (<t> ^at <ph>)
+   (<t> ^at <t-at> -)
+   (<c> ^used 0)
+   (<c> ^used <c-used> -)
+   (<c> ^tried <p-visit>)
+   (<t> ^depth (- <t-depth> 1))
+   (<t> ^depth <t-depth> -)
+   (<t> ^moves (+ <t-moves> 1))
+   (<t> ^moves <t-moves> -)
+   (<t> ^goal 0)
+   (<t> ^goal <t-goal> -)
+}
+
+## Internal application, each neighbour z of c: degree + 1, and the tried mark for c's visit
+## number is removed.
+sp {knights*apply*backup*internal*neighbour
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name backup
+        ^pre-conditions-satisfied true
+        ^argument2.object-handle $ <ch>)
+   (<objs> ^object <c>
+           ^object <z>)
+   (<c> ^object-handle $ <ch>
+        ^visit <c-visit>
+        ^move <zh>)
+   (<z> ^object-handle $ <zh>
+        ^degree <z-degree>)
+-->
+   (<z> ^degree (+ <z-degree> 1))
+   (<z> ^degree <z-degree> -)
+   (<z> ^tried <c-visit> -)
+}

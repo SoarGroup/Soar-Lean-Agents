@@ -1,0 +1,16 @@
+
+sp {add-digits*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name add-digits)
+   (<ss> ^task-state <ts>)
+   (<ss> ^p <p>)
+   (<ss> ^c <c>)
+-->
+   (<s> ^name add-digits)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+}

@@ -1,0 +1,13 @@
+Tower of London: English input
+
+Statements, numbered (the input to formalization):
+ 1. There are three pegs. The first peg holds up to three balls, the second up to two, the third one.
+ 2. There are three balls: red, green and blue.
+ 3. At the start the first peg holds red at the bottom and green on top of it, the second peg holds blue, and the third peg is empty.
+ 4. You can move the top ball of a peg onto another peg that is not full.
+ 5. The goal is that the first peg holds blue at the bottom and red on top of it, and the second peg holds green.
+ 6. Reach the goal in as few moves as possible.
+
+Source of the task in AI research: Shallice 1982; cognitive-architecture models.
+Kind of agent: State-space search.
+Status: Fits the WorldSpec form (peg capacities are counts). Being formalized.

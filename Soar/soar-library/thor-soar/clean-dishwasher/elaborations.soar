@@ -1,0 +1,73 @@
+## elaborations.soar -- thor-soar: 3 elaborations.
+
+## Elaborate clean-dishwasher substate problem-space -> sets problem-space, desireds, next-desireds ....
+sp {clean-dishwasher*elaborate*substate*problem-space
+    :default
+   (state <s> ^name clean-dishwasher
+              ^argument1.object-handle <dishwasher-object-handle>
+              ^superstate.operator <so>)
+   (<so> ^name clean-dishwasher
+         ^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space.name clean-dishwasher thor-world
+        ^desireds <desireds1>)
+   (<desireds1> ^next-desireds <desireds2>
+                ^desired.dirty-dishes-in-dishwasher true
+                ^desired-count 1)
+   (<desireds2> ^desired <desired3>
+                ^desired-count 1
+                ^next-desireds <desireds3>)
+   (<desired3> ^object <dishwasher-object2>)
+   (<dishwasher-object2> ^object-handle <dishwasher-object-handle>
+                         ^open false)
+   (<desireds3> ^desired <desired4>
+                ^desired-count 1)
+   (<desired4> ^object <dishwasher-object3>)
+   (<dishwasher-object3> ^object-handle <dishwasher-object-handle>
+                         ^event-time 0
+                         ^activated true)
+}
+
+## Elaborate clean-dishwasher desireds dirty-object-locations -> sets achieved.
+sp {clean-dishwasher*elaborate*desireds*dirty-object-locations
+    :default
+   (state <s> ^name clean-dishwasher
+              ^argument1 <dishwasher>
+              ^desireds <desireds>
+              ^world <world>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^dirty-dishes-in-dishwasher true)
+  -{(<world> ^objects.object <dirty-object>)
+    (<dirty-object> ^dirty true
+             -^material food)
+   -{(<world> ^<< on in >> <in>
+              ^anchored-world true)
+     (<in> ^argument1 <dirty-object>
+           ^argument2 <dishwasher>)}}
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate clean-dishwasher substate desired-dirty-in-dishwasher -> sets desired, in, argument1 ....
+sp {clean-dishwasher*elaborate*substate*desired-dirty-in-dishwasher
+    :default
+   (state <s> ^name clean-dishwasher
+              ^problem-space.name clean-dishwasher
+              ^argument1 <dishwasher>
+              ^world <world>
+              ^desireds <desireds>)
+   (<desireds> ^desired.dirty-dishes-in-dishwasher true)
+   (<world> ^anchored-world true
+            ^objects.object <dirty-object>)
+   (<dirty-object> ^object-handle <dirty-object-handle>
+                   ^dirty true
+                  -^material food)
+  -{(<world> ^in <in>)
+    (<in> ^argument1 <dirty-object>
+          ^argument2 <dishwasher>)}
+-->
+   (<desireds> ^desired <desired1>)
+   (<desired1> ^in <in>)
+   (<in> ^argument1 <dirty-object>
+         ^argument2 <dishwasher>)
+}

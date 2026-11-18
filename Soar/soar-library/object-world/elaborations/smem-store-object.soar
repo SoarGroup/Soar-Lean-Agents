@@ -1,0 +1,15 @@
+## smem-store-object.soar -- object-world: 1 elaboration.
+
+## Elaborate smem-store-object -> sets store, s.
+sp {object-world*elaborate*smem-store-object
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^scene.objects.object <object>
+              ^flags.smem-store true
+              ^smem.command <cmd>)
+  -(<object> ^smem-stored true)
+-->
+   (<cmd> ^store <object>)
+   (<object> ^smem-stored true)
+}

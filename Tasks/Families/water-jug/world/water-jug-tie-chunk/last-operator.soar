@@ -1,0 +1,13 @@
+## Record the name of the last task operator applied (state-control information, kept on
+## the state rather than in ^world).  Initialised to none by initialize-water-jug.
+## Guarded so that it fires once per operator application.
+
+sp {water-jug*apply*record*last-operator
+   (state <s> ^problem-space.name water-jug
+              ^operator <o>
+              ^last-operator { <l> <> <n> })
+   (<o> ^task-operator true
+        ^name <n>)
+-->
+   (<s> ^last-operator <l> - <n>)
+}

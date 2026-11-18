@@ -1,0 +1,10 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-TicTacToe.soar
+source mark.soar
+source x-wins.soar
+source o-wins.soar
+source detect-draw.soar
+source preferences.soar

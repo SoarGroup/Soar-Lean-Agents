@@ -1,0 +1,199 @@
+## search-control.soar -- agent-world: 2 elaborations, 10 compares, 2 applications.
+
+## ---- elaborations ----
+
+## Elaborate state desired-selection-value relation -> sets selection-v.
+sp {agent-world*elaborate*state*desired-selection-value*relation
+    :default
+   (state <s> ^superstate nil
+              ^desireds.desired <desired>
+              ^flags.gps-desired-ordering true
+              ^constants.desired-orderings.desired-ordering <do1>)
+   (<desired> ^<in1>)
+   (<do1> ^relation <in1>
+          ^value <v>)
+-->
+   (<desired> ^selection-value <v>)
+}
+
+## Elaborate state desired-selection-value object-property -> sets selection-v.
+sp {agent-world*elaborate*state*desired-selection-value*object-property
+   :default
+   (state <s> ^superstate nil
+              ^desireds.desired <desired>
+              ^flags.gps-desired-ordering true
+              ^constants.desired-orderings.desired-ordering <do1>)
+   (<desired> ^object.<property>)
+   (<do1> ^object-property <property>
+          ^value <v>)
+-->
+   (<desired> ^selection-value <v>)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for task-operator-non-task-operator.
+sp {agent-world*compare*task-operator-non-task-operator
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^task-operator false)
+   (<op2> ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for task-operator-smem-query.
+sp {agent-world*compare*task-operator-smem-query
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name smem-query)
+   (<op2> ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for preferred-desired search-control.
+sp {agent-world*compare*preferred-desired*search-control
+   :default
+   (state <s> ^operator <op1> +
+              ^flags.desired-preferences true
+              ^desireds.<< super-preferred-desired preferred-desired >> <super-desired>)
+   (<op1> ^super-desired <super-desired>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for superpreferred-desired search-control.
+sp {agent-world*compare*superpreferred-desired*search-control
+   :default
+   (state <s> ^operator <op1> +
+                        { <op2> <> <op1> } +
+              ^flags.desired-preferences true
+              ^desireds <desireds>)
+   (<op1> ^super-desired <super-desired>)
+   (<op2> ^super-desired <super-desired2>)
+   (<desireds> ^super-preferred-desired <super-desired>
+               ^preferred-desired <super-desired2>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for avoid-desired search-control.
+sp {agent-world*compare*avoid-desired*search-control
+   :default
+   (state <s> ^operator <op1> +
+              ^flags.desired-preferences true
+              ^desireds.avoid-desired <super-desired>)
+   (<op1> ^super-desired <super-desired>)
+-->
+   (<s> ^operator <op1> <)
+}
+
+## Preference for avoid-desired search-control failed-grounding.
+sp {agent-world*compare*avoid-desired*search-control*failed-grounding
+   :default
+   (state <s> ^operator <op1> +
+                        { <op2> <> <op1> } +
+              ^flags.desired-preferences true
+              ^desireds.failed-grounding-desired <super-desired>)
+   (<op1> ^super-desired <super-desired>
+          ^name find-object)
+   (<op2> #^super-desired <super-desired>
+          ^name <> find-object)
+-->
+   (<s> ^operator <op1> -)#< <op2>) Can get conflicts
+}
+
+## Preference for preferred-indifferent search-control.
+sp {agent-world*compare*preferred-indifferent*search-control
+   :default
+   (state <s> ^operator <op1> +
+              ^flags.desired-preferences true
+              ^desireds.preferred-indifferent <super-desired>)
+   (<op1> ^super-desired <super-desired>)
+-->
+   (<s> ^operator <op1> =)
+}
+
+## Preference for gps-desired-ordering ordering relations same.
+sp {agent-world*compare*gps-desired-ordering*ordering*relations*same
+   :default
+   (state <s> ^operator <op1> +
+              ^operator { < <op1> <op2> } +
+              ^flags.gps-desired-ordering true)
+   (<op1> ^super-desired <sdesired1>
+          ^task-operator true)
+   (<sdesired1> ^selection-value <v>
+               -^disjunction <sdesired2>)
+   (<op2> ^super-desired <sdesired3>
+          ^task-operator true)
+   (<sdesired3> ^selection-value <v>
+               -^disjunction <sdesired2>)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for gps-desired-ordering ordering relations better.
+sp {agent-world*compare*gps-desired-ordering*ordering*relations*better
+   :default
+   (state <s> ^operator <op1> +
+              ^operator { <> <op1> <op2> } +
+              ^flags.gps-desired-ordering true
+              ^desireds <desireds>)
+   (<op1> ^super-desired.selection-value <v>
+          ^task-operator true)
+   (<op2> ^super-desired.selection-value < <v>
+          ^task-operator true)
+  -{(<desireds> ^unachieved <r-desired2>
+                ^required-desired <r-desired2>)
+    (<op1> ^super-desired <r-desired2>)}
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for required-desired ordering relations better.
+sp {agent-world*compare*required-desired*ordering*relations*better
+   :default
+   (state <s> ^operator <op1> +
+              ^operator { <> <op1> <op2> } +
+              ^desireds <desireds>)
+   (<desireds> ^unachieved <r-desired>
+               ^required-desired <r-desired>)
+   (<op1> ^super-desired <r-desired>)
+  -{(<desireds> ^unachieved <r-desired2>
+                ^required-desired <r-desired2>)
+    (<op2> ^super-desired <r-desired2>)}
+    (<op2> ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply desired-selection-value relation -> sets selection-value.
+sp {agent-world*apply*desired-selection-value*relation
+   :default
+   (state <s> ^operator.desireds.desired <desired>
+              ^flags.gps-desired-ordering true
+              ^constants.desired-orderings.desired-ordering <do1>)
+   (<desired> ^<in1>)
+   (<do1> ^relation <in1>
+          ^value <v>)
+-->
+   (<desired> ^selection-value <v>)
+}
+
+## Apply desired-selection-value object-property -> sets selection-value.
+sp {agent-world*apply*desired-selection-value*object-property
+    :default
+   (state <s> ^operator.desireds.desired <desired>
+              ^flags.gps-desired-ordering true
+              ^constants.desired-orderings.desired-ordering <do1>)
+   (<desired> ^object.<property>)
+   (<do1> ^object-property <property>
+          ^value <v>)
+-->
+   (<desired> ^selection-value <v>)
+}

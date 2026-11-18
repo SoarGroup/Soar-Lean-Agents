@@ -1,0 +1,34 @@
+
+sp {borrow-from*propose*init-local
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   -(<s> ^|d1| <_v6>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {borrow-from*apply*init-local
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+   (<m> ^digit1 <m-digit1>)
+   (<m> ^pos <m-pos>)
+-->
+   (<s> ^|d1| <m-digit1>)
+   (<s> ^|d2| 1)
+   (<s> ^ten 0)
+   (<s> ^nxt (+ <m-pos> 1))
+   (<s> ^issub 1)
+   (<s> ^r -1)
+   (<s> ^wrote 0)
+}

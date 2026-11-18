@@ -1,0 +1,30 @@
+Five houses (zebra puzzle): English input
+
+Puzzle as given, including the output request.
+
+There are five houses in a row, numbered 1 to 5 from left to right. Each house is painted a different color. In each house lives a person of a different nationality. Each of the five owners drinks a certain beverage, smokes a certain brand of cigar, and keeps a certain pet. No two owners have the same pet, smoke the same cigar, drink the same beverage, or share a nationality.
+
+Questions:
+1. Who drinks water?
+2. Who owns the zebra?
+
+Clues:
+1. There are exactly five houses.
+2. The Englishman lives in the red house.
+3. The Swede keeps dogs as pets.
+4. The Dane drinks tea.
+5. The green house is immediately to the left of the white house.
+6. The green house's owner drinks coffee.
+7. The person who smokes Pall Mall rears birds.
+8. The owner of the yellow house smokes Dunhill.
+9. The man living in the center house (House 3) drinks milk.
+10. The Norwegian lives in the first house (House 1).
+11. The man who smokes Blends lives next to the one who keeps cats.
+12. The man who keeps horses lives next to the man who smokes Dunhill.
+13. The owner who smokes BlueMaster drinks beer.
+14. The German smokes Prince.
+15. The Norwegian lives next to the blue house.
+
+Show the elimination matrix or deductions; answer who drinks water and who owns the zebra.
+
+Source: header comment of zebra-rules.soar ("Original English").

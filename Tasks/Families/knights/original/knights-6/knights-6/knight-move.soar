@@ -1,0 +1,65 @@
+
+sp {knights*propose*knight-move
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square <y>)
+   (<t> ^at <c>)
+   (<c> ^move <y>)
+   (<t> ^done 0)
+   (<y> ^used 0)
+   (<c> ^visit <c-visit>)
+   -(<y> ^tried <c-visit>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name knight-move)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^y <y>)
+}
+
+sp {knights*apply*knight-move
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name knight-move)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^y <y>)
+   (<t> ^at <t-at>)
+   (<y> ^used <y-used>)
+   (<y> ^prev <y-prev>)
+   (<y> ^visit <y-visit>)
+   (<t> ^frame <t-frame>)
+   (<t> ^depth <t-depth>)
+   (<t> ^moves <t-moves>)
+-->
+   (<t> ^at <y>)
+   (<t> ^at <t-at> -)
+   (<y> ^used 1)
+   (<y> ^used <y-used> -)
+   (<y> ^prev <c>)
+   (<y> ^prev <y-prev> -)
+   (<y> ^visit (+ <t-frame> 1))
+   (<y> ^visit <y-visit> -)
+   (<t> ^frame (+ <t-frame> 1))
+   (<t> ^frame <t-frame> -)
+   (<t> ^depth (+ <t-depth> 1))
+   (<t> ^depth <t-depth> -)
+   (<t> ^moves (+ <t-moves> 1))
+   (<t> ^moves <t-moves> -)
+}
+
+sp {knights*apply*knight-move*each1
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name knight-move)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^y <y>)
+   (<z> ^degree <z-degree>)
+   (<y> ^move <z>)
+-->
+   (<z> ^degree (+ <z-degree> -1))
+   (<z> ^degree <z-degree> -)
+}

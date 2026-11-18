@@ -1,0 +1,35 @@
+objid 1
+category location
+name place-a
+
+objid 2
+category location
+name place-b
+
+objid 3
+category location
+name place-c
+
+objid 4
+category animal
+name monkey
+
+objid 5
+category box
+name box
+
+objid 6
+category food
+name bananas
+
+objid 7
+category floor
+name floor
+
+predicate at
+4 1
+5 3
+6 2
+
+predicate on
+4 7

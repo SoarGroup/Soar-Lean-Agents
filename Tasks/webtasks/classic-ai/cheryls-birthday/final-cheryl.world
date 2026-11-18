@@ -1,0 +1,82 @@
+objid 1
+category date
+name may-15
+month may
+day 15.0
+
+objid 2
+category date
+name may-16
+month may
+day 16.0
+
+objid 3
+category date
+name may-19
+month may
+day 19.0
+
+objid 4
+category date
+name june-17
+month june
+day 17.0
+
+objid 5
+category date
+name june-18
+month june
+day 18.0
+
+objid 6
+category date
+name july-14
+month july
+day 14.0
+
+objid 7
+category date
+name july-16
+month july
+day 16.0
+
+objid 8
+category date
+name august-14
+month august
+day 14.0
+
+objid 9
+category date
+name august-15
+month august
+day 15.0
+
+objid 10
+category date
+name august-17
+month august
+day 17.0
+
+objid 11
+category stage
+name talk
+step 5.0
+
+predicate out3
+1
+2
+3
+4
+5
+
+predicate out4
+6
+8
+
+predicate out5
+9
+10
+
+predicate answer
+7

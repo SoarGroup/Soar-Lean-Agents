@@ -1,0 +1,14 @@
+Cheryl's birthday: English input
+
+Statements, numbered (the input to formalization):
+ 1. Albert and Bernard want to know Cheryl's birthday. Cheryl gives them ten possible dates: May 15, May 16, May 19, June 17, June 18, July 14, July 16, August 14, August 15, August 17.
+ 2. Cheryl tells Albert only the month and tells Bernard only the day.
+ 3. Albert says: "I don't know when Cheryl's birthday is, but I know that Bernard doesn't know either."
+ 4. Bernard says: "At first I didn't know when Cheryl's birthday is, but I know now."
+ 5. Albert says: "Then I also know when Cheryl's birthday is."
+ 6. Each statement is true, and each speaker reasons perfectly.
+ 7. The goal is to find Cheryl's birthday.
+
+Source of the task in AI research: Epistemic-logic benchmarks for LLMs.
+Kind of agent: Epistemic reasoning.
+Status: Epistemic, like muddy children. Specification gap, raised with John.

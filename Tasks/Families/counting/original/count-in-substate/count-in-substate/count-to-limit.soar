@@ -1,0 +1,18 @@
+
+sp {count-in-substate*elaborate*count-to-limit-relevant*1
+   (state <s> ^name count-in-substate)
+   (<s> ^counter <counter>)
+   (<counter> ^value { <counter-value> < 75000 })
+-->
+   (<s> ^count-to-limit-relevant <counter>)
+}
+
+sp {count-in-substate*propose*count-to-limit
+   (state <s> ^name count-in-substate)
+   (<s> ^count-to-limit-relevant <counter>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name count-to-limit)
+   (<o> ^counter <counter>)
+}

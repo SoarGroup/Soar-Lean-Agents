@@ -1,0 +1,93 @@
+## clean-object.soar -- thor-soar: 2 proposals, 1 compare, 1 application.
+
+## Propose clean-object.
+## MEA Selection
+sp {thor-soar*propose*clean-object*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^anchored-world true
+            ^objects <objects>)
+   (<objects> ^object <object-dirty>
+                      <object-faucet>)
+   (<object-dirty> ^<< origin-object-handle object-handle >> <o-clean-handle>
+                   ^object-handle <clean-handle>)
+   (<object-faucet> ^object-handle <faucet-handle>
+                    ^class faucet)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^dirty false
+                     ^object-handle <o-clean-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name clean-object
+               ^task-operator true
+               ^action-handle clean
+               ^super-desired <desired>
+               ^argument1 <object-dirty>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^desired.holding-object.object-handle <clean-handle>
+                ^desired.object <desired-object3>
+                ^desired.object <desired-object4>)
+   (<desired-object3> ^reachable true
+                      ^object-handle <faucet-handle>)
+   (<desired-object4> ^activated true
+                      ^object-handle <faucet-handle>)
+}
+
+## Preference for get-object on.
+sp {thor-soar*compare*get-object*on
+    :default
+   (state <s> ^name clean-object
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name get-object)
+   (<op2> ^name turn-on
+          ^argument1.class faucet)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Apply clean-object -> sets dirty, contaminated.
+sp {apply*clean-object*internal
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name clean-object
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^dirty true)
+-->
+   (log 1 (crlf) |Apply clean: | <object-handle> | internal.|)
+   (<object> ^dirty true -
+                    false
+             ^contaminated true -
+                           false)
+}
+
+## Propose clean-object.
+## Non MEA Selection
+sp {thor-soar*propose*clean-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>)
+   (<object> ^dirty true
+             ^cook-state raw
+             ^reachable true
+             ^dirtyable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name clean-object
+               ^task-operator true
+               ^action-handle clean
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

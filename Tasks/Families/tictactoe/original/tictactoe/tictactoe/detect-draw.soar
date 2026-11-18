@@ -1,0 +1,24 @@
+
+sp {TicTacToe*propose*detect-draw
+   (state <s> ^name TicTacToe)
+   (<s> ^game <game>)
+   (<game> ^over 0)
+   -{ (<s> ^cell <none2>) (<none2> ^content 0) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name detect-draw)
+   (<o> ^game <game>)
+}
+
+sp {TicTacToe*apply*detect-draw
+   (state <s> ^name TicTacToe)
+   (<s> ^operator <o>)
+   (<o> ^name detect-draw)
+   (<o> ^game <game>)
+   (<game> ^over <game-over>)
+-->
+   (<game> ^over 1)
+   (<game> ^over <game-over> -)
+   (write |Draw.|)
+}

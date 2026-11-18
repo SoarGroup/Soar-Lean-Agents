@@ -1,0 +1,116 @@
+## move-block space (implementation substate of move-block, problem space move-block).
+## pick-up(x) and put-down(y, d) are task-action operators applied internally: pick-up(x) for any
+## block x with nothing on it when the gripper is empty; put-down(y, d) for the held block y and
+## any clear destination d.
+sp {move-block*propose*pick-up
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired <sd>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>
+        ^holding-object.object-handle $ none)
+   (<x> ^class block
+        ^object-handle $ <xh>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument2 <x>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name pick-up
+        ^rl-action <xh>
+        ^task-operator true
+        ^action-handle pick-up
+        ^argument1 <x>
+        ^argument-count 1
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {move-block*apply*pick-up
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name pick-up
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <xh>)
+   (<w> ^anchored-world true
+        ^objects.object <x> <g>
+        ^holding-object <h>)
+   (<x> ^object-handle $ <xh>)
+   (<h> ^object-handle $ none)
+   (<g> ^class gripper
+        ^last-held <lh>)
+-->
+   (log 1 (crlf) |Apply pick-up: | <xh>)
+   (<w> ^holding-object <h> -
+        ^holding-object <x>)
+   (<g> ^last-held <lh> -
+        ^last-held <xh>)
+}
+
+sp {move-block*propose*put-down
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired <sd>
+              ^top-state.clear <d>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <y> <d>
+        ^holding-object <y>)
+   (<y> ^object-handle $ <yh>)
+   (<d> ^object-handle $ <dh>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name put-down
+        ^rl-action (concat <yh> |->| <dh>)
+        ^task-operator true
+        ^action-handle put-down
+        ^argument1 <y>
+        ^argument2 <d>
+        ^argument-count 2
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## put-down: the held block ends up on the destination and the gripper is empty.
+sp {move-block*apply*put-down*release
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name put-down
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <yh>
+        ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true
+        ^holding-object <y>)
+   (<y> ^object-handle $ <yh>)
+-->
+   (log 1 (crlf) |Apply put-down: | <yh> | -> | <dh>)
+   (<w> ^holding-object <y> -
+        ^holding-object <h>)
+   (<h> ^object-handle none)
+}
+
+sp {move-block*apply*put-down*on
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name put-down
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <yh>
+        ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true
+        ^holding-object <y>
+        ^objects.object <d>
+        ^on <r>)
+   (<y> ^object-handle $ <yh>)
+   (<d> ^object-handle $ <dh>)
+   (<r> ^argument1 <y>
+        ^argument2 <> <d>)
+-->
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <y>
+         ^argument2 <d>
+         ^argument-count 2)
+}

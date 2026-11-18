@@ -1,0 +1,137 @@
+## _flags.soar -- agent-world: 11 elaborations.
+
+## Elaborate top-state flags -> sets flags.
+sp {agent-world*elaborate*top-state*flags
+   :default
+   (state <s> ^superstate nil)
+-->
+   (<s> ^flags <f>)
+}
+
+## Elaborate flags override.
+sp {agent-world*elaborate*flags*override
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flag-override.<flag> <value>)
+-->
+   (<f> ^<flag> <value>)
+}
+
+## Elaborate flags default desired-preferences -> sets desired-preferences.
+## true: uses the desired preferences in operator desireds (search control).
+sp {agent-world*elaborate*flags*default*desired-preferences
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.desired-preferences <any>)
+-->
+   (<f> ^desired-preferences false)
+}
+
+## Elaborate flags default gps-desired-ordering -> sets gps-desired-ordering.
+## true: preferences rank desireds, like the table of connections in GPS.
+sp {agent-world*elaborate*flags*default*gps-desired-ordering
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.gps-desired-ordering <any>)
+-->
+   (<f> ^gps-desired-ordering false)
+}
+
+## Elaborate flags default rl -> sets rl.
+## true: reinforcement learning (reward elaboration).
+sp {agent-world*elaborate*flags*default*rl
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.rl <any>)
+-->
+   (<f> ^rl false)
+}
+
+## Elaborate flags default cost-metric -> sets cost-metric.
+## none: no cost (the evaluation value is the task state value, if any). unit: each task operator costs ^step-cost (default 1).
+## time: the cost is elapsed look-ahead time (world ^time). Replaces use-timers.
+sp {agent-world*elaborate*flags*default*cost-metric
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.iterative-step cost
+             -^flag-override.cost-metric <any>)
+-->
+   (<f> ^cost-metric none)   # v2.34: unit alone changed no plan and raised decisions; set per task with optimize
+}
+
+## Elaborate flags default cost-metric, cost step -> sets cost-metric unit (v2.37).
+## iterative-step cost iterates on a cost cap, which needs a path cost: without a metric no success could be passed back
+## and a look-ahead that reached the goal was recorded as a failure. A task that sets the cost step and no metric gets unit cost.
+sp {agent-world*elaborate*flags*default*cost-metric*cost-step
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flag-override.iterative-step cost
+             -^flag-override.cost-metric <any>)
+-->
+   (<f> ^cost-metric unit)
+}
+
+## Elaborate flags default min-step-cost -> sets min-step-cost (unit cost only).
+## The least cost charged to a task operator, so zero-cost operators cannot form free cycles.
+sp {agent-world*elaborate*flags*default*min-step-cost
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flags.cost-metric unit
+             -^flag-override.min-step-cost <any>)
+-->
+   (<f> ^min-step-cost 0.01)
+}
+
+## Elaborate flags default cost-weight -> sets cost-weight (cost-metric unit or time).
+## The weight of the path cost in the net value: ^state-value - cost-weight * path-cost.
+sp {agent-world*elaborate*flags*default*cost-weight
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flags.cost-metric << unit time >>
+             -^flag-override.cost-weight <any>)
+-->
+   (<f> ^cost-weight 1)
+}
+
+## Elaborate flags default heuristic-weight -> sets heuristic-weight (cost-metric unit or time).
+## Weighted bound: f = path-cost + heuristic-weight * estimated-remaining-cost. Use a number >= 1; with an admissible estimate
+## the solution costs at most heuristic-weight times the optimum.
+sp {agent-world*elaborate*flags*default*heuristic-weight
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+              ^flags.cost-metric << unit time >>
+             -^flag-override.heuristic-weight <any>)
+-->
+   (<f> ^heuristic-weight 1)
+}
+
+## Elaborate flags default smem-store -> sets smem-store.
+## true: store class structures in smem when a desired is achieved.
+sp {agent-world*elaborate*flags*default*smem-store
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.smem-store <any>)
+-->
+   (<f> ^smem-store false)
+}
+
+## Elaborate flags default explore -> sets explore.
+## true: explore the room for objects.
+sp {agent-world*elaborate*flags*default*explore
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.explore <any>)
+-->
+   (<f> ^explore false)
+}

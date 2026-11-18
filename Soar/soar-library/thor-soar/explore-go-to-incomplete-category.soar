@@ -1,0 +1,29 @@
+## explore-go-to-incomplete-category.soar -- thor-soar: 1 proposal.
+
+## Propose go-to.
+sp {thor-soar*propose*explore-go-to-incomplete-class
+    :default
+   (state <s> ^name thor-soar
+              ^scene.objects <objects>
+              ^explore-structure <es>)
+   (<es> ^classes <classes>
+         ^current-class.class-handle <class-handle>)
+  -{(<objects> ^object <object>)
+    (<object> ^class <class-handle>
+              ^reachable true)}
+   (<objects> ^object <object2>)
+   (<object2> ^object-handle <object2-handle>
+             -^reachable true
+              ^class <class-handle>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name go-to
+         ^sub-name explore-go-to-incomplete-class
+         ^task-operator true
+         ^explore-operator true
+         ^argument1 <object2>
+         ^argument-count 1
+         ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.self.mobile true)
+}

@@ -1,0 +1,39 @@
+## explore-test-action-complete.soar -- thor-soar: 1 elaboration, 1 proposal, 1 application.
+
+## Elaborate explore untested-action -> sets untested-action.
+sp {explore*untested-action
+    :default
+   (state <s> ^name thor-soar
+              ^explore-structure <es>)
+   (<es> ^actions.action.action-handle <action-handle>
+         ^current-class <class>)
+   (<class> -^tested-action.action.action-handle <action-handle>)
+-->
+   (<class> ^untested-action true)
+}
+
+## Propose explore-test-action-complete.
+sp {explore*propose*class-test-action-complete
+    :default
+   (state <s> ^name thor-soar
+              ^explore-structure.current-class <class>)
+   (<class> -^untested-action true
+               -^tested-action.need-undo-action true)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-test-action-complete
+         ^explore-operator true)
+}
+
+## Apply explore-test-action-complete -> sets complete, current-class.
+sp {apply*explore-test-action-complete
+    :default
+   (state <s> ^operator <op>
+              ^explore-structure <es>)
+   (<es> ^current-class <class>)
+   (<op> ^name explore-test-action-complete)
+-->
+   (<class> ^complete true
+                         false -)
+   (<es> ^current-class <class> -)
+}

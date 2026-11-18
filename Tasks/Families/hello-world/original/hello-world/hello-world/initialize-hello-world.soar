@@ -1,0 +1,20 @@
+
+sp {hello-world*propose*initialize-hello-world
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-hello-world)
+}
+
+sp {hello-world*apply*initialize-hello-world
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-hello-world)
+-->
+   (<s> ^name hello-world)
+   (<s> ^greeting <x0>)
+   (<x0> ^written 0)
+   (<s> ^desired <d>)
+   (<d> ^greeting <dg>)
+   (<dg> ^written 1)
+}

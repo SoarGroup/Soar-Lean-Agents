@@ -1,0 +1,32 @@
+
+sp {subtract-digits*propose*count-sub
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^base <_v5>)
+   (<s> ^n { <s-n> <> <ss-d2> })
+   (<ss> ^|d2| <ss-d2>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name count-sub)
+}
+
+sp {subtract-digits*apply*count-sub
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name count-sub)
+   (<s> ^base <s-base>)
+   (<s> ^n <s-n>)
+-->
+   (<s> ^base (- <s-base> 1))
+   (<s> ^base <s-base> -)
+   (<s> ^n (+ <s-n> 1))
+   (<s> ^n <s-n> -)
+}

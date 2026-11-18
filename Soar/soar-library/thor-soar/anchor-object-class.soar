@@ -1,0 +1,56 @@
+## anchor-object-class.soar -- thor-soar: 4 applications.
+
+## Apply anchor-object-class -> sets object.
+sp {apply*anchor-object-class*reject-unanchored-objects
+    :default
+   (state <s> ^operator <op>
+              ^world.objects <objects>)
+   (<objects> ^object <object1> <object2>)
+   (<op> ^name anchor-object-class
+         ^argument2 <unanchor-arg1-object-handle>)
+   (<object1> ^object-handle <unanchor-arg1-object-handle>)
+-->
+   (<objects> ^object <object1> -)}
+
+## Apply anchor-object-class -> sets object-handle.
+sp {apply*anchor-object-class*update-desired-holding-object
+    :default
+   (state <s> ^operator <op>
+              ^desireds.desired.holding-object <h-object>)
+   (<h-object> ^object-handle <unanchor-arg1-object-handle>)
+   (<op> ^name anchor-object-class
+         ^argument1 <anchor-arg1-object-handle>
+         ^argument2 <unanchor-arg1-object-handle>)
+-->
+   (<h-object> ^object-handle <anchor-arg1-object-handle>
+                              <unanchor-arg1-object-handle> -)
+}
+
+## Apply anchor-object-class -> sets object-handle.
+sp {apply*anchor-object-class*update-desired-object
+    :default
+   (state <s> ^operator <op>
+              ^desireds.desired.object <h-object>)
+   (<h-object> ^object-handle <unanchor-arg1-object-handle>)
+   (<op> ^name anchor-object-class
+         ^argument1 <anchor-arg1-object-handle>
+         ^argument2 <unanchor-arg1-object-handle>)
+-->
+   (<h-object> ^object-handle <anchor-arg1-object-handle>
+                              <unanchor-arg1-object-handle> -)
+}
+
+## Apply anchor-object-class -> sets object-handle.
+sp {apply*anchor-object-class*update-desired-relation
+    :default
+   (state <s> ^operator <op>
+              ^desireds.desired.<< on in controlled-by >> <relation>)
+   (<relation> ^<< argument1 argument2 >> <arg>)
+   (<arg> ^object-handle <unanchor-arg1-object-handle>)
+   (<op> ^name anchor-object-class
+         ^argument1 <anchor-arg1-object-handle>
+         ^argument2 <unanchor-arg1-object-handle>)
+-->
+   (<arg> ^object-handle <anchor-arg1-object-handle>
+                         <unanchor-arg1-object-handle> -)
+}

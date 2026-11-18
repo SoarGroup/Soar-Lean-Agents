@@ -1,0 +1,22 @@
+
+sp {get-digit2*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name get-digit2)
+   (<ss> ^task-state <ts>)
+   (<ss> ^p <p>)
+   (<ss> ^|c1| <c1>)
+   (<ss> ^|c2| <c2>)
+   (<ss> ^|c3| <c3>)
+   (<ss> ^c <c>)
+-->
+   (<s> ^name get-digit2)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+}

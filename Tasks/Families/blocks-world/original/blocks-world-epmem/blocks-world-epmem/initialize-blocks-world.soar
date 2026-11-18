@@ -1,0 +1,42 @@
+
+sp {blocks-world*propose*initialize-blocks-world
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-blocks-world)
+}
+
+sp {blocks-world*apply*initialize-blocks-world
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-blocks-world)
+   -(<s> ^look-ahead-operator <o>)
+-->
+   (<s> ^name blocks-world)
+   (<s> ^object <x0>)
+   (<x0> ^table 1)
+   (<x0> ^name table)
+   (<s> ^object <x1>)
+   (<x1> ^table 0)
+   (<x1> ^name A)
+   (<x1> ^on <x0>)
+   (<s> ^object <x2>)
+   (<x2> ^table 0)
+   (<x2> ^name B)
+   (<x2> ^on <x0>)
+   (<s> ^object <x3>)
+   (<x3> ^table 0)
+   (<x3> ^name C)
+   (<x3> ^on <x1>)
+   (<s> ^desired <d>)
+   (<d> ^object <dg0>)
+   (<dg0> ^name A)
+   (<dg0> ^on <x2>)
+   (<d> ^object <dg1>)
+   (<dg1> ^name B)
+   (<dg1> ^on <x3>)
+   (<d> ^object <dg2>)
+   (<dg2> ^name C)
+   (<dg2> ^on <x0>)
+   (<d> ^better higher)
+}

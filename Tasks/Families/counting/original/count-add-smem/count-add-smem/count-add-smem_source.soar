@@ -1,0 +1,9 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-count-add-smem.soar
+source add.soar
+pushd add
+source add_source.soar
+popd

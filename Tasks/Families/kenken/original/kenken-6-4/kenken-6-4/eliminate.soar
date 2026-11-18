@@ -1,0 +1,53 @@
+
+sp {kenken*propose*eliminate*1
+   (state <s> ^name kenken)
+   (<s> ^cell <c1>)
+   (<s> ^cell { <c2> <> <c1> })
+   (<s> ^cand <y>)
+   (<c2> ^cand <y>)
+   (<c1> ^mark { <c1-mark> <> 0 })
+   (<y> ^alive 1)
+   (<y> ^value <c1-mark>)
+   (<c2> ^row <c1-row>)
+   (<c1> ^row <c1-row>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name eliminate)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+   (<o> ^y <y>)
+}
+
+sp {kenken*propose*eliminate*2
+   (state <s> ^name kenken)
+   (<s> ^cell <c1>)
+   (<s> ^cell { <c2> <> <c1> })
+   (<s> ^cand <y>)
+   (<c2> ^cand <y>)
+   (<c1> ^mark { <c1-mark> <> 0 })
+   (<y> ^alive 1)
+   (<y> ^value <c1-mark>)
+   (<c2> ^col <c1-col>)
+   (<c1> ^col <c1-col>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name eliminate)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+   (<o> ^y <y>)
+}
+
+sp {kenken*apply*eliminate
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name eliminate)
+   (<o> ^|c1| <c1>)
+   (<o> ^|c2| <c2>)
+   (<o> ^y <y>)
+   (<y> ^alive <y-alive>)
+-->
+   (<y> ^alive 0)
+   (<y> ^alive <y-alive> -)
+}

@@ -1,0 +1,3 @@
+pushd tictactoe
+source tictactoe_source.soar
+popd

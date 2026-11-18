@@ -1,0 +1,35 @@
+## count-relation.soar -- selection-world: 1 proposal, 1 application.
+
+## ---- operator proposal ----
+
+## Propose count-relation.
+sp {selection-world*propose*failure-evaluation*count-relation
+   :default
+   (state <s> ^name failure-evaluation
+              ^world.<< on in above under >> <relation>
+             -^counted-relation <relation>
+        ^counted-object-handle <object-handle1> <object-handle2>)
+   (<relation> ^argument1.object-handle <object-handle1>
+               ^argument2.object-handle <object-handle2>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name count-relation
+         ^relation <relation>)
+}
+
+## ---- operator application ----
+
+## Apply count-relation -> sets feature-count, counted-relat.
+sp {selection-world*apply*count-relation
+   :default
+   (state <s> ^operator <op>
+              ^feature-count <feature-count>)
+   (<op> ^name count-relation
+         ^relation <relation>)
+   (<relation> ^argument1.object-handle <object-handle1>
+               ^argument2.object-handle <object-handle2>)
+-->
+   (<s> ^feature-count (+ 1 <feature-count>)
+                       <feature-count> -
+        ^counted-relation <relation>)
+}

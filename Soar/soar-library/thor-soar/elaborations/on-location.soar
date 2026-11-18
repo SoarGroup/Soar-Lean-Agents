@@ -1,0 +1,124 @@
+## on-location.soar -- thor-soar: 6 elaborations.
+
+## Elaborate on-location -> sets on, argument1, argument2.
+sp {elaborate*on-location
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^derived-from-input.contains-object-handle <contained-object-handle>
+                       ^x               # wait until objects are filled in
+                      -^receptacle true
+                      -^class floor
+                      -^openable true
+                      -^not-contain <contained-object>
+                      -^open)
+   (<contained-object> ^object-handle <contained-object-handle>)
+  -{(<scene> ^on <on1>)
+    (<on1> ^argument1 <contained-object>
+           ^argument2 <container-object>)}
+-->
+   (<scene> ^on <on>)
+   (<on> ^argument1 <contained-object>
+         ^argument2 <container-object>)
+}
+
+## Elaborate on-location plate -> sets not-contain.
+sp {elaborate*on-location*plate
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>)
+   (<scene> ^objects.object <plate-object>
+                            <container-object>
+                            <contained-object>)
+   (<plate-object> ^object-handle Plate52
+                   ^derived-from-input.contains-object-handle <contained-object-handle>)
+   (<contained-object> ^object-handle <contained-object-handle>) # bug in simulator interface says if egg on plate it is on the countertop
+   (<container-object> ^derived-from-input.contains-object-handle Plate52)
+-->
+   (<container-object> ^not-contain <contained-object>)
+}
+
+## Elaborate on-location holding -> sets on, argument1, argument2.
+sp {elaborate*on-location*holding
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^world <world>)
+   (<world> ^holding-object <container-object>
+            ^objects.object <contained-object>)
+   (<container-object> ^object-handle <contained-object-handle>
+                       ^contains-object-handle <contained-object-handle>)
+   (<contained-object> ^object-handle <contained-object-handle>)
+  -{(<world> ^on <on>)
+    (<on> ^argument1.object-handle <contained-object-handle>
+          ^argument2.object-handle <container-object-handle>)}
+-->
+   (<world> ^on <on>)
+   (<on> ^argument1 <contained-object>
+         ^argument2 <container-object>)
+}
+
+## Elaborate on-location-remove -> sets on.
+sp {elaborate*on-location-remove
+   :o-support
+    :default
+   (state <s> ^superstate nil
+             -^flags.view-frustum true
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^object-handle <object-handle>
+                       ^derived-from-input <dfi>)
+   (<dfi> -^contains-object-handle <contained-object-handle>)
+   (<contained-object> ^object-handle <contained-object-handle>)
+   (<scene> ^on <on>)
+   (<on> ^argument1 <contained-object>
+         ^argument2 <container-object>)
+  -{(<s> ^world.holding-object <container-object>)
+    (<container-object> ^object-handle <contained-object-handle>
+                        ^contains-object-handle <contained-object-handle>)
+    (<contained-object> ^object-handle <contained-object-handle>)}
+-->
+   (<scene> ^on <on> -)
+}
+
+## Elaborate on-location-remove contained-in-another-object -> sets on.
+sp {elaborate*on-location-remove*contained-in-another-object
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>)
+   (<scene> ^objects.object <container-object>
+                            <contained-object>)
+   (<container-object> ^object-handle <> <container-object-handle>
+                       ^derived-from-input.contains-object-handle <contained-object-handle>)
+   (<contained-object> ^object-handle <contained-object-handle>)
+   (<scene> ^on <on>)
+   (<on> ^argument1 <contained-object>
+         ^argument2 <container-object>)
+   (<container-object> ^object-handle <container-object-handle>)
+  -{(<s> ^world.holding-object <container-object>)
+    (<container-object> ^object-handle <contained-object-handle>
+                        ^contains-object-handle <contained-object-handle>)
+    (<contained-object> ^object-handle <contained-object-handle>)}
+-->
+   (log 1 (crlf) |********Remove on | <on> | from scene because | <contained-object-handle> | is on another object. |)
+   (<scene> ^on <on> -)
+}
+
+## Elaborate on-location holding remove.
+sp {elaborate*on-location*holding*remove
+   :o-support
+    :default
+   (state <s> ^superstate nil
+              ^world.holding-object.object-handle <contained-object-handle>
+              ^scene <scene>)
+   (<scene> ^{<< on in >> <relation> } <on>)
+   (<on> ^argument1.object-handle <contained-object-handle>)
+-->
+   (log 1 (crlf) |********Remove | <relation> | | <on> | from scene because | <contained-object-handle> | is held. |)
+   (<scene> ^<relation> <on> -)
+}

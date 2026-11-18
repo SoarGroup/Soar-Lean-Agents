@@ -1,0 +1,9 @@
+
+sp {blocks-world*reward*goal
+   (state <s> ^name blocks-world)
+   (<s> ^reward-link <r>)
+   (<s> ^success <_v2>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value 1)
+}

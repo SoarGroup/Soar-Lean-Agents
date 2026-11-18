@@ -1,0 +1,80 @@
+## turn.soar -- thor-soar: 3 proposals.
+
+## Propose turn.
+## Propose turning with given direction
+## (The current desired is to execute this action)
+sp {propose*turn*direction*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle turn
+             ^argument-count 1
+             ^argument1 { <direction> << right left >> })
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle turn
+               ^argument-count 2
+               ^argument1 <direction>
+               ^argument2 90.0
+               ^pre-conditions-satisfied true)
+}
+
+## Propose turn.
+## Propose turning with given direction
+## (The current desired is to execute this action)
+sp {propose*turn*direction*mea*backward
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle turn
+             ^argument-count 1
+             ^argument1 backward)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle turn
+               ^argument-count 2
+               ^argument1 right
+               ^argument2 180.0
+               ^pre-conditions-satisfied true)
+}
+
+## Propose turn.
+## Propose turn with given direction and degrees
+## (The current desired is to execute this action)
+sp {propose*turn*direction*degrees*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle turn
+             ^argument-count 2
+             ^argument1 <direction>
+             ^argument2 <degrees>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle turn
+               ^argument-count 2
+               ^argument1 <direction>
+               ^argument2 <degrees>
+               ^pre-conditions-satisfied true)
+}

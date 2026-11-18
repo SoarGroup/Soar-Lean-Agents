@@ -1,0 +1,3 @@
+pushd thor-tasks
+source thor-tasks_source.soar
+popd

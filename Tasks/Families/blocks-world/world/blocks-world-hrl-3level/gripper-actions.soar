@@ -1,0 +1,416 @@
+## pick-up space (implementation substate of pick-up, problem space pick-up): gripper actions
+## are task-action operators applied internally; their choice is learned by RL. The object to
+## pick up is the substate's ^argument1.
+
+sp {pick-up*propose*up
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position down)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name up
+        ^task-operator true
+        ^action-handle up
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*up
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name up
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position down)
+-->
+   (log 1 (crlf) |Apply up|)
+   (<g> ^position down -
+        ^position up)
+}
+
+sp {pick-up*propose*down
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position up)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name down
+        ^task-operator true
+        ^action-handle down
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*down
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name down
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position up)
+-->
+   (log 1 (crlf) |Apply down|)
+   (<g> ^position up -
+        ^position down)
+}
+
+sp {pick-up*propose*above-block
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position up)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name above-block
+        ^task-operator true
+        ^action-handle above-block
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*above-block
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name above-block
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<s> ^argument1 <a1>)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 { <> <a1> })
+-->
+   (log 1 (crlf) |Apply above-block|)
+   (<w> ^above <ab> -
+        ^above <nab>)
+   (<nab> ^argument1 <g>
+          ^argument2 <a1>
+          ^argument-count 2)
+}
+
+sp {pick-up*propose*close
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^open true)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name close
+        ^task-operator true
+        ^action-handle close
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*close*grasp
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name close
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^open true
+        ^position down
+        ^last-held <lh>)
+   (<w> ^holding-object <h>
+        ^above <ab>)
+   (<h> ^object-handle $ none)
+   (<s> ^argument1 <a1>)
+   (<a1> ^object-handle $ <a1h>)
+   (<ab> ^argument1 <g>
+         ^argument2 <a1>)
+-->
+   (log 1 (crlf) |Apply close (grasp)|)
+   (<g> ^open true -
+        ^open false
+        ^last-held <lh> -
+        ^last-held <a1h>)
+   (<w> ^holding-object <h> -
+        ^holding-object <a1>)
+}
+
+sp {pick-up*apply*close*up
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name close
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^open true
+        ^position up)
+-->
+   (log 1 (crlf) |Apply close (in the air)|)
+   (<g> ^open true -
+        ^open false)
+}
+
+sp {pick-up*apply*close*elsewhere
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name close
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^open true
+        ^position down)
+   (<s> ^argument1 <a1>)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a1>)
+-->
+   (log 1 (crlf) |Apply close (not above the block)|)
+   (<g> ^open true -
+        ^open false)
+}
+
+sp {pick-up*propose*open
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^open false)
+   (<w> ^holding-object.object-handle $ none)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name open
+        ^task-operator true
+        ^action-handle open
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*open
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name open
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^open false)
+-->
+   (log 1 (crlf) |Apply open|)
+   (<g> ^open false -
+        ^open true)
+}
+
+## put-down space (implementation substate of put-down): ^argument1 is the held block,
+## ^argument2 the destination.
+
+sp {put-down*propose*up-holding
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position down)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name up-holding
+        ^task-operator true
+        ^action-handle up-holding
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*up-holding
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name up-holding
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position down)
+-->
+   (log 1 (crlf) |Apply up-holding|)
+   (<g> ^position down -
+        ^position up)
+}
+
+sp {put-down*propose*down-holding
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position up)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name down-holding
+        ^task-operator true
+        ^action-handle down-holding
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*down-holding
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name down-holding
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position up)
+-->
+   (log 1 (crlf) |Apply down-holding|)
+   (<g> ^position up -
+        ^position down)
+}
+
+sp {put-down*propose*above-dest
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<s> ^argument2 <a2>)
+   (<g> ^position up)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name above-dest
+        ^task-operator true
+        ^action-handle above-dest
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*above-dest
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name above-dest
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<s> ^argument2 <a2>)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 { <> <a2> })
+-->
+   (log 1 (crlf) |Apply above-dest|)
+   (<w> ^above <ab> -
+        ^above <nab>)
+   (<nab> ^argument1 <g>
+          ^argument2 <a2>
+          ^argument-count 2)
+}
+
+sp {put-down*propose*release
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^open false
+        ^position down)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name release
+        ^task-operator true
+        ^action-handle release
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*release*gripper
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^argument1 <a1>
+              ^world <w>)
+   (<o> ^name release
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true
+        ^holding-object <y>
+        ^above <ab>)
+   (<y> ^object-handle <> none)
+   (<ab> ^argument1 <g>)
+   (<g> ^open false)
+-->
+   (log 1 (crlf) |Apply release|)
+   (<g> ^open false -
+        ^open true)
+   (<w> ^holding-object <y> -
+        ^holding-object <hn>
+        ^above <ab> -
+        ^above <nab>)
+   (<hn> ^object-handle none)
+   (<nab> ^argument1 <g>
+          ^argument2 <a1>
+          ^argument-count 2)
+}
+
+sp {put-down*apply*release*on
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^argument1 <a1>
+              ^argument2 <a2>
+              ^world <w>)
+   (<o> ^name release
+        ^pre-conditions-satisfied true)
+   (<w> ^anchored-world true
+        ^holding-object <a1>
+        ^on <r>)
+   (<r> ^argument1 <a1>
+        ^argument2 <> <a2>)
+-->
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <a1>
+         ^argument2 <a2>
+         ^argument-count 2)
+}

@@ -1,0 +1,48 @@
+
+sp {blocks-world*elaborate*goal*success
+   (state <s> ^name blocks-world)
+   (<s> ^desired <d>)
+   (<d> ^object <dx0>)
+   (<dx0> ^name A)
+   (<dx0> ^on <dt0>)
+   (<dt0> ^name <tn0>)
+   (<s> ^object <x0>)
+   (<x0> ^name A)
+   (<x0> ^on <t0>)
+   (<t0> ^name <tn0>)
+   (<d> ^object <dx1>)
+   (<dx1> ^name B)
+   (<dx1> ^on <dt1>)
+   (<dt1> ^name <tn1>)
+   (<s> ^object <x1>)
+   (<x1> ^name B)
+   (<x1> ^on <t1>)
+   (<t1> ^name <tn1>)
+   (<d> ^object <dx2>)
+   (<dx2> ^name C)
+   (<dx2> ^on <dt2>)
+   (<dt2> ^name <tn2>)
+   (<s> ^object <x2>)
+   (<x2> ^name C)
+   (<x2> ^on <t2>)
+   (<t2> ^name <tn2>)
+   (<d> ^object <dx3>)
+   (<dx3> ^name D)
+   (<dx3> ^on <dt3>)
+   (<dt3> ^name <tn3>)
+   (<s> ^object <x3>)
+   (<x3> ^name D)
+   (<x3> ^on <t3>)
+   (<t3> ^name <tn3>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {blocks-world*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

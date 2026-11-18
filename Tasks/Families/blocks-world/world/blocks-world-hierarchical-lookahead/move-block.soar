@@ -1,0 +1,71 @@
+## move-block is a complex composite task operator (cCTO, W-COP-002/007): no preconditions
+## (^desired-count 0) and ^effect-desireds "block on destination". It has no application rule,
+## so its operator no-change is an operator-implementation substate (problem space move-block)
+## whose ^desireds are the effect desireds; there pick-up and put-down are proposed. It is
+## proposed for a block with nothing on it that is not on the destination when the destination is free (nothing on it).
+sp {blocks-world*propose*move-block
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>
+              ^desireds.desired <sd>)
+   (<w> ^anchored-world true
+        ^objects <os>
+        ^on <r>)
+   (<os> ^object <block> { <dest> <> <block> })
+   (<block> ^class block
+            ^object-handle $ <bh>)
+   (<dest> ^class << block table >>
+           ^object-handle $ <dh>)
+   (<r> ^argument1 <block>
+        ^argument2 <> <dest>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument2 <block>)}
+   (<s> ^free <dest>)
+   (<sd> ^on.argument1.object-handle $ <bh>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-block
+        ^task-operator true
+        ^argument1 <block>
+        ^argument2 <dest>
+        ^argument-count 2
+        ^super-desired <sd>
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired-count 1
+         ^desired <e1>
+         ^best 0)
+   (<e1> ^on <er>)
+   (<er> ^argument1.object-handle <bh>
+         ^argument2.object-handle <dh>)
+}
+
+## Search control of the original (top state), over operator arguments.
+sp {blocks-world*select*out-of-place-to-table
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +)
+   (<o> ^name move-block
+        ^argument1 <block>
+        ^argument2 <dest>)
+  -(<s> ^in-place <block>)
+   (<dest> ^class table)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {blocks-world*select*onto-desired-in-place
+   (state <s> ^problem-space.name blocks-world
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +
+              ^in-place <dest>
+              ^desireds.desired.on <dr>)
+   (<o> ^name move-block
+        ^argument1 <block>
+        ^argument2 <dest>)
+   (<block> ^object-handle $ <bh>)
+   (<dest> ^object-handle $ <dh>)
+   (<dr> ^argument1.object-handle $ <bh>
+         ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^operator <o> > <o2>)
+}

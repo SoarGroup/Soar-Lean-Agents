@@ -1,0 +1,17 @@
+## turn-360.soar -- thor-soar: 1 proposal.
+
+## Propose turn-360.
+sp {scan-room*propose*turn-360
+    :default
+   (state <s> ^name scan-room
+              ^scan-record.scanned-360 false)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name turn-360
+         ^task-operator true
+         ^action-handle turn
+         ^argument-count 2
+         ^argument1 right
+         ^argument2 90.0
+         ^pre-conditions-satisfied true)
+}

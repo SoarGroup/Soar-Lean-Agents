@@ -1,0 +1,17 @@
+
+sp {process-column*propose*get-digit2
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v8>)
+   (<s> ^adj 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name get-digit2)
+}

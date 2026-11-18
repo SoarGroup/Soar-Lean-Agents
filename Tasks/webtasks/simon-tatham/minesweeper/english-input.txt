@@ -1,0 +1,8 @@
+Minesweeper (Mines): English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Uncover all safe cells; each uncovered cell shows how many of its eight neighbours contain mines.
+
+Source of the task in AI research: Tatham Portable Puzzle Collection; PUZZLES RL benchmark
+(Estermann et al., NeurIPS 2024); KORGym.
+Kind of agent: Hidden-information deduction.

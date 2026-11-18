@@ -1,0 +1,23 @@
+## These are rules that can be used to control chunking in states and substates
+##  Included here so easy to uncomment and use. 
+
+#sp {elaborate*chunking*force-learn
+#   (state <s> ^world.real true)
+#-->
+#   (force-learn <s>)
+#}
+#}
+#
+# When there are only 1 or 2 desired, not a lot of danger of learning back operator implementation chunks from
+#  an operator no-change substate (except for scan-room and find-object)
+#sp {elaborate*chunking*force-learn*singled-desired
+#   (state <s> ^desireds.desired-count 1
+#             -^superstate nil
+#             -^superstate.operator.name << scan-room find-object >>
+#             -^superstate.superstate.operator.name << scan-room find-object >>
+#              ^world <w>)
+#   (<w> ^real true
+#        ^anchored-world true)
+#-->
+#   (force-learn <s>)
+#}

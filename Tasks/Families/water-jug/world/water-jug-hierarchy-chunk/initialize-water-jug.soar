@@ -1,0 +1,45 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+## Creates the world objects (two jugs), the empty hand (^holding-object with handle none), the goal as ^desireds, ^flags, and marks the
+## task as having no external environment.
+
+sp {water-jug*propose*initialize-water-jug
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-water-jug
+        ^task-operator false)
+}
+
+sp {water-jug*apply*initialize-water-jug
+   (state <s> ^operator.name initialize-water-jug
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<w> ^holding-object <none>)
+   (<none> ^object-handle none)
+   (<s> ^name water-jug
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<f> ^mea-operator-selection false
+        ^look-ahead-planning false)
+   (<objs> ^object <j3> <j5>)
+   (<j3> ^object-handle jug3 ^anchored true ^volume 3 ^contents 0)
+   (<j5> ^object-handle jug5 ^anchored true ^volume 5 ^contents 0)
+   (<ds> ^desired <d> ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle jug3 ^contents 1)
+}
+
+## initialize-agent-world stays proposed (best) until the top state has a ^name, so the
+## task's initialization, proposed once ^world exists, must be preferred to it.
+sp {water-jug*compare*initialize-water-jug*initialize-agent-world
+   (state <s> ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-water-jug)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}

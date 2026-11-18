@@ -1,0 +1,61 @@
+## Evaluation of a look-ahead state (^real false) after its one move (recorded as
+## ^last-move on the state), against the arrangement desired: +1 if the tile moved into its
+## goal cell, -1 if it moved out of its goal cell, 0 otherwise. Returned to the selection
+## space as ^expected-value (selection-world passes it up to the evaluation).
+
+sp {eight-puzzle*evaluate*state*moved-into-place
+   (state <s> ^problem-space.name eight-puzzle
+              ^real false
+              ^last-move <l>
+              ^desireds.desired.object <do>)
+   (<do> ^object-handle $ board
+         ^arrangement <arr>)
+   (<l> ^name move-tile
+        ^tile <th>
+        ^from <fromh>
+        ^to <toh>)
+   (<arr> ^binding <b>)
+   (<b> ^cell <toh>
+        ^tile <th>)
+-->
+   (<s> ^expected-value 1)
+}
+
+sp {eight-puzzle*evaluate*state*moved-out-of-place
+   (state <s> ^problem-space.name eight-puzzle
+              ^real false
+              ^last-move <l>
+              ^desireds.desired.object <do>)
+   (<do> ^object-handle $ board
+         ^arrangement <arr>)
+   (<l> ^name move-tile
+        ^tile <th>
+        ^from <fromh>
+        ^to <toh>)
+   (<arr> ^binding <b>)
+   (<b> ^cell <fromh>
+        ^tile <th>)
+-->
+   (<s> ^expected-value -1)
+}
+
+sp {eight-puzzle*evaluate*state*moved-neutral
+   (state <s> ^problem-space.name eight-puzzle
+              ^real false
+              ^last-move <l>
+              ^desireds.desired.object <do>)
+   (<do> ^object-handle $ board
+         ^arrangement <arr>)
+   (<l> ^name move-tile
+        ^tile <th>
+        ^from <fromh>
+        ^to <toh>)
+  -{(<arr> ^binding <b1>)
+    (<b1> ^cell <toh>
+          ^tile <th>)}
+  -{(<arr> ^binding <b2>)
+    (<b2> ^cell <fromh>
+          ^tile <th>)}
+-->
+   (<s> ^expected-value 0)
+}

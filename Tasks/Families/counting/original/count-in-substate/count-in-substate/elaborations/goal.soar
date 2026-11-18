@@ -1,0 +1,20 @@
+
+sp {count-in-substate*elaborate*goal*success
+   (state <s> ^name count-in-substate)
+   (<s> ^desired <d>)
+   (<s> ^counter <x>)
+   (<d> ^counter <dx>)
+   (<dx> ^value <g-value>)
+   (<x> ^value <g-value>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {count-in-substate*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

@@ -1,0 +1,29 @@
+
+sp {TicTacToe*propose*mark
+   (state <s> ^name TicTacToe)
+   (<s> ^cell <cell>)
+   (<s> ^game <game>)
+   (<cell> ^content 0)
+   (<game> ^over 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name mark)
+   (<o> ^cell <cell>)
+   (<o> ^game <game>)
+}
+
+sp {TicTacToe*apply*mark
+   (state <s> ^name TicTacToe)
+   (<s> ^operator <o>)
+   (<o> ^name mark)
+   (<o> ^cell <cell>)
+   (<o> ^game <game>)
+   (<cell> ^content <cell-content>)
+   (<game> ^turn <game-turn>)
+-->
+   (<cell> ^content <game-turn>)
+   (<cell> ^content <cell-content> -)
+   (<game> ^turn (- 3 <game-turn>))
+   (<game> ^turn <game-turn> -)
+}

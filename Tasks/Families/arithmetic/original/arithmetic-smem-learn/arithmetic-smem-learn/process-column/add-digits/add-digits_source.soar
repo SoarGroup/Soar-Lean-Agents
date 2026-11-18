@@ -1,0 +1,5 @@
+source elaborations.soar
+source init-local.soar
+source count-add.soar
+source store-add.soar
+source done-add.soar

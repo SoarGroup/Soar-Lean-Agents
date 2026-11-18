@@ -1,0 +1,35 @@
+
+sp {move-block*propose*pick-up
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^object <x>)
+   (<g> ^empty 1)
+   (<x> ^table 0)
+   -{ (<s> ^object <none3>) (<none3> ^on <x>) }
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name pick-up)
+   (<o> ^x <x>)
+}
+
+sp {move-block*apply*pick-up
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name pick-up)
+   (<s> ^duplicate-of <_v7>)
+   (<o> ^x <x>)
+   (<g> ^empty <g-empty>)
+   (<g> ^holding <g-holding>)
+-->
+   (<g> ^empty 0)
+   (<g> ^empty <g-empty> -)
+   (<g> ^holding <x>)
+   (<g> ^holding <g-holding> -)
+}

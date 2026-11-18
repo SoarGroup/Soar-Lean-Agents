@@ -1,0 +1,61 @@
+## activated.soar -- thor-soar: 4 elaborations.
+
+## Elaborate object-activated-if-ms-remaining -> sets activated.
+## Updated 2/19/2025 - added activated false
+## Remove affordance calculations
+sp {elaborations*elaborate*object-activated-if-ms-remaining
+    :default
+   (state <s> ^superstate nil
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object-int>)
+   (<object-int> ^ms-remaining <> 0)
+-->
+   (<object-int> ^activated true)
+}
+
+## Elaborate state scene property-activatable-false -> sets activated.
+sp {elaborations*elaborate*state*scene*property-activatable-false
+   :o-support
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)  # added 4/26/2026
+   (<world> ^anchored-world true
+            ^objects.object <object-int>)
+   (<object-int> ^derived-from-input <dfi>
+                 ^object-handle <object-handle>)
+   (<dfi> ^activated false)
+-->
+   (<object-int> ^activated false)
+}
+
+## Elaborate state scene property-activatable-false2 -> sets activatable, activated.
+sp {elaborations*elaborate*state*scene*property-activatable-false2
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)  # added 4/26/2026
+   (<world> ^anchored-world true
+            ^objects.object <object-int>)
+   (<object-int> ^derived-from-input <dfi>
+                -^activatable true
+                 ^object-handle <object-handle>)
+  -(<dfi> ^activatable true
+          ^object-handle)
+-->
+   (<object-int> ^activatable false
+                 ^activated false)
+}
+
+## Elaborate state scene property-activatable-false3 -> sets activatable, activated.
+sp {elaborations*elaborate*state*scene*property-activatable-false3
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)  # added 4/26/2026
+   (<world> ^anchored-world true
+            ^objects.object <object-int>)
+   (<object-int> -^derived-from-input <dfi>
+                 -^activatable true)
+-->
+   (<object-int> ^activatable false
+                 ^activated false)
+}

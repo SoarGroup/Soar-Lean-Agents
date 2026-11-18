@@ -1,0 +1,39 @@
+# Bug 1: $ inside a negated conjunctive condition. A result built from the rule makes EBC report
+# "bad test type in hash_test ... Soar cannot recover" (with chunking on or off).
+sp {propose*initialize
+   (state <s> ^superstate nil -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize)}
+
+sp {apply*initialize
+   (state <s> ^operator.name initialize)
+-->
+   (<s> ^name test ^objects <os> ^target <t>)
+   (<os> ^object <a> <b>)
+   (<a> ^handle A)
+   (<b> ^handle B)
+   (<t> ^handle C)}
+
+# Two operators with no preferences between them: a tie impasse.
+sp {propose*pick
+   (state <s> ^name test ^objects.object.handle <h>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name pick ^handle <h>)}
+
+
+# In the tie substate: the target's handle is not the handle of any object.
+sp {result*ncc-dollar
+   (state <ss> ^superstate <s>)
+   (<s> ^target.handle $ <h>)
+  -{(<s> ^objects.object <ob>)
+    (<ob> ^handle $ <h>)}
+-->
+   (<s> ^target-is-new true)}
+
+sp {halt
+   (state <s> ^name test ^target-is-new true)
+-->
+   (write |Bug 1 rule fired| (crlf))
+   (halt)}

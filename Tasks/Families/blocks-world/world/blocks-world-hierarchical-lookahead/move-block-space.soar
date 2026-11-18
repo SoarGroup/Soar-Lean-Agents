@@ -1,0 +1,51 @@
+## move-block space (implementation substate of move-block, problem space move-block).
+## pick-up and put-down are composite operators implemented by gripper actions in their own
+## operator-implementation substates (problem spaces pick-up and put-down). They carry no
+## ^effect-desireds: agent-world would make the substate's ^desireds the operator's own
+## effect-desireds object, and the counts it computes there are results that place the
+## move-block substate under goal dependency, so Soar removes and rebuilds it every time the
+## gripper changes (which also loses the RL rewards of the pick-up and put-down substates). pick-up(x) is proposed for any block x with nothing on it when the gripper is empty;
+## put-down(y, d) for the held block y and any clear destination d.
+sp {move-block*propose*pick-up
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired <sd>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>
+        ^holding-object.object-handle $ none)
+   (<x> ^class block
+        ^object-handle $ <xh>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument2 <x>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name pick-up
+        ^task-operator true
+        ^argument1 <x>
+        ^argument-count 1
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {move-block*propose*put-down
+   (state <s> ^problem-space.name move-block
+              ^desireds.desired <sd>
+              ^world <w>
+              ^clear <d>)
+   (<w> ^anchored-world true
+        ^objects.object <y> <d>
+        ^holding-object <y>)
+   (<y> ^object-handle $ <yh>)
+   (<d> ^object-handle $ <dh>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name put-down
+        ^task-operator true
+        ^argument1 <y>
+        ^argument2 <d>
+        ^argument-count 2
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}

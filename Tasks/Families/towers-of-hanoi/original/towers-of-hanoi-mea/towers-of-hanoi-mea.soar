@@ -1,0 +1,3 @@
+pushd towers-of-hanoi-mea
+source towers-of-hanoi-mea_source.soar
+popd

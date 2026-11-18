@@ -1,0 +1,30 @@
+
+sp {pick-up*propose*above-block
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^position 1)
+   (<g> ^above { <g-above> <> <block> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name above-block)
+}
+
+sp {pick-up*apply*above-block
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name above-block)
+   (<g> ^above <g-above>)
+-->
+   (<g> ^above <block>)
+   (<g> ^above <g-above> -)
+}

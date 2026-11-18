@@ -1,0 +1,104 @@
+## dirty-object.soar -- thor-soar: 2 proposals, 2 compares, 1 application.
+
+## Propose dirty-object.
+## dirty-object
+## Created 2024/01/18
+sp {thor-soar*propose*dirty-object*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-dirty-handle>
+             ^object-handle <dirty-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^dirty true
+                     ^object-handle <o-dirty-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name dirty-object
+               ^task-operator true
+               ^action-handle dirty
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired.object <desired-object2>
+                ^desired.object <desired-object3>)
+   (<desired-object2> ^reachable true
+                      ^object-handle <dirty-handle>)
+   (<desired-object3> ^accessible true
+                      ^object-handle <dirty-handle>)
+}
+
+## Apply dirty-object -> sets dirty.
+sp {apply*dirty-object*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name dirty-object
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^dirty false
+             ^object-handle <object-handle>)
+-->
+   (log 1 (crlf) |Apply dirty: | <object-handle> | internal.|)
+   (<object> ^dirty false -
+                    true)
+}
+
+## Preference for dirty-object reachable.
+sp {thor-soar*compare*dirty-object*reachable
+    :default
+   (state <s> ^name thor-soar
+              ^flags.task-search-control true
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name dirty-object
+          ^argument1.reachable true)
+   (<op2> ^name dirty-object
+          ^argument1.reachable false)
+-->#  (log 1 (crlf) |**********thor-soar*compare*dirt-object|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for dirty-object reachable2.
+sp {thor-soar*compare*dirty-object*reachable2
+    :default
+   (state <s> ^name thor-soar
+              ^flags.task-search-control true
+              ^operator <op1> +
+                        { > <op1> <op2> }  +)
+   (<op1> ^name dirty-object
+          ^argument1.reachable <value>)
+   (<op2> ^name dirty-object
+          ^argument1.reachable <value>)
+-->#  (log 1 (crlf) |**********thor-soar*compare*dirty-object2|)
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Propose dirty-object.
+## Non MEA Selection
+sp {thor-soar*propose*dirty
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>)
+   (<object> ^dirty false
+             ^reachable true
+             ^dirtyable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name dirty-object
+               ^task-operator true
+               ^action-handle dirty
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

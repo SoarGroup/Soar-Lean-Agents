@@ -1,0 +1,182 @@
+## search-control.soar -- thor-soar: 6 elaborations, 5 compares.
+
+## Preference for task-operator-smem-query find-object.
+sp {thor-soar*compare*task-operator-smem-query*find-object
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name smem-query)
+   (<op2> ^name find-object)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Elaborate preferred-indifferent -> sets preferred-indifferent.
+sp {elaborations*preferred-indifferent
+    :default
+   (state <s> ^desireds <desireds>
+              ^flags.desired-preferences true)
+   (<desireds> ^desired-count 2
+               ^desired <desired1> { < <desired1> <desired2> })
+   (<desired1> ^<< on in stored >> <in1>
+              -^disjunction <desired2>)
+   (<desired2> ^<< on in stored >> <in2>
+              -^disjunction <desired1>)
+-->
+   (<desireds> ^preferred-indifferent <desired1>
+               ^preferred-indifferent <desired2>)
+}
+
+## Preference for preferred-maintain selected-op.
+sp {elaborations*preferred-maintain*selected-op
+   :i-support
+    :default
+   (state <s> ^operator <op1> +
+              ^operator <op1>)
+   (<op1> ^task-operator true)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Elaborate compute-distances put-in put-on holding-arg2 -> sets expected-distance.
+sp {thor-soar*elaborations*compute-distances*put-in*put-on*holding-arg2
+    :default
+   (state <s> ^operator <op1> +
+              ^world.holding-object.object-handle <arg2-handle>
+              ^flags.task-search-control true
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name << put-in put-on >>
+          ^argument1 <arg1>
+          ^argument2 <arg2>)
+   (<pos> ^x <x> ^y <y>)
+   (<arg1> ^x <x1> ^y <y1>
+          -^open false)
+   (<arg2> ^object-handle <arg2-handle>)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <x1>) (* 100.0 <y>) (* 100.0 <y1>))))
+}
+
+## Elaborate compute-distances put-in put-on not-holding-arg2 -> sets expected-distance.
+sp {thor-soar*elaborations*compute-distances*put-in*put-on*not-holding-arg2
+    :default
+   (state <s> ^operator <op1> +
+             -^world.holding-object.object-handle <arg2-handle>
+              ^flags.task-search-control true
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name << put-in put-on >>
+          ^argument1 <arg1>
+          ^argument2 <arg2>)
+   (<pos> ^x <x> ^y <y>)
+   (<arg2> ^x <x1>
+           ^y <y1>
+           ^object-handle <arg2-handle>)
+   (<arg1> -^open false)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <x1>) (* 100.0 <y>) (* 100.0 <y1>))))
+}
+
+## Elaborate compute-distances single-destination-operators -> sets expected-distance.
+sp {thor-soar*elaborations*compute-distances*single-destination-operators
+    :default
+   (state <s> ^operator <op1> +
+              ^world.holding-object.object-handle none
+              ^flags.task-search-control true
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name << break-object clean-object close-container dirty-object empty-object
+                   fill-object open-container turn-on turn-off >>
+          ^argument1 <arg1>)
+   (<pos> ^x <x> ^y <y>)
+   (<arg1> ^x <x1> ^y <y1>)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <y>) (* 100.0 <x1>) (* 100.0 <y1>))))
+}
+
+## Elaborate compute-distances anchor-info-existing-object -> sets expected-distance.
+sp {thor-soar*elaborations*compute-distances*anchor-info-existing-object
+    :default
+   (state <s> ^operator <op1> +
+              ^flags.task-search-control true
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <arg1>)
+   (<pos> ^x <x> ^y <y>)
+   (<arg1> ^x <x1> ^y <y1>
+          -^open false)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <x1>) (* 100.0 <y>) (* 100.0 <y1>))))
+}
+
+## Elaborate compute-distances single-destination-operators search-closed-receptacles -> sets expected-distance.
+sp {thor-soar*elaborations*compute-distances*single-destination-operators*search-closed-receptacles
+    :default
+   (state <s> ^operator <op1> +
+              ^world.holding-object.object-handle none
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name search-closed-receptacles
+          ^argument1 <arg1>)
+   (<pos> ^x <x> ^y <y>)
+   (<arg1> ^x <x1> ^y <y1>)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <y>) (* 100.0 <x1>) (* 100.0 <y1>))))
+}
+
+## Preference for put-in distance.
+sp {thor-soar*compare*put-in*distance
+    :default
+   (state <s> ^operator <op1> +)
+   (<op1> ^expected-distance <ed1>
+          ^name search-closed-receptacles)
+  -{(<s> ^operator <op2> +)
+    (<op2> ^expected-distance < <ed1>
+           ^name search-closed-receptacles)}
+-->
+   (log 1 (crlf) |Prefer: | <op1> | shortest distance. |)
+   (<s> ^operator <op1> >)
+}
+
+## Preference for reject twin sliced-object argument1.
+sp {agent-world*reject*twin*sliced-object*argument1
+   :default
+   (state <s> ^operator <op1> +
+              ^operator { < <op1> <op2> } +)
+   (<op1> ^argument1 <argument1>
+          ^name <name>)
+   (<argument1> ^origin-object-handle <origin-object-handle>
+                ^sliced true)
+   (<op2> ^argument1 <argument1x>
+          ^name <name>)
+   (<argument1x> ^origin-object-handle <origin-object-handle>
+                 ^sliced true)
+  -{(<s> ^operator { > <op1> <op3> } +)
+   (<op3> ^argument1 <argument1z>)
+   (<argument1z> ^origin-object-handle <origin-object-handle>
+                 ^sliced true)}
+-->
+   (<s> ^operator <op2> -)
+}
+
+## Preference for reject twin sliced-object argument2.
+sp {agent-world*reject*twin*sliced-object*argument2
+   :default
+   (state <s> ^operator <op1> +
+              ^operator { < <op1> <op2> } +)
+   (<op1> ^argument2 <argument2>
+          ^name <name>)
+   (<argument2> ^origin-object-handle <origin-object-handle>
+                ^sliced true)
+   (<op2> ^argument2 <argument2x>
+          ^name <name>)
+   (<argument2x> ^origin-object-handle <origin-object-handle>
+                 ^sliced true)
+  -{(<s> ^operator { > <op1> <op3> } +)
+   (<op3> ^argument2 <argument2z>)
+   (<argument2z> ^origin-object-handle <origin-object-handle>
+                 ^sliced true)}
+-->
+   (<s> ^operator <op2> -)
+}

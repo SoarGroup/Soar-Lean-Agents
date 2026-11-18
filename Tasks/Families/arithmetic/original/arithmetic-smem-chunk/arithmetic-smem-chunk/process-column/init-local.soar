@@ -1,0 +1,30 @@
+
+sp {process-column*propose*init-local
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   -(<s> ^|d1| <_v4>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local)
+}
+
+sp {process-column*apply*init-local
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name init-local)
+   (<c> ^digit1 <c-digit1>)
+   (<c> ^digit2 <c-digit2>)
+   (<p> ^carry <p-carry>)
+-->
+   (<s> ^|d1| <c-digit1>)
+   (<s> ^|d2| <c-digit2>)
+   (<s> ^adj (- 1 <p-carry>))
+   (<s> ^r -1)
+   (<s> ^cout 0)
+   (<s> ^ten 0)
+}

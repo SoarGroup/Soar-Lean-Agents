@@ -1,0 +1,33 @@
+Tic-Tac-Toe: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the game is tic-tac-toe.
+  2. Load init-tictactoerc.   [world state: init-tictactoerc.world]
+  3. Ok.
+  4. You can move a clear available red block onto a clear location.
+  5. If a block is not on a location then it is available.
+  6. If a location is not below an object then it is clear.
+  7. Load final-tictactoe2rc.   [world state: final-tictactoe2rc.world]
+  8. The name of the goal is three-in-row.
+  9. Ok.
+ 10. The goal is that three of the captured locations are in a line.
+ 11. If a location is below a red block then it is captured.
+ 12. If the locations are linear then they are in a line.
+ 13. Load fail-tictactoerc.   [world state: fail-tictactoerc.world]
+ 14. The name of the failure is opponent-three.
+ 15. Ok.
+ 16. If three of the occupied locations are in a line then you lose.
+ 17. If a location is below a blue block then it is occupied.
+ 18. Done.
+ 19. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1, red1); column (numeric, 1 to 3); row (numeric, 1 to 3)
+  Relations: below1, on1
+  Relation sets: linear (each line lists objects in one row, column or diagonal)
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/board-games/tic-tac-toe/.

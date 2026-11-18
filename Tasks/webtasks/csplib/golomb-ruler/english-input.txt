@@ -1,0 +1,7 @@
+Golomb ruler: English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Place n marks on a ruler so all pairwise distances are distinct, minimising ruler length.
+
+Source of the task in AI research: CSPLib prob006.
+Kind of agent: Constraint optimisation.

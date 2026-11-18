@@ -1,0 +1,461 @@
+{
+ "datamap": {
+  "rootId": "aeead0a5f3bc4045ad66c8786191635e",
+  "vertices": [
+   {
+    "id": "aeead0a5f3bc4045ad66c8786191635e",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "attribute",
+      "toId": "a53e05bfb5af4b2d91156baecdf834ad"
+     },
+     {
+      "name": "choices",
+      "toId": "0887dad9c80e4a6fbaf38b151fce44f7"
+     },
+     {
+      "name": "io",
+      "toId": "64605765a6a244dd9ce4cbfd29dbe480"
+     },
+     {
+      "name": "name",
+      "toId": "2a355ae01d4a48ef8555c9ba7b9c0491"
+     },
+     {
+      "name": "operator",
+      "toId": "071ce7cb634e4bc7b9b72193a7520305"
+     },
+     {
+      "name": "operator",
+      "toId": "31f357dedaf74b4493bb69f39c1a40b6"
+     },
+     {
+      "name": "operator",
+      "toId": "5204023e6871451088c3167277d6fd97"
+     },
+     {
+      "name": "operator",
+      "toId": "59e69c99d32d4542a7ccd60c2b877eb6"
+     },
+     {
+      "name": "operator",
+      "toId": "5fab42ae48b84ca2895e16368c5bca95"
+     },
+     {
+      "name": "operator",
+      "toId": "bca5d101b3734f998ef3c1501eb544ea"
+     },
+     {
+      "name": "operator",
+      "toId": "e3cbaee3fb6f4260942e7a012dd46949"
+     },
+     {
+      "name": "quiescence",
+      "toId": "dfb1c3d87270447f99f50164d270337a"
+     },
+     {
+      "name": "superstate",
+      "toId": "43c9d9b3392f4713abd82e123945dde3"
+     },
+     {
+      "name": "superstate",
+      "toId": "074e5e39711855388e0e09a83006b91b"
+     },
+     {
+      "name": "superstate",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     },
+     {
+      "name": "superstate",
+      "toId": "074e5e39711855388e0e09a83006b91b"
+     },
+     {
+      "name": "top-state",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     },
+     {
+      "name": "impasse",
+      "toId": "09087cd33c325e988e956a3f71288c2b"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "operator",
+     "state"
+    ],
+    "id": "a53e05bfb5af4b2d91156baecdf834ad",
+    "type": "ENUMERATION"
+   },
+   {
+    "choices": [
+     "conflict",
+     "multiple",
+     "none"
+    ],
+    "id": "0887dad9c80e4a6fbaf38b151fce44f7",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "64605765a6a244dd9ce4cbfd29dbe480",
+    "type": "SOAR_ID",
+    "outEdges": []
+   },
+   {
+    "id": "2a355ae01d4a48ef8555c9ba7b9c0491",
+    "type": "STRING"
+   },
+   {
+    "id": "071ce7cb634e4bc7b9b72193a7520305",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "38a3fa31e44640c8b67eb93d8dd11f0c"
+     },
+     {
+      "name": "superstate",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     },
+     {
+      "name": "superstate",
+      "toId": "074e5e39711855388e0e09a83006b91b"
+     },
+     {
+      "name": "attribute",
+      "toId": "c554ca4c6dbb5e3f9a9b4cca563018de"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "Init-scene-from-smem",
+     "accept-sentence",
+     "anchor-epmem-retrieve",
+     "anchor-info-existing-object",
+     "anchor-info-no-existing-object-lookahead",
+     "anchor-infor-existing-object-fail-internal",
+     "anchor-object-class",
+     "anchor-relation-class",
+     "anchor-smem-in-retrieve",
+     "anchor-smem-look-at",
+     "anchor-smem-object-retrieve",
+     "approach",
+     "attend-object",
+     "break-object",
+     "clean-counters",
+     "clean-dishwasher",
+     "clean-object",
+     "close-container",
+     "cook-microwave",
+     "cook-oven",
+     "cook-stove",
+     "create-object-state-desired",
+     "detect-illegal-desired",
+     "dirty-object",
+     "discard",
+     "drive",
+     "egg-cooked-microwave-plated",
+     "empty-object",
+     "evaluate-operator",
+     "exceed-depth",
+     "explore-clean-up-lost-object",
+     "explore-clean-up-undo",
+     "explore-finished",
+     "explore-go-to-incomplete-category",
+     "explore-goto-untested-category",
+     "explore-in-receptacle-finished",
+     "explore-in-receptacle-object",
+     "explore-new-class",
+     "explore-receptacles",
+     "explore-test-action",
+     "explore-test-action-complete",
+     "explore-test-action-success-undo",
+     "failed-grounding",
+     "fill-object",
+     "find-object",
+     "find-object-direct",
+     "finish-brewing",
+     "finish-broken-egg",
+     "finish-cooking",
+     "finish-future-event",
+     "force-tie",
+     "generic-operator",
+     "get-object",
+     "get-operator-from-refrigerator",
+     "go-to",
+     "goal-completed",
+     "init-internal-simulation",
+     "init-scene-smem",
+     "initialize-agent-world",
+     "initialize-thor-soar",
+     "look",
+     "look-at",
+     "make-coffee",
+     "move-in",
+     "move-on",
+     "next-desireds",
+     "open-container",
+     "put-in",
+     "put-on",
+     "remove-destroyed-object",
+     "remove-object",
+     "remove-unanchored-object-visible",
+     "report-task-complete",
+     "scan-room",
+     "scene-creation",
+     "scene-update",
+     "search-closed-receptacles",
+     "search-smem",
+     "slice-object",
+     "smem-copy-retrieved-in",
+     "smem-copy-retrieved-object",
+     "smem-query",
+     "store",
+     "svs-extract-above",
+     "svs-extract-distance",
+     "toast",
+     "turn",
+     "turn-off",
+     "turn-on",
+     "turn-on-microwave",
+     "update-scene-smem-object-visible",
+     "visit-all-objects",
+     "wait",
+     "wander"
+    ],
+    "id": "38a3fa31e44640c8b67eb93d8dd11f0c",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "074e5e39711855388e0e09a83006b91b",
+    "type": "ENUMERATION",
+    "choices": [
+     "nil"
+    ]
+   },
+   {
+    "id": "c554ca4c6dbb5e3f9a9b4cca563018de",
+    "type": "STRING"
+   },
+   {
+    "id": "31f357dedaf74b4493bb69f39c1a40b6",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "71810cab8fef4214a40e5800a05bdff0"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "goal-completed"
+    ],
+    "id": "71810cab8fef4214a40e5800a05bdff0",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "5204023e6871451088c3167277d6fd97",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "187bf25683f0401d95ede0de49a50dcf"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "initialize-agent-world"
+    ],
+    "id": "187bf25683f0401d95ede0de49a50dcf",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "59e69c99d32d4542a7ccd60c2b877eb6",
+    "type": "SOAR_ID",
+    "outEdges": []
+   },
+   {
+    "id": "5fab42ae48b84ca2895e16368c5bca95",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "61a92388b06c4a4bae2224ff443d374b"
+     },
+     {
+      "name": "name",
+      "toId": "680bad3e6d9d422286bf9986e8c4421e"
+     },
+     {
+      "name": "superstate",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     },
+     {
+      "name": "superstate",
+      "toId": "074e5e39711855388e0e09a83006b91b"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "generic-operator"
+    ],
+    "id": "61a92388b06c4a4bae2224ff443d374b",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "680bad3e6d9d422286bf9986e8c4421e",
+    "type": "STRING"
+   },
+   {
+    "id": "bca5d101b3734f998ef3c1501eb544ea",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "ec8cb25f6551493da1874c5a07adb0fe"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "remove-object"
+    ],
+    "id": "ec8cb25f6551493da1874c5a07adb0fe",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "e3cbaee3fb6f4260942e7a012dd46949",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "a64a5f1334be4f50a3d2654548b22a10"
+     }
+    ]
+   },
+   {
+    "choices": [
+     "find-object",
+     "find-object-direct"
+    ],
+    "id": "a64a5f1334be4f50a3d2654548b22a10",
+    "type": "ENUMERATION"
+   },
+   {
+    "choices": [
+     "t"
+    ],
+    "id": "dfb1c3d87270447f99f50164d270337a",
+    "type": "ENUMERATION"
+   },
+   {
+    "id": "43c9d9b3392f4713abd82e123945dde3",
+    "type": "SOAR_ID",
+    "outEdges": [
+     {
+      "name": "name",
+      "toId": "2dfe8280fb5c5c928abba3dc4a948e50"
+     },
+     {
+      "name": "attribute",
+      "toId": "a53e05bfb5af4b2d91156baecdf834ad"
+     },
+     {
+      "name": "choices",
+      "toId": "0887dad9c80e4a6fbaf38b151fce44f7"
+     },
+     {
+      "name": "impasse",
+      "toId": "09087cd33c325e988e956a3f71288c2b"
+     },
+     {
+      "name": "io",
+      "toId": "64605765a6a244dd9ce4cbfd29dbe480"
+     },
+     {
+      "name": "operator",
+      "toId": "071ce7cb634e4bc7b9b72193a7520305"
+     },
+     {
+      "name": "quiescence",
+      "toId": "dfb1c3d87270447f99f50164d270337a"
+     },
+     {
+      "name": "superstate",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     },
+     {
+      "name": "superstate",
+      "toId": "074e5e39711855388e0e09a83006b91b"
+     },
+     {
+      "name": "top-state",
+      "toId": "aeead0a5f3bc4045ad66c8786191635e"
+     }
+    ]
+   },
+   {
+    "id": "2dfe8280fb5c5c928abba3dc4a948e50",
+    "type": "ENUMERATION",
+    "choices": [
+     "clean-object",
+     "cook",
+     "evaluate-operator",
+     "find-object",
+     "learn-internal-apply",
+     "no-task-operator",
+     "put-in",
+     "selection",
+     "thor-soar"
+    ]
+   },
+   {
+    "id": "09087cd33c325e988e956a3f71288c2b",
+    "type": "ENUMERATION",
+    "choices": [
+     "no-change"
+    ]
+   }
+  ]
+ },
+ "layout": {
+  "folder": "soar-base",
+  "id": "d99cc552be58517d92ec2c25e37889e4",
+  "name": "soar-base",
+  "type": "OPERATOR_ROOT",
+  "children": [
+   {
+    "file": "_readme.soar",
+    "id": "5f2d335f50ec5f09bbe52ae3036381f9",
+    "name": "_readme",
+    "type": "FILE_OPERATOR"
+   },
+   {
+    "file": "simple.soar",
+    "id": "c6c8eaf2c7c857a09221540c2a339f18",
+    "name": "simple",
+    "type": "FILE_OPERATOR"
+   },
+   {
+    "folder": "settings",
+    "id": "db9fe242e17d5c89af721ae420d97b78",
+    "name": "settings",
+    "type": "FOLDER",
+    "children": [
+     {
+      "file": "agent-world-settings.soar",
+      "id": "35e81a768087526a9fe13318e6e1095a",
+      "name": "agent-world-settings",
+      "type": "FILE_OPERATOR"
+     }
+    ]
+   }
+  ]
+ },
+ "version": "6"
+}

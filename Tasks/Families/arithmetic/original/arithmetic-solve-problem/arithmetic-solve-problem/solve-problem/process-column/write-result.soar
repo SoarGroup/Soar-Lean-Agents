@@ -1,0 +1,48 @@
+
+sp {process-column*propose*write-result
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v8>)
+   (<s> ^r { <s-r> <> -1 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name write-result)
+}
+
+sp {process-column*apply*write-result
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name write-result)
+   (<c> ^result <c-result>)
+   (<s> ^r <s-r>)
+   (<p> ^carry <p-carry>)
+   (<s> ^cout <s-cout>)
+   (<c> ^done <c-done>)
+   (<p> ^pid <p-pid>)
+   (<c> ^pos <c-pos>)
+   (<p> ^operation <p-operation>)
+   (<c> ^digit1 <c-digit1>)
+   (<c> ^digit2 <c-digit2>)
+-->
+   (<c> ^result <s-r>)
+   (<c> ^result <c-result> -)
+   (<p> ^carry <s-cout>)
+   (<p> ^carry <p-carry> -)
+   (<c> ^done <p-pid>)
+   (<c> ^done <c-done> -)
+   (write |column | <c-pos> | op | <p-operation> |: | <c-digit1> | | <c-digit2> | -> | <s-r> | carry | <s-cout>)
+}

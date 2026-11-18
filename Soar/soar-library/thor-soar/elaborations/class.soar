@@ -1,0 +1,11 @@
+## class.soar -- thor-soar: 1 elaboration.
+
+## Elaborate state class -> sets class.
+sp {elaborations*state*class
+    :default
+   (state <s> ^superstate nil
+              ^io.input-link.objects.object <object>)
+   (<object> ^category <class>)
+-->
+   (<object> ^class <class>)
+}

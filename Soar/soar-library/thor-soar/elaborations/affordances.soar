@@ -1,0 +1,48 @@
+## affordances.soar -- thor-soar: 3 elaborations.
+
+## Elaborate state scene affordance.
+sp {elaborations*elaborate*state*scene*affordance
+    :default
+   (state <s> ^superstate nil
+              ^thor-soar-classes <tsc>
+              ^scene.objects.object <object-int>)
+   (<object-int> ^class <class-handle>)
+   (<tsc> ^class <class>)
+   (<class> ^class-handle <class-handle>
+            ^affordance.property-handle <affordance>)
+-->
+   (<object-int> ^<affordance> true)  # indicates can close it
+}
+
+## Elaborate copy explore-class-affordances thor-soar-classes -> sets affordance, type, property-handle.
+sp {elaborations*copy*explore-class-affordances*thor-soar-classes
+    :default
+   (state <s> ^superstate nil
+              ^thor-soar-classes.class <class>
+              ^explore-structure.classes.class <class2>)
+   (<class> ^class-handle <class-handle>)
+   (<class2> ^class-handle <class-handle>
+             ^complete true
+             ^tested-action <tested-action>)
+   (<tested-action> ^success true
+                    ^action.affordance <affordance-handle>)
+-->
+   (<class> ^affordance <affordance>)
+   (<affordance> ^type affordance
+                 ^property-handle <affordance-handle>)  # indicates can close it
+}
+
+## Elaborate state scene storage-location -> sets storage-location.
+sp {elaborations*elaborate*state*scene*storage-location
+    :default
+   (state <s> ^superstate nil
+              ^thor-soar-classes <tsc>
+              ^scene.objects.object <object-int>)
+   (<object-int> ^class <class-handle>)
+   (<tsc> ^class <class>)
+   (<class> ^class-handle <class-handle>
+            ^storage-location <storage-location>)
+   (<storage-location> ^class-handle <storage-class>)
+-->
+   (<object-int> ^storage-location <storage-location>)
+}

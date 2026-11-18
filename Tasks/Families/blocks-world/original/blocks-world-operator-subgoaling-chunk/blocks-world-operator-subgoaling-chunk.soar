@@ -1,0 +1,3 @@
+pushd blocks-world-operator-subgoaling-chunk
+source blocks-world-operator-subgoaling-chunk_source.soar
+popd

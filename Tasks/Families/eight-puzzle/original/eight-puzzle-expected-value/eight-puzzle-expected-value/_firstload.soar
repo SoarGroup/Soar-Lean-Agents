@@ -1,0 +1,12 @@
+
+chunk always
+chunk add-osk on
+multi-attributes tile 10
+multi-attributes cell 10
+multi-attributes binding 10
+multi-attributes ancestor 20
+
+pushd ../default
+source selection.soar
+popd
+

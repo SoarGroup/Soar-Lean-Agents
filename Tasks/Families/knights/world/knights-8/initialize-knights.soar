@@ -1,0 +1,971 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+sp {knights*propose*initialize-knights
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-knights
+        ^task-operator false)
+}
+
+## initialize-agent-world (best, proposed while the top state has no ^name) stays acceptable
+## after it applies; prefer the task's initialization to it so that it is not reselected.
+sp {knights*compare*initialize-knights*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-knights)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+## World: one object per square of the 8x8 board (handle = the original square name,
+## e.g. b23), with its coordinate, used flag, current degree (unused neighbours), original
+## degree (odeg), visit number, the handles of the squares a knight move reaches (^move) and
+## of the square it was entered from (^prev); and the tour object (handle tour) with depth,
+## move count, frame, solution count, goal and done flags, and the handles of the current
+## (^at) and first (^first) squares. Links between objects are object-handle constants.
+## Goal: the tour is done (^done 1).
+sp {knights*apply*initialize-knights
+   (state <s> ^operator.name initialize-knights
+              ^world.objects <objs>)
+-->
+   (<s> ^name knights
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<ps> ^name knights
+         ^agent-world true)
+   (<f> ^mea-operator-selection true)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle tour
+         ^done 1)
+   (<objs> ^object <x0>)
+   (<x0> ^object-handle b11
+         ^anchored true
+         ^coord 11
+         ^used 0
+         ^degree 2
+         ^odeg 2
+         ^visit 0
+         ^move b23
+         ^move b32
+         ^prev b11)
+   (<objs> ^object <x1>)
+   (<x1> ^object-handle b12
+         ^anchored true
+         ^coord 12
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b24
+         ^move b31
+         ^move b33
+         ^prev b12)
+   (<objs> ^object <x2>)
+   (<x2> ^object-handle b13
+         ^anchored true
+         ^coord 13
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b21
+         ^move b25
+         ^move b32
+         ^move b34
+         ^prev b13)
+   (<objs> ^object <x3>)
+   (<x3> ^object-handle b14
+         ^anchored true
+         ^coord 14
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b22
+         ^move b26
+         ^move b33
+         ^move b35
+         ^prev b14)
+   (<objs> ^object <x4>)
+   (<x4> ^object-handle b15
+         ^anchored true
+         ^coord 15
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b23
+         ^move b27
+         ^move b34
+         ^move b36
+         ^prev b15)
+   (<objs> ^object <x5>)
+   (<x5> ^object-handle b16
+         ^anchored true
+         ^coord 16
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b24
+         ^move b28
+         ^move b35
+         ^move b37
+         ^prev b16)
+   (<objs> ^object <x6>)
+   (<x6> ^object-handle b17
+         ^anchored true
+         ^coord 17
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b25
+         ^move b36
+         ^move b38
+         ^prev b17)
+   (<objs> ^object <x7>)
+   (<x7> ^object-handle b18
+         ^anchored true
+         ^coord 18
+         ^used 0
+         ^degree 2
+         ^odeg 2
+         ^visit 0
+         ^move b26
+         ^move b37
+         ^prev b18)
+   (<objs> ^object <x8>)
+   (<x8> ^object-handle b21
+         ^anchored true
+         ^coord 21
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b13
+         ^move b33
+         ^move b42
+         ^prev b21)
+   (<objs> ^object <x9>)
+   (<x9> ^object-handle b22
+         ^anchored true
+         ^coord 22
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b14
+         ^move b34
+         ^move b41
+         ^move b43
+         ^prev b22)
+   (<objs> ^object <x10>)
+   (<x10> ^object-handle b23
+         ^anchored true
+         ^coord 23
+         ^used 1
+         ^degree 6
+         ^odeg 6
+         ^visit 1
+         ^move b11
+         ^move b15
+         ^move b31
+         ^move b35
+         ^move b42
+         ^move b44
+         ^prev b23)
+   (<objs> ^object <x11>)
+   (<x11> ^object-handle b24
+         ^anchored true
+         ^coord 24
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b12
+         ^move b16
+         ^move b32
+         ^move b36
+         ^move b43
+         ^move b45
+         ^prev b24)
+   (<objs> ^object <x12>)
+   (<x12> ^object-handle b25
+         ^anchored true
+         ^coord 25
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b13
+         ^move b17
+         ^move b33
+         ^move b37
+         ^move b44
+         ^move b46
+         ^prev b25)
+   (<objs> ^object <x13>)
+   (<x13> ^object-handle b26
+         ^anchored true
+         ^coord 26
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b14
+         ^move b18
+         ^move b34
+         ^move b38
+         ^move b45
+         ^move b47
+         ^prev b26)
+   (<objs> ^object <x14>)
+   (<x14> ^object-handle b27
+         ^anchored true
+         ^coord 27
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b15
+         ^move b35
+         ^move b46
+         ^move b48
+         ^prev b27)
+   (<objs> ^object <x15>)
+   (<x15> ^object-handle b28
+         ^anchored true
+         ^coord 28
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b16
+         ^move b36
+         ^move b47
+         ^prev b28)
+   (<objs> ^object <x16>)
+   (<x16> ^object-handle b31
+         ^anchored true
+         ^coord 31
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b12
+         ^move b23
+         ^move b43
+         ^move b52
+         ^prev b31)
+   (<objs> ^object <x17>)
+   (<x17> ^object-handle b32
+         ^anchored true
+         ^coord 32
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b11
+         ^move b13
+         ^move b24
+         ^move b44
+         ^move b51
+         ^move b53
+         ^prev b32)
+   (<objs> ^object <x18>)
+   (<x18> ^object-handle b33
+         ^anchored true
+         ^coord 33
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b12
+         ^move b14
+         ^move b21
+         ^move b25
+         ^move b41
+         ^move b45
+         ^move b52
+         ^move b54
+         ^prev b33)
+   (<objs> ^object <x19>)
+   (<x19> ^object-handle b34
+         ^anchored true
+         ^coord 34
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b13
+         ^move b15
+         ^move b22
+         ^move b26
+         ^move b42
+         ^move b46
+         ^move b53
+         ^move b55
+         ^prev b34)
+   (<objs> ^object <x20>)
+   (<x20> ^object-handle b35
+         ^anchored true
+         ^coord 35
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b14
+         ^move b16
+         ^move b23
+         ^move b27
+         ^move b43
+         ^move b47
+         ^move b54
+         ^move b56
+         ^prev b35)
+   (<objs> ^object <x21>)
+   (<x21> ^object-handle b36
+         ^anchored true
+         ^coord 36
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b15
+         ^move b17
+         ^move b24
+         ^move b28
+         ^move b44
+         ^move b48
+         ^move b55
+         ^move b57
+         ^prev b36)
+   (<objs> ^object <x22>)
+   (<x22> ^object-handle b37
+         ^anchored true
+         ^coord 37
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b16
+         ^move b18
+         ^move b25
+         ^move b45
+         ^move b56
+         ^move b58
+         ^prev b37)
+   (<objs> ^object <x23>)
+   (<x23> ^object-handle b38
+         ^anchored true
+         ^coord 38
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b17
+         ^move b26
+         ^move b46
+         ^move b57
+         ^prev b38)
+   (<objs> ^object <x24>)
+   (<x24> ^object-handle b41
+         ^anchored true
+         ^coord 41
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b22
+         ^move b33
+         ^move b53
+         ^move b62
+         ^prev b41)
+   (<objs> ^object <x25>)
+   (<x25> ^object-handle b42
+         ^anchored true
+         ^coord 42
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b21
+         ^move b23
+         ^move b34
+         ^move b54
+         ^move b61
+         ^move b63
+         ^prev b42)
+   (<objs> ^object <x26>)
+   (<x26> ^object-handle b43
+         ^anchored true
+         ^coord 43
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b22
+         ^move b24
+         ^move b31
+         ^move b35
+         ^move b51
+         ^move b55
+         ^move b62
+         ^move b64
+         ^prev b43)
+   (<objs> ^object <x27>)
+   (<x27> ^object-handle b44
+         ^anchored true
+         ^coord 44
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b23
+         ^move b25
+         ^move b32
+         ^move b36
+         ^move b52
+         ^move b56
+         ^move b63
+         ^move b65
+         ^prev b44)
+   (<objs> ^object <x28>)
+   (<x28> ^object-handle b45
+         ^anchored true
+         ^coord 45
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b24
+         ^move b26
+         ^move b33
+         ^move b37
+         ^move b53
+         ^move b57
+         ^move b64
+         ^move b66
+         ^prev b45)
+   (<objs> ^object <x29>)
+   (<x29> ^object-handle b46
+         ^anchored true
+         ^coord 46
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b25
+         ^move b27
+         ^move b34
+         ^move b38
+         ^move b54
+         ^move b58
+         ^move b65
+         ^move b67
+         ^prev b46)
+   (<objs> ^object <x30>)
+   (<x30> ^object-handle b47
+         ^anchored true
+         ^coord 47
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b26
+         ^move b28
+         ^move b35
+         ^move b55
+         ^move b66
+         ^move b68
+         ^prev b47)
+   (<objs> ^object <x31>)
+   (<x31> ^object-handle b48
+         ^anchored true
+         ^coord 48
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b27
+         ^move b36
+         ^move b56
+         ^move b67
+         ^prev b48)
+   (<objs> ^object <x32>)
+   (<x32> ^object-handle b51
+         ^anchored true
+         ^coord 51
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b32
+         ^move b43
+         ^move b63
+         ^move b72
+         ^prev b51)
+   (<objs> ^object <x33>)
+   (<x33> ^object-handle b52
+         ^anchored true
+         ^coord 52
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b31
+         ^move b33
+         ^move b44
+         ^move b64
+         ^move b71
+         ^move b73
+         ^prev b52)
+   (<objs> ^object <x34>)
+   (<x34> ^object-handle b53
+         ^anchored true
+         ^coord 53
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b32
+         ^move b34
+         ^move b41
+         ^move b45
+         ^move b61
+         ^move b65
+         ^move b72
+         ^move b74
+         ^prev b53)
+   (<objs> ^object <x35>)
+   (<x35> ^object-handle b54
+         ^anchored true
+         ^coord 54
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b33
+         ^move b35
+         ^move b42
+         ^move b46
+         ^move b62
+         ^move b66
+         ^move b73
+         ^move b75
+         ^prev b54)
+   (<objs> ^object <x36>)
+   (<x36> ^object-handle b55
+         ^anchored true
+         ^coord 55
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b34
+         ^move b36
+         ^move b43
+         ^move b47
+         ^move b63
+         ^move b67
+         ^move b74
+         ^move b76
+         ^prev b55)
+   (<objs> ^object <x37>)
+   (<x37> ^object-handle b56
+         ^anchored true
+         ^coord 56
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b35
+         ^move b37
+         ^move b44
+         ^move b48
+         ^move b64
+         ^move b68
+         ^move b75
+         ^move b77
+         ^prev b56)
+   (<objs> ^object <x38>)
+   (<x38> ^object-handle b57
+         ^anchored true
+         ^coord 57
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b36
+         ^move b38
+         ^move b45
+         ^move b65
+         ^move b76
+         ^move b78
+         ^prev b57)
+   (<objs> ^object <x39>)
+   (<x39> ^object-handle b58
+         ^anchored true
+         ^coord 58
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b37
+         ^move b46
+         ^move b66
+         ^move b77
+         ^prev b58)
+   (<objs> ^object <x40>)
+   (<x40> ^object-handle b61
+         ^anchored true
+         ^coord 61
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b42
+         ^move b53
+         ^move b73
+         ^move b82
+         ^prev b61)
+   (<objs> ^object <x41>)
+   (<x41> ^object-handle b62
+         ^anchored true
+         ^coord 62
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b41
+         ^move b43
+         ^move b54
+         ^move b74
+         ^move b81
+         ^move b83
+         ^prev b62)
+   (<objs> ^object <x42>)
+   (<x42> ^object-handle b63
+         ^anchored true
+         ^coord 63
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b42
+         ^move b44
+         ^move b51
+         ^move b55
+         ^move b71
+         ^move b75
+         ^move b82
+         ^move b84
+         ^prev b63)
+   (<objs> ^object <x43>)
+   (<x43> ^object-handle b64
+         ^anchored true
+         ^coord 64
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b43
+         ^move b45
+         ^move b52
+         ^move b56
+         ^move b72
+         ^move b76
+         ^move b83
+         ^move b85
+         ^prev b64)
+   (<objs> ^object <x44>)
+   (<x44> ^object-handle b65
+         ^anchored true
+         ^coord 65
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b44
+         ^move b46
+         ^move b53
+         ^move b57
+         ^move b73
+         ^move b77
+         ^move b84
+         ^move b86
+         ^prev b65)
+   (<objs> ^object <x45>)
+   (<x45> ^object-handle b66
+         ^anchored true
+         ^coord 66
+         ^used 0
+         ^degree 8
+         ^odeg 8
+         ^visit 0
+         ^move b45
+         ^move b47
+         ^move b54
+         ^move b58
+         ^move b74
+         ^move b78
+         ^move b85
+         ^move b87
+         ^prev b66)
+   (<objs> ^object <x46>)
+   (<x46> ^object-handle b67
+         ^anchored true
+         ^coord 67
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b46
+         ^move b48
+         ^move b55
+         ^move b75
+         ^move b86
+         ^move b88
+         ^prev b67)
+   (<objs> ^object <x47>)
+   (<x47> ^object-handle b68
+         ^anchored true
+         ^coord 68
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b47
+         ^move b56
+         ^move b76
+         ^move b87
+         ^prev b68)
+   (<objs> ^object <x48>)
+   (<x48> ^object-handle b71
+         ^anchored true
+         ^coord 71
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b52
+         ^move b63
+         ^move b83
+         ^prev b71)
+   (<objs> ^object <x49>)
+   (<x49> ^object-handle b72
+         ^anchored true
+         ^coord 72
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b51
+         ^move b53
+         ^move b64
+         ^move b84
+         ^prev b72)
+   (<objs> ^object <x50>)
+   (<x50> ^object-handle b73
+         ^anchored true
+         ^coord 73
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b52
+         ^move b54
+         ^move b61
+         ^move b65
+         ^move b81
+         ^move b85
+         ^prev b73)
+   (<objs> ^object <x51>)
+   (<x51> ^object-handle b74
+         ^anchored true
+         ^coord 74
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b53
+         ^move b55
+         ^move b62
+         ^move b66
+         ^move b82
+         ^move b86
+         ^prev b74)
+   (<objs> ^object <x52>)
+   (<x52> ^object-handle b75
+         ^anchored true
+         ^coord 75
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b54
+         ^move b56
+         ^move b63
+         ^move b67
+         ^move b83
+         ^move b87
+         ^prev b75)
+   (<objs> ^object <x53>)
+   (<x53> ^object-handle b76
+         ^anchored true
+         ^coord 76
+         ^used 0
+         ^degree 6
+         ^odeg 6
+         ^visit 0
+         ^move b55
+         ^move b57
+         ^move b64
+         ^move b68
+         ^move b84
+         ^move b88
+         ^prev b76)
+   (<objs> ^object <x54>)
+   (<x54> ^object-handle b77
+         ^anchored true
+         ^coord 77
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b56
+         ^move b58
+         ^move b65
+         ^move b85
+         ^prev b77)
+   (<objs> ^object <x55>)
+   (<x55> ^object-handle b78
+         ^anchored true
+         ^coord 78
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b57
+         ^move b66
+         ^move b86
+         ^prev b78)
+   (<objs> ^object <x56>)
+   (<x56> ^object-handle b81
+         ^anchored true
+         ^coord 81
+         ^used 0
+         ^degree 2
+         ^odeg 2
+         ^visit 0
+         ^move b62
+         ^move b73
+         ^prev b81)
+   (<objs> ^object <x57>)
+   (<x57> ^object-handle b82
+         ^anchored true
+         ^coord 82
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b61
+         ^move b63
+         ^move b74
+         ^prev b82)
+   (<objs> ^object <x58>)
+   (<x58> ^object-handle b83
+         ^anchored true
+         ^coord 83
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b62
+         ^move b64
+         ^move b71
+         ^move b75
+         ^prev b83)
+   (<objs> ^object <x59>)
+   (<x59> ^object-handle b84
+         ^anchored true
+         ^coord 84
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b63
+         ^move b65
+         ^move b72
+         ^move b76
+         ^prev b84)
+   (<objs> ^object <x60>)
+   (<x60> ^object-handle b85
+         ^anchored true
+         ^coord 85
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b64
+         ^move b66
+         ^move b73
+         ^move b77
+         ^prev b85)
+   (<objs> ^object <x61>)
+   (<x61> ^object-handle b86
+         ^anchored true
+         ^coord 86
+         ^used 0
+         ^degree 4
+         ^odeg 4
+         ^visit 0
+         ^move b65
+         ^move b67
+         ^move b74
+         ^move b78
+         ^prev b86)
+   (<objs> ^object <x62>)
+   (<x62> ^object-handle b87
+         ^anchored true
+         ^coord 87
+         ^used 0
+         ^degree 3
+         ^odeg 3
+         ^visit 0
+         ^move b66
+         ^move b68
+         ^move b75
+         ^prev b87)
+   (<objs> ^object <x63>)
+   (<x63> ^object-handle b88
+         ^anchored true
+         ^coord 88
+         ^used 0
+         ^degree 2
+         ^odeg 2
+         ^visit 0
+         ^move b67
+         ^move b76
+         ^prev b88)
+   (<objs> ^object <x64>)
+   (<x64> ^object-handle tour
+         ^anchored true
+         ^depth 1
+         ^moves 0
+         ^frame 1
+         ^solutions 0
+         ^goal 0
+         ^done 0
+         ^at b23
+         ^first b23)
+}

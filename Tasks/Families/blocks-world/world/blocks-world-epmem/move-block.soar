@@ -1,0 +1,101 @@
+## Look-ahead: move-block is proposed without preferences, so the candidate moves tie and
+## selection-world evaluates each one in a look-ahead state. In look-ahead the evaluated move is
+## not applied by the internal application rule but by the episodic-memory model.
+
+## move-block is a task-action operator (W-TOP-004/012): arguments are world objects, the
+## desired it serves (the block's own ^on desired) is its ^super-desired, and it has no
+## preconditions (^desired-count 0), so agent-world marks it ^pre-conditions-satisfied at once.
+## As in the original, every legal move is proposed (not only moves for unachieved desireds):
+## ^flags.mea-operator-selection is false.
+
+sp {blocks-world*propose*move-block*table
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>
+              ^top-state.desireds.desired <sd>)
+   (<w> ^anchored-world true
+        ^objects <os>
+        ^on <r>)
+   (<os> ^object <block> { <dest> <> <block> })
+   (<block> ^class block
+            ^object-handle $ <bh>)
+   (<dest> ^class table
+           ^object-handle $ <dh>)
+   (<r> ^argument1 <block>
+        ^argument2 <> <dest>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument2 <block>)}
+   (<sd> ^on.argument1.object-handle $ <bh>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-block
+        ^task-operator true
+        ^action-handle move-block
+        ^argument1 <block>
+        ^argument2 <dest>
+        ^argument-count 2
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {blocks-world*propose*move-block*block
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>
+              ^top-state.desireds.desired <sd>)
+   (<w> ^anchored-world true
+        ^objects <os>
+        ^on <r>)
+   (<os> ^object <block> { <dest> <> <block> })
+   (<block> ^class block
+            ^object-handle $ <bh>)
+   (<dest> ^class block
+           ^object-handle $ <dh>)
+   (<r> ^argument1 <block>
+        ^argument2 <> <dest>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument2 <block>)}
+  -{(<w> ^on <r3>)
+    (<r3> ^argument2 <dest>)}
+   (<sd> ^on.argument1.object-handle $ <bh>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-block
+        ^task-operator true
+        ^action-handle move-block
+        ^argument1 <block>
+        ^argument2 <dest>
+        ^argument-count 2
+        ^super-desired <sd>
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## Internal application (W-APP-001/010): with ^environment none it runs in every state,
+## including the top state, in the decision the operator is selected. Arguments are matched by
+## object handle, so the rule also works on look-ahead copies of the world (W-TOP-029). The test
+## that the block is not yet on the destination makes it fire once per selection.
+sp {blocks-world*apply*move-block
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-block
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <bh>
+        ^argument2.object-handle $ <dh>)
+  -(<s> ^look-ahead-operator <o>)
+   (<w> ^anchored-world true
+        ^objects <os>
+        ^on <r>)
+   (<os> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<r> ^argument1 <b>
+        ^argument2 <> <d>)
+-->
+   (log 1 (crlf) |Apply move-block: | <bh> | -> | <dh>)
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <b>
+         ^argument2 <d>
+         ^argument-count 2)
+}

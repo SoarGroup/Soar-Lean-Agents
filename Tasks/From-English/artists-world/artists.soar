@@ -1,0 +1,7 @@
+# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
+# The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
+# when running gen.py to write another path.
+pushd "../../../Soar/soar-library"
+source soar-library.soar
+popd
+source artists-rules.soar

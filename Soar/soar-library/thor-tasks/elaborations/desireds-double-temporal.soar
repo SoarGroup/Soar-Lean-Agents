@@ -1,0 +1,254 @@
+## desireds-double-temporal.soar -- thor-tasks: 9 elaborations.
+
+## Elaborate desired cook-potato light-off -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato*light-off
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato-light-off)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object2>
+               ^desired.object <object1>
+               ^desired-count 2
+               ^world-context.objects.object <object-potato> <object-lightswitch>)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-potato-handle1|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-potato-handle1|
+                    ^anchored false)
+   (<object1> ^object-handle |unanchored-lightswitch-handle1|
+              ^activated false)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+}
+
+## Elaborate desired cook-potato-apple-in-sink -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato-apple-in-sink
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato-apple-in-sink)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object2>
+               ^desired.in <in>
+               ^desired-count 2
+               ^world-context.objects.object <object-apple> <object-potato> <object-sinkbasin>)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-potato-handle1|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-potato-handle1|
+                    ^anchored false)
+   (<object-sinkbasin> ^object-handle |unanchored-sinkbasin-handle|
+                       ^anchored false
+                       ^class sinkbasin)
+   (<object-apple> ^object-handle |unanchored-apple-handle|
+                   ^anchored false
+                   ^class apple)
+   (<in> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle |unanchored-apple-handle|)
+   (<argument2> ^object-handle |unanchored-sinkbasin-handle|)
+}
+
+## Elaborate desired cook-potato-slice-apple-class -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*cook-potato-slice-apple-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection cook-potato-slice-apple-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-apple> <object-potato>)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-potato-handle1|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-potato-handle1|
+                    ^anchored false)
+   (<object-apple> ^object-handle |unanchored-apple-handle|
+                   ^anchored false
+                   ^class applesliced)
+   (<object1> ^sliced true
+              ^class applesliced
+              ^object-handle |unanchored-apple-handle|)
+}
+
+## Elaborate desired make-toast-slice-potato-class -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-slice-potato-class
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-slice-potato-class)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-bread> <object-potato>)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object-potato> ^object-handle |unanchored-potato-handle|
+                    ^anchored false
+                    ^class potatosliced)
+   (<object2> ^sliced true
+              ^class potatosliced
+              ^object-handle |unanchored-potato-handle|)
+}
+
+## Elaborate desired make-toast-cook-potato -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-cook-potato
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-potato)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-bread> <object-potato>)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-potato-handle1|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-potato-handle1|
+                    ^anchored false)
+}
+
+## Elaborate desired make-toast-cook-egg -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-cook-egg
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-bread> <object-egg>)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-egg-handle1|)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-egg-handle1|
+                 ^anchored false)
+}
+
+## Elaborate desired make-coffee-cook-potato -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-coffee-cook-potato
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-coffee-cook-potato)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired-count 2
+               ^world-context.objects.object <object-mug> <object-potato>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle |unanchored-object-handle|)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-object-handle|
+                 ^anchored false)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-potato-handle1|)
+   (<object-potato> ^class potato
+                    ^object-handle |unanchored-potato-handle1|
+                    ^anchored false)
+}
+
+## Elaborate desired make-toast-cook-egg lightswitch-off -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-cook-egg*lightswitch-off
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg-lightswitch-off)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired.object <object3>
+               ^desired-count 3
+               ^world-context.objects.object <object-bread> <object-egg> <object-lightswitch>)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-egg-handle1|)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-egg-handle1|
+                 ^anchored false)
+   (<object3> ^object-handle |unanchored-lightswitch-handle1|
+              ^activated false)
+   (<object-lightswitch> ^class lightswitch
+                         ^object-handle |unanchored-lightswitch-handle1|
+                         ^anchored false)
+}
+
+## Elaborate desired make-toast-cook-egg make-coffee -> sets desireds, desired, desired-count ....
+sp {elaborate*thor-soar*desired*make-toast-cook-egg*make-coffee
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.desired-selection make-toast-cook-egg-make-coffee)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired.object <object1>
+               ^desired.object <object2>
+               ^desired.object <object3>
+               ^desired-count 3
+               ^world-context.objects.object <object-bread> <object-egg> <object-mug>)
+   (<object1> ^cook-state cooked
+              ^class breadsliced
+              ^anchored false
+              ^object-handle |unanchored-bread-handle|)
+   (<object-bread> ^class breadsliced
+                   ^object-handle |unanchored-bread-handle|
+                   ^anchored false)
+   (<object2> ^cook-state cooked
+              ^anchored false
+              ^object-handle |unanchored-egg-handle1|)
+   (<object-egg> ^class egg
+                 ^object-handle |unanchored-egg-handle1|
+                 ^anchored false)
+   (<object3> ^liquid-contents coffee
+              ^object-handle |unanchored-mug-handle1|)
+   (<object-mug> ^class mug
+                 ^object-handle |unanchored-mug-handle1|
+                 ^anchored false)
+}

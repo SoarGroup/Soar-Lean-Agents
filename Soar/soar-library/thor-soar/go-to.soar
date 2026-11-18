@@ -1,0 +1,701 @@
+## go-to.soar -- thor-soar: 5 proposals, 1 compare, 22 applications.
+
+## Propose go-to.
+## MEA Selection
+sp {propose*go-to*object-handle*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^flags.view-frustum false
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>
+             ^anchored true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable true
+                     ^object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name go-to
+               ^task-operator true
+               ^super-desired <desired>
+               ^desireds <desireds2>
+               ^argument1 <object>
+               ^argument-count 1)
+   (<desireds2> ^desired-count 2
+                ^desired.self.mobile true
+                ^desired.object <desired2>)
+   (<desired2> ^object-handle <object-handle>
+               ^accessible true)
+}
+
+## Propose go-to.
+## Viewing Frustum
+sp {propose*go-to*object-handle*mea*frustum
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^flags.mea-operator-selection true
+              ^flags.view-frustum true
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>
+            -^memory-retrieved true
+                               )#   ^anchored true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable true
+                     ^object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name go-to
+               ^task-operator true
+               ^super-desired <desired>
+               ^desireds <desireds2>
+               ^argument1 <object>
+               ^argument-count 1)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired1>
+                ^desired <desired1>
+                ^desired.object <desired-object2>
+                ^desired.object <desired-object3>)
+   (<desired1> ^self.mobile true)
+   (<desired-object2> ^object-handle <object-handle>
+                      ^anchored true)
+           #    ^unachieved-desireds-count $ <x>
+   (<desired-object3> ^object-handle <object-handle>  # need to have it accessible, otherwise will goto an remembered object that is in a closed ocntainer and get stuck
+                      ^accessible true)
+}
+
+## Propose go-to.
+## From memory - look atfirst
+sp {propose*go-to*object-handle*mea*frustum*memory
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^flags.mea-operator-selection true
+              ^flags.view-frustum true
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^memory-retrieved true
+             ^object-handle <object-handle>
+                            )#   ^anchored true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable true
+                     ^object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name go-to
+               ^task-operator true
+               ^super-desired <desired>
+               ^desireds <desireds2>
+               ^argument1 <object>
+               ^argument-count 1)
+   (<desireds2> ^desired-count 4
+                ^preferred-desired <desired1>
+                ^desired <desired1>
+                ^desired.object <desired-object2>
+                ^desired.object <desired-object3>
+                ^desired.object <desired-object4>)
+   (<desired1> ^self.mobile true)
+   (<desired-object2> ^object-handle <object-handle>
+                      ^anchored true)
+           #    ^unachieved-desireds-count $ <x>
+   (<desired-object3> ^object-handle <object-handle>  # need to have it accessible, otherwise will goto an remembered object that is in a closed ocntainer and get stuck
+                      ^accessible true)
+   (<desired-object4> ^object-handle <object-handle>
+                      ^looked-at true)
+}
+
+## Propose go-to.
+sp {propose*go-to*object-handle*mea*look-ahead
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^internal-actions true
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable true
+                     ^object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name go-to
+               ^task-operator true
+               ^super-desired <desired>
+               ^desireds <desireds2>
+               ^argument1 <object>
+               ^argument-count 1)
+   (<desireds2> ^desired-count 2
+                ^desired.self.mobile true
+                ^desired.object <desired-object2>)
+   (<desired-object2> ^object-handle <object-handle>
+                      ^anchored true)
+}
+
+## Preference for go-to find-object.
+sp {thor-soar*compare*go-to*find-object
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name go-to
+          ^argument1.anchored false)
+   (<op2> ^name find-object)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply approach -> sets perform-action, object.
+## External Action Application
+sp {apply*go-to*external*in-view
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io.output-link <output>)
+  -{(<s> ^world.in <in>)
+    (<in> ^argument1.<< origin-object-handle object-handle >> <object-handle>
+         -^argument2.class floor)}
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^in-view true)
+-->
+   (log 1 (crlf) |Apply Approach: | <object-handle> | external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name approach
+              ^object <object-handle>)
+}
+
+## Apply approach-bbox -> sets perform-action, x, y ....
+sp {apply*go-to*external*in-view*false
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io.output-link <output>)
+  -{(<s> ^world.in <in>)
+    (<in> ^argument1.<< origin-object-handle object-handle >> <object-handle>
+         -^argument2.class floor)}
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^in-view false
+             ^x <x>
+             ^y <y>
+             ^z <z>
+             ^size-x <size-x>
+             ^size-y <size-y>
+             ^size-z <size-z>)
+-->
+   (log 1 (crlf) |Apply Approach-BBOX: | <object-handle> | external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name approach-bbox
+              ^x <x>
+              ^y <y>
+              ^z <z>
+              ^size-x <size-x>
+              ^size-y <size-y>
+              ^size-z <size-z>)
+}
+
+## Apply approach -> sets perform-action, object.
+sp {apply*go-to*external*in-container
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io.output-link <output>
+              ^world.in <in>
+              ^world.objects.object <container-object>)
+   (<in> ^argument1.object-handle <object-handle>
+         ^argument2 <argument2>)
+   (<argument2> -^class floor
+                 ^object-handle <container-object-handle>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>)
+   (<container-object> ^object-handle <container-object-handle>)
+-->
+   (log 1 (crlf) |Apply Approach to Object | <object-handle> | in Container: | <container-object-handle> | external.|)
+   (<output> ^perform-action <perform>)
+   (<perform> ^name approach
+              ^object <object-handle>)  # when go to container and when go to object?
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-not-in-container1
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+             -^world.in.argument2.object-handle <object-handle>
+             -^world.in.argument1.object-handle <object-handle>
+             -^world.on.argument2.object-handle <object-handle>
+             -^world.on.argument1.object-handle <object-handle>
+             -^world.above.argument2.object-handle <object-handle>
+             -^world.above.argument1.object-handle <object-handle>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>
+             ^object-handle <object-handle>)
+-->
+   (log 1 (crlf) |Apply Approach not in container: | <object> |, | <object-handle> | internal.|)
+   (<object> ^reachable false -
+                        true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*burner-controlled-by
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^objects.object <stoveknob-object>
+            ^objects.object <burner-object>
+            ^controlled-by <controlled-by>)
+   (<controlled-by> ^argument1 <burner-object>
+                    ^argument2 <stoveknob-object>)
+   (<stoveknob-object> ^object-handle <stoveknob-object-handle>)
+   (<burner-object> ^object-handle <burner-object-handle>
+                    ^reachable $ <reachable>)
+   (<operator> ^name go-to
+               ^argument1 <stoveknob-object>
+               ^pre-conditions-satisfied true)
+-->
+   (log 1 (crlf) |Apply Approach stove-knob, burner becomes reachable: | <burner-object-handle>)
+   (<burner-object> ^reachable false -
+                               true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*stoveknob-burner-controlled-by
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^objects.object <stoveknob-object>
+            ^objects.object <burner-object>
+            ^controlled-by <controlled-by>)
+   (<controlled-by> ^argument1 <burner-object>
+                    ^argument2 <stoveknob-object>)
+   (<stoveknob-object> ^object-handle <stoveknob-object-handle>)
+   (<burner-object> ^object-handle <burner-object-handle>
+                    ^reachable $ <reachable>)
+   (<operator> ^name go-to
+               ^argument1 <burner-object>
+               ^pre-conditions-satisfied true)
+-->
+   (log 1 (crlf) |Apply Approach burner - stoveknob becomes reachable: | <stoveknob-object-handle>)
+   (<stoveknob-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-on-container*goto-container
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>)
+   (<on> ^argument2 <container-object>
+         ^argument1 <object>)
+   (<operator> ^name go-to
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>)
+   (<container-object> ^reachable $ <reachable2>)
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-in-container*goto-container
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.in <in>)
+   (<in> ^argument2 <container-object>
+         ^argument1 <object>)
+   (<operator> ^name go-to
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>)
+   (<container-object> ^reachable $ <reachable2>)
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-above-container*goto-container
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.above <above>)
+   (<above> ^argument2 <container-object>
+            ^argument1 <object>)
+   (<operator> ^name go-to
+               ^argument1 <container-object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>)
+   (<container-object> ^reachable $ <reachable2>)
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+## Container of an object being approached becomes reachable
+sp {apply*go-to*internal*object-on-container2*goto-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>)
+   (<on> ^argument1 <object>
+         ^argument2 <container-object>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>)
+   (<container-object> ^reachable $ <reachable2>)
+  -{(<object> ^reachable true)
+    (<container-object> ^reachable true)}
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-in-container2*goto-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.in <in>)
+   (<in> ^argument1 <object>
+         ^argument2 <container-object>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable>)
+   (<container-object> ^reachable $ <reachable2>)
+  -{(<object> ^reachable true)
+    (<container-object> ^reachable true)}
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-above-container2*goto-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.above <above>)
+   (<above> ^argument1 <object>
+            ^argument2 <container-object>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^reachable $ <reachable1>)
+   (<container-object> ^reachable $ <reachable2>)
+-->
+   (<object> ^reachable false -
+                        true)
+   (<container-object> ^reachable false -
+                                  true)
+}
+
+## Apply go-to -> sets reachable.
+## Object inside an object on an object being approached is reachable
+sp {apply*go-to*internal*object-on-location-in-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>
+              ^world.in <in>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<on> ^argument1 <object3>
+         ^argument2 <object1>)
+   (<operator> ^name go-to
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-on-location-in-object2
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>
+              ^world.in <in>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<on> ^argument1 <object3>
+         ^argument2 <object1>)
+   (<operator> ^name go-to
+               ^argument1 <object3>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*object-on-location-in-object3
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>
+              ^world.in <in>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<on> ^argument1 <object3>
+         ^argument2 <object1>)
+   (<operator> ^name go-to
+               ^argument1 <object2>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+## Object inside an object under an object being approached is reachable
+sp {apply*go-to*internal*object-under-location-in-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.on <on>
+              ^world.in <in>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<on> ^argument1 <object1>
+         ^argument2 <object3>)
+   (<operator> ^name go-to
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+## Object inside an object above an object being approached is reachable
+sp {apply*go-to*internal*object-above-location-in-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.above <above>
+              ^world.in <in>)
+   (<above> ^argument1 <object3>
+            ^argument2 <object1>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<operator> ^name go-to
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+## Object inside an object below an object being approached is reachable
+sp {apply*go-to*internal*object-below-location-in-object
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.above <above>
+              ^world.in <in>)
+   (<above> ^argument1 <object1>
+            ^argument2 <object3>)
+   (<in> ^argument1 <object2>
+         ^argument2 <object3>)
+   (<operator> ^name go-to
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object1> ^reachable $ <reachable1>)
+   (<object2> ^reachable $ <reachable2>)
+   (<object3> ^reachable $ <reachable3>)
+-->
+   (<object1> ^reachable false -
+                         true)
+   (<object2> ^reachable false -
+                         true)
+   (<object3> ^reachable false -
+                         true)
+}
+
+## Apply go-to -> sets reachable.
+sp {apply*go-to*internal*remove-other-reachable-object # includes containers and locations - depends on first wave so don't get second wave on new reachable  BUG?
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world.objects.object <object2>)
+   (<operator> ^name go-to
+               ^argument1 <argument1>
+               ^pre-conditions-satisfied true)
+   (<argument1> ^object-handle <object-handle>)
+   (<object2> ^reachable true
+              ^object-handle {<object-handle2> <> <object-handle> })
+  -{(<s> ^world <world>)
+    (<world> ^<< on in above >> <on>)
+    (<on> ^argument1.object-handle <object-handle>
+          ^argument2 <object2>)}
+  -{(<s> ^world <world>)
+    (<world> ^<< on in above >> <on1>)
+    (<on1> ^argument2.object-handle <object-handle>
+          ^argument1 <object2>)}
+  -{(<s> ^world <world>)
+    (<world> ^<< on in above >> <on2>)
+    (<on2> ^argument2.object-handle <object-handle>
+           ^argument1 <object3>)
+    (<world> ^<< on in above >> <on3>)
+    (<on3> ^argument2 <object2>
+          ^argument1 <object3>)}
+   -{(<s> ^world <world>)
+    (<world> ^<< on in above >> <on4>)
+    (<on4> ^argument1.object-handle <object-handle>
+           ^argument2 <object3>)
+    (<world> ^<< on in above >> <on5>)
+    (<on5> ^argument2 <object2>
+          ^argument1 <object3>)}
+  -(<object2> ^controls-object-handle <object-handle>)
+  -(<argument1> ^controls-object-handle <object-handle2>)
+-->
+   (<object2> ^reachable true -
+                         false)
+}
+
+## Apply go-to -> sets distance.
+## Flush distances on first move
+sp {apply*go-to*internal*distance
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^distance <distance>)
+-->
+   (<object> ^distance <distance> -)
+}
+
+## Apply go-to -> sets looked-at.
+## Flush looked-at
+sp {apply*go-to*internal*looked-at
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>)
+   (<operator> ^name go-to
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^looked-at true)
+-->
+   (<object> ^looked-at true -)
+}
+
+## Apply go-to -> sets looked-at.
+## Flush looked-at
+sp {apply*go-to*flush*looked-at
+    :default
+   (state <s> ^operator <operator>
+              ^world.objects.object <object>)
+   (<operator> ^name go-to
+               ^argument1 <> <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^looked-at true)
+-->
+   (<object> ^looked-at true -)
+}
+
+## Propose go-to.
+## Non MEA Selection
+sp {propose*go-reachable-object
+    :default
+   (state <s> ^problem-space.name << move thor-world >>
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>
+             -^world.holding-object.object-handle <object-handle>)
+   (<object> ^object-handle <object-handle>
+             ^reachable false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name go-to
+               ^task-operator true
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

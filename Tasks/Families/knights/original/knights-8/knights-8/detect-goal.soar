@@ -1,0 +1,38 @@
+
+sp {knights*propose*detect-goal
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<s> ^square <f>)
+   (<t> ^at <c>)
+   (<t> ^first <f>)
+   (<c> ^move <f>)
+   (<t> ^done 0)
+   (<t> ^goal 0)
+   (<t> ^depth 64)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name detect-goal)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^f <f>)
+}
+
+sp {knights*apply*detect-goal
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name detect-goal)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<o> ^f <f>)
+   (<t> ^solutions <t-solutions>)
+   (<t> ^goal <t-goal>)
+   (<c> ^coord <c-coord>)
+-->
+   (<t> ^solutions (+ <t-solutions> 1))
+   (<t> ^solutions <t-solutions> -)
+   (<t> ^goal 1)
+   (<t> ^goal <t-goal> -)
+   (write |Success! | (+ <t-solutions> 1) | | <c-coord>)
+}

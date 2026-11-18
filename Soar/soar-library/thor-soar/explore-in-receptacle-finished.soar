@@ -1,0 +1,46 @@
+## explore-in-receptacle-finished.soar -- thor-soar: 1 proposal, 1 compare, 1 application.
+
+## Propose explore-in-receptacle-finished.
+sp {thor-soar*propose*explore-in-receptacle-finished
+    :default
+   (state <s> ^name thor-soar
+              ^desireds <desireds>)
+   (<desireds> -^achieved <desired>
+                ^desired <desired>)
+   (<desired> ^explore-receptacles true)
+  -{(<s> ^scene.objects.object <object>)
+    (<object> ^receptacle true
+              ^openable true
+             -^graspable true
+             -^explored true)}
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-in-receptacle-finished)
+}
+
+## Preference for explore-in-receptacle-finished.
+sp {thor-soar*compare*explore-in-receptacle-finished
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name explore-in-receptacle-finished)
+   (<op2> ^name smem-query)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply explore-in-receptacle-finished -> sets desireds, explore, explore-receptacles.
+sp {apply*explore-in-receptacle-finished
+    :default
+   (state <s> ^operator.name explore-in-receptacle-finished
+              ^flags <flags>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-receptacles true)
+-->
+   (<s> ^desireds <desireds> -)
+   (<flags> ^explore true -
+            ^explore-receptacles true -)
+ #  (interrupt)
+}

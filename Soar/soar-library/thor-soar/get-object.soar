@@ -1,0 +1,149 @@
+## get-object.soar -- thor-soar: 3 proposals, 1 compare, 2 applications.
+
+## Propose get-object.
+sp {thor-soar*propose*get-object*mea
+    :default
+   (state <s> ^problem-space.name << move thor-world >>
+              ^flags.mea-operator-selection true
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^holding-object.object-handle <o-object-handle>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>
+             ^anchored <object-anchored>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name get-object
+               ^task-operator true
+               ^action-handle pick-up
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired1>
+                ^avoid-desired <desired2>
+                ^desired <desired1> <desired2> <desired3>)
+   (<desired1> ^holding-object.object-handle none)
+   (<desired2> ^object <desired-object2>)
+   (<desired-object2> ^reachable true
+                      ^anchored <object-anchored>
+                      ^object-handle <object-handle>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^accessible true  # was visible - but accessible is more general and will engage open if necessary
+                      ^anchored <object-anchored>
+                      ^object-handle <object-handle>)
+}
+
+## Preference for get-object same.
+sp {thor-soar*compare*get-object*same
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { > <op1> <op2> }  +)
+   (<op1> ^name get-object)
+   (<op2> ^name get-object)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Apply get-object -> sets holding-object, reachable.
+## Internal Application
+sp {apply*get-object*internal*on
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world <world1>
+              ^world <world2>)
+   (<world1> ^{ << on in >> <relation> } <on-in>)
+   (<world2> ^holding-object <holding-object>)
+   (<on-in> ^argument1 <object>)
+   (<object> ^object-handle <object-handle>)
+   (<operator> ^name get-object
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object1> ^object-handle <object-handle>)
+-->
+   (log 1 (crlf) |Apply Get-object | <object-handle> | internal on/in.|)
+   (<world1> ^<relation> <on-in> -)
+   (<world2> ^holding-object <holding-object> -
+                             <object>)
+   (<object> ^reachable true -
+                        false)
+}
+
+## Apply get-object -> sets holding-object, reachable.
+sp {apply*get-object*internal*not-on
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>
+              ^world <world2>)
+  -{(<s> ^world.{ << on in >> <relation> } <on-in>)
+    (<on-in> ^argument1 <object>)}
+   (<world2> ^holding-object <holding-object>
+             ^anchored-world true
+             ^objects.object <object>)
+   (<operator> ^name get-object
+               ^argument1 <object1>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>)
+   (<object1> ^object-handle <object-handle>)
+   (<holding-object> ^object-handle <> <object-handle>)
+-->
+   (log 1 (crlf) |Apply Get-object | <object-handle> | internal not-on-in.|)
+   (<world2> ^holding-object <holding-object> -
+                             <object>)
+   (<object> ^reachable true -
+                        false)
+}
+
+## Propose get-object.
+sp {thor-soar*propose*get-object*on-location
+    :default
+   (state <s> ^problem-space.name << move thor-world >>
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>
+              ^world.on <on>
+              ^world.holding-object.object-handle none)
+   (<object> ^reachable true
+             ^graspable true)
+   (<on> ^argument1 <object>
+         ^argument2 <location-object>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name get-object
+               ^task-operator true
+               ^action-handle pick-up
+               ^in false
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}
+
+## Propose get-object.
+sp {thor-soar*propose*get-object*in-container
+    :default
+   (state <s> ^problem-space.name << move thor-world >>
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>
+              ^world.in <in>
+              ^world.holding-object.object-handle none)
+   (<object> ^reachable true
+             ^graspable true)
+   (<in> ^argument1 { <> none <object> }
+         ^argument2 <container-object>)
+   (<container-object> ^open true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name get-object
+               ^task-operator true
+               ^action-handle pick-up
+               ^in true
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

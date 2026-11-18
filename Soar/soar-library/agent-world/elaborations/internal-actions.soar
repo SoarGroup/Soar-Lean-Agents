@@ -1,0 +1,35 @@
+## internal-actions.soar -- agent-world: 4 elaborations.
+
+## Elaborate state internal-actions false -> sets internal-ac.
+sp {agent-world*elaborate*state*internal-actions*false
+   :default
+   (state <s> ^type state
+             -^superstate.internal-actions true
+             -^top-state.environment none
+             -^name evaluate-operator)
+-->
+   (<s> ^internal-actions false)}
+
+## Elaborate state internal-actions no-environment -> sets internal-a.
+## A task with no external environment puts ^environment none on its top state (in its
+## initialize-<task> operator); all its operators are then applied internally, in every state.
+sp {agent-world*elaborate*state*internal-actions*no-environment
+   :default
+   (state <s> ^type state
+              ^top-state.environment none)
+-->
+   (<s> ^internal-actions true)}
+
+## Elaborate state internal-actions evaluate-operator -> sets internal-a.
+sp {agent-world*elaborate*state*internal-actions*evaluate-operator
+   :default
+   (state <s> ^name evaluate-operator)
+-->
+   (<s> ^internal-actions true)}
+
+## Elaborate state internal-actions inherit -> sets internal-a.
+sp {agent-world*elaborate*state*internal-actions*inherit
+   :default
+   (state <s> ^superstate.internal-actions true)
+-->
+   (<s> ^internal-actions true)}

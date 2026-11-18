@@ -1,0 +1,15 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-kenken.soar
+source assign.soar
+source cleanup.soar
+source eliminate.soar
+source drop-tuple.soar
+source prune.soar
+source choose-cell.soar
+source choose-cell-3.soar
+source guess.soar
+source print-row.soar
+source preferences.soar

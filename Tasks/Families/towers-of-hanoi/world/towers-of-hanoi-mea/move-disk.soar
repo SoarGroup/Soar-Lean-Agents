@@ -1,0 +1,189 @@
+##############################################################################
+## move-disk (task-action operator): argument1 = disk (size <= 5), argument2 = target peg,
+## ^effect-desireds = { disk ^on target }.
+## As in the original, the operator's applicability (disk clear, top disk of the target larger)
+## is tested by its internal application rule, not by precondition desireds
+## (^desireds.desired-count 0).  When it cannot apply, the operator no-change substate is its
+## operator-implementation substate (agent-world: problem space move-disk, ^desireds = the
+## effect-desireds), the counterpart of the original's operator subgoal whose ^desired was
+## the disk and the target peg.  There, MEA proposals (one per original proposal rule) work
+## toward the effect; the selected operator above applies as soon as it can.
+##   *1 top goal: the largest disk not on its goal peg, when every larger disk is on that peg;
+##   *2 subgoal "disk X on peg P": the disk directly on X moves to the peg that is neither its
+##      own nor P;
+##   *3 subgoal "disk X on peg P": the largest disk on P smaller than X moves to the peg that is
+##      neither P nor X's peg.
+## (Precondition desireds -- disk ^clear true, peg ^open-for <size> -- were tried: agent-world
+## marks an operator's achieved precondition desireds with o-support, so a subgoal move that
+## undoes an enclosing operator's achieved precondition removes that subgoal (GDS), and the
+## search thrashed without solving in 3000 decisions.)
+##############################################################################
+
+sp {towers-of-hanoi*propose*move-disk*1
+   (state <s> ^problem-space.name towers-of-hanoi
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <g>
+         ^unachieved <g>)
+   (<g> ^on <gr>)
+   (<gr> ^argument1.object-handle $ <dh>
+         ^argument2.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects.object <d> <target>
+        ^on <ro>)
+   (<d> ^object-handle $ <dh>
+        ^type disk
+        ^size { <k> <= 5 })
+   (<target> ^object-handle $ <th>
+             ^type peg)
+   (<ro> ^argument1 <d>
+         ^argument2 <> <target>)
+  -{(<w> ^objects.object <x>
+         ^on <rx>)
+    (<x> ^type disk
+         ^size > <k>
+         ^size <= 5)
+    (<rx> ^argument1 <x>
+          ^argument2 <> <target>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-disk
+        ^task-operator true
+        ^action-handle move-disk
+        ^super-desired <g>
+        ^argument1 <d>
+        ^argument2 <target>
+        ^argument-count 2
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired <e> ^desired-count 1)
+   (<e> ^on <er>)
+   (<er> ^argument1.object-handle <dh> ^argument2.object-handle <th>)
+}
+
+sp {towers-of-hanoi*propose*move-disk*2
+   (state <s> ^problem-space.name move-disk
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <g>
+         ^unachieved <g>)
+   (<g> ^on <gr>)
+   (<gr> ^argument1.object-handle $ <ddh>
+         ^argument2.object-handle $ <gph>)
+   (<w> ^anchored-world true
+        ^objects.object <dd> <h> <src> { <target> <> <src> }
+        ^above <ra>
+        ^on <ro>)
+   (<dd> ^object-handle $ <ddh>)
+   (<ra> ^argument1 <h>
+         ^argument2 <dd>)
+   (<h> ^object-handle $ <hh>
+        ^size <= 5)
+   (<ro> ^argument1 <h>
+         ^argument2 <src>)
+   (<target> ^type peg
+             ^object-handle { <th> <> <gph> })
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-disk
+        ^task-operator true
+        ^action-handle move-disk
+        ^super-desired <g>
+        ^argument1 <h>
+        ^argument2 <target>
+        ^argument-count 2
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired <e> ^desired-count 1)
+   (<e> ^on <er>)
+   (<er> ^argument1.object-handle <hh> ^argument2.object-handle <th>)
+}
+
+sp {towers-of-hanoi*propose*move-disk*3
+   (state <s> ^problem-space.name move-disk
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <g>
+         ^unachieved <g>)
+   (<g> ^on <gr>)
+   (<gr> ^argument1.object-handle $ <ddh>
+         ^argument2.object-handle $ <gph>)
+   (<w> ^anchored-world true
+        ^objects.object <dd> <src> <h> { <target> <> <src> }
+        ^on <rh> <rdd>)
+   (<dd> ^object-handle $ <ddh>
+         ^size <dd-size>)
+   (<src> ^object-handle $ <gph>)
+   (<h> ^object-handle $ <hh>
+        ^type disk
+        ^size { <hs> <= 5 < <dd-size> })
+   (<rh> ^argument1 <h>
+         ^argument2 <src>)
+   (<rdd> ^argument1 <dd>
+          ^argument2 <> <target>)
+   (<target> ^type peg
+             ^object-handle $ <th>)
+  -{(<w> ^on <rx>)
+    (<rx> ^argument1 <x>
+          ^argument2 <src>)
+    (<x> ^size > <hs>
+         ^size < <dd-size>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-disk
+        ^task-operator true
+        ^action-handle move-disk
+        ^super-desired <g>
+        ^argument1 <h>
+        ^argument2 <target>
+        ^argument-count 2
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired <e> ^desired-count 1)
+   (<e> ^on <er>)
+   (<er> ^argument1.object-handle <hh> ^argument2.object-handle <th>)
+}
+
+## The original makes move-disk indifferent; kept while look-ahead planning is off.
+sp {towers-of-hanoi*select*task-operator*indifferent
+   (state <s> ^problem-space.name << towers-of-hanoi move-disk >>
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}
+
+## Internal application (^environment none), when the disk is clear and the top disk of the
+## target is larger (the original's application conditions).  The disk's ^on relation still
+## naming another peg guards against a second firing while the operator stays selected.
+sp {apply*move-disk*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-disk
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <dh>
+        ^argument2.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects.object <d> <target> <td>
+        ^on <ro> <rt>
+        ^above <ra>)
+   (<d> ^object-handle $ <dh> ^size <d-size> ^clear true)
+   (<target> ^object-handle $ <th> ^name <target-name>)
+   (<td> ^type disk ^clear true ^size > <d-size>)
+   (<rt> ^argument1 <td> ^argument2 <target>)
+   (<ro> ^argument1 <d> ^argument2 { <src> <> <target> })
+   (<ra> ^argument1 <d> ^argument2 <below>)
+-->
+   (log 1 (crlf) |Apply move-disk: | <dh> | to | <th>)
+   (<ro> ^argument2 <src> - <target>)
+   (<ra> ^argument2 <below> - <td>)
+   (write |Move Disk: | <d-size> | to peg | <target-name>)
+}

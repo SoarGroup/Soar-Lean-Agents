@@ -1,0 +1,13 @@
+
+sp {fifteen-puzzle*elaborate*problem-space
+   (state <s> ^name fifteen-puzzle)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name fifteen-puzzle)
+   (<p> ^default-state-copy yes)
+   (<p> ^default-operator-copy yes)
+   (<p> ^two-level-attributes binding)
+   (<p> ^one-level-attributes tile)
+   (<p> ^one-level-attributes cell)
+   (<p> ^dont-copy ancestor)
+}

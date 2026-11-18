@@ -1,0 +1,3 @@
+pushd blocks-world-hierarchical-lookahead
+source blocks-world-hierarchical-lookahead_source.soar
+popd

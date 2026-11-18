@@ -1,0 +1,24 @@
+#sp {agent-world*monitor*object
+#   :default
+#   (state <s> ^world.objects.object.object-handle <handle>)
+#-->
+#   (log 1 (crlf) |State Object | <handle>)
+#}
+#
+#sp {agent-world*monitor*container
+#   :default
+#   (state <s> ^world.in <in>)
+#   (<in> ^object.object-handle <object-handle>
+#         ^argument2.object-handle <container-handle>)
+#-->
+#   (log 1 (crlf) |State | <object-handle> | in | <container-handle>)
+#}
+#
+#sp {agent-world*monitor*location
+#   :default
+#   (state <s> ^world.on <on>)
+#   (<on> ^object.object-handle <object-handle>
+#         ^argument2.object-handle <location-handle>)
+#-->
+#   (log 1 (crlf) |State | <object-handle> | at | <location-handle>)
+#}

@@ -1,0 +1,22 @@
+
+sp {put-down*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name put-down)
+   (<ss> ^task-state <ts>)
+   (<so> ^y <y>)
+   (<so> ^d <d>)
+   (<ss> ^block <block>)
+   (<ss> ^dest <dest>)
+   (<ss> ^g <g>)
+-->
+   (<s> ^name put-down)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^y <y>)
+   (<s> ^d <d>)
+}

@@ -1,0 +1,20 @@
+#########################################
+## _firstload
+## Created 2024/01/13
+#########################################
+
+
+## Load in data captured during exploration - includes all in relations so a frustum constrained agent knows where everything is.
+# Sourcing this file can cause problems because it has fixed LTIs.
+pushd ../../agent
+source thor-soar-semantic-memory.soar
+popd
+
+## John's todo list
+# 2. Experiment with constants and flags as elaborations or copied pointers - impact on justifications/chunks/production firing/timing
+
+
+## Bug for Soar
+## 1. justifications have duplicate conditions that should be easy to remove.
+
+# output agent-logs 98 off

@@ -1,0 +1,27 @@
+Lazy Stacking Frogs: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is lazy-stacked-frogs.
+  2. Load init-lzstacked-frogs.   [world state: init-lzstacked-frogs.world]
+  3. Ok.
+  4. If the number of the locations between a location and an accessible covered location is the number of the blocks that are on the covered location then you can move it onto the former location.
+  5. A location that is not below a red block is accessible.
+  6. If a location is below an object then it is covered.
+  7. There is five.
+  8. Load final-lzstacked-frogs.   [world state: final-lzstacked-frogs.world]
+  9. The name of the goal is three-clear.
+ 10. Ok.
+ 11. The goal is that there are three clear locations.
+ 12. If a location is not below an object then it is clear.
+ 13. Done.
+ 14. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (red1); x (numeric, 1 to 4); y (numeric, 1 to 1)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/block-puzzles/lazy-stacking-frogs/.

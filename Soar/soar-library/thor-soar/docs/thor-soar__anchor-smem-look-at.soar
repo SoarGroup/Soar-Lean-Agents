@@ -1,0 +1,25 @@
+#
+#sp {propose*anchor-smem-look-at
+#   (state <s> ^problem-space.name thor-world
+#              ^flags.smem-retrieve true
+#              ^retrieved-object <object>)
+#   (<object>  ^receptacle true)
+#-->
+#   (<s> ^operator <op> + =, >)
+#   (<op> ^name anchor-smem-look-at
+#         ^argument1 <object>
+#         ^pre-conditions-satisfied true
+#         ^action-handle look-at
+#         ^super-desired <desired>
+#         ^argument1 <object>
+#         ^argument-count 1)
+#}
+#
+#sp {thor-soar*compare*anchor-smem-look-at
+#   (state <s>^operator <op1> +
+#                       { <> <op1> <op2> }  +)
+#   (<op1> ^name anchor-smem-look-at)
+#   (<op2> ^name << anchor-smem-object-retrieve anchor-info-existing-object anchor-epmem-retrieve scan-room >>)
+#-->
+#   (<s> ^operator <op1> > <op2>)
+#}

@@ -1,0 +1,20 @@
+
+sp {process-column*propose*borrow-from
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v4>)
+   (<ss> ^column <m>)
+   (<s> ^issub 1)
+   (<s> ^ten 0)
+   (<s> ^|d1| { <s-d1> < <s-d2> })
+   (<s> ^|d2| <s-d2>)
+   (<m> ^pos <s-nxt>)
+   (<s> ^nxt <s-nxt>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name borrow-from)
+   (<o> ^m <m>)
+}

@@ -1,0 +1,23 @@
+
+sp {hello-world*propose*hello-world
+   (state <s> ^name hello-world)
+   (<s> ^greeting <greeting>)
+   (<greeting> ^written 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name hello-world)
+   (<o> ^greeting <greeting>)
+}
+
+sp {hello-world*apply*hello-world
+   (state <s> ^name hello-world)
+   (<s> ^operator <o>)
+   (<o> ^name hello-world)
+   (<o> ^greeting <greeting>)
+   (<greeting> ^written <greeting-written>)
+-->
+   (<greeting> ^written 1)
+   (<greeting> ^written <greeting-written> -)
+   (write |Hello World|)
+}

@@ -1,0 +1,8 @@
+Nonogram (Pattern): English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Shade cells so each row and column's runs of shaded cells match the given clue lengths in order.
+
+Source of the task in AI research: Tatham Portable Puzzle Collection; PUZZLES RL benchmark
+(Estermann et al., NeurIPS 2024); CSPLib prob012.
+Kind of agent: CSP.

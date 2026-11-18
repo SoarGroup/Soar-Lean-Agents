@@ -1,0 +1,14 @@
+
+chunk always
+chunk add-osk on
+rl --set learning on
+rl --set learning-rate 0.100000
+rl --set discount-rate 0.500000
+indifferent-selection --epsilon-greedy
+multi-attributes jug 3
+multi-attributes ancestor 20
+
+pushd ../default
+source selection.soar
+popd
+

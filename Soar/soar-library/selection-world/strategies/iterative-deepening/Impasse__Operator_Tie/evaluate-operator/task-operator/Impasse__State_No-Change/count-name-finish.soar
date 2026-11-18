@@ -1,0 +1,41 @@
+## count-name-finish.soar -- selection-world: 2 proposals, 1 application.
+
+## ---- operator proposal ----
+
+## Propose cou.
+sp {selection-world*propose*failure-evaluation*count-name-finish
+   :default
+   (state <s> ^name failure-evaluation
+              ^world.self <name>
+              ^feature-count <fc>
+              ^counted-object-handle <last-moved-object-handle>
+              ^world.last-moved-object-handle <last-moved-object-handle>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name count-name-finish)
+}
+
+## Propose cou.
+sp {selection-world*propose*failure-evaluation*count-name-finish2
+   :default
+   (state <s> ^name failure-evaluation
+              ^world.self <name>
+              ^feature-count <fc>
+             -^world.last-moved-object-handle <last-moved-object-handle>)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name count-name-finish)
+}
+
+## ---- operator application ----
+
+## Apply count-name-finish -> sets symbolic-value.
+sp {selection-world*apply*count-name-finish
+   :default
+   (state <s> ^operator.name count-name-finish
+              ^selection-superstate <ss>)
+   (<ss> ^operator.evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value depth-exhaustion )
+}

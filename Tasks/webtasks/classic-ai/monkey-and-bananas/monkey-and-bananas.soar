@@ -1,0 +1,6 @@
+# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
+# The path assumes this folder sits at Tasks/webtasks/classic-ai/<task>.
+pushd "../../../../Soar/soar-library"
+source soar-library.soar
+popd
+source monkey-and-bananas-rules.soar

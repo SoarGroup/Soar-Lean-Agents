@@ -1,0 +1,13 @@
+## elaborations.soar -- selection-world: 1 elaboration.
+
+## Elaborate task current-evaluation depth -> sets current-evaluation-depth.
+## Copy down over operator no change if same problem space
+sp {selection-world*elaborate*task*current-evaluation*depth
+   :default
+   (state <s> ^problem-space.name <name>
+              ^superstate <superstate>)
+   (<superstate> ^problem-space.name <name>
+                 ^current-evaluation-depth <current-evaluation-depth>)
+-->
+   (<s> ^current-evaluation-depth <current-evaluation-depth>)
+}

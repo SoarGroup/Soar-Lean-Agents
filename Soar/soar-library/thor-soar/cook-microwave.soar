@@ -1,0 +1,113 @@
+## cook-microwave.soar -- thor-soar: 2 proposals, 2 compares.
+
+## Propose cook-microwave.
+sp {thor-soar*propose*cook-microwave*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^constants.food-cook-time.<food-type> <food-cook-time>
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects <objects>)
+   (<objects> ^object <food-object>)
+   (<food-object> ^<< origin-object-handle object-handle >> <o-food-object-handle>
+                  ^object-handle <food-object-handle>
+                 -^class << bread breadsliced >>
+                  ^class <food-type>
+                 -^cook-state << burnt cooked >>)
+   (<desireds> ^desired <desired>
+               ^unachieved-desireds true)
+   (<desired> ^object <desired-food-object>)
+   (<desired-food-object> ^cook-state cooked
+                          ^object-handle <o-food-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name cook-microwave
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <food-object>
+               ^argument2 <microwave-object-new2>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^desireds <desireds2>
+               ^effect-desireds <effect-desireds>)
+   (<desireds2> ^desired-count 3
+                ^desired <desired5>
+                         <desired6>
+                         <desired7>
+                ^preferred-desired <desired5>
+                ^world-context <world-context1>)
+   (<world-context1> ^objects.object <microwave-object>)
+   (<microwave-object> ^object-handle |Undefined-microwave|
+                       ^class microwave
+                       ^anchored false)
+   (<desired5> ^in <in>)
+   (<in> ^argument1 <food-object>
+         ^argument2 <microwave-object>)
+   (<desired6> ^object <microwave-object-new2>)
+   (<microwave-object-new2> ^duplicate-of <microwave-object>
+                            ^object-handle |Undefined-microwave|
+                            ^open false)
+   (<effect-desireds> ^desired <desired-ef1>
+                      ^desired-count 1)
+   (<desired7> ^object <object7>)
+   (<object7> ^object-handle <food-object-handle>
+              ^cookable true)
+   (<desired-ef1> ^object <ef-object>)
+   (<ef-object> ^activated true
+                ^event-time <food-cook-time>
+                ^object-handle |Undefined-microwave|)
+}
+
+## Preference for cook-microwave pref-cook-on-stove.
+sp {thor-soar*compare*cook-microwave*pref-cook-on-stove
+    :default
+   (state <s> ^operator <op1> +
+             -^desireds.desired.object.cooked-by microwave)
+   (<op1> ^name cook-microwave
+          ^argument1.cooks-on-stove true)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Preference for cook-microwave prefer one with in microwave.
+## if object already in microwave - prefer cooking it (not sure why this is included)
+sp {thor-soar*compare*cook-microwave*prefer*one*with*in*microwave
+    :default
+   (state <s> ^world.in.argument1.object-handle <ooh>
+              ^flags.task-search-control true
+              ^operator <op1> +)
+   (<op1> ^name cook-microwave
+          ^argument1.object-handle <ooh>)
+-->
+#  (log 1 (crlf) |**********{thor-soar*compare*cook-microwave*prefer*one*with*in*microwave|)
+   (<s> ^operator <op1> >)
+}
+
+## Propose cook-microwave.
+sp {thor-soar*propose*cook-microwave
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^constants.food-cook-time <food-cook-time>
+              ^world.in <in>)
+   (<in> ^argument1 <food-object>
+         ^argument2 <microwave-object>)
+   (<microwave-object> ^cooks true
+                       ^class <food-type>
+                       ^reachable true
+                       ^open false)
+   (<food-object> ^cookable true
+                  ^cook-state raw)
+   (<food-cook-time> ^<food-type> <food-cook-time>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name cook-microwave
+               ^task-operator true
+               ^argument1 <food-object>
+               ^argument2 <microwave-object>
+               ^argument3 <food-cook-time>
+               ^argument-count 3
+               ^pre-conditions-satisfied true)
+}

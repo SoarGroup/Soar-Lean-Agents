@@ -1,0 +1,26 @@
+
+sp {pyramid*elaborate*goal*success
+   (state <s> ^name pyramid)
+   (<s> ^desired <d>)
+   (<s> ^pyramid <x>)
+   (<d> ^pyramid <dx>)
+   (<dx> ^height <g-height>)
+   (<x> ^height <g-height>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {pyramid*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+   (<s> ^pyramid <self>)
+   (<d> ^pyramid <dx>)
+   (<dx> ^height <g-height>)
+   (<self> ^height <g-height>)
+   (<self> ^sum <self-sum>)
+-->
+   (write (crlf) |The answer is | <self-sum> |.|)
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

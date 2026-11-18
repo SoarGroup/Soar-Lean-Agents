@@ -1,0 +1,38 @@
+## store.soar -- thor-soar: 1 proposal.
+
+## Propose store.
+## MEA Proposal
+sp {thor-soar*propose*store*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world.objects.object <object>
+              ^world.objects.object <container-object>
+              ^desireds <desireds>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>)
+   (<container-object> ^object-handle <container-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^stored <desired-in-container>)
+   (<desired-in-container> ^argument2.object-handle <container-object-handle>
+                           ^argument1.object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name store
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <container-object>
+               ^argument2 <object>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^preferred-desired <desired2>
+                ^avoid-desired <desired1>
+                ^desired <desired1> <desired2>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^object-handle <container-object-handle>
+                      ^open false)
+   (<desired2> ^in <desired-in-container2>)
+   (<desired-in-container2> ^argument2.object-handle <container-object-handle>
+                            ^argument1.object-handle <o-object-handle>)
+}

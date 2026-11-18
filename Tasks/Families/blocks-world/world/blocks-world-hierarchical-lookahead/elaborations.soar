@@ -1,0 +1,161 @@
+## The gripper is a world object (^class gripper) with ^position up|down, ^open true|false and
+## ^last-held <handle of the last object it closed on>; what it holds is the world relation
+## ^holding-object (the held object, or an object whose handle is none: W-REL-002, in the form
+## that selection-world copies), and where it is is the world relation ^above (argument1 the
+## gripper, argument2 an object).
+
+## Problem space of the task states (W-WLD-014, W-LAH-009): the top state and the look-ahead
+## (evaluate-operator) states, which get ^name blocks-world from selection-world.
+sp {blocks-world*elaborate*problem-space
+   (state <s> ^name blocks-world)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name blocks-world
+        ^agent-world true)
+}
+
+## Achievement of relation desireds is task knowledge (W-DBK-002/003): each ^on desired is
+## either achieved or unachieved in the state's anchored world, compared by object handle.
+sp {blocks-world*elaborate*desired*on*achieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^on <r>)
+   (<ds> ^desired <d>)
+   (<d> ^on <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+   (<r> ^argument1.object-handle $ <h1>
+        ^argument2.object-handle $ <h2>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {blocks-world*elaborate*desired*on*unachieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^on <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1.object-handle <h1>
+         ^argument2.object-handle <h2>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## Achievement of ^holding-object desireds (effect of pick-up), task knowledge (W-DBK-002).
+sp {blocks-world*elaborate*desired*holding*achieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^holding-object.object-handle $ <h>)
+   (<ds> ^desired <d>)
+   (<d> ^holding-object.object-handle $ <h>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {blocks-world*elaborate*desired*holding*unachieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^holding-object.object-handle <> <h>)
+   (<ds> ^desired <d>)
+   (<d> ^holding-object.object-handle $ <h>)
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## End of the episode: agent-world marks (<s> ^success <desireds>) when every desired is
+## achieved (W-DBK-009). At the real top state this prints the original's message and halts.
+sp {blocks-world*halt*goal*success
+   (state <s> ^superstate nil
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}
+
+## ^clear <object> on the state: the table, or an object with nothing on it that is not held.
+## Derived information lives on the state (never on world objects), in the task space and in
+## the move-block space (including look-ahead copies there).
+sp {blocks-world*elaborate*clear*table
+   (state <s> ^problem-space.name << blocks-world move-block >>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^class table)
+-->
+   (<s> ^clear <t>)
+}
+
+sp {blocks-world*elaborate*clear*object
+   (state <s> ^problem-space.name << blocks-world move-block >>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^class block)
+  -{(<w> ^on <r>)
+    (<r> ^argument2 <x>)}
+  -(<w> ^holding-object <x>)
+-->
+   (<s> ^clear <x>)
+}
+
+## ^free <object> on the state: the table, or an object with nothing on it (the gripper is
+## ignored).
+sp {blocks-world*elaborate*free*table
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^class table)
+-->
+   (<s> ^free <t>)
+}
+
+sp {blocks-world*elaborate*free*object
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^class block)
+  -{(<w> ^on <r>)
+    (<r> ^argument2 <x>)}
+-->
+   (<s> ^free <x>)
+}
+
+## A block is in place when it rests on its desired support, which is itself in place; the table
+## is always in place. Derived information is kept on the state, not on world objects, so that
+## look-ahead copies of the world never carry stale values.
+sp {blocks-world*elaborate*in-place*table
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^class table)
+-->
+   (<s> ^in-place <t>)
+}
+
+sp {blocks-world*elaborate*in-place*via-on
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>
+              ^in-place <below>
+              ^desireds.desired.on <dr>)
+   (<w> ^anchored-world true
+        ^on <r>)
+   (<r> ^argument1 <self>
+        ^argument2 <below>)
+   (<self> ^object-handle $ <sh>)
+   (<below> ^object-handle $ <bh>)
+   (<dr> ^argument1.object-handle $ <sh>
+         ^argument2.object-handle $ <bh>)
+-->
+   (<s> ^in-place <self>)
+}

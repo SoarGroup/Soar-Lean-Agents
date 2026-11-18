@@ -1,0 +1,22 @@
+
+sp {count-up*propose*count
+   (state <s> ^name count-up)
+   (<s> ^counter <counter>)
+   (<counter> ^value { <counter-value> < 100 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name count)
+   (<o> ^counter <counter>)
+}
+
+sp {count-up*apply*count
+   (state <s> ^name count-up)
+   (<s> ^operator <o>)
+   (<o> ^name count)
+   (<o> ^counter <counter>)
+   (<counter> ^value <counter-value>)
+-->
+   (<counter> ^value (+ <counter-value> 1))
+   (<counter> ^value <counter-value> -)
+}

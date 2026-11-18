@@ -1,0 +1,28 @@
+
+sp {kenken*propose*cleanup
+   (state <s> ^name kenken)
+   (<s> ^cell <c>)
+   (<s> ^cand <z>)
+   (<c> ^cand <z>)
+   (<c> ^mark { <c-mark> <> 0 })
+   (<z> ^alive 1)
+   (<z> ^value { <z-value> <> <c-mark> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name cleanup)
+   (<o> ^c <c>)
+   (<o> ^z <z>)
+}
+
+sp {kenken*apply*cleanup
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name cleanup)
+   (<o> ^c <c>)
+   (<o> ^z <z>)
+   (<z> ^alive <z-alive>)
+-->
+   (<z> ^alive 0)
+   (<z> ^alive <z-alive> -)
+}

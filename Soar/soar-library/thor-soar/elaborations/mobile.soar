@@ -1,0 +1,54 @@
+## mobile.soar -- thor-soar: 3 elaborations.
+
+## Elaborate state mobile false1 -> sets mobile.
+sp {elaborations*elaborate*state*mobile*false1
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^anchored-world true
+            ^self <self>
+            ^objects.object <object>)
+   (<object> ^open true
+             ^reachable true
+              ^z <  0.9
+             ^class << drawer fridge >>)
+-->
+   (<self> ^mobile false)
+}
+
+## Elaborate state mobile true1 -> sets mobile.
+sp {elaborations*elaborate*state*mobile*true1
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^anchored-world true
+            ^self <self>)
+  -{(<world> ^objects.object <object>)
+    (<object> ^open true
+              ^reachable true
+              ^z <  0.9
+              ^class << drawer fridge  >>)} # lower cabinets can cause problems.
+   -{(<world> ^objects.object <object2>)
+    (<object2> ^open true
+              ^reachable true
+              ^z < 2.5
+              ^class cabinet)} # lower cabinets can cause problems.
+-->
+   (<self> ^mobile true)
+}
+
+## Elaborate state mobile false2 -> sets mobile.
+sp {elaborations*elaborate*state*mobile*false2
+    :default
+   (state <s> ^world <world>
+              ^superstate nil)
+   (<world> ^anchored-world true
+            ^self <self>
+            ^objects.object <object>)
+   (<object> ^open true
+             ^reachable true
+              ^z < 2.5
+             ^class cabinet)
+-->
+   (<self> ^mobile false)
+}

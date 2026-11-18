@@ -1,0 +1,120 @@
+
+sp {pick-up*reward*1
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^reward-link <rl>)
+   (<g> ^empty 0)
+   (<g> ^holding <block>)
+-->
+   (<rl> ^reward <w>)
+   (<w> ^value 1)
+}
+
+sp {pick-up*reward*2
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^reward-link <rl>)
+   (<g> ^open 0)
+   (<g> ^empty 1)
+-->
+   (<rl> ^reward <w>)
+   (<w> ^value -1)
+}
+gp {pick-up*rl*up
+   (state <s> ^name pick-up ^operator <o> +)
+   (<o> ^name up)
+   (<s> ^block <block>)
+   (<block> ^name [ table A B C ])
+   (<s> ^dest <dest>)
+   (<dest> ^name [ table A B C ])
+   (<s> ^g <g>)
+   (<g> ^name [ gripper ])
+   (<g> ^position [ 0 1 ])
+   (<g> ^open [ 0 1 ])
+   (<g> ^empty [ 0 1 ])
+   (<g> ^above <g-above>)
+   (<g-above> ^name [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*down
+   (state <s> ^name pick-up ^operator <o> +)
+   (<o> ^name down)
+   (<s> ^block <block>)
+   (<block> ^name [ table A B C ])
+   (<s> ^dest <dest>)
+   (<dest> ^name [ table A B C ])
+   (<s> ^g <g>)
+   (<g> ^name [ gripper ])
+   (<g> ^position [ 0 1 ])
+   (<g> ^open [ 0 1 ])
+   (<g> ^empty [ 0 1 ])
+   (<g> ^above <g-above>)
+   (<g-above> ^name [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*above-block
+   (state <s> ^name pick-up ^operator <o> +)
+   (<o> ^name above-block)
+   (<s> ^block <block>)
+   (<block> ^name [ table A B C ])
+   (<s> ^dest <dest>)
+   (<dest> ^name [ table A B C ])
+   (<s> ^g <g>)
+   (<g> ^name [ gripper ])
+   (<g> ^position [ 0 1 ])
+   (<g> ^open [ 0 1 ])
+   (<g> ^empty [ 0 1 ])
+   (<g> ^above <g-above>)
+   (<g-above> ^name [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*close
+   (state <s> ^name pick-up ^operator <o> +)
+   (<o> ^name close)
+   (<s> ^block <block>)
+   (<block> ^name [ table A B C ])
+   (<s> ^dest <dest>)
+   (<dest> ^name [ table A B C ])
+   (<s> ^g <g>)
+   (<g> ^name [ gripper ])
+   (<g> ^position [ 0 1 ])
+   (<g> ^open [ 0 1 ])
+   (<g> ^empty [ 0 1 ])
+   (<g> ^above <g-above>)
+   (<g-above> ^name [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+
+gp {pick-up*rl*open
+   (state <s> ^name pick-up ^operator <o> +)
+   (<o> ^name open)
+   (<s> ^block <block>)
+   (<block> ^name [ table A B C ])
+   (<s> ^dest <dest>)
+   (<dest> ^name [ table A B C ])
+   (<s> ^g <g>)
+   (<g> ^name [ gripper ])
+   (<g> ^position [ 0 1 ])
+   (<g> ^open [ 0 1 ])
+   (<g> ^empty [ 0 1 ])
+   (<g> ^above <g-above>)
+   (<g-above> ^name [ table A B C ])
+-->
+   (<s> ^operator <o> = 0)
+}
+

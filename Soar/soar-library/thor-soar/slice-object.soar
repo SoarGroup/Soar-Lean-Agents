@@ -1,0 +1,287 @@
+## slice-object.soar -- thor-soar: 3 proposals, 4 applications.
+
+## Propose slice-object.
+## Might not know knife
+sp {thor-soar*propose*slice-object*no-knife-yet*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.transformations.<sliced> <unsliced>
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> # ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <slice-object-handle>
+             ^class <sliced>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^sliced true
+                     ^object-handle <slice-object-handle>
+                     ^class <sliced>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name slice-object
+               ^task-operator true
+               ^action-handle slice
+               ^super-desired <desired>
+               ^argument1 <slice-object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired1>
+                ^avoid-desired <desired3>
+                ^desired <desired1> <desired2> <desired3>
+                ^world-context <world-context1> <world-context2> <world-context3> <world-context4>)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle <slice-object-handle>)
+   (<argument2> ^object-handle (concat |Undefined-Surface| <desired1>) ) # Need to distinguish between different surfaces used for different purposes
+   (<desired2> ^holding-object <holding-object>)
+   (<holding-object> ^object-handle |Undefined-knife|)  # don't need to worry about confusion - used to be (concat  |Undefined-knife| <desired2>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^reachable true
+                      ^object-handle <slice-object-handle>)
+   (<world-context1> ^objects.object <surface>)
+   (<world-context2> ^objects.object <knife>)
+   (<world-context3> ^objects.object <food>)
+   (<world-context4> ^objects.object <slice-object>)
+   (<knife> ^object-handle |Undefined-knife|  # don't need to worry about confusion - used to be (concat  |Undefined-knife| <desired2>)
+            ^class knife
+            ^anchored false)
+   (<surface> ^object-handle (concat |Undefined-Surface| <desired1>)
+              ^class countertop
+              ^anchored false)
+   (<food> ^object-handle <slice-object-handle>
+           ^class <unsliced>
+           ^anchored false)
+   (<slice-object> ^class <unsliced>
+                    ^object-handle <slice-object-handle>)
+}
+
+## Propose slice-object.
+sp {thor-soar*propose*slice-object*no-knife-yet*mea-b
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^constants.transformations.<sliced> <unsliced>
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <slice-object>
+            -^objects.object.class <sliced>)
+   (<slice-object> ^object-handle <slice-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^sliced true
+                     ^<< origin-object-handle object-handle >> <slice-object-handle>
+                     ^class <sliced>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name slice-object
+               ^task-operator true
+               ^action-handle slice
+               ^super-desired <desired>
+               ^argument1 <slice-object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired1>
+                ^avoid-desired <desired3>
+                ^desired <desired1> <desired2> <desired3>
+                ^world-context <world-context1> <world-context2> <world-context3>)
+   (<desired1> ^on <on>)
+   (<on> ^argument1 <argument1>
+         ^argument2 <argument2>)
+   (<argument1> ^object-handle <slice-object-handle>)
+   (<argument2> ^object-handle (concat |Undefined-Surface| <desired1>) ) # Need to distinguish between different surfaces used for different purposes
+   (<desired2> ^holding-object <holding-object>)
+   (<holding-object> ^object-handle |Undefined-knife|)  # don't need to worry about confusion - used to be (concat  |Undefined-knife| <desired2>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^reachable true
+                      ^object-handle <slice-object-handle>)
+   (<world-context1> ^objects.object <surface>)
+   (<world-context2> ^objects.object <knife>)
+   (<knife> ^object-handle |Undefined-knife|  # don't need to worry about confusion - used to be (concat  |Undefined-knife| <desired2>)
+            ^class knife
+            ^anchored false)
+   (<surface> ^object-handle (concat |Undefined-Surface| <desired1>)
+              ^class countertop
+              ^anchored false)
+}
+
+## Apply slice-object -> sets object, on, anchored ....
+sp {apply*slice-object*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true
+              ^world.objects <objects>
+              ^world <world>)
+   (<world> ^on <on>
+            ^holding-object <knife-object>)
+   (<objects> ^object <object2>)
+   (<on> ^argument1.object-handle <object-handle>
+         ^argument2 <object-surface>)
+   (<operator> ^name slice-object
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>)
+   (<object2> ^object-handle <object-handle>
+              ^class <food-type>
+              ^cook-state <cook-state>
+         #     ^dirtyable <dirtyable>
+              ^temperature <temp>)
+-->
+   (log 1 (crlf) |Apply slice: | <object-handle> | internal.|)
+   (<objects> ^object <object2> -
+                      <new-object1> <new-object2>)
+   (<world> ^on <on> -
+                <on1>
+                <on2>)
+   (<new-object1> ^anchored true
+                  ^class (concat <food-type> |sliced|)
+                  ^cook-state <cook-state>
+                  ^cookable true #^dirtyable <dirtyable> # ^dirty <dirty>
+                  ^graspable true
+                  ^object-handle (capitalize-symbol (concat <food-type> |Sliced| 1))
+                  ^origin-object-handle <object-handle>
+                  ^reachable true
+                  ^sliced true
+                  ^temperature <temp>
+                  ^cooks-on-stove true
+                  ^confirmed true
+                  ^sliced-by <knife-object>)
+   (<new-object2> ^anchored true
+                  ^class (concat <food-type> |sliced|)
+                  ^cook-state <cook-state>
+                  ^cookable true #^dirtyable <dirtyable>  # ^dirty <dirty>
+                  ^graspable true
+                  ^object-handle (capitalize-symbol (concat <food-type> |Sliced| 2))
+                  ^origin-object-handle <object-handle>
+                  ^reachable true
+                  ^sliced true
+                  ^temperature <temp>
+                  ^cooks-on-stove true
+                  ^confirmed true
+                  ^sliced-by <knife-object>)
+   (<on1> ^argument1 <new-object1>
+          ^argument2 <object-surface>)
+   (<on2> ^argument1 <new-object2>
+          ^argument2 <object-surface>)
+}
+
+## Apply slice-object -> sets object, on, anchored ....
+sp {apply*slice-object*internal*no-cook
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true
+              ^world <world2>
+              ^world <world>)
+   (<world2> ^objects <objects>
+            ^anchored-world true)
+   (<world> ^on <on>
+            ^anchored-world true
+            ^holding-object <knife-object>)
+   (<objects> ^object <object2>)
+   (<on> ^argument1.object-handle <object-handle>
+         ^argument2 <object-surface>)
+   (<operator> ^name slice-object
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>)
+   (<object2> ^object-handle <object-handle>
+              ^class <food-type>
+             -^cook-state <cook-state>
+             # ^dirtyable <dirtyable>
+              ^temperature <temp>)
+-->
+   (log 1 (crlf) |Apply slice: | <object-handle> | internal.|)
+   (<objects> ^object <object2> -
+                      <new-object1> <new-object2>)
+   (<world> ^on <on> -
+                <on1>
+                <on2>)
+   (<new-object1> ^anchored true
+                  ^class (concat <food-type> |sliced|)
+                 # ^dirtyable <dirtyable>  # ^dirty <dirty>
+                  ^graspable true
+                  ^object-handle (capitalize-symbol (concat <food-type> |Sliced| 1))
+                  ^origin-object-handle <object-handle>
+                  ^reachable true
+                  ^sliced true
+                  ^temperature <temp>
+                  ^confirmed true
+                  ^cookable true
+                  ^cook-state raw
+                  ^sliced-by <knife-object>)
+   (<new-object2> ^anchored true
+                  ^class (concat <food-type> |sliced|)
+                 # ^dirtyable <dirtyable>  # ^dirty <dirty>
+                  ^graspable true
+                  ^object-handle (capitalize-symbol (concat <food-type> |Sliced| 2))
+                  ^origin-object-handle <object-handle>
+                  ^reachable true
+                  ^sliced true
+                  ^temperature <temp>
+                  ^confirmed true
+                  ^cookable true
+                  ^cook-state raw
+                  ^sliced-by <knife-object>)
+   (<on1> ^argument1 <new-object1>
+          ^argument2 <object-surface>)
+   (<on2> ^argument1 <new-object2>
+          ^argument2 <object-surface>)
+}
+
+## Apply slice-object -> sets dirty.
+sp {apply*slice-object*internal*knife*dirty
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true
+              ^world.holding-object <knife-object>)
+   (<operator> ^name slice-object
+               ^pre-conditions-satisfied true)
+-->
+   (<knife-object> ^dirty true
+                          false -)
+}
+
+## Apply slice-object -> sets failed-grounding.
+sp {apply*slice-object*internal*failed-grounding-try-again
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.object <d>
+              ^internal-actions true)
+   (<operator> ^name slice-object
+               ^pre-conditions-satisfied true)
+   (<d> ^failed-grounding true)
+-->
+   (<d> ^failed-grounding true -)
+}
+
+## Propose slice-object.
+## Non MEA Selection
+sp {thor-soar*propose*slice-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>)
+   (<object> ^sliced false
+             ^cook-state raw
+             ^reachable true
+             ^sliceable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name slice-object
+               ^task-operator true
+               ^action-handle slice
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

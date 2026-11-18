@@ -1,0 +1,10 @@
+
+chunk always
+chunk add-osk on
+multi-attributes problem 2
+multi-attributes column 4
+multi-attributes digit 11
+multi-attributes add-fact 111
+multi-attributes sub-fact 166
+multi-attributes inc-fact 11
+multi-attributes ten-fact 11

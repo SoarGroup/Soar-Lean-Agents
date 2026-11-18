@@ -1,0 +1,19 @@
+
+sp {mac*elaborate*failure*1
+   (state <s> ^name mac)
+   (<s> ^desired <d>)
+   (<s> ^bank <self>)
+   (<self> ^missionaries { <self-missionaries> > 0 < <self-cannibals> })
+   (<self> ^cannibals <self-cannibals>)
+-->
+   (<s> ^failure <d>)
+}
+
+sp {mac*halt*failure
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^failure <d>)
+-->
+   (write (crlf) |Failure state: the task has failed.|)
+   (halt)
+}

@@ -1,0 +1,18 @@
+
+sp {borrow-from*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name borrow-from)
+   (<ss> ^task-state <ts>)
+   (<so> ^m <m>)
+   (<ss> ^p <p>)
+   (<ss> ^c <c>)
+-->
+   (<s> ^name borrow-from)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+}

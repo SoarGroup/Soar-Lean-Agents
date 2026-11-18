@@ -1,0 +1,48 @@
+##############################################################################
+## RL: one numeric-indifferent preference per move-boat instance, keyed (as in the
+## original template) on the operator's numbers and both banks' handles and contents.
+## Rewards: success +1 comes from agent-world's reward rule (^flags.rl true, state
+## ^success <desireds>); the task adds -1 on failure and -0.01 every decision, as the
+## original does.
+##############################################################################
+
+sp {mac*rl*move-boat
+   :template
+   (state <s> ^problem-space.name mac
+              ^operator <o> +)
+   (<o> ^name move-boat
+        ^argument1 <from>
+        ^argument2 <to>
+        ^missionaries <missionaries>
+        ^cannibals <cannibals>)
+   (<from> ^object-handle $ <from-name>
+           ^missionaries <from-missionaries>
+           ^cannibals <from-cannibals>
+           ^boat <from-boat>)
+   (<to> ^object-handle $ <to-name>
+         ^missionaries <to-missionaries>
+         ^cannibals <to-cannibals>
+         ^boat <to-boat>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {mac*reward*failure
+   (state <s> ^superstate nil
+              ^name mac
+              ^reward-link <r>
+              ^desireds <ds>
+              ^failure <ds>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -1)
+}
+
+sp {mac*reward*step
+   (state <s> ^superstate nil
+              ^name mac
+              ^reward-link <r>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -0.010000)
+}

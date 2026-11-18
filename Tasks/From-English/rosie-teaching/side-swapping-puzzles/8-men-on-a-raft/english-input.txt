@@ -1,0 +1,30 @@
+8 Men on a Raft: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is eight-men-raft.
+  2. Load init-8men.   [world state: init-8men.world]
+  3. Ok.
+  4. If a clear location is to the right of a blue peg then you can move the peg onto the location.
+  5. If a location is not below an object then it is clear.
+  6. If an object is a block then it is a peg.
+  7. If a clear location is to the left of a red peg then you can move the peg onto the location.
+  8. Load second-8men.   [world state: second-8men.world]
+  9. If a red peg is to the right of a peg and the peg is to the right of a clear location then you can move the red peg onto the clear location.
+ 10. If a blue peg is to the left of a peg and the peg is to the left of a clear location then you can move the blue peg onto the clear location.
+ 11. The solution has twenty-four steps.
+ 12. Load final-8men.   [world state: final-8men.world]
+ 13. The name of the goal is red-blue-matched.
+ 14. Ok.
+ 15. The goal is that all the red blocks are on the red locations and all the blue blocks are on the blue locations.
+ 16. Done.
+ 17. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1, red1); column (numeric, 1 to 9); row (numeric, 1 to 1)
+  Relations: below1, left-of1, on1, right-of1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/side-swapping-puzzles/8-men-on-a-raft/.

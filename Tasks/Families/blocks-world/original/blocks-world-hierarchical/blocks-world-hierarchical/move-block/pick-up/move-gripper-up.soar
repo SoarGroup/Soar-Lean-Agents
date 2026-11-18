@@ -1,0 +1,31 @@
+
+sp {pick-up*propose*move-gripper-up
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<g> ^position 0)
+   (<g> ^empty 1)
+   (<g> ^above { <g-above> <> <block> })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name move-gripper-up)
+}
+
+sp {pick-up*apply*move-gripper-up
+   (state <s> ^name pick-up)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name move-gripper-up)
+   (<g> ^position <g-position>)
+-->
+   (<g> ^position 1)
+   (<g> ^position <g-position> -)
+}

@@ -1,0 +1,81 @@
+## look-at.soar -- thor-soar: 2 proposals, 1 compare, 1 application.
+
+## Propose look-at.
+sp {thor-soar*propose*look-at
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^objects.object <object>
+            ^anchored-world true)
+   (<object> ^object-handle <object-handle>
+            -^looked-at true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^in-view true
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name look-at
+               ^pre-conditions-satisfied true
+               ^task-operator true
+               ^action-handle look-at
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1)
+}
+
+## Propose look-at.
+sp {thor-soar*propose*look-at2
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^objects.object <object>
+            ^anchored-world true)
+   (<object> ^object-handle <object-handle>
+             -^looked-at true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^looked-at true
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name look-at
+               ^pre-conditions-satisfied true
+               ^task-operator true
+               ^action-handle look-at
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1)
+}
+
+## Preference for Thor-Soar-Agent2 look-at.
+sp {Thor-Soar-Agent2*compare*look-at
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name look-at)
+   (<op2> ^name <> look-at
+          ^task-operator true)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Apply look-at (o-support) -> sets looked-at.
+sp {apply*operator*external*argument1*look-at2x
+   :o-support
+    :default
+   (state <s> ^internal-actions true
+              ^operator <operator>)
+   (<operator> ^name look-at
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+-->
+   (log 1 (crlf) |look-at: | <object> | .|)
+   (<object> ^looked-at true)
+}

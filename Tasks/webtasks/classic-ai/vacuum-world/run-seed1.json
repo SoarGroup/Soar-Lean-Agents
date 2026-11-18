@@ -1,0 +1,1 @@
+{"outcome": "success", "decisions": 70, "actions": [["suck", "left", null], ["move", "right", null], ["suck", "right", null]], "n_actions": 3, "seconds": 0.0, "cpu": "0.010"}

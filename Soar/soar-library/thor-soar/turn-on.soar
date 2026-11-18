@@ -1,0 +1,338 @@
+## turn-on.soar -- thor-soar: 3 proposals, 6 applications.
+
+## Propose turn-on.
+## MEA Selection
+sp {propose*turn-on*mea*no*time
+    :default
+   (state <s> ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <object-handle>
+            -^class microwave
+             ^activated false)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated true
+                    -^event-time
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-on
+               ^task-operator true
+               ^action-handle turn-on
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired <desired1> <desired2>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^reachable true
+                      ^object-handle <object-handle>)
+   (<desired2> ^holding-object.object-handle none)
+}
+
+## Propose turn-on.
+sp {propose*turn-on*mea*on*time
+    :default
+   (state <s> ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <object-handle>
+             ^activated false)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated true
+                     ^event-time <event-time>
+                     ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-on
+               ^task-operator true
+               ^action-handle turn-on
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument2 <event-time>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired <desired1> <desired2>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^reachable true
+                      ^object-handle <object-handle>)
+   (<desired2> ^holding-object.object-handle none)
+}
+
+## Apply turn-on -> sets future-event, type, argument1 ....
+sp {thor-soar*apply*turn-on*future-event*microwave*toaster
+    :default
+   (state <s> ^world <world>
+           #   ^superstate.operator.name <super-operator-name>
+              ^operator <operator>)
+   (<operator> ^name turn-on
+               ^argument1 <machine-object>
+               ^argument2 <event-time>
+               ^pre-conditions-satisfied true)
+   (<world> ^time <time>
+            ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <food-object>
+         ^argument2 <machine-object>)
+   (<machine-object> ^class { << microwave toaster >> <machine-object-class> })
+   (<food-object> ^cookable true)
+-->
+   (log 1 (crlf) |Future Event for: turn-on | <machine-object-class> |, current-time: | <time> |, completion time:| (+ <time> <event-time>))
+   (<world> ^future-event <future-event>)
+   (<future-event> ^type <machine-object-class>
+                   ^argument1 <food-object>
+                   ^argument2 <machine-object>
+                   ^argument-count 2
+                   ^completion-time (+ <time> <event-time>)
+                   ^property-change <property-change1> <property-change2> <property-change3>
+                   ^primary-property-change <property-change1>
+                   ^property-change-count 3)
+   (<property-change1> ^object <food-object>
+                       ^property-handle cook-state
+                       ^original-property-value raw
+                       ^new-property-value cooked)
+   (<property-change2> ^object <machine-object>
+                       ^property-handle activated
+                       ^original-property-value true
+                       ^new-property-value false)
+   (<property-change3> ^object <food-object>
+                       ^original-property-value no-value
+                       ^property-handle cooked-by
+                       ^new-property-value <machine-object-class>)
+}
+
+## Apply turn-on -> sets future-event, type, argument1 ....
+sp {thor-soar*apply*turn-on*future-event*stove*direct
+    :default
+   (state <s> ^world <world>
+             # ^superstate.operator <super-operator>
+              ^operator <operator>)
+  # (<super-operator> ^name <super-operator-name>)
+   (<operator> ^name turn-on
+               ^argument1 <stoveknob-object>
+               ^argument2 <event-time>
+               ^pre-conditions-satisfied true)
+   (<stoveknob-object> ^object-handle <stoveknob-object-handle>
+                       ^class stoveknob
+                       ^controls-object-handle <stoveburner-object-handle>)
+   (<world> ^objects <objects>
+            ^time <time>
+            ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <food-object>
+         ^argument2 <stoveburner-object>)
+   (<stoveburner-object> ^class stoveburner
+                         ^object-handle <stoveburner-object-handle>)
+   (<food-object> ^cookable true)
+-->
+   (log 1 (crlf) |Future Event for cook with stove, time:| (+ <time> <event-time>))
+   (<world> ^future-event <future-event>)
+   (<future-event> ^type stoveknob
+                   ^argument1 <food-object>
+                   ^argument2 <stoveburner-object>
+                   ^argument-count 2
+                   ^completion-time (+ <time> <event-time>)
+                   ^property-change <property-change1> <property-change2>
+                   ^primary-property-change <property-change1>
+                   ^property-change-count 2
+                   ^new-desired <new-desired>)
+   (<property-change1> ^object <food-object>
+                       ^property-handle cook-state
+                       ^original-property-value raw
+                       ^new-property-value cooked)
+   (<property-change2> ^object <food-object>
+                       ^original-property-value no-value
+                       ^property-handle cooked-by
+                       ^new-property-value stoveknob)
+   (<new-desired> ^object <d-stoveknob-object2>)
+   (<d-stoveknob-object2> ^activated false
+                          ^object-handle <stoveknob-object-handle>)
+}
+
+## Apply turn-on -> sets future-event, type, argument1 ....
+sp {thor-soar*apply*turn-on*future-event*stove*indirect
+    :default
+   (state <s> ^world <world>
+          #    ^superstate.operator <super-operator>
+              ^operator <operator>)
+#   (<super-operator> ^name <super-operator-name>)
+   (<operator> ^name turn-on
+               ^argument1 <stoveknob-object>
+               ^argument2 <event-time>
+               ^pre-conditions-satisfied true)
+   (<world> ^objects <objects>
+            ^time <time>
+            ^anchored-world true
+            ^in <in> { <in2> <> <in> })
+   (<stoveknob-object> ^object-handle <stoveknob-object-handle>
+                       ^class stoveknob
+                       ^controls-object-handle <stoveburner-object-handle>)
+   (<in> ^argument1 <food-object>
+         ^argument2 <pan-object>)
+   (<in2> ^argument1 <pan-object>
+          ^argument2 <stoveburner-object>)
+   (<food-object> ^cookable true)
+   (<stoveburner-object> ^class stoveburner
+                         ^object-handle <stoveburner-object-handle>)
+  -{(<world> ^in <in3>)
+   (<in3> ^argument1 <food-object>
+          ^argument2 <stoveburner-object>)}
+-->
+   (log 1 (crlf) |Future Event for: stove indirect, time:| (+ <time> <event-time>))
+   (<world> ^future-event <future-event>)
+   (<future-event> ^type stoveknob
+                   ^argument1 <food-object>
+                   ^argument2 <stoveburner-object>
+                   ^argument-count 2
+                   ^completion-time (+ <time> <event-time>)
+                   ^property-change <property-change1> <property-change2>
+                   ^primary-property-change <property-change1>
+                   ^property-change-count 2
+                   ^new-desired <new-desired>)
+   (<property-change1> ^object <food-object>
+                       ^property-handle cook-state
+                       ^original-property-value raw
+                       ^new-property-value cooked)
+   (<property-change2> ^object <food-object>
+                       ^original-property-value no-value
+                       ^property-handle cooked-by
+                       ^new-property-value stoveknob)
+   (<new-desired> ^object <d-stoveknob-object2>)
+   (<d-stoveknob-object2> ^activated false
+                          ^object-handle <stoveknob-object-handle>)
+}
+
+## Apply turn-on -> sets future-event, type, argument1 ....
+sp {thor-soar*apply*turn-on*future-event*coffee
+    :default
+   (state <s> ^world <world>
+              ^operator <operator>)
+   (<operator> ^name turn-on
+               ^argument1 <coffee-machine>
+               ^argument2 <event-time>
+               ^pre-conditions-satisfied true)
+   (<world> ^time <time>
+            ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <object>
+         ^argument2 <coffee-machine>)
+   (<coffee-machine> ^class coffeemachine)
+-->
+   (log 1 (crlf) |Future Event for: coffee machine, time:| (+ <time> <event-time>))
+   (<world> ^future-event <future-event>)
+   (<future-event> ^type coffee-machine
+                   ^argument1 <object>
+                   ^argument2 <coffee-machine>
+                   ^argument-count 2
+                   ^completion-time (+ <time> <event-time>)
+                   ^property-change <property-change1> <property-change2> <property-change3> <property-change4>
+                   ^primary-property-change <property-change2>
+                   ^property-change-count 4)
+   (<property-change1> ^object <coffee-machine>
+                       ^property-handle activated
+                       ^original-property-value true
+                       ^new-property-value false)
+   (<property-change2> ^object <object>
+                       ^original-property-value none
+                       ^property-handle liquid-contents
+                       ^new-property-value coffee)
+   (<property-change3> ^object <object>
+                       ^original-property-value empty
+                       ^property-handle fill-amount
+                       ^new-property-value full)
+   (<property-change4> ^object <object>
+                       ^property-handle cooked-by
+                       ^original-property-value no-value
+                       ^new-property-value coffee-machine)
+}
+
+## Apply turn-on -> sets future-event, type, argument1 ....
+sp {thor-soar*apply*turn-on*future-event*dishwasher
+    :default
+   (state <s> ^world <world>
+              ^operator <operator>)
+   (<operator> ^name turn-on
+               ^argument1 <dishwasher-machine>
+               ^argument2 <event-time>
+               ^pre-conditions-satisfied true)
+   (<world> ^time <time>
+            ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <object>
+         ^argument2 <dishwasher-machine>)
+   (<dishwasher-machine> ^class dishwasher)
+-->
+   (log 1 (crlf) |Future Event for: dishwasher, time:| (+ <time> <event-time>))
+   (<world> ^future-event <future-event>)
+   (<future-event> ^type dishwasher
+                   ^argument1 <object>
+                   ^argument2 <dishwasher-time>
+                   ^argument-count 2
+                   ^completion-time (+ <time> <event-time>)
+                   ^property-change <property-change1> <property-change2> <property-change3> <property-change4>
+                   ^primary-property-change <property-change2>
+                   ^property-change-count 4)
+   (<property-change1> ^object <dishwasher-machine>
+                       ^property-handle activated
+                       ^original-property-value true
+                       ^new-property-value false)
+   (<property-change2> ^object <object>
+                       ^property-handle contaminanted
+                       ^original-property-value true
+                       ^new-property-value false)
+   (<property-change3> ^object <object>
+                       ^property-handle dirty
+                       ^original-property-value true
+                       ^new-property-value false)
+   (<property-change4> ^object <object>
+                       ^property-handle cleaned-by
+                       ^original-property-value no-value
+                       ^new-property-value dishwasher)
+}
+
+## Apply turn-on -> sets activated.
+sp {apply*turn-on*internal*activate*on
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name turn-on
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^activated false)
+-->
+   (log 1 (crlf) |Apply Turn-on: | <object-handle> | internal.|)
+   (<object> ^activated false -
+                        true)
+}
+
+## Propose turn-on.
+## Non MEA Selection
+sp {thor-soar*propose*turn-on
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <object>
+              ^world.holding-object.object-handle none)
+   (<object> ^reachable true
+             ^activatable true
+             ^activated false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name turn-on
+               ^task-operator true
+               ^action-handle turn-on
+               ^argument1 <object>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

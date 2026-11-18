@@ -1,0 +1,590 @@
+## elaborations.soar -- selection-world: 21 elaborations, 22 compares.
+
+## ---- elaborations ----
+
+## Elaborate selection name selection.
+sp {selection-world*elaborate*selection*name*selection
+   :default
+   (state <s> ^choices << conflict multiple >>)
+-->
+   (<s> ^name selection)}
+
+## Elaborate selection top-selection -> sets top-se.
+sp {selection-world*elaborate*selection*top-selection
+    :default
+   (state <s> ^name selection
+             -^selection-superstate)
+-->
+   (<s> ^top-selection true)
+}
+
+## Elaborate selection bound-check true: a top selection with tie-impasse or operator depth (operator from v2.40), a cost metric and optimize true checks the cost bounds
+## of its evaluations (strategies/iterative-deepening/Impasse__Operator_Tie/lower-bound.soar) before it lets one operator win.
+sp {selection-world*elaborate*selection*bound-check*true
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^flags <flags>)
+   (<flags> ^iterative-step << tie-impasse operator >>
+            ^optimize true
+            ^cost-metric << unit time >>)
+-->
+   (<s> ^bound-check true)}
+
+## Elaborate selection bound-check false: optimize false.
+sp {selection-world*elaborate*selection*bound-check*false*optimize
+   :default
+   (state <s> ^name selection
+              ^flags.optimize false)
+-->
+   (<s> ^bound-check false)}
+
+## Elaborate selection bound-check false: no cost metric.
+sp {selection-world*elaborate*selection*bound-check*false*cost-metric
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric none)
+-->
+   (<s> ^bound-check false)}
+
+## Elaborate selection bound-check false: cost iterative step (v2.40: operator depth now checks bounds with optimize, like tie-impasse).
+sp {selection-world*elaborate*selection*bound-check*false*iterative-step
+   :default
+   (state <s> ^name selection
+              ^flags.iterative-step cost)
+-->
+   (<s> ^bound-check false)}
+
+## Elaborate selection bound-check false: a nested selection (its choices guide the look-ahead; the top selection checks the bounds).
+sp {selection-world*elaborate*selection*bound-check*false*nested
+   :default
+   (state <s> ^name selection
+              ^selection-superstate <selection-superstate>)
+-->
+   (<s> ^bound-check false)}
+
+## Elaborate selection unary-success-best: optimize false (a success becomes a best preference, first-success strategy).
+sp {selection-world*elaborate*selection*unary-success-best*optimize
+   :default
+   (state <s> ^name selection
+              ^flags.optimize false)
+-->
+   (<s> ^unary-success-best true)}
+
+## Elaborate selection unary-success-best: no cost metric (a success becomes a best preference, first-success strategy).
+sp {selection-world*elaborate*selection*unary-success-best*cost-metric
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric none)
+-->
+   (<s> ^unary-success-best true)}
+
+## Elaborate selection unary-success-best: cost iterative step (a success becomes a best preference, first-success strategy).
+## v2.40: operator step dropped, so operator depth with a cost metric and optimize true compares costs like tie-impasse.
+sp {selection-world*elaborate*selection*unary-success-best*iterative-step
+   :default
+   (state <s> ^name selection
+              ^flags.iterative-step cost)
+-->
+   (<s> ^unary-success-best true)}
+
+## Elaborate selection evaluation closed: where bounds are not checked every evaluation is closed.
+## A closed evaluation may lose to another operator's evaluation; the compare rules that make an operator lose test ^closed true.
+sp {selection-world*elaborate*selection*evaluation*closed*no-bound-check
+   :default
+   (state <s> ^name selection
+              ^bound-check false
+              ^evaluation <evaluation>)
+-->
+   (<evaluation> ^closed true)}
+
+## Elaborate selection evaluation closed: bounds checked, nothing below the evaluation was cut off.
+sp {selection-world*elaborate*selection*evaluation*closed*no-bound
+   :default
+   (state <s> ^name selection
+              ^bound-check true
+              ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound none)
+-->
+   (<evaluation> ^closed true)}
+
+## Elaborate selection evaluation closed: bounds checked, the cut-off bound is not below the best value found.
+sp {selection-world*elaborate*selection*evaluation*closed*bound
+   :default
+   (state <s> ^name selection
+              ^bound-check true
+              ^minimum-numeric-value <best>
+              ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound >= <best>)
+-->
+   (<evaluation> ^closed true)}
+
+## Elaborate selection evaluation value.
+sp {selection-world*elaborate*selection*evaluation*value
+   :default
+   (state <s> ^evaluation <evaluation>)
+   (<evaluation> ^ << numeric-value symbolic-value expected-value >>)
+-->
+   (<evaluation> ^value true)}
+
+## Elaborate selection evaluation desireds -> sets desireds, duplicat.
+sp {selection-world*elaborate*selection*evaluation*desireds
+   :default
+   (state <s> ^superstate.desireds <desireds>
+              ^evaluation <e>)
+-->
+   (<e> ^desireds <new-desireds>)
+   (<new-desireds> ^duplicate-of <desireds>)}
+
+## Elaborate selection evaluation desireds desired -> sets de.
+sp {selection-world*elaborate*selection*evaluation*desireds*desired
+   :default
+   (state <s> ^superstate.desireds <desireds>
+              ^evaluation <e>)
+   (<e> ^desireds <new-desireds>)
+   (<new-desireds> ^duplicate-of <desireds>)
+   (<desireds> ^desired <desired>)
+-->
+   (<new-desireds> ^desired <desired>)}
+
+## Elaborate selection evaluation desireds count -> sets desire.
+sp {selection-world*elaborate*selection*evaluation*desireds*count
+   :default
+   (state <s> ^superstate.desireds <desireds>
+              ^evaluation <e>)
+   (<e> ^desireds <new-desireds>)
+   (<new-desireds> ^duplicate-of <desireds>)
+   (<desireds> ^desired-count <count>)
+-->
+   (<new-desireds> ^desired-count <count>)}
+
+## Elaborate selection state all-objects-evaluated -> sets not-all-operators.
+## Signal that there are still objects to evaluate.
+sp {selection-world*elaborate*selection*state*all-objects-evaluated
+   :default
+   (state <s> ^name selection)
+   (<s> ^operator <operator> +)
+   (<operator> ^name evaluate-operator
+              -^evaluation.value true)
+-->
+   (<s> ^not-all-operators-evaluated true)}
+
+## Elaborate selection state found-value-true -> sets f.
+sp {selection-world*elaborate*selection*state*found-value-true
+   :default
+   (state <s> ^name selection
+              ^evaluation.<< numeric-value symbolic-value expected-value >> <> no-value)
+-->
+   (<s> ^found-value true)}
+
+## Elaborate selection super-desired explore-closed-receptacles failed-grounding -> sets desired, preferred-desired.
+sp {selection-world*elaborate*selection*super-desired*explore-closed-receptacles*failed-grounding
+   :default
+   (state <s> ^name selection
+              ^evaluation <evaluation>)
+   (<evaluation> ^symbolic-value failed-grounding
+                 ^failed-grounding-info <info>
+                 ^desireds.duplicate-of <desireds>)
+-->
+   (<desireds> ^desired <desired>
+               ^preferred-desired <desired>)
+   (<desired> ^info <info>)}
+
+## ---- evaluate / compare ----
+
+## Preference for selection evaluation expected-values.
+sp {selection-world*compare*selection*evaluation*expected-values
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^super-operator <x>
+                 ^expected-value <v>
+                 ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> = <v>)}
+
+## Preference for selection equal-evaluation-indifferent.
+sp {selection-world*compare*selection*equal-evaluation-indifferent
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>  { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^numeric-value <v>
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator <y>
+                  ^numeric-value <v>
+                  ^desireds.duplicate-of <desireds>)
+  -(<desireds> ^desired.equal not-indifferent)
+   (<evaluation1> ^closed true)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection higher-evaluation-better.
+sp {selection-world*compare*selection*higher-evaluation-better
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<desireds> ^better higher)
+   (<evaluation1> ^super-operator <operator1>
+                  ^numeric-value { <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator <operator2>
+                  ^numeric-value { < <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <operator2> < <operator1>)}
+
+## Preference for selection prefer-lower-evaluation.
+sp {selection-world*compare*selection*prefer-lower-evaluation
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)
+   (<evaluation1> ^super-operator { <> <operator2> <operator1> }
+                  ^numeric-value { <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <operator1> <operator2> }
+                  ^numeric-value { > <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <operator2> < <operator1>)}
+
+## Preference for selection prefer-lower-evaluation 0.
+sp {selection-world*compare*selection*prefer-lower-evaluation*0
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower
+               ^best 0)
+   (<evaluation1> ^super-operator <operator1>
+                  ^numeric-value 0
+                  ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <operator1> >)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent success.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*success
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { < <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<desireds> -^better)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value { <> exhaustion-failure <> success <> depth-exceeded <> depth-exhaustion <v> }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator <y>
+                  ^symbolic-value <v>
+                  ^desireds.duplicate-of <desireds>)
+  (<y> ^task-operator true)
+  (<x> ^task-operator true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent success no-better no-remoaining.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*success*no-better*no-remoaining
+   :default
+   (state <s> ^name selection
+             -^remaining-operators
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation1> ^closed true)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent exhaustion-failure.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*exhaustion-failure
+   :default
+   (state <s> ^name selection
+              ^quiescence t  ### TEST
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { < <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value exhaustion-failure
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator <y>
+                  ^symbolic-value exhaustion-failure
+                  ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection partial-failure-evaluation-better-than-failure.
+sp {selection-world*compare*selection*partial-failure-evaluation-better-than-failure
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value partial-failure
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value failure
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection select required-success-evaluation-becomes-required-preference.
+sp {selection-world*compare*selection*select*required-success-evaluation-becomes-required-preference
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^symbolic-value required-success
+                  ^desireds.duplicate-of <desireds>
+                  ^super-operator <operator1>)
+-->
+   (<superstate> ^operator <operator1> !)}
+
+## Preference for selection success-evaluation-better-than-failure.
+sp {selection-world*compare*selection*success-evaluation-better-than-failure
+   :default
+   (state <s> ^name selection
+              ^superstate <ss>
+              ^evaluation <e1> { <> <e1> <e2> })
+   (<ss> ^desireds <d>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value << success partial-success >>
+         ^desireds.duplicate-of <d>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value << failure partial-failure >>
+         ^desireds.duplicate-of <d>)
+  # (<y> ^task-operator true)  ## Why was this task-operator true
+   (<e2> ^closed true)
+-->
+   (<ss> ^operator <x> > <y>)}
+
+## Preference for selection success-evaluation-equal-failure.
+sp {selection-world*compare*selection*success-evaluation-equal-failure
+   :default
+   (state <s> ^name selection
+              ^superstate <ss>
+              ^evaluation <e1> { < <e1> <e2> })
+   (<ss> ^desireds <d>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value failure
+         ^desireds.duplicate-of <d>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value failure
+         ^desireds.duplicate-of <d>)
+  # (<y> ^task-operator true)  ## Why was this task-operator true
+  # (<x> ^task-operator true)
+-->
+   (<ss> ^operator <x> = <y>)}
+
+## Preference for selection select failure-evaluation-becomes-reject-preference.
+## v2.38: a reject again (v2.36 renamed it ...-becomes-worst-preference when it made a worst preference). An operator whose
+## look-ahead ends in a loss is never chosen: with a worst preference the soar-base tie-breaker
+## (soar-base*compare*default*select*indifferent-and-worst*tied) could still choose it when a nested selection reached a
+## state no-change, and a success in the same evaluation (a state that reaches the goal and loses) made it best. Reject
+## outranks best, so losing takes precedence over reaching the goal.
+sp {selection-world*compare*selection*select*failure-evaluation-becomes-reject-preference
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^symbolic-value << lose failure >>
+                  ^desireds.duplicate-of <desireds>
+                  ^super-operator <operator1>)
+   (<evaluation1> ^closed true)
+-->
+   (<superstate> ^operator <operator1> -)}
+
+## Preference for selection select exhaustion-failure-evaluation-becomes-worst-preference.
+## No chunking over exhaustion-failure
+sp {selection-world*compare*selection*select*exhaustion-failure-evaluation-becomes-worst-preference
+   :default
+#   :incorrect
+   (state <s> ^name selection
+              ^quiescence t  ### TEST
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^symbolic-value exhaustion-failure
+                 ^desireds.duplicate-of <desireds>
+                 ^super-operator <operator>)
+   (<evaluation> ^closed true)
+-->
+   (<superstate> ^operator <operator> <)}
+
+## Preference for selection select prohibit-failure-evaluation-becomes-prohibit-preference.
+sp {selection-world*compare*selection*select*prohibit-failure-evaluation-becomes-prohibit-preference
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^symbolic-value prohibit-failure
+                 ^desireds.duplicate-of <desireds>
+                 ^super-operator <operator>)
+-->
+   (<superstate> ^operator <operator> ~)}
+
+## Preference for selection select indifferent-evaluation-becomes-indifferent-preference.
+sp {selection-world*compare*selection*select*indifferent-evaluation-becomes-indifferent-preference
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^symbolic-value indifferent
+                 ^desireds.duplicate-of <desireds>
+                 ^super-operator <operator>)
+-->
+   (<superstate> ^operator <operator> =)}
+
+## Preference for selection select partial-failure-evaluation-becomes-worst-preference.
+sp {selection-world*compare*selection*select*partial-failure-evaluation-becomes-worst-preference
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation> ^symbolic-value partial-failure
+                 ^desireds.duplicate-of <desireds>
+                 ^super-operator <operator1>)
+   (<evaluation> ^closed true)
+-->
+   (<superstate> ^operator <operator1> <)}
+
+## Preference for selection exhaustion-evaluation-better-than-failure.
+## TAsk operators
+sp {selection-world*compare*selection*exhaustion-evaluation-better-than-failure
+   :default
+   (state <s> ^name selection
+              ^superstate <ss>
+              ^evaluation <e1> { <> <e1> <e2> })
+   (<ss> ^desireds <d>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value exhaustion-failure
+         ^desireds.duplicate-of <d>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value failure
+         ^desireds.duplicate-of <d>)
+   (<e2> ^closed true)
+-->
+   (<ss> ^operator <x> > <y>)}
+
+## Preference for selection worse failure-cutoff-numeric-value2 (the best value is held by another operator of this selection).
+## The look-ahead was cut off because its cost passed the best value found. The rule names the operator that holds that value and tests that
+## it is another operator: a chunk built from it keeps that inequality and cannot make the holder itself worst.
+sp {selection-world*compare*selection*worse*failure-cutoff-numeric-value2
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^minimum-numeric-value <minimum>
+              ^evaluation <evaluation2>
+              ^evaluation <evaluation-minimum>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation2> ^super-operator <operator2>
+                 -^numeric-value
+                  ^failure-cutoff true
+                  ^desireds.duplicate-of <desireds>
+                  ^closed true)
+   (<evaluation-minimum> ^numeric-value <minimum>
+                         ^super-operator { <> <operator2> <operator-minimum> })
+   (<operator2> ^name $ <name2>)
+-->
+   (log 1 (crlf) |Failure-cutoff worse preference:| <operator2> | | <name2>)
+   (<superstate> ^operator <operator2> <)}
+
+## Preference for selection worse failure-cutoff-numeric-value2 (the best value was passed down from the selection above).
+sp {selection-world*compare*selection*worse*failure-cutoff-numeric-value2*passed-down
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^passed-down-minimum <minimum>
+              ^minimum-numeric-value <minimum>
+              ^evaluation <evaluation2>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation2> ^super-operator <operator2>
+                 -^numeric-value
+                  ^failure-cutoff true
+                  ^desireds.duplicate-of <desireds>
+                  ^closed true)
+   (<operator2> ^name $ <name2>)
+-->
+   (log 1 (crlf) |Failure-cutoff worse preference:| <operator2> | | <name2>)
+   (<superstate> ^operator <operator2> <)}
+
+## Preference for selection worse failure-cutoff-numeric-value3.
+sp {selection-world*compare*selection*worse*failure-cutoff-numeric-value3
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1> <evaluation2>)
+   (<superstate> ^desireds <desireds>)
+   (<evaluation2> ^super-operator <operator2>
+                 -^numeric-value
+                  ^failure-cutoff true
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation1> ^super-operator { <> <operator2> <operator1> }
+                  ^numeric-value
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<operator2> ^name $ <name2>)
+   (<operator1> ^name $ <name2>)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <operator2> < <operator1>)}
+
+## Preference for selection no-value-evaluation-always-worse.
+sp {selection-world*compare*selection*no-value-evaluation-always-worse
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+              ^evaluation { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <operator1>
+                  ^numeric-value no-value
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator <operator2>
+                  ^numeric-value <> no-value
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation1> ^closed true)
+-->
+   (<superstate> ^operator <operator2> > <operator1>)}
+
+## Elaborate selection evaluation desireds better -> copies the orientation of numeric values (^better) to the evaluation's desireds (v2.40).
+sp {selection-world*elaborate*selection*evaluation*desireds*better
+   :default
+   (state <s> ^superstate.desireds <desireds>
+              ^evaluation <e>)
+   (<e> ^desireds <new-desireds>)
+   (<new-desireds> ^duplicate-of <desireds>)
+   (<desireds> ^better <better>)
+-->
+   (<new-desireds> ^better <better>)}

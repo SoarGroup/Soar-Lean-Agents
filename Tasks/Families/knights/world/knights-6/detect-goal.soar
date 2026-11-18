@@ -1,0 +1,60 @@
+## Task operator detect-goal (tour, current square c, first square f): all 36 squares are
+## visited and c is a knight move from the first square: count the solution and print it.
+sp {knights*propose*detect-goal
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^at <ch>
+        ^first <fh>
+        ^done 0
+        ^goal 0
+        ^depth 36)
+   (<objs> ^object <c>
+           ^object <f>)
+   (<c> ^object-handle $ <ch>
+        ^move <fh>)
+   (<f> ^object-handle $ <fh>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name detect-goal
+        ^task-operator true
+        ^action-handle detect-goal
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <c>
+        ^argument3 <f>
+        ^argument-count 3
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+sp {knights*apply*detect-goal*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world.objects <objs>)
+   (<o> ^name detect-goal
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>
+        ^argument2.object-handle $ <ch>)
+   (<objs> ^object <t>
+           ^object <c>)
+   (<t> ^object-handle $ <th>
+        ^solutions <t-solutions>
+        ^goal <t-goal>)
+   (<c> ^object-handle $ <ch>
+        ^coord <c-coord>)
+-->
+   (<t> ^solutions (+ <t-solutions> 1))
+   (<t> ^solutions <t-solutions> -)
+   (<t> ^goal 1)
+   (<t> ^goal <t-goal> -)
+   (write |Success! | (+ <t-solutions> 1) | | <c-coord>)
+}

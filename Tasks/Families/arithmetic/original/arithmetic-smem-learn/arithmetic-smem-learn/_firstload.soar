@@ -1,0 +1,32 @@
+
+chunk never
+multi-attributes problem 2
+multi-attributes column 4
+multi-attributes digit 11
+multi-attributes add-fact 1
+multi-attributes sub-fact 1
+multi-attributes inc-fact 1
+multi-attributes ten-fact 1
+smem --set learning on
+smem --add {
+   (<l0> ^kind inc-fact ^|n| 0 ^|next| 1)
+   (<l1> ^kind inc-fact ^|n| 1 ^|next| 2)
+   (<l2> ^kind inc-fact ^|n| 2 ^|next| 3)
+   (<l3> ^kind inc-fact ^|n| 3 ^|next| 4)
+   (<l4> ^kind inc-fact ^|n| 4 ^|next| 5)
+   (<l5> ^kind inc-fact ^|n| 5 ^|next| 6)
+   (<l6> ^kind inc-fact ^|n| 6 ^|next| 7)
+   (<l7> ^kind inc-fact ^|n| 7 ^|next| 8)
+   (<l8> ^kind inc-fact ^|n| 8 ^|next| 9)
+   (<l9> ^kind inc-fact ^|n| 9 ^|next| 10)
+   (<l10> ^kind ten-fact ^|n| 0 ^|plus10| 10)
+   (<l11> ^kind ten-fact ^|n| 1 ^|plus10| 11)
+   (<l12> ^kind ten-fact ^|n| 2 ^|plus10| 12)
+   (<l13> ^kind ten-fact ^|n| 3 ^|plus10| 13)
+   (<l14> ^kind ten-fact ^|n| 4 ^|plus10| 14)
+   (<l15> ^kind ten-fact ^|n| 5 ^|plus10| 15)
+   (<l16> ^kind ten-fact ^|n| 6 ^|plus10| 16)
+   (<l17> ^kind ten-fact ^|n| 7 ^|plus10| 17)
+   (<l18> ^kind ten-fact ^|n| 8 ^|plus10| 18)
+   (<l19> ^kind ten-fact ^|n| 9 ^|plus10| 19)
+}

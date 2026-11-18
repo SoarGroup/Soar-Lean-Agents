@@ -1,0 +1,25 @@
+## look.soar -- thor-soar: 1 proposal.
+
+## Propose look.
+## Propose looking up or down
+## (The current desired is to execute this action)
+sp {propose*look*up*down*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^executed-action <action>)
+   (<action> ^action-handle look
+             ^argument1 { <direction> << up down >> })
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name look
+               ^task-operator true
+               ^super-desired <desired>
+               ^action-handle look
+               ^argument-count 1
+               ^argument1 <direction>
+               ^pre-conditions-satisfied true)
+}

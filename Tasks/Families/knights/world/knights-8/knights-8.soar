@@ -1,0 +1,14 @@
+## knights-8 rewritten to the world conventions (the shared library, no external environment)
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+source _firstload.soar
+source initialize-knights.soar
+source desireds.soar
+source knight-move.soar
+source backup.soar
+source detect-goal.soar
+source exhausted.soar
+source finish-run.soar
+source preferences.soar

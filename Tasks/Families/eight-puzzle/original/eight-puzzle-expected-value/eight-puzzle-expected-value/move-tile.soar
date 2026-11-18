@@ -1,0 +1,45 @@
+
+sp {eight-puzzle*propose*move-tile
+   (state <s> ^name eight-puzzle)
+   (<s> ^tile <t>)
+   (<s> ^tile <k>)
+   (<s> ^binding <bt>)
+   (<s> ^binding <bb>)
+   (<s> ^cell <from>)
+   (<s> ^cell <to>)
+   (<bt> ^tile <t>)
+   (<bb> ^tile <k>)
+   (<bt> ^cell <from>)
+   (<bb> ^cell <to>)
+   (<from> ^neighbor <to>)
+   (<t> ^number { <t-number> <> 0 })
+   (<k> ^number 0)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-tile)
+   (<o> ^t <t>)
+   (<o> ^k <k>)
+   (<o> ^bt <bt>)
+   (<o> ^bb <bb>)
+   (<o> ^from <from>)
+   (<o> ^to <to>)
+}
+
+sp {eight-puzzle*apply*move-tile
+   (state <s> ^name eight-puzzle)
+   (<s> ^operator <o>)
+   (<o> ^name move-tile)
+   (<o> ^t <t>)
+   (<o> ^k <k>)
+   (<o> ^bt <bt>)
+   (<o> ^bb <bb>)
+   (<o> ^from <from>)
+   (<o> ^to <to>)
+   (<bt> ^tile <bt-tile>)
+   (<bb> ^tile <bb-tile>)
+-->
+   (<bt> ^tile <k>)
+   (<bt> ^tile <bt-tile> -)
+   (<bb> ^tile <t>)
+   (<bb> ^tile <bb-tile> -)
+}

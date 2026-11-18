@@ -1,0 +1,22 @@
+# Task families: originals and world versions (15 November 2026)
+
+68 task agents in 14 families (the blind round trip set of step 6). For each: `<family>/original/<variant>` (the original Soar program) and `<family>/world/<variant>` (the same task rewritten to the world conventions, ported to the shared library v2.32). Unpack this zip in `Tasks/`; the world versions load `Soar/soar-library` through `../../../../../Soar/soar-library`, so it must be v2.32.
+
+`Families-Results.xlsx`: per variant, seeds solved, task rules, decisions, production firings, chunks, WM changes, original and world (sheet Comparison); per-seed rows (sheet Per seed). `run.py` and `list.txt` are the harness (python3 run.py DIR FILE.soar --seeds 1-3 --episodes 1 --cap 3000; needs the Soar 9.6.6 Python bindings on PYTHONPATH).
+
+## Method
+World versions: the Direct-World rewrites of the blind round trip (original Soar rewritten to the conventions; no English intermediary), loaded from the shared library instead of the early-November library copy, with object handles tested with `$` (1623 tests) and `^flags` changed to `^flag-override`. One stale `excise` of a removed library rule was deleted (blocks-world-epmem). Seeds 1-3, one episode, cap 3000 decisions (80000 count-in-substate). Means are over seeds that solved.
+
+## Results (Soar 9.6.6, library v2.32)
+- 49 variants solved on all seeds by both; 10 solved by neither (the originals also fail: arithmetic x5 and fifteen-puzzle, knights-6/8, mac, mac-rl, which are incomplete or need an environment); 3 where the world version solves more (blocks-world-look-ahead 3/3 vs 2/3, water-jug-look-ahead 3/3 vs 2/3, mac-look-ahead 3/3 vs 0/3); 6 where it solves fewer (kenken-4-5, 6-1, 6-2, 6-3, eight-puzzle-expected-value, water-jug-look-ahead-rl).
+- On the 49: task rules +10% median (world 1.10 x original; more rules, since objects, relations and desireds are explicit); decisions about equal (median 1.02 x; blocks-world-epmem, eight-puzzle and water-jug-tie-chunk take 2.6-2.7x more, blocks-world-rl 0.3x); production firings 2.7x median (the library rules); chunks 370 vs 234 in total.
+
+## Findings
+1. **Library defect, fixed in v2.32.** `selection-world*apply*world*applied-count` (and `*first`) also fired in operator no-change substates that share the real world. The top state and the substate each rewrote the one `^counted-operator` on the world, without end (max-elaborations on every decision, with chunking off too). Six world variants looped on v2.30. v2.32 keeps the count local to the state: the top state keeps it on the world, each substate keeps its own on the substate (from zero, never shared, even in the same problem space). Test set v1.27: 296 pass, results unchanged. (An intermediate v2.31, counting in the top state only, undercounted operators applied in substates and was replaced.) The substate count is not part of any stamp yet.
+   Cost: the nine hierarchical variants take more decisions on v2.32 than on v2.31 and the originals (blocks-world-hierarchical 63 vs 43/42, hrl-3level 115-141 vs 79, hanoi-mea 59 vs 48, water-jug-hierarchy +30%); cause not identified.
+2. **Kenken (open).** The world versions of kenken-4-5 and 6-1..6-3 reach "task has failed" on some seeds (constraint propagation commits before elimination finishes; the failure is the same with chunking off and with v2.30), where the originals solve all seeds. Not yet diagnosed.
+3. Original programs that fail are unchanged by the port; the 10 variants above were not repaired.
+
+## Search settings (16 Nov 2026, library v2.34)
+Every world variant was run under four search settings (operator or tie-impasse depth, each with and without `cost-metric unit` plus `optimize true`), seeds 1 to 3, cap 3000, and the setting that solves every seed with the best plan and the fewest decisions was kept (probe_settings.py; Soar-library-dev/docs/Search-Settings-Intake-Checklist-v1.md). Five variants now set `^iterative-step tie-impasse` in their `^flag-override` (a comment on the line gives the numbers): kenken-4-5 (3/3 seeds solved, against 2/3), kenken-6-1 (3/3 against 1/3), kenken-6-2 (3/3 against 1/3), kenken-6-3 (3/3 against 2/3), blocks-world-look-ahead (189 decisions against 409, same 3 moves). All other variants are best or equal on the library defaults. water-jug-look-ahead keeps operator depth: under tie-impasse its look-ahead runs past the depth bound (Soar-library-dev/findings/FINDING-tie-impasse-unbounded-continuation.md).
+

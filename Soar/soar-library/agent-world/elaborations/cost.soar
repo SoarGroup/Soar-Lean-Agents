@@ -1,0 +1,137 @@
+## cost.soar -- agent-world: the cost of a path in look-ahead (flag cost-metric: none | unit | time).
+## ^path-cost on the evaluated world is the cost of the operators applied so far in the look-ahead.
+##   unit: each task operator costs ^step-cost (default 1); the cost is the sum along the path.
+##   time: the cost is the look-ahead world clock (^time), which includes waits and overlapping actions.
+## Evaluations pass ^world.path-cost back as their numeric value (lower is better). cost-metric none keeps the earlier behavior.
+
+## Elaborate task operator effective-step-cost (v2.30): the task's ^step-cost, or 1 (unit cost) when the task states none.
+## Through v2.29 the default was written to ^step-cost itself by a rule that tested -^step-cost, so it retracted its own
+## result and fired again until max-elaborations, on every decision, whenever a task used cost-metric unit without
+## stating step costs. The applications below read ^effective-step-cost.
+sp {agent-world*elaborate*operator*cost*stated
+   :default
+   (state <s> ^flags.cost-metric unit
+              ^operator <op> +)
+   (<op> ^task-operator true
+         ^step-cost <c>)
+-->
+   (<op> ^effective-step-cost <c>)
+}
+
+sp {agent-world*elaborate*operator*cost*default
+   :default
+   (state <s> ^flags.cost-metric unit
+              ^operator <op> +)
+   (<op> ^task-operator true
+        -^step-cost)
+-->
+   (<op> ^effective-step-cost 1)
+}
+
+## Elaborate evaluate-operator path-cost copy lock-in -> sets path-cost 0 at the top selection (unit cost).
+sp {agent-world*elaborate*evaluate-operator*path-cost*copy*lock-in
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.cost-metric unit
+              ^superstate.top-selection true
+              ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^path-cost 0)
+}
+
+## Elaborate evaluate-operator path-cost copy-not-from-super-state (unit cost).
+sp {agent-world*elaborate*evaluate-operator*path-cost*copy-not-from-super-state
+   :default
+   (state <s> -^name evaluate-operator
+               ^flags.cost-metric unit
+               ^deep-copy-world true
+               ^superstate.superstate.world.path-cost <cost>
+               ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^path-cost <cost>)
+}
+
+## Elaborate evaluate-operator path-cost copy (unit cost).
+sp {agent-world*elaborate*evaluate-operator*path-cost*copy
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.cost-metric unit
+             -^superstate.top-selection true
+              ^superstate.superstate.world.path-cost <cost>
+              ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^path-cost <cost>)
+}
+
+## Elaborate evaluate-operator path-cost time -> sets path-cost to the look-ahead clock (time cost).
+sp {agent-world*elaborate*evaluate-operator*path-cost*time
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.cost-metric time
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^time <time>)
+-->
+   (<w> ^path-cost <time>)
+}
+
+## Apply task operator step-cost -> increments path-cost (unit cost, once per applied operator in look-ahead).
+## o-supported explicitly: the rule changes the world and marks the operator (cost-applied) so that it fires once. Without the marker,
+## the changed path-cost would match again and the increment would repeat until max-elaborations.
+sp {agent-world*apply*operator*step-cost
+   :default
+   :o-support
+   (state <s> ^operator <op>
+              ^internal-actions true
+              ^flags.cost-metric unit
+              ^flags.min-step-cost <min>
+              ^world <world>)
+   (<world> ^path-cost <cost>)
+   (<op> ^task-operator true
+         ^pre-conditions-satisfied true
+         ^effective-step-cost { >= <min> <step-cost> }
+        -^cost-applied true)
+-->
+   (<world> ^path-cost <cost> -
+                       (+ <cost> <step-cost>))
+   (<op> ^cost-applied true)
+   (log 1 (crlf) |Increment path-cost: | (+ <cost> <step-cost>))
+}
+
+## Apply task operator step-cost, zero-cost minimum: an operator cheaper than ^flags.min-step-cost is charged the minimum,
+## so every cycle of operators has positive cost and cost-bounded search terminates.
+sp {agent-world*apply*operator*step-cost*minimum
+   :default
+   :o-support
+   (state <s> ^operator <op>
+              ^internal-actions true
+              ^flags.cost-metric unit
+              ^flags.min-step-cost <min>
+              ^world <world>)
+   (<world> ^path-cost <cost>)
+   (<op> ^task-operator true
+         ^pre-conditions-satisfied true
+         ^effective-step-cost { < <min> <step-cost> }
+        -^cost-applied true)
+-->
+   (<world> ^path-cost <cost> -
+                       (+ <cost> <min>))
+   (<op> ^cost-applied true)
+   (log 1 (crlf) |Increment path-cost (minimum): | (+ <cost> <min>))
+}
+
+## Elaborate desireds better lower -> sets better (a cost metric is minimized unless the task states an orientation).
+## o-supported: the rule tests that better is absent, so an i-supported result would retract itself and fire again.
+sp {agent-world*elaborate*desireds*better*lower*cost-metric
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^flags.cost-metric << unit time >>
+              ^desireds <desireds>)
+   (<desireds> -^better)
+-->
+   (<desireds> ^better lower)
+}

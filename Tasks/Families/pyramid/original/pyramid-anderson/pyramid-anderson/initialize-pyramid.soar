@@ -1,0 +1,22 @@
+
+sp {pyramid*propose*initialize-pyramid
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-pyramid)
+}
+
+sp {pyramid*apply*initialize-pyramid
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-pyramid)
+-->
+   (<s> ^name pyramid)
+   (<s> ^pyramid <x0>)
+   (<x0> ^term 5)
+   (<x0> ^height 2)
+   (<x0> ^sum 0)
+   (<s> ^desired <d>)
+   (<d> ^pyramid <dg>)
+   (<dg> ^height -1)
+}

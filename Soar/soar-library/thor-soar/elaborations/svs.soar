@@ -1,0 +1,58 @@
+## svs.soar -- thor-soar: 1 elaboration, 3 applications.
+
+## Apply top-state any-op remove monitor filters -> sets extract.
+## Remove filters for monitoring new objects that have disappeared
+sp {top-state*apply*any-op*remove*monitor*filters
+    :default
+   (state <s> ^superstate nil
+              ^operator <operator>
+              ^svs <svs>)
+   (<svs> ^command <command>
+          ^spatial-scene <scene>)
+   (<command> ^extract <filter>)
+   (<filter> ^type << monitor_position monitor_volume >>
+             ^a.id <id>)
+   (<scene> -^child.id <id>)
+-->
+   (<command> ^extract <filter> -)
+}
+
+## Apply top-state any-op remove completed svs commands.
+## Remove commands which are completed
+sp {top-state*apply*any-op*remove*completed*svs*commands
+    :default
+   (state <s> ^superstate nil
+              ^operator <operator>
+              ^svs.command <command>)
+   (<command> ^{ <type> <> extract <> extract_once } <value>)
+   (<value> ^status <status>)
+-->
+   (<command> ^<type> <value> -)
+}
+
+## Elaborate svs svs objects type node -> sets type.
+sp {svs*elaborate*svs*objects*type*node
+    :default
+   (state <s> ^svs.spatial-scene <sc>)
+   (<sc> ^child <child>)
+   (<child> ^object-source belief)
+ -->
+   (<child> ^type node)
+ }
+
+## Apply svs any-op property-command object-source belief -> sets set_tag, id, tag_name ....
+## Create property on belief objects that mark their source
+## (Used to only grab the subset of svs objects that are belief objects)
+sp {svs*apply*any-op*property-command*object-source*belief
+    :default
+   (state <s> ^external-top-state.perception-monitor.object-monitor.object-info.belief-obj <bel-obj>
+              ^operator <o>
+              ^svs.command <cmd>)
+   (<bel-obj> ^id <bel-id>
+             -^object-source belief)
+-->
+   (<cmd> ^set_tag <prop>)
+   (<prop> ^id <bel-id>
+           ^tag_name object-source
+           ^tag_value belief)
+}

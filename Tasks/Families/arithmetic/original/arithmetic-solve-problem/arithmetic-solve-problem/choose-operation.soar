@@ -1,0 +1,41 @@
+
+sp {arithmetic*propose*choose-operation*k-1
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<p> ^operation 0)
+   (<p> ^count { <p-count> > 0 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name choose-operation)
+   (<o> ^p <p>)
+   (<o> ^k 1)
+}
+
+sp {arithmetic*propose*choose-operation*k-2
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<p> ^operation 0)
+   (<p> ^count { <p-count> > 0 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name choose-operation)
+   (<o> ^p <p>)
+   (<o> ^k 2)
+}
+
+sp {arithmetic*apply*choose-operation
+   (state <s> ^name arithmetic)
+   (<s> ^operator <o>)
+   (<o> ^name choose-operation)
+   (<o> ^p <p>)
+   (<o> ^k <k>)
+   (<p> ^operation <p-operation>)
+   (<p> ^carry <p-carry>)
+-->
+   (<p> ^operation <k>)
+   (<p> ^operation <p-operation> -)
+   (<p> ^carry 0)
+   (<p> ^carry <p-carry> -)
+}

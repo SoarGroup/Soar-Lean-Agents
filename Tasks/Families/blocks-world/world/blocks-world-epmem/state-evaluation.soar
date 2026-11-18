@@ -1,0 +1,62 @@
+## State evaluation of the original (look-ahead states, once the evaluated move has been
+## modelled): a numeric value by how far the tower is built from the bottom; higher is better
+## (^better higher on the desireds). selection-world takes the look-ahead state's ^numeric-value
+## as the evaluation (W-LAH-018).
+
+sp {blocks-world*evaluate*state*level*A
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<s> ^in-place <l0>)
+   (<l0> ^object-handle $ A)
+-->
+   (<s> ^numeric-value 3)
+}
+
+
+sp {blocks-world*evaluate*state*level*B
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u0>)
+   (<u0> ^argument1.object-handle $ A
+         ^argument2.object-handle <> B)
+   (<s> ^in-place <l1>)
+   (<l1> ^object-handle $ B)
+-->
+   (<s> ^numeric-value 2)
+}
+
+
+sp {blocks-world*evaluate*state*level*C
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u1>)
+   (<u1> ^argument1.object-handle $ B
+         ^argument2.object-handle <> C)
+   (<s> ^in-place <l2>)
+   (<l2> ^object-handle $ C)
+-->
+   (<s> ^numeric-value 1)
+}
+
+
+sp {blocks-world*evaluate*state*level*none
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u2>)
+   (<u2> ^argument1.object-handle $ C
+         ^argument2.object-handle <> table)
+-->
+   (<s> ^numeric-value 0)
+}

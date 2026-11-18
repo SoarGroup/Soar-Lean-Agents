@@ -1,0 +1,41 @@
+
+sp {wizards*propose*assume-white
+   (state <s> ^name wizards)
+   (<s> ^view <k>)
+   (<s> ^rec <r>)
+   (<s> ^markvar <m>)
+   (<r> ^view <k>)
+   (<r> ^mv <m>)
+   -(<r> ^own 1)
+   (<m> ^value 0)
+   (<m> ^untried { 1 <> 2 })
+   -(<m> ^untried 2)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name assume-white)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<o> ^m <m>)
+}
+
+sp {wizards*apply*assume-white
+   (state <s> ^name wizards)
+   (<s> ^operator <o>)
+   (<o> ^name assume-white)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<o> ^m <m>)
+   (<m> ^value <m-value>)
+   (<m> ^assigned <m-assigned>)
+   (<k> ^vid <k-vid>)
+   (<k> ^owner <k-owner>)
+   (<r> ^wiz <r-wiz>)
+-->
+   (<m> ^value 1)
+   (<m> ^value <m-value> -)
+   (<m> ^untried 1 -)
+   (<m> ^assigned <k-vid>)
+   (<m> ^assigned <m-assigned> -)
+   (write |In the view of wizard | <k-owner> |, assume wizard | <r-wiz> |'s spot is white.|)
+}

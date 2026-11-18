@@ -1,0 +1,16 @@
+Instant Insanity: English input
+
+Statements, numbered (the input to formalization):
+ 1. There are four cubes. Each face of a cube is red, green, blue, white or yellow.
+ 2. Each cube is given by its three pairs of opposite faces:
+    cube 1: red and green, blue and white, red and yellow;
+    cube 2: green and blue, yellow and red, white and white;
+    cube 3: yellow and white, green and red, blue and blue;
+    cube 4: blue and red, white and yellow, green and green.
+ 3. You stack the four cubes in a column, each turned any way you like.
+ 4. The column has four sides: front, back, left and right.
+ 5. The goal is that each of the four sides of the column shows four different colours.
+
+Source of the task in AI research: Classic CSP / graph-theory puzzle.
+Kind of agent: CSP.
+Status: Fits as a choice problem (one orientation per cube). Being formalized.

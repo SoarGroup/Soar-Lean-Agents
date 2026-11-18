@@ -1,0 +1,80 @@
+
+sp {kenken*propose*assign*1
+   (state <s> ^name kenken)
+   (<s> ^puzzle <p>)
+   (<s> ^cell <c>)
+   (<s> ^cand <x>)
+   (<c> ^cand <x>)
+   (<x> ^value <x-value>)
+   (<c> ^mark 0)
+   (<x> ^alive 1)
+   -{ (<c> ^cand <lk4>) (<lk4> ^alive 1) (<lk4> ^value <> <x-value>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name assign)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+}
+
+sp {kenken*propose*assign*2
+   (state <s> ^name kenken)
+   (<s> ^puzzle <p>)
+   (<s> ^cell <c>)
+   (<s> ^cand <x>)
+   (<c> ^cand <x>)
+   (<c> ^row <c-row>)
+   (<x> ^value <x-value>)
+   (<c> ^coord <c-coord>)
+   (<c> ^mark 0)
+   (<x> ^alive 1)
+   -{ (<s> ^cand <none4>) (<none4> ^row <c-row>) (<none4> ^value <x-value>) (<none4> ^alive 1) (<none4> ^coord <> <c-coord>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name assign)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+}
+
+sp {kenken*propose*assign*3
+   (state <s> ^name kenken)
+   (<s> ^puzzle <p>)
+   (<s> ^cell <c>)
+   (<s> ^cand <x>)
+   (<c> ^cand <x>)
+   (<c> ^col <c-col>)
+   (<x> ^value <x-value>)
+   (<c> ^coord <c-coord>)
+   (<c> ^mark 0)
+   (<x> ^alive 1)
+   -{ (<s> ^cand <none4>) (<none4> ^col <c-col>) (<none4> ^value <x-value>) (<none4> ^alive 1) (<none4> ^coord <> <c-coord>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name assign)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+}
+
+sp {kenken*apply*assign
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name assign)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+   (<o> ^x <x>)
+   (<c> ^mark <c-mark>)
+   (<x> ^value <x-value>)
+   (<p> ^marks <p-marks>)
+   (<c> ^coord <c-coord>)
+-->
+   (<c> ^mark <x-value>)
+   (<c> ^mark <c-mark> -)
+   (<p> ^marks (+ <p-marks> 1))
+   (<p> ^marks <p-marks> -)
+   (write |Set cell: | <c-coord> | to | <x-value>)
+}

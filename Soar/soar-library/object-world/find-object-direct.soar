@@ -1,0 +1,460 @@
+## find-object-direct.soar -- object-world: 2 proposals, 3 compares, 17 applications.
+
+## ---- operator proposal ----
+
+## Propose find-object-direct.
+## Ground both objects for controlled by so they are connected.
+sp {object-world*propose*find-object-direct*object-handle*controlled-by
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^objects.object <anchored-object-burner> <anchored-object-knob>
+            ^controlled-by <controlled-by1>)
+  -(<world> ^controlled-by < <controlled-by1>)
+   (<anchored-object-burner> ^class stoveburner
+                             ^anchored true
+                             ^object-handle <anchored-object-burner-handle>)
+   (<anchored-object-knob> ^class stoveknob
+                           ^anchored true
+                           ^object-handle <anchored-object-knob-handle>)
+   (<controlled-by1> ^argument1.object-handle <anchored-object-burner-handle>
+                     ^argument2.object-handle <anchored-object-knob-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^controlled-by <controlled-by2>)
+   (<controlled-by2> ^argument1 <desired-unanchored-object1>
+                     ^argument2 <desired-unanchored-object2>)
+   (<desired-unanchored-object1> ^object-handle <unanchored-object-handle1>)
+   (<desired-unanchored-object2> ^object-handle <unanchored-object-handle2>)
+-->
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+                ^pre-conditions-satisfied true
+                ^argument1 <desired-unanchored-object1>
+                ^argument2 <anchored-object-burner>
+                ^argument3 <desired-unanchored-object2>
+                ^argument4 <anchored-object-knob>
+                ^argument-count 4)
+}
+
+## Propose find-object-direct.
+sp {object-world*propose*find-object-direct*object-handle*in*on
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^objects.object <anchored-object-argument1> <anchored-object-argument2>
+            ^{ << in on >> <in-on> } <in-on-relation1>)
+   (<in-on-relation1> ^argument1.object-handle <anchored-object-argument1-handle>
+                     ^argument2.object-handle <anchored-object-argument2-handle>)
+   (<anchored-object-argument1> ^class <argument1-class>
+                                ^anchored true
+                                ^object-handle <anchored-object-argument1-handle>)
+   (<anchored-object-argument2> ^class <argument2-class>
+                                ^anchored true
+                                ^object-handle <anchored-object-argument2-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^{ << in on >> <in-on> } <in-on-relation-desired>)
+   (<in-on-relation-desired> ^argument1 <desired-unanchored-object1>
+                            ^argument2 <desired-unanchored-object2>)
+   (<desired-unanchored-object1> ^class <argument1-class>
+                                 ^object-handle <unanchored-object-handle1>)
+   (<desired-unanchored-object2> ^class <argument2-class>
+                                 ^object-handle <unanchored-object-handle2>)
+-->
+   (write (crlf) |+++++++++ find-object-direct | <anchored-object-argument1-handle> |: | <argument1-class> | | <in-on>
+                                             | | <anchored-object-argument1-handle> |: | <argument1-class>)
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+                ^pre-conditions-satisfied true
+                ^argument1 <desired-unanchored-object1>
+                ^argument2 <anchored-object-argument1>
+                ^argument3 <desired-unanchored-object2>
+                ^argument4 <anchored-object-argument2>
+                ^argument-count 4)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for find-object-direct smem-query.
+## Compare
+## Wait until all affordances are available - such as receptacles.
+sp {object-world*compare*find-object-direct*smem-query
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name smem-query)
+   (<op2> ^name find-object-direct)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for find-object-direct others.
+## Select immediately because it just adds information.
+sp {object-world*compare*find-object-direct*others
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name { <> find-object-direct <> smem-query })
+   (<op2> ^name find-object-direct)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for find-object-direct anchored-same.
+sp {object-world*compare*find-object-direct*anchored-same
+   :default
+   (state <s> ^operator <op1> +
+                        { < <op1> <op2> }  +)
+   (<op1> ^name find-object-direct
+          ^argument2 <argument2>)
+   (<op2> ^name find-object-direct
+          ^argument2 <argument2>)
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## ---- operator application ----
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*desired-object
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1 <desired-unanchored-object>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+#   (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*world-object
+   :default
+   (state <s> ^operator <operator>
+              ^world <world>)
+   (<world> ^anchored-world true  # was false - but for direct anchor, must be true
+            ^objects.object <object>)
+   (<object> ^object-handle <unanchored-object-handle>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+-->
+#   (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*desired-holding-object
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.holding-object <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-desired
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.desireds.desired.object <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-operator*argument1
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.argument1 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-operator*argument2
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.argument2 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+  # (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*relation*argument1
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.<< in on controlled-by >>.argument1 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct relation: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*relation*argument2
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.<< in on controlled-by >>.argument2 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct relation: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*effect-desired
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.effect-desireds.desired.object <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1.object-handle <unanchored-object-handle>
+               ^argument2 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*desired-object34
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3 <desired-unanchored-object>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+  # (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*desired-holding-object34
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.holding-object <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+  # (log 1 (crlf) |Apply find-object-direct object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-desired34
+   :default
+   (state <s> ^operator <operator>
+              ^super-desireds.desired.object <desired-unanchored-object>
+             -^super-desireds.desired.holding-object.object-handle <unanchored-object-handle>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct super object: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-operator*argument3
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.argument1 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*super-operator*argument4
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.argument2 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*relation*argument3
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.<< in on controlled-by >>.argument1 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+ #  (log 1 (crlf) |Apply find-object-direct relation: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*relation*argument4
+   :default
+   (state <s> ^operator <operator>
+              ^desireds.desired.<< in on controlled-by >>.argument2 <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+#   (log 1 (crlf) |Apply find-object-direct relation: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}
+
+## Apply find-object-direct -> sets object-handle, anchored.
+sp {object-world*apply*find-object-direct*effect-desired34
+   :default
+   (state <s> ^operator <operator>
+              ^superstate.operator.effect-desireds.desired.object <desired-unanchored-object>)
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument3.object-handle <unanchored-object-handle>
+               ^argument4 <anchored-object>)
+   (<anchored-object> ^object-handle $ <anchored-object-handle>
+                      ^anchored true)
+   (<desired-unanchored-object> ^object-handle { <> <anchored-object-handle> <unanchored-object-handle> })
+-->
+#   (log 1 (crlf) |Apply find-object-direct superoperator: | <anchored-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle> -
+                                               <anchored-object-handle>
+                                ^anchored false -
+                                          true)
+}

@@ -1,0 +1,17 @@
+## clean-up-topstate.soar -- thor-soar: 1 application.
+
+## Apply clean-up-topstate -> sets completed-task.
+## Remove all completed-task wmes
+sp {goal-completed*apply*clean-up-topstate*remove*completed-task
+    :default
+   (state <s> ^name goal-completed
+              ^operator.name clean-up-topstate
+              ^superstate <top-state>)
+   (<top-state> ^superstate nil
+                ^operator <operator>
+                ^world <world>)
+   (<operator> ^name goal-completed)
+   (<world> ^completed-task <task>)
+-->
+   (<world> ^completed-task <task> -)
+}

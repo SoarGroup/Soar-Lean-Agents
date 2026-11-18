@@ -1,0 +1,74 @@
+#########################################
+### init-thor-soar
+### Created 2024/01/13
+##########################################
+#
+## Main apply rule
+#sp {apply*initialize-agent-world*thor-soar
+#   (state <s> ^operator.name initialize-agent-world
+#              ^io.input-link <input>
+#              ^scene <scene>)
+#   (<input> ^room-name <room-name>
+#            ^scene-name <scene-name>)
+#-->
+#   (<s> ^name thor-soar)
+#   (<scene> ^room-name <room-name>
+#            ^scene-name <scene-name>)
+#}
+#
+#sp {apply*initialize-agent-world*smem-retrieve
+#   (state <s> ^operator.name initialize-agent-world)
+#-->
+#   (<s> ^smem-query <query1> <query2>)
+#   (<query1> ^cue.id thor-soar-classes
+#             ^copy-destination <s>
+#             ^depth 3
+#             ^copy-name thor-soar-classes)
+#   (<query2> ^cue.room-name kitchen
+#             ^copy-destination <s>
+#             ^depth 10
+#             ^copy-name scene-smem)
+#}
+#sp {apply*initialize-agent-world*smem-retrieve2
+#   (state <s> ^operator.name initialize-agent-world
+#              ^flags.initialize-scene-with-smem true)
+#-->
+#   (<s> ^smem-query <query3>)
+#   (<query3> ^cue.initial-in-relations <in-relations>
+#             ^copy-destination <s>
+#             ^depth 10
+#             ^copy-name scene-smem-relations)
+#}
+#
+#sp {apply*initialize-agent-world*explore-stuff
+#   (state <s> ^operator.name initialize-agent-world
+#              ^flags.explore true)
+#-->
+#   (<s> ^explore-structure <es>)
+#   (<es> ^classes <classes>
+#         ^actions <actions>)
+#   (<actions> ^action <action1> <action2> <action3> <action4> <action5> <action6> ) #<action7>)
+#   (<action1> ^action-handle pick-up
+#              ^undo-action-handle put-down
+#              ^affordance graspable)
+#   (<action2> ^action-handle open
+#              ^affordance openable
+#              ^affordance receptacle
+#              ^undo-action-handle close)
+#   (<action3> ^action-handle dirty
+#              ^affordance dirtyable
+#              ^undo-action-handle clean)
+#   (<action4> ^action-handle turn-on
+#              ^affordance activatable
+#              ^undo-action-handle turn-off)
+#   (<action5> ^action-handle turn-off
+#              ^affordance activatable
+#              ^undo-action-handle turn-on)
+#   (<action6> ^action-handle fill
+#              ^affordance fillable
+#              ^undo-action-handle empty)
+##   (<action7> ^action-handle break
+##              ^affordance breakabe
+##              ^undo-action-handle none)
+#   ## slice, toast,cook
+#}

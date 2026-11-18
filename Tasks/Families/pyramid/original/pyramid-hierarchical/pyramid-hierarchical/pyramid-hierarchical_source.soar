@@ -1,0 +1,13 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-pyramid-hierarchical.soar
+source expand-pyramid.soar
+pushd expand-pyramid
+source expand-pyramid_source.soar
+popd
+source sum-terms.soar
+pushd sum-terms
+source sum-terms_source.soar
+popd

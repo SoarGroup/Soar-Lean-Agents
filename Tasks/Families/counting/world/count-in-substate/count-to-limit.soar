@@ -1,0 +1,99 @@
+## Task operator count-to-limit: brings the counter to 75000. It has no internal application
+## rule of its own: as in the original it is implemented in its operator no-change substate
+## (named count-to-limit), which shares the world, counts locally and writes the result back.
+sp {count-in-substate*propose*count-to-limit
+   (state <s> ^problem-space.name count-in-substate
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^value)
+   (<w> ^anchored-world true
+        ^objects.object <c>)
+   (<c> ^object-handle $ <h>
+        ^value < 75000)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name count-to-limit
+        ^task-operator true
+        ^action-handle count-to-limit
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument-count 1
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Implementation substate. The substate receives the operator's attributes (name,
+## argument1, ...) and ^problem-space.name count-to-limit from agent-world (operator-
+## implementation substate: the operator has ^pre-conditions-satisfied true), and shares the
+## superstate's ^world.
+## Its local count (^count) is scratch state of the implementation, not part of the world.
+## The sub-operators are internal (^task-operator false).
+## init-local: copy the counter's value into the local count.
+sp {count-to-limit*propose*init-local
+   (state <s> ^problem-space.name count-to-limit
+              ^argument1 <c>
+             -^count)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local
+        ^task-operator false)
+}
+
+sp {count-to-limit*apply*init-local
+   (state <s> ^problem-space.name count-to-limit
+              ^operator.name init-local
+              ^argument1.object-handle $ <h>
+              ^world.objects.object <c>)
+   (<c> ^object-handle $ <h>
+        ^value <v>)
+-->
+   (<s> ^count <v>)
+}
+
+## increment: local count + 1 while below 75000.
+sp {count-to-limit*propose*increment
+   (state <s> ^problem-space.name count-to-limit
+              ^count < 75000)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name increment
+        ^task-operator false)
+}
+
+sp {count-to-limit*apply*increment
+   (state <s> ^problem-space.name count-to-limit
+              ^operator.name increment
+              ^count <n>)
+-->
+   (<s> ^count <n> -
+               (+ <n> 1))
+}
+
+## done: at 75000, write the local count into the counter in the world.
+sp {count-to-limit*propose*done
+   (state <s> ^problem-space.name count-to-limit
+              ^count 75000)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name done
+        ^task-operator false)
+}
+
+sp {count-to-limit*apply*done
+   (state <s> ^problem-space.name count-to-limit
+              ^operator.name done
+              ^count <n>
+              ^argument1.object-handle $ <h>
+              ^world.objects.object <c>)
+   (<c> ^object-handle $ <h>
+        ^value <v>)
+-->
+   (<c> ^value <v> -
+               <n>)
+   (log 1 (crlf) |Apply count-to-limit: | <h> | | <n>)
+}

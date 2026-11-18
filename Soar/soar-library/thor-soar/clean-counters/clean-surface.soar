@@ -1,0 +1,76 @@
+## clean-surface.soar -- thor-soar: 3 proposals.
+
+## Propose clean-surface.
+sp {clean-counters*propose*cabinet3
+    :default
+   (state <s> ^superstate.operator.name clean-counters
+              ^world <world>)
+   (<world> ^objects.object <object>)
+   (<object> ^graspable true
+             ^class << papertowelroll peppershaker saltshaker dishsponge >> # soapbottle
+            -^broken true
+            -^sliced true
+             ^object-handle <object-handle>)
+  -{(<world> ^in <in>)
+    (<in> ^argument1.object-handle <object-handle>)}
+-->
+   (<s> ^operator <operator> + =)
+   (<operator> ^name clean-surface
+               ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+                ^desired <desired>)
+   (<desired> ^in <desired-in-container>)
+   (<desired-in-container> ^argument1.object-handle <object-handle>
+                           ^argument2.object-handle Cabinet13)
+}
+
+## Propose clean-surface.
+sp {clean-counters*propose*Fridge40
+    :default
+   (state <s> ^superstate.operator.name clean-counters
+              ^world <world>)
+   (<world> ^objects.object <object>)
+   (<object> ^graspable true
+             ^class << bread apple lettuce tomato carrot >> # << spatula potato soapbottle soapbottle >>
+            -^broken true
+            -^sliced true
+             ^object-handle <object-handle>)
+  -{(<world> ^in <in>)
+    (<in> ^argument1.object-handle <object-handle>)}
+-->
+   (<s> ^operator <operator> + =)
+   (<operator> ^name clean-surface
+               ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+                ^desired <desired>)
+   (<desired> ^in <desired-in-container>)
+   (<desired-in-container> ^argument1.object-handle <object-handle>
+                           ^argument2.object-handle Fridge40)
+}
+
+## Propose clean-surface.
+sp {clean-counters*propose*CounterTop21
+    :default
+   (state <s> ^superstate.operator.name clean-counters
+              ^world <world>)
+   (<world> ^objects.object <object>)
+   (<object> ^graspable true
+             ^class << book creditcard kettle mug pot bowl >> #  pan
+            -^broken true
+            -^sliced true
+             ^object-handle <object-handle>)
+  -{(<world> ^in <in>)
+    (<in> ^argument1.object-handle <object-handle>)}
+  -{(<world> ^on <on>)
+    (<on> ^argument1.object-handle <object-handle>
+          ^argument2.object-handle CounterTop21)}
+-->
+   (<s> ^operator <operator> + =)
+   (<operator> ^name clean-surface
+               ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+                ^desired <desired>)
+   (<desired> ^on <desired-in-container>)
+   (<desired-in-container> ^argument1.object-handle <object-handle>
+                           ^argument2.object-handle CounterTop21)
+}

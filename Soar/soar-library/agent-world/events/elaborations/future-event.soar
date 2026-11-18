@@ -1,0 +1,95 @@
+## future-event.soar -- agent-world: 3 elaborations, 2 compares.
+
+## ---- elaborations ----
+
+## Elaborate future-event unexpected-completion -> sets completion-time.
+## Change time to now if primary-property-change has been achieved in some other way
+sp {agent-world*elaborate*future-event*unexpected-completion
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^top-state <s>)
+   (<world> ^future-event <event>
+            ^time <current-time>
+            ^objects.object <object>)
+   (<object> ^<property-handle> <new-property-value>)
+   (<event> ^completion-time { <> <current-time> <time> }
+            ^primary-property-change <primary-property-change>)
+   (<primary-property-change> ^object <object>
+                              ^property-handle <property-handle>
+                              ^new-property-value <new-property-value>)
+-->
+  # (log (1) |Unexpected completion of event: | <event> |, time: | <time> |, object property: | <property-handle> )
+   (<event> ^completion-time <time> -
+                             <current-time>)
+}
+
+## Elaborate complete future-event change-property look-ahead.
+sp {agent-world*elaborate*complete*future-event*change-property*look-ahead
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^internal-actions true)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value  <original-property-value>
+                      ^new-property-value <new-property-value>)
+   (<object> ^<property-handle> <original-property-value>)
+-->
+   (<object> ^<property-handle> <original-property-value> -
+                                <new-property-value>)
+}
+
+## Elaborate complete future-event change-property look-ahead no-value.
+## When just adding a value - no prior value (such as with cooked-by or cleaned-by)
+## Could be a problem if cleaned twice.
+sp {agent-world*elaborate*complete*future-event*change-property*look-ahead*no-value
+   :default
+   :o-support
+   (state <s> ^world <world>
+              ^internal-actions true)
+   (<world> ^future-event <future-event>
+           -^time < <time>
+            ^anchored-world true)
+   (<future-event> ^completion-time <time>
+                   ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value no-value
+                      ^new-property-value <new-property-value>)
+-->
+   (<object> ^<property-handle> <new-property-value>)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for reject operators disturbing future-event2.
+sp {agent-world*compare*reject*operators*disturbing*future-event2
+   :default
+   (state <s>
+              ^operator <op1> +
+              ^world.future-event.<< argument1 argument2 >> <argument>)
+   (<op1> ^<< argument1 argument2 argument3 >> <argument>
+          ^task-operator true)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Preference for future-event.
+sp {agent-world*compare*future-event
+   :default
+   (state <s> ^operator # <op1> +
+                         <op2> +)
+                    #    { <> <op1> <op2> }  +)
+ #  (<op1> ^name
+ #        -^future-event-disruption true)
+   (<op2> ^name
+          ^future-event-disruption true)# ^pre-conditions-satisfied true)
+-->
+   (<s> ^operator <op2> <)
+}

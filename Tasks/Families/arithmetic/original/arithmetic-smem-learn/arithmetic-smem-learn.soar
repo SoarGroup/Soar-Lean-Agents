@@ -1,0 +1,3 @@
+pushd arithmetic-smem-learn
+source arithmetic-smem-learn_source.soar
+popd

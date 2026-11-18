@@ -1,0 +1,20 @@
+## detect-constraint-failure.soar -- thor-soar: 1 elaboration.
+
+## Elaborate evaluate-operator state detect-constraint-failure metal microwave -> sets constraint-failure, failure-string.
+## Metal in microwave failure
+sp {evaluate-operator*elaborate*state*detect-constraint-failure*metal*microwave
+   :default
+   (state <s> ^real false
+              ^desireds <desireds>
+              ^world <world>)
+   (<world> ^objects.object <object>
+            ^in <in>)
+   (<object> ^class microwave
+             ^activated true)
+   (<in> ^argument1.material metal
+         ^argument2.class microwave)
+-->
+   (log 1 (crlf) | ** Constraint Failure ** metal in microwave and microwave on **|)
+   (<s> ^constraint-failure <desireds>
+        ^failure-string | ** Constraint Failure ** metal in microwave and microwave on **|)}
+

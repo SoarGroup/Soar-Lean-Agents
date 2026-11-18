@@ -1,0 +1,46 @@
+## Task operator hello-world: writes the greeting (greeting ^written 0 -> 1).
+## MEA proposal: serves the unachieved desired on the greeting's ^written property.
+sp {hello-world*propose*hello-world
+   (state <s> ^problem-space.name hello-world
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^written)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^object-handle $ <h>
+        ^written 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name hello-world
+        ^task-operator true
+        ^action-handle write-greeting
+        ^super-desired <d>
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+## Internal application (no external environment): update the world in the decision the
+## operator is selected.
+sp {hello-world*apply*hello-world*internal
+   (state <s> ^internal-actions true
+              ^operator <o>
+              ^world <w>)
+   (<o> ^name hello-world
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<w> ^objects.object <g>)
+   (<g> ^object-handle $ <h>
+        ^written <old>)
+-->
+   (<g> ^written <old> -
+                 1)
+   (write |Hello World|)
+   (log 1 (crlf) |Apply hello-world: | <h>)
+}

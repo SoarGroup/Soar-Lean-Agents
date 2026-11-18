@@ -1,0 +1,36 @@
+## RL: one Q-value per (block, destination, situation), as in the original template; the
+## situation is the support of every block. It is summarised as one constant on the state
+## (^rl-situation) and the move as one constant on the operator (^rl-action "block->dest"),
+## because Soar 9.6 builds wrong rules from templates that test several identifiers of the same
+## letter (world objects, relation objects): distinct identifiers are merged into one variable
+## and the learned rules never match again.
+sp {blocks-world*elaborate*rl-situation
+   (state <s> ^problem-space.name blocks-world
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <r0>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<w> ^on <r1>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<w> ^on <r2>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+   (<w> ^on <r3>)
+   (<r3> ^argument1.object-handle $ D ^argument2.object-handle $ <d-on>)
+-->
+   (<s> ^rl-situation (concat |A:| <a-on> | | |B:| <b-on> | | |C:| <c-on> | | |D:| <d-on>))
+}
+
+sp {blocks-world*rl*move-block
+   :template
+   (state <s> ^name blocks-world
+              ^operator <o> +
+              ^rl-situation <situation>)
+   (<o> ^name move-block
+        ^rl-action <action>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+## Reward: with ^flags.rl true and ^problem-space.agent-world true, agent-world puts reward 1.0
+## on the reward-link of a state whose ^success is its own ^desireds (W-CHK-001), which is the
+## original's reward (1 when the goal holds). No task reward rule is needed.

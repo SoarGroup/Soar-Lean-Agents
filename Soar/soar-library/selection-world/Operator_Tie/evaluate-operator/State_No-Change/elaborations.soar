@@ -1,0 +1,25 @@
+## elaborations.soar -- selection-world: 1 application.
+
+## Apply evaluate-operator -> sets sy.
+sp {selection-world*apply*state-no-change*selected*failure*during*evaluation*reject-operator
+   "Elaborate failure if there is a state no-change in look-ahead and no future event."
+   :default
+   (state <s> ^attribute state
+              ^quiescence t  ### TEST
+              ^choices none
+              ^superstate <ss>
+             -^world.future-event)
+   (<ss> ^attribute operator
+         ^quiescence t  ### TEST
+         ^name evaluate-operator  # why remove?  Bug?
+         ^desireds.duplicate-of <desireds>
+         ^choices none
+         ^superstate <sss>)
+   (<sss> ^operator <so>
+         -^remaining-operators)
+   (<so> ^name evaluate-operator ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure rule: | <evaluation>)
+   (<evaluation> ^symbolic-value failure)
+}

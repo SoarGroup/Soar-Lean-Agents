@@ -1,0 +1,108 @@
+## finish-future-event.soar -- agent-world: 2 proposals, 1 compare, 3 applications.
+
+## ---- operator proposal ----
+
+## Propose finish-future-event.
+sp {agent-world*propose*evaluate-operator*finish-future-event
+   :default
+   (state <s> ^problem-space <problem-space>
+              ^world.future-event <future-event>)
+   (<problem-space> ^internal-actions true)
+   (<future-event> ^type <type>)
+-->
+   (log 1 (crlf) |Propose finish internal future-event: | <type> | is case there is nothing to do but wait.|)
+   (<s> ^operator <operator> +, =, <)
+   (<operator> ^name finish-future-event
+               ^future-event <future-event>
+               ^past-completion false)
+}
+
+## Propose finish-future-event.
+sp {agent-world*propose*evaluate-operator*finish-future-event2
+   :default
+   (state <s>  ^problem-space <problem-space>
+               ^top-state <s>
+               ^world <world>)
+   (<problem-space> ^internal-actions true)
+   (<world> ^anchored-world true
+            ^time <time>
+            ^future-event <future-event>)
+   (<future-event> ^type <type>
+                   ^completion-time < <time>)
+-->
+   (log 1 (crlf) |Propose finish internal future-event : | <type> | because past completion time.|)
+   (<s> ^operator <operator> + >)
+   (<operator> ^name finish-future-event
+               ^future-event <future-event>
+               ^past-completion true)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for evaluate-operator finish-future-event sooner.
+sp {agent-world*compare*evaluate-operator*finish-future-event*sooner
+   :default
+   (state <s> ^name evaluate-operator
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name finish-future-event
+          ^future-event.completion-time <ct>)
+   (<op2> ^name finish-future-event
+          ^future-event.completion-time > <ct>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply finish-future-event -> sets future-event, time.
+sp {agent-world*apply*finish-future-event*future-event*remove-future-event
+   :default
+   (state <s> ^world <world>
+              ^operator <operator>)
+   (<operator> ^name finish-future-event
+               ^future-event <future-event>)
+   (<world> ^future-event <future-event>
+            ^time <time>)
+   (<future-event> ^completion-time <c-time>)
+-->
+   (<world> ^future-event <future-event> -
+            ^time <time> -
+                  <c-time>)
+}
+
+## Apply finish-future-event.
+sp {agent-world*apply*finish-future-event*future-event*property
+   :default
+   (state <s> ^world <world>
+              ^operator <operator>)
+   (<operator> ^name finish-future-event
+               ^future-event <future-event>)
+   (<world> ^future-event <future-event>)
+   (<future-event> ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value { <> no-value <original-property-value> }
+                      ^new-property-value <new-property-value>)
+   (<object> ^<property-handle> <original-property-value>)
+-->
+   (<object> ^<property-handle> <original-property-value> -
+                                <new-property-value>)
+}
+
+## Apply finish-future-event.
+sp {agent-world*apply*finish-future-event*future-event*property*no-value
+   :default
+   (state <s> ^world <world>
+              ^operator <operator>)
+   (<operator> ^name finish-future-event
+               ^future-event <future-event>)
+   (<world> ^future-event <future-event>)
+   (<future-event> ^property-change <property-change>)
+   (<property-change> ^object <object>
+                      ^property-handle <property-handle>
+                      ^original-property-value no-value
+                      ^new-property-value <new-property-value>)
+-->
+   (<object> ^<property-handle> <new-property-value>)
+}

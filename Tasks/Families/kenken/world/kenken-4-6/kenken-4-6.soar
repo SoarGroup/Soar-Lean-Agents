@@ -1,0 +1,18 @@
+## kenken-4-6: KenKen solver rewritten to the world conventions (world conventions, no environment)
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+## Settings kept from the original program
+chunk always
+chunk add-osk on
+chunk allow-local-negations off
+multi-attributes object 115
+multi-attributes cand 5
+multi-attributes in-tuple 20
+multi-attributes uses-cand 5
+
+source kenken-rules.soar
+source initialize-kenken.soar
+source print-row.soar

@@ -1,0 +1,38 @@
+## wait.soar -- agent-world: 1 proposal, 2 compares.
+
+## ---- operator proposal ----
+
+## Propose wait.
+sp {agent-world*propose*state-no-change*wait
+   "Propose wait if there is a state no-change."
+   :default
+   (state <s> ^attribute state
+              ^choices none
+             -^operator.name wait)  # Causes it to be retracted and reproposed
+-->
+   (<s> ^operator <operator> + <)
+   (<operator> ^name wait)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for prefer other over wait.
+## Make sure wait is never selected over another operator
+sp {agent-world*compare*prefer*other*over*wait
+   :default
+   (state <s> ^operator <operator1> +
+              ^operator <operator2> +)
+   (<operator1> ^name <> wait)
+   (<operator2> ^name wait)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## Preference for state-no-change wait indifferent.
+sp {agent-world*compare*state-no-change*wait*indifferent
+      :default
+      (state <s> ^operator <op1> + ^operator { < <op1> <op2> } +)
+      (<op1> ^name wait)
+      (<op2> ^name wait)
+   -->
+      (<s> ^operator <op1> = <op2>)}

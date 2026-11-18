@@ -1,0 +1,107 @@
+## initialize-failure-count.soar -- selection-world: 2 proposals, 4 applications.
+
+## ---- operator proposal ----
+
+## Propose initialize-fail.
+sp {selection-world*propose*failure-evaluation*initialize-failure-evaluation
+   :default
+   (state <s> ^impasse no-change
+              ^quiescence t  ### TEST
+              ^attribute state
+             -^feature-count
+              ^state-grounded true
+             -^world.future-event
+             -^superstate.selection-superstate
+              ^superstate.superstate.selection-superstate <ss>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name initialize-failure-evaluation)
+}
+
+## Propose initialize-fail.
+sp {selection-world*propose*failure-evaluation*initialize-failure-evaluation2
+   :default
+   (state <s> ^impasse no-change
+              ^quiescence t  ### TEST
+              ^attribute state
+             -^feature-count
+              ^state-grounded true
+             -^world.future-event
+              ^superstate.selection-superstate <ss>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name initialize-failure-evaluation)
+}
+
+## ---- operator application ----
+
+## Apply initialize-failure-evaluation -> sets symbolic-.
+sp {selection-world*apply*initialize-failure-evaluation
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+              ^selection-superstate <sss>)
+   (<sss> ^operator.evaluation <evaluation>
+         -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure operator: | <evaluation>)
+   (<evaluation> ^symbolic-value failure)
+}
+
+## Apply initialize-failure-evaluation -> sets symbolic-value.
+sp {selection-world*apply*initialize-failure-evaluation1
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+              ^selection-superstate <sss>)
+   (<sss> ^operator.evaluation <evaluation>
+          ^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure operator1: | <evaluation>)
+   (<evaluation> ^symbolic-value depth-exhaustion)
+}
+
+## Apply initialize-failure-evaluation -> sets symbolic-value (on the evaluation of the tie above the nearest tie).
+## There is no depth-exhaustion or depth-exceeded so this is a true failure.
+## v2.25: fires only when every other operator of the nearest tie already has a failure evaluation. Through v2.24 it
+## fired at the first dead end, before the sibling operators were evaluated, and failed the operator above them
+## (FINDING-early-failure-propagation.md). The old condition -^selection-superstate.operator.evaluation <evaluation>
+## was always true (the two ties never share an evaluation) and is removed.
+sp {selection-world*apply*initialize-failure-evaluation2
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+              ^selection-superstate <sss>)
+   (<sss> -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+           ^operator.evaluation <current>
+           ^selection-superstate <ssss>)
+   (<current> ^super-operator <current-item>)
+  -{(<sss> ^item { <> <current-item> <other-item> })
+   -{(<sss> ^evaluation <other-evaluation>)
+     (<other-evaluation> ^super-operator <other-item>
+                         ^symbolic-value failure)}}
+   (<ssss> ^operator.evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure operator2: | <evaluation>)
+   (<evaluation> ^symbolic-value failure)
+}
+
+## Apply initialize-failure-evaluation -> sets symbolic-value.
+## Just need to search deeper
+sp {selection-world*apply*initialize-failure-evaluation3
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+             -^selection-superstate.operator.evaluation <evaluation>
+              ^selection-superstate <sss>)
+   (<sss> ^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+          ^selection-superstate <ssss>)
+   (<ssss> ^operator.evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure operator3: | <evaluation>)
+   (<evaluation> ^symbolic-value depth-exhaustion)
+}

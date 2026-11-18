@@ -1,0 +1,69 @@
+# Helps in reorder production conditions efficiently
+production optimize-attribute above 10
+production optimize-attribute acheived 2
+production optimize-attribute affordance 3
+production optimize-attribute argument1 1
+production optimize-attribute argument2 1
+production optimize-attribute attribute1 1
+production optimize-attribute attend 10
+production optimize-attribute attend1 1
+production optimize-attribute child 20
+production optimize-attribute class 1
+production optimize-attribute contains 1
+production optimize-attribute constant 1
+production optimize-attribute desired 4
+production optimize-attribute desireds 1
+production optimize-attribute desired-ordering 6
+production optimize-attribute in 10
+production optimize-attribute info 2
+production optimize-attribute input-link 1
+production optimize-attribute io 1
+production optimize-attribute name 1
+production optimize-attribute object 70
+production optimize-attribute objects 1
+production optimize-attribute object-handle 1
+production optimize-attribute on 20
+production optimize-attribute operator 3
+production optimize-attribute not-contain 2
+production optimize-attribute pending 4
+production optimize-attribute property 20
+production optimize-attribute real 1
+production optimize-attribute success 1
+production optimize-attribute superstate 1
+production optimize-attribute top-state 1
+production optimize-attribute thor-soar-classes 7
+production optimize-attribute transformations 4
+production optimize-attribute unacheived 3
+production optimize-attribute world 2
+
+alias ms production matches
+alias fc production firing-counts
+alias pref preferences
+alias msw production matches --wmes
+
+max-nil-output-cycles 100  # maximum number of decisions before pings output
+#run -o 1000                # number of outputs it runs for
+
+max-goal-depth 50
+max-elaborations 100
+
+srand 1
+
+#soar wait-snc on
+#stats --track
+
+#decide indifferent-selection -g
+#decide indifferent-selection -e .0001
+#decide indifferent-selection -b
+#decide indifferent-selection -e 0
+#decide indifferent-selection -x
+#  Use epsilon - not softmax!
+decide indifferent-selection -e
+
+wma -s activation off # on
+#wma -s decay-rate .001
+#wma -s forgetting on
+
+#output agent-logs 1 off
+
+#input_link_version = 2

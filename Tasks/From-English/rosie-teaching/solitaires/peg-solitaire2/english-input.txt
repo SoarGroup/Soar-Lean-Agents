@@ -1,0 +1,29 @@
+Peg Solitaire v2: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is peg-solitaire.
+  2. Load init-peg.   [world state: init-peg.world]
+  3. Ok.
+  4. If a peg is between a clear location and a block then you can move the peg onto a garbage plus move the block onto the clear location.
+  5. If a location is not below an object then it is clear.
+  6. If an object is a block then it is a peg.
+  7. The solution has eight steps.
+  8. Load final-peg.   [world state: final-peg.world]
+  9. The name of the goal is one-covered.
+ 10. Ok.
+ 11. The goal is that the number of covered locations is one.
+ 12. If a location is below an object then it is covered.
+ 13. Done.
+ 14. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location, object
+  Object attributes: name (garbage); x (numeric, 1 to 4); y (numeric, 1 to 4)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Other world files in this folder, not loaded in the dialog: init-peg2.world
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/solitaires/peg-solitaire2/.

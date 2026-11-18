@@ -1,0 +1,71 @@
+## anchor-smem-object-retrieve.soar -- thor-soar: 1 proposal, 2 compares, 2 applications.
+
+## Propose anchor-smem-object-retrieve.
+sp {thor-soar*propose*anchor-smem-object-retrieve
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.smem-retrieve true
+              ^desireds.desired.info <dinfo>
+             -^retrieved-object
+              ^world <world>
+             -^smem-query.cue.class)
+   (<world> ^anchored-world true
+           -^objects.object.object-handle <unanchored-object-handle>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-smem-object-retrieve
+         ^argument1 <unanchored-object>)
+}
+
+## Preference for anchor-smem-object-retrieve.
+## If can anchor to existing object directly, don't look in epmem.
+sp {thor-soar*compare*anchor-smem-object-retrieve
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-smem-object-retrieve)
+   (<op2> ^name << anchor-info-existing-object anchor-epmem-retrieve >>)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for anchor-smem-object-retrieve search.
+sp {thor-soar*compare*anchor-smem-object-retrieve*search
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-smem-object-retrieve)
+   (<op2> ^name << search-smem search-closed-receptacles >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply anchor-smem-object-retrieve -> sets smem-query, cue, copy-destination ....
+sp {apply*anchor-smem-object-retrieve*search
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<op> ^name anchor-smem-object-retrieve)
+   (<world> ^anchored-world true)
+-->
+   (log 1 (crlf) |Query SMEM for unanchored-object|)
+   (<s> ^smem-query <query>)
+   (<query> ^cue <cue>             # need to find matching object before find where it is
+            ^copy-destination <s>
+            ^depth 2
+            ^copy-name retrieved-object)
+}
+
+## Apply anchor-smem-object-retrieve.
+sp {apply*anchor-smem-object-retrieve*search*copy-features
+    :default
+   (state <s> ^operator <op>
+              ^smem-query.cue <cue>)
+   (<op> ^name anchor-smem-object-retrieve
+         ^argument1 <unanchored-object>)
+   (<unanchored-object> ^{<> object-handle <> anchored <> accessible <attribute> } <value>)
+-->
+   (<cue> ^<attribute> <value>)
+}

@@ -1,0 +1,274 @@
+## put-in.soar -- thor-soar: 2 proposals, 3 compares, 5 applications.
+
+## Propose put-in.
+## MEA Proposal
+sp {thor-soar*propose*put-in*mea
+    :default
+   (state <s> ^problem-space.name << thor-world store >>
+              ^flags.mea-operator-selection true
+              ^world <world1> <world2>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <container-object>)
+   (<world2> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>)
+   (<container-object> ^object-handle <container-object-handle>
+                       ^anchored <container-anchored>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^in <desired-in-container>)
+   (<desired-in-container> ^argument2.object-handle <container-object-handle>
+                           ^argument1.object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name put-in
+               ^task-operator true
+               ^action-handle put-down
+               ^super-desired <desired>
+               ^argument1 <container-object>
+               ^argument2 <object>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired1>
+                ^avoid-desired <desired3>
+                ^desired <desired1> <desired2> <desired3>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^object-handle <container-object-handle>
+                      ^anchored <container-anchored>
+                      ^open true)
+   (<desired2> ^holding-object.object-handle <object-handle>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object3> ^reachable true
+                      ^anchored <container-anchored>
+                      ^object-handle <container-object-handle>)
+}
+
+## Preference for put-in.
+sp {thor-soar*compare*put-in
+    :default
+   (state <s> ^flags.task-search-control true
+              ^world.holding-object.object-handle none
+              ^world.objects.object <object>
+              ^world.objects.object <object2>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name << put-in put-on >>
+          ^desireds <desireds1>
+          ^super-desired <super-desired>)
+   (<desireds1> ^desired <desired1>)
+   (<desired1> ^holding-object.object-handle <h-object>)
+   (<object> ^<< origin-object-handle object-handle >> <h-object>
+             ^reachable true)
+   (<op2> ^name << put-in put-on >>
+          ^desireds <desireds2>
+          ^super-desired <super-desired>)
+   (<desireds2> ^desired <desired2>)
+   (<desired2> ^holding-object.object-handle <h-object2>)
+   (<object2> ^<< origin-object-handle object-handle >> <h-object2>
+              ^reachable false)
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*put-in1|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for put-in2.
+sp {thor-soar*compare*put-in2
+    :default
+   (state <s> ^flags.task-search-control true
+              ^world.holding-object.object-handle <h-object>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name << put-in put-on >>
+          ^desireds.desired.holding-object.object-handle <h-object>)
+   (<op2> ^name << put-in put-on >>
+          ^desireds.desired.holding-object.object-handle <> <h-object>)
+  -{(<op1> ^super-desired.selection-value <value>)
+    (<op2> ^super-desired.selection-value < <value>)}
+  -{(<op1> ^argument1 <argument1> ^argument2 <argument2>)
+    (<op2> ^argument1 <argument1> ^argument2 <argument2>)}
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*put-in2 - prefer to put object currently holding|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for put-in3 inview-reachable.
+sp {thor-soar*compare*put-in3*inview-reachable
+    :default
+   (state <s> ^world <world>
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<world> ^objects.object <object1> <object2>)
+   (<op1> ^name << put-in put-on >>
+          ^argument2.object-handle <food-object-handle1>)
+   (<object1> ^object-handle <food-object-handle1>
+              ^visible true
+              ^in-view true
+              ^reachable true)
+   (<op2> ^name << put-in put-on >>
+          ^argument2.object-handle { <> <food-object-handle1> <food-object-handle2> })
+   (<object2> ^object-handle <food-object-handle2>)
+  -(<object2> ^visible true
+              ^in-view true
+              ^reachable true)
+  -(<s> ^world.holding-object.object-handle <food-object-handle2>)
+-->
+#  (log 1 (crlf) |**********thor-soar*compare*put-in2 - prefer to put object currently holding|)
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply put-in -> sets holding-object, in, argument1 ....
+sp {apply*put-in*external*in
+    :default
+   (state <s> ^real true
+              ^flags.view-frustum true
+              ^external-top-state.scene <scene>
+              ^operator <operator>
+              ^world <world>)
+   (<world> ^holding-object <holding-object>)
+   (<scene> ^holding-object <holding-object>
+            ^objects.object <container-object2>)
+   (<container-object2> ^object-handle <container-object-handle>)
+   (<operator> ^name put-in
+               ^argument1 <container-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+   (<holding-object> ^object-handle <holding-object-handle>
+                     ^class <class>)
+   (<container-object> ^object-handle <container-object-handle>)
+-->
+   (log 1 (crlf) |Apply put-in : | <holding-object-handle> | in | <container-object-handle> | external.|)
+   (<world> ^holding-object <holding-object> -)
+   (<scene> ^holding-object <holding-object> -
+            ^in <in>)
+   (<in> ^argument1 <holding-object>
+         ^argument2 <container-object2>
+         ^argument1-class <class>)
+}
+
+## Apply put-in -> sets in, argument1, argument2 ....
+sp {apply*put-in*external*on*real2
+    :default
+   (state <s> ^world <world>
+              ^flags.view-frustum true
+              ^real true
+              ^operator <operator>)
+   (<world> ^holding-object <holding-object>
+            ^objects.object <container-object2> <object-on>
+            ^on <on>)
+   (<on> ^argument1 <object-on>
+         ^argument2 <holding-object>)
+   (<container-object2> ^object-handle <container-object-handle>)
+   (<operator> ^name put-in
+               ^argument1 <container-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+   (<container-object> ^object-handle <container-object-handle>)
+   (<object-on> ^object-handle <on-object-handle>
+                ^class <class>)
+-->
+   (log 1 (crlf) |Apply put-in : | <on-object-handle> | in | <container-object-handle> | external.|)
+   (<world> ^in <in>)
+   (<in> ^argument1 <object-on>
+         ^argument2 <container-object2>
+         ^argument1-class <class>)
+}
+
+## Apply put-in -> sets holding-object, in, reachable ....
+## Internal Application
+sp {apply*put-in*internal
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^holding-object <holding-object>
+            ^objects.object <container-object2>)
+   (<container-object2> ^object-handle <container-object-handle>)
+   (<operator> ^name put-in
+               ^argument1 <container-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+   (<holding-object> ^object-handle <holding-object-handle>
+                                    )# ^reachable false)
+   (<container-object> ^object-handle <container-object-handle>)
+-->
+   (log 1 (crlf) |Apply put-in : | <holding-object-handle> | in | <container-object-handle> | internal.|)
+   (<world> ^holding-object.object-handle none
+            ^holding-object <holding-object> -
+            ^in <in>)
+   (<holding-object> ^reachable true
+                                false -)
+   (<in> ^argument1 <holding-object>
+         ^argument2 <container-object2>)
+}
+
+## Apply put-in -> sets in, argument1, argument2.
+sp {apply*put-in*internal*ons
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^holding-object <holding-object>
+            ^objects.object <container-object2> <object-on>
+            ^on <on>)
+   (<on> ^argument1 <object-on>
+         ^argument2 <holding-object>)
+   (<container-object2> ^object-handle <container-object-handle>)
+   (<operator> ^name put-in
+               ^argument1 <container-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+   (<container-object> ^object-handle <container-object-handle>)
+   (<object-on> ^object-handle <on-object-handle>)
+-->
+   (log 1 (crlf) |Apply put-in : | <on-object-handle> | in | <container-object-handle> | internal.|)
+   (<world> ^in <in>)
+   (<in> ^argument1 <object-on>
+         ^argument2 <container-object2>)
+}
+
+## Apply put-in -> sets reachable.
+sp {apply*put-in*internal*on
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^holding-object <holding-object>
+            ^<< in on >> <on>)
+   (<on> ^argument1 <on-object>
+         ^argument2 <holding-object>)
+   (<operator> ^name put-in
+               ^argument1 <container-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+  # (<on-object> ^reachable false)
+-->
+   (<on-object> ^reachable true
+                           false -)
+}
+
+## Propose put-in.
+## Non MEA Selection
+sp {thor-soar*propose*put-in
+    :default
+   (state <s> ^problem-space.name << thor-world store >>
+              ^flags <flags>
+              ^world.objects.object <container-object>
+              ^world.holding-object <holding-object>)
+   (<flags> ^mea-operator-selection false)
+   (<container-object> ^reachable true
+                       ^open true
+                       ^receptacle true)
+   (<holding-object> ^object-handle <> none)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name put-in
+               ^task-operator true
+               ^action-handle put-down
+               ^argument2 <holding-object>  ## Not really necessary as always puts down what it is holding.
+               ^argument1 <container-object>  ## allows for automatic application rule for external execution
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}

@@ -1,0 +1,24 @@
+
+sp {mac*elaborate*goal*success
+   (state <s> ^name mac)
+   (<s> ^desired <d>)
+   (<s> ^bank <x>)
+   (<d> ^bank <dx>)
+   (<dx> ^missionaries <g-missionaries>)
+   (<dx> ^cannibals <g-cannibals>)
+   (<dx> ^name <g-name>)
+   (<x> ^missionaries <g-missionaries>)
+   (<x> ^cannibals <g-cannibals>)
+   (<x> ^name <g-name>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {mac*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

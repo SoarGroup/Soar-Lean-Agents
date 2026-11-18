@@ -1,0 +1,191 @@
+## find-object-direct.soar -- thor-soar: 1 elaboration, 4 proposals, 3 compares.
+
+## Propose find-object-direct.
+## Find-object where it is straightforward to find and existing object in the world
+## Does not require a subgoal and is immediately applied
+sp {agent-world*propose*find-object-direct*object-handle*class-only-one
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world.objects.object <anchored-object>)
+   (<anchored-object> ^class <class>
+                      ^anchored true
+                      ^object-handle <anchored-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^world-context.objects.object <world-object>)
+   (<world-object> ^class { <> stoveknob <> stoveburner <class> }
+                   ^object-handle <unanchored-object-handle>
+                   ^anchored false
+                  -^{ <> anchored <> class <> object-handle <> accessible <> duplicate-of }) # no other attributes to constrain grounding
+   (<desired> ^object <desired-unanchored-object>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1 <desired-unanchored-object>
+               ^argument2 <anchored-object>
+               ^argument-count 2)
+}
+
+## Propose find-object-direct.
+sp {agent-world*propose*find-object-direct*object-handle*in*argument1
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world.objects.object <anchored-object-argument1>)
+   (<anchored-object-argument1> ^class <argument1-class>
+                                ^anchored true
+                                ^object-handle <anchored-object-argument1-handle>)
+  -{(<s> ^world.objects.object { <> <anchored-object-argument1> <other-object> })
+    (<other-object> ^class <argument1-class>
+                    ^anchored true)}
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^world-context.objects.object <world-object>)
+   (<world-object> ^class { <> stoveknob <> stoveburner <argument1-class> }
+                   ^object-handle <unanchored-object-handle>
+                   ^anchored false
+                  -^{ <> anchored <> class <> object-handle <> accessible <> duplicate-of }) # no other attributes to constrain grounding
+   (<desired> ^{ << in on >> <in-on> } <in-on-relation-desired>)
+   (<in-on-relation-desired> ^argument1 <desired-unanchored-object1>)
+   (<desired-unanchored-object1> ^object-handle <unanchored-object-handle>)
+-->
+   (write (crlf) |+++++++++ find-object-direct | <anchored-object-argument1-handle> |: | <argument1-class> | | <in-on>
+                                             | | <anchored-object-argument1-handle> |: | <argument1-class>)
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+                ^pre-conditions-satisfied true
+                ^argument1 <desired-unanchored-object1>
+                ^argument2 <anchored-object-argument1>
+                ^argument-count 2)
+}
+
+## Propose find-object-direct.
+sp {agent-world*propose*find-object-direct*object-handle*in*argument2
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world.objects.object <anchored-object-argument1>)
+   (<anchored-object-argument1> ^class <argument1-class>
+                                ^anchored true
+                                ^object-handle <anchored-object-argument1-handle>)
+  -{(<s> ^world.objects.object { <> <anchored-object-argument1> <other-object> })
+    (<other-object> ^class <argument1-class>
+                    ^anchored true)}
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^world-context.objects.object <world-object>)
+   (<world-object> ^class { <> stoveknob <> stoveburner <argument1-class> }
+                   ^object-handle <unanchored-object-handle>
+                   ^anchored false
+                  -^{ <> anchored <> class <> object-handle <> accessible <> duplicate-of }) # no other attributes to constrain grounding
+   (<desired> ^{ << in on >> <in-on> } <in-on-relation-desired>)
+   (<in-on-relation-desired> ^argument2 <desired-unanchored-object1>)
+   (<desired-unanchored-object1> ^object-handle <unanchored-object-handle>)
+-->
+   (write (crlf) |+++++++++ find-object-direct | <anchored-object-argument1-handle> |: | <argument1-class> | | <in-on>
+                                             | | <anchored-object-argument1-handle> |: | <argument1-class>)
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+                ^pre-conditions-satisfied true
+                ^argument1 <desired-unanchored-object1>
+                ^argument2 <anchored-object-argument1>
+                ^argument-count 2)
+}
+
+## Propose find-object-direct.
+sp {agent-world*propose*find-object-direct*object-handle*class-plus-one
+   :default
+   (state <s>
+              ^desireds <desireds>
+              ^world.objects.object <anchored-object>)
+   (<anchored-object> ^class <class>
+                      ^<feature> <value>
+                      ^anchored true
+                      ^object-handle <anchored-object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>
+               ^world-context.objects.object <world-object>)
+   (<world-object> ^class <class>
+                   ^{ <> anchored <> class <> object-handle <> accessible <> duplicate-of <feature>} <value>
+                   ^object-handle <unanchored-object-handle>
+                   ^anchored false
+                  -^{ <> anchored <> class <> object-handle <> accessible <> duplicate-of <> <feature> }) # no other attributes to constrain grounding
+   (<desired> ^object <desired-unanchored-object>)
+   (<desired-unanchored-object> ^object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <operator> +, >, =)  ## pick randomly if multiple available
+   (<operator> ^name find-object-direct
+               ^pre-conditions-satisfied true
+               ^argument1 <desired-unanchored-object>
+               ^argument2 <anchored-object>
+               ^argument-count 2)
+}
+
+## Preference for find-object-direct anchored-reachable.
+sp {agent-world*compare*find-object-direct*anchored-reachable
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name find-object-direct
+          ^argument1 <argument1>
+          ^argument2.reachable true)
+   (<op2> ^name find-object-direct
+          ^argument1 <argument1>
+          ^argument2.reachable false)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for find-object-direct accessible.
+sp {agent-world*compare*find-object-direct*accessible
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name find-object-direct
+         -^argument2.accessible true
+          ^argument2.reachable <value>)
+   (<op2> ^name find-object-direct
+          ^argument2.accessible true
+          ^argument2.reachable <value>)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Elaborate compute-distances find-object-direct -> sets expected-distance.
+sp {agent-world*elaborations*compute-distances*find-object-direct
+    :default
+   (state <s> ^operator <op1> +
+              ^real true
+              ^io.input-link.self.pose <pos>)
+   (<op1> ^name find-object-direct
+          ^argument2 <argument2>)
+   (<argument2> ^reachable false)
+   (<pos> ^x <x> ^y <y>)
+   (<argument2> ^x <x2> ^y <y2>)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <y>) (* 100.0 <x2>) (* 100.0 <y2>)) 0))
+}
+
+## Preference for find-object-direct distance.
+sp {agent-world*compare*find-object-direct*distance
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name find-object-direct
+          ^argument1 <argument1>
+          ^argument2 <argument2>
+          ^expected-distance <edistance>)
+   (<argument2> ^reachable <reachable>
+                ^accessible <accessible>)
+   (<op2> ^name find-object-direct
+          ^argument1 <argument1>
+          ^argument2 <argument22>
+          ^expected-distance > <edistance>)
+   (<argument22> ^reachable <reachable>
+                 ^accessible <accessible>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}

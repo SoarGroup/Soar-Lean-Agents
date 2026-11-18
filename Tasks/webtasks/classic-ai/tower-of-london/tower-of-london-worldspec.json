@@ -1,0 +1,859 @@
+{
+  "format": "worldspec-1",
+  "name": "tower-of-london",
+  "title": "Tower of London (tower-of-london)",
+  "statements": [
+    [
+      1,
+      "There are three pegs. The first peg holds up to three balls, the second up to two, the third one."
+    ],
+    [
+      2,
+      "There are three balls: red, green and blue."
+    ],
+    [
+      3,
+      "At the start the first peg holds red at the bottom and green on top of it, the second peg holds blue, and the third peg is empty."
+    ],
+    [
+      4,
+      "You can move the top ball of a peg onto another peg that is not full."
+    ],
+    [
+      5,
+      "The goal is that the first peg holds blue at the bottom and red on top of it, and the second peg holds green."
+    ],
+    [
+      6,
+      "Reach the goal in as few moves as possible."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-TL1",
+      "kind": "intent",
+      "text": "\"holds up to n balls\": a peg has n slots, stacked by an over relation from a floor; a ball is at a slot.",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-TL2",
+      "kind": "intent",
+      "text": "\"the top ball\": a ball whose slot has an empty space over it. Each peg has a cap space over its top slot that is always empty and never a target, so the top slot needs no special case.",
+      "stmts": [
+        4
+      ]
+    },
+    {
+      "id": "A-TL3",
+      "kind": "intent",
+      "text": "\"onto a peg that is not full\": into the peg's lowest empty slot, i.e. an empty slot over a slot or floor that something is at. Each floor holds a fixed base object, which no action moves.",
+      "stmts": [
+        4
+      ]
+    },
+    {
+      "id": "A-TL4",
+      "kind": "intent",
+      "text": "\"another peg\": the target slot is of a different peg than the ball's slot.",
+      "stmts": [
+        4
+      ]
+    },
+    {
+      "id": "A-TL5",
+      "kind": "intent",
+      "text": "\"as few moves as possible\": unit cost per move, read through the library's search settings, not through the rules.",
+      "stmts": [
+        6
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "red-ball",
+      "type": "ball",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "red-ball"
+          }
+        ],
+        [
+          "color",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "green-ball",
+      "type": "ball",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "green-ball"
+          }
+        ],
+        [
+          "color",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "blue-ball",
+      "type": "ball",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "blue-ball"
+          }
+        ],
+        [
+          "color",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "peg-a",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "peg-a"
+          }
+        ],
+        [
+          "capacity",
+          {
+            "int": 3
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-floor",
+      "type": "floor",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-floor"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-base",
+      "type": "base",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-base"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-low",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-low"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-mid",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-mid"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-top",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-top"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-cap",
+      "type": "cap",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-cap"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "peg-b",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "peg-b"
+          }
+        ],
+        [
+          "capacity",
+          {
+            "int": 2
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-floor",
+      "type": "floor",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-floor"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-base",
+      "type": "base",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-base"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-low",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-low"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-top",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-top"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-cap",
+      "type": "cap",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-cap"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "peg-c",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "peg-c"
+          }
+        ],
+        [
+          "capacity",
+          {
+            "int": 1
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-floor",
+      "type": "floor",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-floor"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-base",
+      "type": "base",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-base"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-low",
+      "type": "slot",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-low"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-cap",
+      "type": "cap",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-cap"
+          }
+        ],
+        [
+          "kind",
+          {
+            "sym": "space"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "over",
+      [
+        "a-low",
+        "a-floor"
+      ]
+    ],
+    [
+      "over",
+      [
+        "a-mid",
+        "a-low"
+      ]
+    ],
+    [
+      "over",
+      [
+        "a-top",
+        "a-mid"
+      ]
+    ],
+    [
+      "over",
+      [
+        "a-cap",
+        "a-top"
+      ]
+    ],
+    [
+      "over",
+      [
+        "b-low",
+        "b-floor"
+      ]
+    ],
+    [
+      "over",
+      [
+        "b-top",
+        "b-low"
+      ]
+    ],
+    [
+      "over",
+      [
+        "b-cap",
+        "b-top"
+      ]
+    ],
+    [
+      "over",
+      [
+        "c-low",
+        "c-floor"
+      ]
+    ],
+    [
+      "over",
+      [
+        "c-cap",
+        "c-low"
+      ]
+    ],
+    [
+      "of",
+      [
+        "a-low",
+        "peg-a"
+      ]
+    ],
+    [
+      "of",
+      [
+        "a-mid",
+        "peg-a"
+      ]
+    ],
+    [
+      "of",
+      [
+        "a-top",
+        "peg-a"
+      ]
+    ],
+    [
+      "of",
+      [
+        "b-low",
+        "peg-b"
+      ]
+    ],
+    [
+      "of",
+      [
+        "b-top",
+        "peg-b"
+      ]
+    ],
+    [
+      "of",
+      [
+        "c-low",
+        "peg-c"
+      ]
+    ],
+    [
+      "at",
+      [
+        "a-base",
+        "a-floor"
+      ]
+    ],
+    [
+      "at",
+      [
+        "b-base",
+        "b-floor"
+      ]
+    ],
+    [
+      "at",
+      [
+        "c-base",
+        "c-floor"
+      ]
+    ],
+    [
+      "at",
+      [
+        "red-ball",
+        "a-low"
+      ]
+    ],
+    [
+      "at",
+      [
+        "green-ball",
+        "a-mid"
+      ]
+    ],
+    [
+      "at",
+      [
+        "blue-ball",
+        "b-low"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "a-top"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "a-cap"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "b-top"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "b-cap"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "c-low"
+      ]
+    ],
+    [
+      "empty",
+      [
+        "c-cap"
+      ]
+    ]
+  ],
+  "maintained": [
+    {
+      "name": "empty",
+      "var": "x",
+      "defn": [
+        {
+          "obj": "x",
+          "type": null
+        },
+        {
+          "has": "x",
+          "prop": "kind",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "space"
+            }
+          }
+        },
+        {
+          "none": [
+            {
+              "rel": "at",
+              "args": [
+                {
+                  "var": "b"
+                },
+                {
+                  "var": "x"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        1,
+        4
+      ]
+    }
+  ],
+  "sums": [],
+  "ops": [
+    {
+      "name": "move",
+      "params": [
+        [
+          "b",
+          "ball"
+        ],
+        [
+          "t",
+          "slot"
+        ]
+      ],
+      "stmts": [
+        4
+      ],
+      "pre": [
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "src"
+            }
+          ]
+        },
+        {
+          "rel": "over",
+          "args": [
+            {
+              "var": "c"
+            },
+            {
+              "var": "src"
+            }
+          ]
+        },
+        {
+          "rel": "empty",
+          "args": [
+            {
+              "var": "c"
+            }
+          ]
+        },
+        {
+          "rel": "empty",
+          "args": [
+            {
+              "var": "t"
+            }
+          ]
+        },
+        {
+          "rel": "over",
+          "args": [
+            {
+              "var": "t"
+            },
+            {
+              "var": "u"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "o"
+            },
+            {
+              "var": "u"
+            }
+          ]
+        },
+        {
+          "rel": "of",
+          "args": [
+            {
+              "var": "src"
+            },
+            {
+              "var": "p1"
+            }
+          ]
+        },
+        {
+          "rel": "of",
+          "args": [
+            {
+              "var": "t"
+            },
+            {
+              "var": "p2"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "p1",
+            "p2"
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "t"
+          }
+        },
+        {
+          "del": "empty",
+          "args": [
+            {
+              "var": "t"
+            }
+          ]
+        },
+        {
+          "add": "empty",
+          "args": [
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "Move "
+        },
+        {
+          "handle": "b"
+        },
+        {
+          "text": " to "
+        },
+        {
+          "handle": "t"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "blue-ball"
+          },
+          {
+            "h": "a-low"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "red-ball"
+          },
+          {
+            "h": "a-mid"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "green-ball"
+          },
+          {
+            "h": "b-low"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    5
+  ],
+  "failures": []
+}

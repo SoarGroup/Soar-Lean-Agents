@@ -1,0 +1,17 @@
+
+sp {arithmetic*propose*process-column
+   (state <s> ^name arithmetic)
+   (<s> ^problem <p>)
+   (<s> ^column <c>)
+   (<c> ^pos <c-pos>)
+   (<p> ^pid <p-pid>)
+   (<p> ^digits 6)
+   (<c> ^done { <c-done> <> <p-pid> })
+   -{ (<s> ^column <none3>) (<none3> ^pos < <c-pos>) (<none3> ^done <> <p-pid>) }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name process-column)
+   (<o> ^p <p>)
+   (<o> ^c <c>)
+}

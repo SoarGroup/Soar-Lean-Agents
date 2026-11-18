@@ -1,0 +1,3 @@
+pushd pyramid-anderson
+source pyramid-anderson_source.soar
+popd

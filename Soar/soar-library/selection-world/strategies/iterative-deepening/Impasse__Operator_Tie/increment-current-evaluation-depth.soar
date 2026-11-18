@@ -1,0 +1,81 @@
+## increment-current-evaluation-depth.soar -- selection-world: 1 elaboration, 2 proposals, 2 applications.
+
+## ---- elaborations ----
+
+## Elaborate selection item-no-evaluation -> sets item-no-e.
+sp {selection-world*elaborate*selection*item-no-evaluation
+   :default
+   (state <s> ^name selection
+              ^item <item>)
+  -{(<s> ^evaluation <evaluation>)
+    (<evaluation> ^super-operator <item>
+                  ^value true)}
+-->
+   (<s> ^item-no-evaluation true)
+}
+
+## ---- operator proposal ----
+
+## Propose increment-current-evaluation-depth.
+sp {selection-world*propose*selection*increment-current-evaluation-depth
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^remaining-operators 0
+              ^max-evaluation-depth <med>
+              ^current-evaluation-depth <current-evaluation-depth>)
+   (<current-evaluation-depth> ^value { < <med> <value> })
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name increment-current-evaluation-depth
+               ^current-evaluation-depth <current-evaluation-depth>)
+}
+
+## Propose increment-current-evaluation-depth.
+## Can arise from chunks applying without a decrement of remaining-operators
+sp {selection-world*propose*selection*increment-current-evaluation-depth*all-evals-have-values
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^max-evaluation-depth <med>
+              ^current-evaluation-depth <current-evaluation-depth>
+             -^item-no-evaluation true)
+   (<current-evaluation-depth> ^value { < <med> <value> })
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name increment-current-evaluation-depth
+               ^current-evaluation-depth <current-evaluation-depth>)
+}
+
+## ---- operator application ----
+
+## Apply increment-current-evaluation-depth -> sets remaining-operators, value.
+sp {selection-world*apply*increment-current-evaluation-depth
+   :default
+   (state <s> ^operator <operator>
+              ^item-count <item-count>
+              ^remaining-operators <remaining-operators>
+              ^current-evaluation-depth <current-evaluation-depth>)
+   (<current-evaluation-depth> ^value <value>)
+   (<operator> ^name increment-current-evaluation-depth)
+-->
+   (log 1 (crlf) |New evaluation depth: | (+ 1 <value>))
+   (<s> ^remaining-operators  <remaining-operators> -
+                              <item-count>)
+   (<current-evaluation-depth> ^value <value> -
+                                      (+ 1 <value>))
+}
+
+## Apply increment-current-evaluation-depth -> sets evaluation.
+sp {selection-world*apply*increment-current-evalaution*clean-up-evaluations
+   :default
+   (state <s> ^operator <operator>
+              ^evaluation <evaluation2>)
+   (<operator> ^name increment-current-evaluation-depth
+               ^current-evaluation-depth <current-evaluation-depth>)
+   (<evaluation2> ^value true
+                 -^symbolic-value << failure exhaustion-failure success >>
+                 -^numeric-value)
+-->
+   (<s> ^evaluation <evaluation2> -)
+}

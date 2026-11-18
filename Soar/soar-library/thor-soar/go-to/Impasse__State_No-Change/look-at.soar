@@ -1,0 +1,62 @@
+## look-at.soar -- thor-soar: 2 proposals.
+
+## Propose look-at.
+sp {goto*SNC*thor-soar*propose*look-at
+    :default
+   (state <s> ^attribute state
+              ^impasse no-change
+              ^superstate <ss>)
+   (<ss> ^impasse no-change
+         ^attribute operator
+         ^superstate <sss>)
+   (<sss> ^operator <operator>)
+   (<operator> ^name go-to
+               ^argument1 <object>)
+   (<object> ^object-handle <object-handle>
+            -^looked-at true
+             ^in-view false
+             ^x <x>
+             ^y <y>
+             ^z <z>)
+-->
+   (<s> ^operator <operator2> + =)
+   (<operator2> ^name look-at
+                ^pre-conditions-satisfied true
+                ^task-operator true
+                ^action-handle look-at
+                ^argument1 <object>
+                ^argument-count 1)
+}
+
+## Propose look-at.
+sp {goto*SNC*thor-soar*propose*look-at-on
+    :default
+   (state <s> ^attribute state
+              ^impasse no-change
+              ^superstate <ss>
+              ^world.on <on>)
+   (<ss> ^impasse no-change
+         ^attribute operator
+         ^superstate <sss>)
+   (<sss> ^operator <operator>)
+   (<operator> ^name go-to
+               ^argument1 <object1>)
+   (<on> ^argument1 <object1>
+         ^argument2 <object2>)
+   (<object1> ^in-view false)
+  -(<object1> ^x <x>
+              ^y <y>
+              ^z <z>)
+   (<object2> ^object-handle <object-handle>
+              ^x <x>
+              ^y <y>
+              ^z <z>)
+-->
+   (<s> ^operator <operator2> + =)
+   (<operator2> ^name look-at
+                ^pre-conditions-satisfied true
+                ^task-operator true
+                ^action-handle look-at
+                ^argument1 <object2>
+                ^argument-count 1)
+}

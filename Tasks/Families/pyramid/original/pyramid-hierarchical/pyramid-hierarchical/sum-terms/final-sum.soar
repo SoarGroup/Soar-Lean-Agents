@@ -1,0 +1,29 @@
+
+sp {sum-terms*propose*final-sum
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^sum <_v3>)
+   (<s> ^next <pyramid-terms>)
+   (<pyramid> ^terms <pyramid-terms>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name final-sum)
+}
+
+sp {sum-terms*apply*final-sum
+   (state <s> ^name sum-terms)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^operator <o>)
+   (<o> ^name final-sum)
+   (<pyramid> ^sum <pyramid-sum>)
+   (<s> ^sum <s-sum>)
+   (<pyramid> ^summed <pyramid-summed>)
+-->
+   (<pyramid> ^sum <s-sum>)
+   (<pyramid> ^sum <pyramid-sum> -)
+   (<pyramid> ^summed 1)
+   (<pyramid> ^summed <pyramid-summed> -)
+}

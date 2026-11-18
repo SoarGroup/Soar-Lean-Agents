@@ -1,0 +1,27 @@
+
+sp {kenken*propose*drop-tuple
+   (state <s> ^name kenken)
+   (<s> ^tuple <t>)
+   (<s> ^cand <x>)
+   (<t> ^uses <x>)
+   (<t> ^alive 1)
+   (<x> ^alive 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name drop-tuple)
+   (<o> ^t <t>)
+   (<o> ^x <x>)
+}
+
+sp {kenken*apply*drop-tuple
+   (state <s> ^name kenken)
+   (<s> ^operator <o>)
+   (<o> ^name drop-tuple)
+   (<o> ^t <t>)
+   (<o> ^x <x>)
+   (<t> ^alive <t-alive>)
+-->
+   (<t> ^alive 0)
+   (<t> ^alive <t-alive> -)
+}

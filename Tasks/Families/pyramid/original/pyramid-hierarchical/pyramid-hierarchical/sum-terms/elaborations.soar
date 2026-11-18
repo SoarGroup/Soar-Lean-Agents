@@ -1,0 +1,12 @@
+
+sp {sum-terms*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name sum-terms)
+   (<so> ^pyramid <pyramid>)
+-->
+   (<s> ^name sum-terms)
+   (<s> ^pyramid <pyramid>)
+}

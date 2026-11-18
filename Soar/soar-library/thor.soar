@@ -1,0 +1,3 @@
+# Thor-Soar and its tasks. Requires the library (soar-library.soar) loaded first.
+source thor-soar.soar
+source thor-tasks.soar

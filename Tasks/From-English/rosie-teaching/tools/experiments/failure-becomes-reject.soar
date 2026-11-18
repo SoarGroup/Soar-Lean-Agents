@@ -1,0 +1,14 @@
+## EXPERIMENT (not a library change): an operator whose look-ahead evaluation is failure is rejected (not only made worst),
+## so the soar-base tie-breaker can no longer pick it when the remaining candidates are all cut off by depth.
+sp {experiment*compare*selection*failure-evaluation-reject
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <e>)
+   (<superstate> ^desireds <desireds>)
+   (<e> ^symbolic-value failure
+        ^desireds.duplicate-of <desireds>
+        ^super-operator <o>
+        ^closed true)
+-->
+   (<superstate> ^operator <o> -)}

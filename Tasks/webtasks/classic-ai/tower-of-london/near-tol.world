@@ -1,0 +1,125 @@
+objid 1
+category ball
+name red-ball
+color red
+
+objid 2
+category ball
+name green-ball
+color green
+
+objid 3
+category ball
+name blue-ball
+color blue
+
+objid 4
+category peg
+name peg-a
+capacity 3.0
+
+objid 5
+category floor
+name a-floor
+
+objid 6
+category base
+name a-base
+
+objid 7
+category slot
+name a-low
+kind space
+
+objid 8
+category slot
+name a-mid
+kind space
+
+objid 9
+category slot
+name a-top
+kind space
+
+objid 10
+category cap
+name a-cap
+kind space
+
+objid 11
+category peg
+name peg-b
+capacity 2.0
+
+objid 12
+category floor
+name b-floor
+
+objid 13
+category base
+name b-base
+
+objid 14
+category slot
+name b-low
+kind space
+
+objid 15
+category slot
+name b-top
+kind space
+
+objid 16
+category cap
+name b-cap
+kind space
+
+objid 17
+category peg
+name peg-c
+capacity 1.0
+
+objid 18
+category floor
+name c-floor
+
+objid 19
+category base
+name c-base
+
+objid 20
+category slot
+name c-low
+kind space
+
+objid 21
+category cap
+name c-cap
+kind space
+
+predicate over
+7 5
+8 7
+9 8
+10 9
+14 12
+15 14
+16 15
+20 18
+21 20
+
+predicate of
+7 4
+8 4
+9 4
+14 11
+15 11
+20 17
+
+predicate at
+6 5
+13 12
+19 18
+3 7
+1 8
+2 20

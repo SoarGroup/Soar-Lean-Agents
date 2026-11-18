@@ -1,0 +1,130 @@
+## explore-test-action-success-undo.soar -- thor-soar: 2 proposals, 1 compare, 3 applications.
+
+## Propose explore-test-action-success-undo.
+sp {thor-soar*propose*explore-test-action-success-undo*put-down
+    :default
+   (state <s> ^scene <scene>
+              ^explore-structure.current-class.tested-action <tested-action>)
+   (<scene> ^objects.object <container-object>
+            ^holding-object <holding-object>)
+   (<container-object> ^surface true
+                       ^class countertop
+                       ^distance <distance>
+                                 )#  ^reachable true)
+  -{(<scene> ^objects.object <object2>)
+    (<object2> ^surface true
+                       ^class countertop
+               ^distance < <distance>)}
+   (<tested-action> ^action <action>
+                    ^object <holding-object>
+                    ^success true
+                    ^undo-action-handle put-down
+                    ^need-undo-action true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name explore-test-action-success-undo
+         ^action <action>
+         ^task-operator true
+         ^explore-operator true
+         ^action-handle put-down
+         ^pre-conditions-satisfied true
+         ^argument1 <container-object>
+         ^argument2 <holding-object>
+         ^argument-count 2)
+}
+
+## Propose explore-test-action-success-undo.
+sp {thor-soar*propose*explore-test-action-success-undo*clean-close
+    :default
+   (state <s> ^scene <scene>
+              ^explore-structure.current-class.tested-action <tested-action>)
+   (<tested-action> ^action <action>
+                    ^object <object>
+                    ^success true
+                    ^undo-action-handle { <action-handle> << empty turn-on turn-off close clean >> }
+                    ^need-undo-action true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name explore-test-action-success-undo
+         ^action <action>
+         ^task-operator true
+         ^explore-operator true
+         ^action-handle <action-handle>
+         ^pre-conditions-satisfied true
+         ^argument1 <object>
+         ^argument-count 1)
+}
+
+## Preference for explore-test-action-success-undo.
+sp {thor-soar*compare*explore-test-action-success-undo
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name explore-test-action-success-undo)
+   (<op2> ^name  << close-container explore-test-action >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply explore-test-action-success-undo -> sets undo-initiated.
+sp {apply*explore-test-action-success-undo*undo-initiated
+    :default
+   (state <s>^operator <op>
+             ^explore-structure <es>)
+   (<es> ^current-class.tested-action <tested-action>)
+   (<op> ^name explore-test-action-success-undo
+         ^pre-conditions-satisfied true)
+   (<tested-action> ^need-undo-action true)
+-->
+   (<tested-action> ^undo-initiated true)
+}
+
+## Apply explore-test-action-success-undo -> sets need-undo-action.
+sp {apply*explore-test-action-success-undo
+    :default
+   (state <s> ^io.output-link <output>
+              ^operator <op>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class.tested-action <tested-action>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^status success
+         ^argument1 <object-handle>)
+   (<op> ^name explore-test-action-success-undo
+         ^action <action>
+         ^pre-conditions-satisfied true
+         ^argument1.object-handle <object-handle>)
+   (<tested-action> ^need-undo-action true)
+-->
+   (log 1 (crlf) | Undo Action: | <action-handle> | Succeeded to apply to | <object-handle> )
+  # (<output> ^perform-action <pa> -)
+   (<tested-action> ^need-undo-action false
+                                      true -)
+}
+
+## Apply put-down (o-support) -> sets argument1, perform-action.
+sp {apply*action-put-down-failure
+   :o-support
+    :default
+   (state <s> ^io.output-link <output>
+              ^scene.objects.object <new-place>
+              ^operator <op>)
+   (<new-place> ^object-handle {<new-place-handle> <>  <old-place-handle>}
+                ^surface true
+                ^reachable true)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name  put-down
+         ^argument1 <old-place-handle>
+         ^status error
+         ^error-info |No valid positions to place object found|)
+   (<op> ^name explore-test-action-success-undo
+         ^action-handle put-down
+         ^argument1 <old-place>)
+   (<old-place> ^object-handle <old-place-handle>)
+-->
+   (<op> ^argument1 <new-place>
+                    <old-place> -)
+   (<output> ^perform-action <pa> -)
+}

@@ -1,0 +1,42 @@
+
+sp {blocks-world*select*avoid-clobbering
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<s> ^desired <wd0>)
+   (<wd0> ^clear <dest>)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {blocks-world*select*prefer-ontop
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<s> ^desired <des0>)
+   (<des0> ^object <dx0>)
+   (<block> ^name <ko0>)
+   (<dx0> ^name <ko0>)
+   (<dx0> ^on <dt0>)
+   (<dt0> ^name <kt0>)
+   (<dest> ^name <kt0>)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {blocks-world*select*prefer-clearing
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<s> ^desired <wd0>)
+   (<block> ^on <wv0>)
+   (<wd0> ^clear <wv0>)
+-->
+   (<s> ^operator <o> >)
+}

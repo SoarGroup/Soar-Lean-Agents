@@ -1,0 +1,66 @@
+## task-operator.soar -- selection-world: 3 compares, 2 applications.
+
+## ---- evaluate / compare ----
+
+## Preference for evaluate-operator select duplicate-look-ahead.
+## support duplicate of look-ahead operator as long as it is proposed
+## and haven't exceeded search depth.
+sp {selection-world*compare*evaluate-operator*select*duplicate-look-ahead
+   :default
+   (state <s> ^operator <operator> +
+              ^flags.iterative-step << operator cost >>
+             -^current-evaluation-depth.value <= 0
+              ^duplicate-look-ahead-operator <operator>)
+   (<operator> ^name <name>)
+-->
+   (<s> ^operator <operator> ! =)
+}
+
+## Preference for evaluate-operator select duplicate-look-ahead tie-impasse.
+sp {selection-world*compare*evaluate-operator*select*duplicate-look-ahead*tie-impasse
+   :default
+   (state <s> ^operator <operator> +
+              ^flags.iterative-step tie-impasse
+             -^current-evaluation-depth.value < 0
+              ^duplicate-look-ahead-operator <operator>)
+   (<operator> ^name <name>)
+-->
+   (<s> ^operator <operator> ! =)
+}
+
+## Preference for operator maintain-operator preconditions-satisfied.
+sp {selection-world*compare*operator*maintain-operator*preconditions-satisfied
+   :default
+   (state <s> ^flags.iterative-step tie-impasse
+             -^world.real true
+              ^operator <o> +)
+   (<o> ^pre-conditions-satisfied true)
+-->
+   (<s> ^operator <o> >)
+}
+
+## ---- operator application ----
+
+## Apply operator internal iterative-deepening -> sets applied-lookahead, value.
+sp {selection-world*apply*operator*internal*iterative-deepening
+   :default
+   (state <s> ^current-evaluation-depth <current-evaluation-depth>
+              ^flags.iterative-step operator
+              ^operator <operator>
+             -^applied-lookahead <operator>)     # charge each operator once
+   (<operator> ^pre-conditions-satisfied true)
+   (<current-evaluation-depth> ^value <value>)
+-->
+   (log 1 (crlf) |Decrement remaining depth state: | <s> |, current-evaluation-depth: | <current-evaluation-depth> |, value: | <value> | goes to | (- <value> 1))
+   (<s> ^applied-lookahead <operator>)
+   (<current-evaluation-depth> ^value (- <value> 1) <value> -)}
+
+## Apply operator internal iterative-deepening tie-impasse-step -> sets applied-.
+sp {selection-world*apply*operator*internal*iterative-deepening*tie-impasse-step
+   :default
+   (state <s> ^flags.iterative-step tie-impasse
+             -^world.real true
+              ^operator.pre-conditions-satisfied true)
+-->
+   (<s> ^applied-lookahead true)
+}

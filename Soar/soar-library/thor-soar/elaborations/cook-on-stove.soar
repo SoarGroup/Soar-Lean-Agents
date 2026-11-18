@@ -1,0 +1,11 @@
+## cook-on-stove.soar -- thor-soar: 1 elaboration.
+
+## Elaborate state scene property-cooks-on-stove -> sets cooks-on-stove.
+sp {elaborations*elaborate*state*scene*property-cooks-on-stove
+    :default
+   (state <s> ^world.objects.object <object-int>
+              ^superstate nil)
+   (<object-int> ^class << potatosliced potato >>)
+-->
+   (<object-int> ^cooks-on-stove true)
+}

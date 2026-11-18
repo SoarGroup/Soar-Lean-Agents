@@ -1,0 +1,275 @@
+## ground-state.soar -- selection-world: ground a failure in the whole state it was established from.
+## When the look-ahead state has no operator (state no-change) the evaluation of the operator that led to it is a failure (initialize-failure-evaluation).
+## A failure set directly has a justification that does not mention the world, so the worst preference built from it persists after the world changes
+## while the operator keeps its identifier. Here, before the failure is set, a chain of operators reads every wme of the world and the desireds of the
+## state that has no operator and counts them in ^ground-count; ^state-grounded is set after the last read. initialize-failure-evaluation waits for it.
+## Soar has no universal quantifier, so the chain (as in count-object, count-relation) is how "all of the state" is tested.
+## No failure, no grounding.
+
+## Propose ground-init once, in the substate of a state with no operator.
+sp {selection-world*propose*failure-evaluation*ground-init
+   :default
+   (state <s> ^impasse no-change
+              ^attribute state
+              ^flags.failure-grounding explicit
+             -^grounding
+             -^world.future-event
+              ^superstate <ss>)
+   (<ss> ^selection-superstate <sss> ^world <w> ^desireds <d>)
+-->
+   (<s> ^operator <op> + >)
+   (<op> ^name ground-init)}
+
+## Apply ground-init: the world and the desireds are the roots of the count.
+sp {selection-world*apply*failure-evaluation*ground-init
+   :default
+   (state <s> ^operator.name ground-init
+              ^superstate <ss>)
+   (<ss> ^world <w> ^desireds <d>)
+-->
+   (<s> ^grounding true ^ground-count 0 ^counted-id <w> <d>)}
+
+## Propose ground-wme for every wme of a reached identifier that has not been read yet.
+## v2.26: ^duplicate-of is never followed. v2.28: nor the failure-grounding counter and stamps (^applied-count, ^counted-operator, ^stamp, ^parent-stamp, ^local-version, ^versioned-operator). It links a look-ahead world (and its objects and desireds) to the copy it was made
+## from; following it read every ancestor world back to the real one, about 90 more wmes per look-ahead level. The copy's wmes
+## are derived from the parent's, so the failure still depends on the parent world through them.
+## This rule serves every grounding: the state no-change failure and the depth-limit results (achieved-max-depth.soar).
+sp {selection-world*propose*failure-evaluation*ground-wme
+   :default
+   (state <s> ^grounding true
+              ^counted-id <id>)
+   (<id> ^{ <> duplicate-of <> applied-count <> counted-operator <> stamp <> parent-stamp <> local-version <> versioned-operator <att> } <val>)
+  -{ (<s> ^counted <c>)
+     (<c> ^id <id> ^att <att> ^val <val>) }
+  -{ (<s> ^ground-scope-declared true)
+     (<s> ^ground-world-object <id>) }
+-->
+   (<s> ^operator <op> + > =)
+   (<op> ^name ground-wme ^id <id> ^att <att> ^val <val>)}
+
+## Apply ground-wme: read the wme, count it, reach its value.
+sp {selection-world*apply*failure-evaluation*ground-wme
+   :default
+   (state <s> ^operator <op>
+              ^ground-count <n>)
+   (<op> ^name ground-wme ^id <id> ^att <att> ^val <val>)
+   (<id> ^<att> <val>)
+-->
+   (<s> ^ground-count (+ <n> 1) <n> -
+        ^counted <c> ^counted-id <val>)
+   (<c> ^id <id> ^att <att> ^val <val>)}
+
+## Propose ground-finish when nothing is left to read (ground-wme goes first).
+sp {selection-world*propose*failure-evaluation*ground-finish
+   :default
+   (state <s> ^grounding true
+              ^ground-count <n>
+             -^state-grounded true)
+-->
+   (<s> ^operator <op> + >)
+   (<op> ^name ground-finish)}
+
+sp {selection-world*compare*failure-evaluation*ground-wme-before-ground-finish
+   :default
+   (state <s> ^operator <w> +
+              ^operator <f> +)
+   (<w> ^name ground-wme)
+   (<f> ^name ground-finish)
+-->
+   (<s> ^operator <w> > <f>)}
+
+sp {selection-world*apply*failure-evaluation*ground-finish
+   :default
+   (state <s> ^operator.name ground-finish
+              ^ground-count <n>)
+-->
+   (<s> ^state-grounded true)}
+
+## ---- task-declared grounding scope (v2.27) ----
+## A task can declare which world-object attributes determine its state, on its problem space:
+##   (<p> ^name artists ^ground-object-attribute side)
+## Grounding then reads, of each world object (an ^object of the world's ^objects), only ^object-handle and the declared
+## attributes. The world's other wmes and the desireds are read as before. The declaration is the task's claim that a
+## failure depends on nothing else, for example not on static properties, derived attributes or the look-ahead path.
+sp {selection-world*elaborate*failure-evaluation*ground-scope-declared
+   :default
+   (state <s> ^grounding true
+              ^superstate.problem-space.ground-object-attribute <any>)
+-->
+   (<s> ^ground-scope-declared true)}
+
+## The world's ^objects and its ^object values are marked as they are read.
+sp {selection-world*apply*failure-evaluation*ground-wme*objects
+   :default
+   (state <s> ^operator <op>
+              ^superstate.world <w>)
+   (<op> ^name ground-wme ^id <w> ^att objects ^val <objs>)
+-->
+   (<s> ^ground-world-objects <objs>)}
+
+sp {selection-world*apply*failure-evaluation*ground-wme*object
+   :default
+   (state <s> ^operator <op>
+              ^ground-world-objects <objs>)
+   (<op> ^name ground-wme ^id <objs> ^att object ^val <obj>)
+-->
+   (<s> ^ground-world-object <obj>)}
+
+## Of a world object, read only its handle and the declared attributes.
+sp {selection-world*propose*failure-evaluation*ground-wme*declared
+   :default
+   (state <s> ^grounding true
+              ^ground-scope-declared true
+              ^ground-world-object <id>
+              ^superstate.problem-space <ps>)
+   (<id> ^{ <att> <> duplicate-of } <val>)
+   (<ps> ^ground-object-attribute <att>)
+  -{ (<s> ^counted <c>)
+     (<c> ^id <id> ^att <att> ^val <val>) }
+-->
+   (<s> ^operator <op> + > =)
+   (<op> ^name ground-wme ^id <id> ^att <att> ^val <val>)}
+
+sp {selection-world*propose*failure-evaluation*ground-wme*handle
+   :default
+   (state <s> ^grounding true
+              ^ground-scope-declared true
+              ^ground-world-object <id>)
+   (<id> ^object-handle <val>)
+  -{ (<s> ^counted <c>)
+     (<c> ^id <id> ^att object-handle ^val <val>) }
+-->
+   (<s> ^operator <op> + > =)
+   (<op> ^name ground-wme ^id <id> ^att object-handle ^val <val>)}
+
+## ---- failure-grounding counter and none (v2.28) ----
+## The count lives on the real world (^real true): ^applied-count, set to 0 by initialize-agent-world and incremented once
+## per operator applied with ^pre-conditions-satisfied true in the top state (v2.33; see below). A look-ahead world gets a copy of the count from the world
+## it was copied from (elaborations.soar) and never increments it, so a result in look-ahead depends on the real count.
+## v2.33: only the top state counts. A substate that shares the real world (an operator no-change substate) keeps no count
+## and never changes the world's count. A count kept on the substate is o-supported and tests the substate's operator, so the
+## operator's proposal (which tests the world) enters the substate's goal dependency set, and the substate is removed after every
+## world change (v2.32: hierarchical tasks took 20-50% more decisions). A count kept on the superstate's operator is a result and
+## is chunked. An operator implemented in a substate is counted once, when it is applied in the top state.
+## Caveat: the count changes when the operator is applied; with an external environment the world changes when the
+## action completes, later.
+sp {selection-world*apply*world*applied-count*first
+   :default
+   (state <s> ^operator <op>
+              ^superstate nil
+              ^world <w>)
+   (<op> ^pre-conditions-satisfied true)
+   (<w> ^real true
+        ^applied-count <n>
+       -^counted-operator)
+-->
+   (<w> ^applied-count <n> - (+ <n> 1)
+        ^counted-operator <op>)}
+
+sp {selection-world*apply*world*applied-count
+   :default
+   (state <s> ^operator <op>
+              ^superstate nil
+              ^world <w>)
+   (<op> ^pre-conditions-satisfied true)
+   (<w> ^real true
+        ^applied-count <n>
+        ^counted-operator { <> <op> <old> })
+-->
+   (<w> ^applied-count <n> - (+ <n> 1)
+        ^counted-operator <old> - <op>)}
+
+## Every world has one ^stamp that names its current version (i-supported). It is elaborated only by the state that owns the
+## world (the top state; the evaluate-operator state of a look-ahead copy), never by a substate that shares the world, where it
+## would be a result and be chunked (v2.29).
+##   the real world: its ^applied-count;
+##   a look-ahead world: a fresh symbol (^local-version, o-supported) made each time an operator is applied to it;
+##   before that, the stamp of the world it was copied from (^parent-stamp, copied in elaborations.soar).
+## The look-ahead stamps are unique, so a chunk that keeps one ($) never matches another world version.
+sp {selection-world*elaborate*world*stamp*real
+   :default
+   (state <s> ^superstate nil
+              ^world <w>)
+   (<w> ^real true ^applied-count <n>)
+-->
+   (<w> ^stamp <n>)}
+
+sp {selection-world*elaborate*world*stamp*local
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <w>)
+   (<w> ^local-version <v>)
+-->
+   (<w> ^stamp <v>)}
+
+sp {selection-world*elaborate*world*stamp*parent
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <w>)
+   (<w> ^parent-stamp <p>
+       -^local-version)
+-->
+   (<w> ^stamp <p>)}
+
+## A new version each time an operator is applied to a look-ahead world (once per selected operator). Each version
+## rule tests the previous stamp, so a result's justification leads back through every version to the real count.
+sp {selection-world*apply*world*local-version*first
+   :default
+   (state <s> ^operator <op>
+              ^internal-actions true
+              ^world <w>)
+   (<op> ^pre-conditions-satisfied true)
+   (<w> -^real true
+        -^local-version
+        ^parent-stamp <p>)
+-->
+   (<w> ^local-version (make-constant-symbol |wv|)
+        ^versioned-operator <op>)}
+
+sp {selection-world*apply*world*local-version
+   :default
+   (state <s> ^operator <op>
+              ^internal-actions true
+              ^world <w>)
+   (<op> ^pre-conditions-satisfied true)
+   (<w> -^real true
+        ^local-version <v>
+        ^versioned-operator { <> <op> <old> })
+-->
+   (<w> ^local-version <v> - (make-constant-symbol |wv|)
+        ^versioned-operator <old> - <op>)}
+
+## counter: the failure substate and the selection state are grounded in the stamp of the world above them;
+## $ keeps the constant in a chunk, so the chunk never matches another world version.
+sp {selection-world*elaborate*failure-evaluation*state-grounded*counter
+   :default
+   (state <s> ^impasse no-change
+              ^attribute state
+              ^flags.failure-grounding counter
+              ^superstate.world.stamp $ <n>)
+-->
+   (<s> ^state-grounded true)}
+
+sp {selection-world*elaborate*selection*state-grounded*counter
+   :default
+   (state <s> ^name selection
+              ^flags.failure-grounding counter
+              ^superstate.world.stamp $ <n>)
+-->
+   (<s> ^state-grounded true)}
+
+## none: no grounding.
+sp {selection-world*elaborate*failure-evaluation*state-grounded*none
+   :default
+   (state <s> ^impasse no-change
+              ^attribute state
+              ^flags.failure-grounding none)
+-->
+   (<s> ^state-grounded true)}
+
+sp {selection-world*elaborate*selection*state-grounded*none
+   :default
+   (state <s> ^name selection
+              ^flags.failure-grounding none)
+-->
+   (<s> ^state-grounded true)}

@@ -1,0 +1,461 @@
+## Jealous wives, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. The name of an action is ferry-one.
+##   5. You can move the boat and a block on the current bank onto the opposite bank.
+##   6. If an object is below a boat then it is current.
+##   7. If a location is not below a boat then it is opposite.
+##   8. The name of an action is ferry-two.
+##   9. You can move a block that is on the current bank and another block that is on the current bank and the boat onto the opposite bank.
+##  10. The solution has five steps.
+##  12. If a man is on a bank and the wife of the man is not on the bank and another woman is on the bank then you lose.
+##  14. If the last-name of a man is the last-name of a woman then the woman is the wife of the man.
+##  18. The goal is that all the blocks are on a destination bank.
+## World: init-husbands.world (two banks; three couples (woman and man with the same last-name) and the boat on the first bank)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operators: ferry-one ("the boat and a block on the current bank onto the opposite bank"; argument1 = the block,
+##     argument2 = the opposite bank) and ferry-two ("a block ... and another block ... and the boat"; argument1 and
+##     argument2 = the two blocks, the lower ^index first; the destination is the opposite bank). Each operator records the
+##     bank it leaves (^from), so its look-ahead application fires once.
+##   - current is expanded in place (a bank below the boat); opposite is a maintained one-argument relation.
+##   - The goal ("all the blocks are on a destination bank") is expanded over the blocks of the world file (the boat is a
+##     block).
+##   - The losing condition marks the state with ^failure; wife (same last-name) is expanded in place.
+##   - "The solution has five steps." does not match this world (three couples need 11 crossings; five fits the two-couple
+##     world init-husbands2): reported, not used.
+##   - Search control added at JL's direction (16 Nov 2026), not from the English: in look-ahead, a move whose result is a
+##     situation already on the current look-ahead path is rejected. A situation is the bank of every block; each operator
+##     carries the label of the situation it produces (^result), the task object the label of the current one (^situation),
+##     and the look-ahead application records both on the history object (^visited). Real moves (JL, 16 Nov 2026, as in
+##     mc-world): a real move back to a situation already visited is worst (the top state records ^real-visited).
+
+sp {jealous-wives*propose*initialize-jealous-wives
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-jealous-wives ^task-operator false)
+}
+
+sp {jealous-wives*apply*initialize-jealous-wives
+   (state <s> ^operator.name initialize-jealous-wives ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name jealous-wives ^desireds <ds>)
+   (<objs> ^object <o-bank-1> <o-bank-2> <o-woman-smith-3> <o-woman-bale-4> <o-woman-rogers-5> <o-man-smith-6> <o-man-bale-7> <o-man-rogers-8> <o-boat-9> <o-task> <o-history>)
+   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank)
+   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination)
+   (<o-woman-smith-3> ^object-handle woman-smith-3 ^anchored true ^type block ^shape woman ^last-name smith ^index 3 ^label-key pos-3)
+   (<o-woman-bale-4> ^object-handle woman-bale-4 ^anchored true ^type block ^shape woman ^last-name bale ^index 4 ^label-key pos-4)
+   (<o-woman-rogers-5> ^object-handle woman-rogers-5 ^anchored true ^type block ^shape woman ^last-name rogers ^index 5 ^label-key pos-5)
+   (<o-man-smith-6> ^object-handle man-smith-6 ^anchored true ^type block ^shape man ^last-name smith ^index 6 ^label-key pos-6)
+   (<o-man-bale-7> ^object-handle man-bale-7 ^anchored true ^type block ^shape man ^last-name bale ^index 7 ^label-key pos-7)
+   (<o-man-rogers-8> ^object-handle man-rogers-8 ^anchored true ^type block ^shape man ^last-name rogers ^index 8 ^label-key pos-8)
+   (<o-boat-9> ^object-handle boat-9 ^anchored true ^type block ^shape boat ^label-key pos-9)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<o-history> ^object-handle history ^anchored true ^type history)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-woman-smith-3> ^argument2 <o-bank-1>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-woman-bale-4> ^argument2 <o-bank-1>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-woman-rogers-5> ^argument2 <o-bank-1>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-man-smith-6> ^argument2 <o-bank-1>)
+   (<w> ^on <on-4>)
+   (<on-4> ^argument1 <o-man-bale-7> ^argument2 <o-bank-1>)
+   (<w> ^on <on-5>)
+   (<on-5> ^argument1 <o-man-rogers-8> ^argument2 <o-bank-1>)
+   (<w> ^on <on-6>)
+   (<on-6> ^argument1 <o-boat-9> ^argument2 <o-bank-1>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-bank-1> ^argument2 <o-woman-smith-3>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-bank-1> ^argument2 <o-woman-bale-4>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-bank-1> ^argument2 <o-woman-rogers-5>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-bank-1> ^argument2 <o-man-smith-6>)
+   (<w> ^below <below-4>)
+   (<below-4> ^argument1 <o-bank-1> ^argument2 <o-man-bale-7>)
+   (<w> ^below <below-5>)
+   (<below-5> ^argument1 <o-bank-1> ^argument2 <o-man-rogers-8>)
+   (<w> ^below <below-6>)
+   (<below-6> ^argument1 <o-bank-1> ^argument2 <o-boat-9>)
+   (<w> ^opposite <opposite-bank-2>)
+   (<opposite-bank-2> ^argument1 <o-bank-2>)
+   (log 1 (crlf) |Initialize jealous-wives.|)
+}
+
+sp {jealous-wives*elaborate*problem-space
+   (state <s> ^name jealous-wives)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name jealous-wives ^copy-relation below ^copy-relation opposite ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute situation)
+}
+
+sp {jealous-wives*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name jealous-wives ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name jealous-wives ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute situation)
+}
+
+sp {jealous-wives*elaborate*flags
+   (state <s> ^superstate nil ^name jealous-wives)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {jealous-wives*elaborate*state*achieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {jealous-wives*elaborate*state*unachieved*object-property
+   (state <s> ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+sp {jealous-wives*propose*ferry-one
+   (state <s> ^problem-space.name jealous-wives ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <x> <cur> <opp>)
+   (<boat> ^type block ^shape boat ^object-handle $ <bh>)
+   (<x> ^type block ^object-handle { <> <bh> <xh> })
+   (<cur> ^type location)
+   (<opp> ^type location ^object-handle $ <oh>)
+   (<w> ^below <bb> ^on <xo> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<xo> ^argument1 <x> ^argument2 <cur>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
+   (<pre> ^desired-count 0)
+}
+## Effect of ferry-one (look-ahead).
+sp {jealous-wives*apply*ferry-one*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <dh> ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<old> ^object-handle $ <oldh>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+}
+
+sp {jealous-wives*apply*ferry-one*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 <xh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<old> ^object-handle $ <oldh>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+   (<pa> ^effect-applied true)
+   (write |ferry-one: | <xh> | with the boat from | <old> | to | <d> (crlf))
+}
+sp {jealous-wives*propose*ferry-two
+   (state <s> ^problem-space.name jealous-wives ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <x> <y> <cur>)
+   (<boat> ^type block ^shape boat)
+   (<x> ^type block ^index <xi> ^object-handle $ <xh>)
+   (<y> ^type block ^index > <xi> ^object-handle $ <yh>)
+   (<cur> ^type location)
+   (<objs> ^object <opp>)
+   (<w> ^below <bb> ^on <xo> <yo> ^opposite <op-r>)
+   (<op-r> ^argument1 <opp>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<xo> ^argument1 <x> ^argument2 <cur>)
+   (<yo> ^argument1 <y> ^argument2 <cur>)
+   (<ds> ^unachieved <any-unachieved>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <x> ^argument2 <y> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
+   (<pre> ^desired-count 0)
+}
+## Effect of ferry-two (look-ahead).
+sp {jealous-wives*apply*ferry-two*internal
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <yh> ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<old> ^object-handle $ <oldh>)
+   (<od> ^argument1 <d>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+   (<objs> ^object <y>)
+   (<y> ^object-handle $ <yh>)
+   (<w> ^on <ry> ^below <by>)
+   (<ry> ^argument1 <y> ^argument2 <old>)
+   (<by> ^argument1 <old> ^argument2 <y>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+   (<ry> ^argument2 <old> - <d>)
+   (<by> ^argument1 <old> - <d>)
+}
+
+sp {jealous-wives*apply*ferry-two*environment-effect
+   :o-support
+   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-two ^status complete ^argument1 <xh> ^argument2 <yh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<old> ^object-handle $ <oldh>)
+   (<od> ^argument1 <d>)
+   (<objs> ^object <x>)
+   (<x> ^object-handle $ <xh>)
+   (<w> ^on <rx> ^below <bx>)
+   (<rx> ^argument1 <x> ^argument2 <old>)
+   (<bx> ^argument1 <old> ^argument2 <x>)
+   (<objs> ^object <y>)
+   (<y> ^object-handle $ <yh>)
+   (<w> ^on <ry> ^below <by>)
+   (<ry> ^argument1 <y> ^argument2 <old>)
+   (<by> ^argument1 <old> ^argument2 <y>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<rx> ^argument2 <old> - <d>)
+   (<bx> ^argument1 <old> - <d>)
+   (<ry> ^argument2 <old> - <d>)
+   (<by> ^argument1 <old> - <d>)
+   (<pa> ^effect-applied true)
+   (write |ferry-two: | <xh> | and | <yh> | with the boat from | <old> | to | <d> (crlf))
+}
+## Failure: a man is on a bank, his wife (the woman with his last-name) is not on the bank, and another woman is on the bank.
+## "not on the bank" is read as "on the other bank" (A-R3), so the test is positive.
+sp {jealous-wives*elaborate*failure*man-without-wife
+   (state <s> ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^on <rm> <rw> <ro>)
+   (<objs> ^object <ma> <wi> <wo> <bank>)
+   (<bank> ^type location)
+   (<ma> ^type block ^shape man ^last-name <ln>)
+   (<wi> ^type block ^shape woman ^last-name <ln>)
+   (<wo> ^type block ^shape woman)
+   (<rm> ^argument1 <ma> ^argument2 <bank>)
+   (<rw> ^argument1 <wi> ^argument2 { <> <bank> })
+   (<ro> ^argument1 <wo> ^argument2 <bank>)
+-->
+   (<s> ^failure <ds>)
+}
+## ---- Search control (added, not taught): avoid returning to a situation on the current look-ahead path. ----
+## Where each block would be after a proposed operator: a moved block (an argument, or the boat) on the destination bank.
+sp {jealous-wives*elaborate*operator*after*moved-block
+   (state <s> ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^<< argument1 argument2 >> <b> ^to <dest>)
+   (<b> ^type block ^label-key <k>)
+   (<dest> ^object-handle $ <dh>)
+-->
+   (<op> ^<k> <dh>)
+}
+
+sp {jealous-wives*elaborate*operator*after*boat
+   (state <s> ^operator <op> + ^world <w>)
+   (<w> ^objects.object <b>)
+   (<op> ^task-operator true ^to <dest>)
+   (<b> ^type block ^shape boat ^label-key <k>)
+   (<dest> ^object-handle $ <dh>)
+-->
+   (<op> ^<k> <dh>)
+}
+
+## A block that does not move stays on its bank.
+sp {jealous-wives*elaborate*operator*after*unmoved-block
+   (state <s> ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^argument1 <a1> ^argument2 <a2> ^to <dest>)
+   (<w> ^objects <objs> ^on <r>)
+   (<objs> ^object { <> <a1> <> <a2> <b> })
+   (<b> ^type block ^shape { <> boat } ^label-key <k>)
+   (<r> ^argument1 <b> ^argument2 <bank>)
+   (<bank> ^object-handle $ <bh>)
+-->
+   (<op> ^<k> <bh>)
+}
+
+## The label of the situation the operator produces.
+sp {jealous-wives*elaborate*operator*result
+   (state <s> ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^pos-3 <pos-3> ^pos-4 <pos-4> ^pos-5 <pos-5> ^pos-6 <pos-6> ^pos-7 <pos-7> ^pos-8 <pos-8> ^pos-9 <pos-9>)
+-->
+   (<op> ^result (concat <pos-3> |,| <pos-4> |,| <pos-5> |,| <pos-6> |,| <pos-7> |,| <pos-8> |,| <pos-9>))
+}
+
+## The label of the current situation (derived; not copied into look-ahead worlds).
+sp {jealous-wives*elaborate*situation
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^on <r3> <r4> <r5> <r6> <r7> <r8> <r9>)
+   (<objs> ^object <t> <b3> <b4> <b5> <b6> <b7> <b8> <b9>)
+   (<t> ^type task)
+   (<b3> ^label-key pos-3)
+   (<r3> ^argument1 <b3> ^argument2 <bank3>)
+   (<bank3> ^object-handle $ <h3>)
+   (<b4> ^label-key pos-4)
+   (<r4> ^argument1 <b4> ^argument2 <bank4>)
+   (<bank4> ^object-handle $ <h4>)
+   (<b5> ^label-key pos-5)
+   (<r5> ^argument1 <b5> ^argument2 <bank5>)
+   (<bank5> ^object-handle $ <h5>)
+   (<b6> ^label-key pos-6)
+   (<r6> ^argument1 <b6> ^argument2 <bank6>)
+   (<bank6> ^object-handle $ <h6>)
+   (<b7> ^label-key pos-7)
+   (<r7> ^argument1 <b7> ^argument2 <bank7>)
+   (<bank7> ^object-handle $ <h7>)
+   (<b8> ^label-key pos-8)
+   (<r8> ^argument1 <b8> ^argument2 <bank8>)
+   (<bank8> ^object-handle $ <h8>)
+   (<b9> ^label-key pos-9)
+   (<r9> ^argument1 <b9> ^argument2 <bank9>)
+   (<bank9> ^object-handle $ <h9>)
+-->
+   (<t> ^situation (concat <h3> |,| <h4> |,| <h5> |,| <h6> |,| <h7> |,| <h8> |,| <h9>))
+}
+
+## In look-ahead, reject an operator whose result is a situation already on the path.
+sp {jealous-wives*reject*operator*repeated-situation
+   (state <s> ^internal-actions true ^operator <op> + ^world <w>)
+   (<w> ^objects.object <hist>)
+   (<hist> ^type history ^visited <l>)
+   (<op> ^task-operator true ^result <l>)
+-->
+   (<s> ^operator <op> -)
+}
+
+## ---- Search control on real moves (added, not taught; JL 16 Nov 2026, as in Tasks/From-English/mc-world): ----
+## a real move back to a situation already visited is worst. It is chosen only when nothing else is left, so the agent
+## prefers progress but is never trapped by its own history. The record is on the top state, not in the world, so it is
+## not copied into look-ahead worlds.
+## The real application records the situation it leaves (not the one it produces: recording that would make the selected
+## operator itself worst, and Soar would replace it before its command completes).
+sp {jealous-wives*apply*operator*record-real-move
+   (state <s> ^superstate nil ^operator <op> ^world <w>)
+   (<op> ^task-operator true)
+   (<w> ^objects.object <t>)
+   (<t> ^type task ^situation <sit>)
+-->
+   (<s> ^real-visited <sit>)
+}
+
+sp {jealous-wives*compare*operator*real-repeated-situation
+   (state <s> ^superstate nil ^operator <op> + ^real-visited <l>)
+   (<op> ^task-operator true ^result <l>)
+-->
+   (<s> ^operator <op> <)
+}
+
+## The look-ahead application records the situation it leaves and the one it produces.
+sp {jealous-wives*apply*operator*record-path
+   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^result <r>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <hist> <t>)
+   (<hist> ^type history)
+   (<t> ^type task ^situation <sit>)
+-->
+   (<hist> ^visited <r> <sit>)
+}
+## Goal: all the blocks are on a destination bank (expanded over the blocks of the world file).
+sp {jealous-wives*elaborate*goal*all-crossed
+   (state <s> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <t> <dest> <b-woman-smith-3> <b-woman-bale-4> <b-woman-rogers-5> <b-man-smith-6> <b-man-bale-7> <b-man-rogers-8> <b-boat-9>)
+   (<t> ^type task)
+   (<dest> ^type location ^name destination)
+   (<b-woman-smith-3> ^object-handle woman-smith-3)
+   (<w> ^on <on-woman-smith-3>)
+   (<on-woman-smith-3> ^argument1 <b-woman-smith-3> ^argument2 <dest>)
+   (<b-woman-bale-4> ^object-handle woman-bale-4)
+   (<w> ^on <on-woman-bale-4>)
+   (<on-woman-bale-4> ^argument1 <b-woman-bale-4> ^argument2 <dest>)
+   (<b-woman-rogers-5> ^object-handle woman-rogers-5)
+   (<w> ^on <on-woman-rogers-5>)
+   (<on-woman-rogers-5> ^argument1 <b-woman-rogers-5> ^argument2 <dest>)
+   (<b-man-smith-6> ^object-handle man-smith-6)
+   (<w> ^on <on-man-smith-6>)
+   (<on-man-smith-6> ^argument1 <b-man-smith-6> ^argument2 <dest>)
+   (<b-man-bale-7> ^object-handle man-bale-7)
+   (<w> ^on <on-man-bale-7>)
+   (<on-man-bale-7> ^argument1 <b-man-bale-7> ^argument2 <dest>)
+   (<b-man-rogers-8> ^object-handle man-rogers-8)
+   (<w> ^on <on-man-rogers-8>)
+   (<on-man-rogers-8> ^argument1 <b-man-rogers-8> ^argument2 <dest>)
+   (<b-boat-9> ^object-handle boat-9)
+   (<w> ^on <on-boat-9>)
+   (<on-boat-9> ^argument1 <b-boat-9> ^argument2 <dest>)
+-->
+   (<t> ^goal-met true)
+}

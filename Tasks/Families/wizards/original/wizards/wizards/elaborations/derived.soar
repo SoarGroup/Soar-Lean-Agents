@@ -1,0 +1,156 @@
+
+sp {wizards*elaborate*rec*own*base
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^wiz <self-wiz>)
+   (<self> ^view <lk1x1>)
+   (<lk1x1> ^owner <self-wiz>)
+-->
+   (<self> ^own 1)
+}
+
+sp {wizards*elaborate*rec*white*base*2
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^mark 1)
+-->
+   (<self> ^white 1)
+}
+
+sp {wizards*elaborate*rec*white*base*3
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^own 1)
+   (<self> ^sib <lk2x1>)
+   (<lk2x1> ^blackish 1)
+   (<self> ^sib { <lk2x2> <> <lk2x1> })
+   (<lk2x2> ^blackish 1)
+-->
+   (<self> ^white 1)
+}
+
+sp {wizards*elaborate*rec*white*via-sub
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^sub <below>)
+   (<below> ^white 1)
+   -(<below> ^contra 1)
+-->
+   (<self> ^white 1)
+}
+
+sp {wizards*elaborate*rec*black*base*5
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^mark 2)
+-->
+   (<self> ^black 1)
+}
+
+sp {wizards*elaborate*rec*black*via-sub
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^sub <below>)
+   (<below> ^black 1)
+   -(<below> ^contra 1)
+-->
+   (<self> ^black 1)
+}
+
+sp {wizards*elaborate*rec*blackish*base*7
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^black 1)
+-->
+   (<self> ^blackish 1)
+}
+
+sp {wizards*elaborate*rec*blackish*base*8
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^mv <lk1x1>)
+   (<lk1x1> ^value 2)
+-->
+   (<self> ^blackish 1)
+}
+
+sp {wizards*elaborate*rec*gwhite*base*9
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^own 1)
+   (<self> ^white 1)
+-->
+   (<self> ^gwhite 1)
+}
+
+sp {wizards*elaborate*rec*gwhite*base*10
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^aguess 1)
+-->
+   (<self> ^gwhite 1)
+}
+
+sp {wizards*elaborate*rec*gwhite*via-sub
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^sub <below>)
+   (<below> ^gwhite 1)
+   -(<below> ^contra 1)
+-->
+   (<self> ^gwhite 1)
+}
+
+sp {wizards*elaborate*rec*gblack*base*12
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^own 1)
+   (<self> ^black 1)
+-->
+   (<self> ^gblack 1)
+}
+
+sp {wizards*elaborate*rec*gblack*base*13
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^aguess 2)
+-->
+   (<self> ^gblack 1)
+}
+
+sp {wizards*elaborate*rec*gblack*via-sub
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^sub <below>)
+   (<below> ^gblack 1)
+   -(<below> ^contra 1)
+-->
+   (<self> ^gblack 1)
+}
+
+sp {wizards*elaborate*rec*contra*base*15
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^gwhite 1)
+   (<self> ^aguess 0)
+-->
+   (<self> ^contra 1)
+}
+
+sp {wizards*elaborate*rec*contra*base*16
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^gblack 1)
+   (<self> ^aguess 0)
+-->
+   (<self> ^contra 1)
+}
+
+sp {wizards*elaborate*rec*contra*base*17
+   (state <s> ^name wizards)
+   (<s> ^rec <self>)
+   (<self> ^gwhite 1)
+   (<self> ^gblack 1)
+-->
+   (<self> ^contra 1)
+}

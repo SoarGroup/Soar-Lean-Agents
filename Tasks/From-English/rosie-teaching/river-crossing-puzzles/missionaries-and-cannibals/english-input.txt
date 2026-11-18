@@ -1,0 +1,34 @@
+Missionaries and Cannibals: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is missionaries-and-cannibals.
+  2. Load init-mac.   [world state: init-mac.world]
+  3. Ok.
+  4. The name of an action is ferry-one.
+  5. You can move the boat and a block on the current bank onto the opposite bank.
+  6. If an object is below a boat then it is current.
+  7. If a location is not below a boat then it is opposite.
+  8. The name of an action is ferry-two.
+  9. You can move a block that is on the current bank and another block that is on the current bank and the boat onto the opposite bank.
+ 10. The solution has five steps.
+ 11. Load fail-mac.   [world state: fail-mac.world]
+ 12. If the number of cannibals on a bank is more than the number of missionaries on the bank then you lose.
+ 13. Ok.
+ 14. Load final-mac.   [world state: final-mac.world]
+ 15. The name of the goal is all-crossed.
+ 16. Ok.
+ 17. The goal is that all the blocks are on a destination bank.
+ 18. Done.
+ 19. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: name (destination1); shape (bank1, boat1, cannibal1, missionary1)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Other world files in this folder, not loaded in the dialog: init-mac2.world
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/river-crossing-puzzles/missionaries-and-cannibals/.

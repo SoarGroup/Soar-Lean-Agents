@@ -1,0 +1,170 @@
+
+sp {wizards*select*self-unknown-first
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name self-unknown)
+   (<o> ^r <r>)
+   (<r> ^var 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*complement-first
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name complement)
+   (<o> ^|k1| <k1>)
+   (<o> ^|w1| <w1>)
+   (<o> ^|k2| <k2>)
+   (<o> ^|w2| <w2>)
+   (<o> ^m <m>)
+   (<o> ^u <u>)
+   (<w1> ^contra 1)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*guess-first
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name guess-white)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<wd> ^done 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*guess-black-first
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name guess-black)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<wd> ^done 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*consider-last
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name consider-knows)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^w <w>)
+   (<o> ^|a1| <a1>)
+   (<o> ^|a2| <a2>)
+   (<o> ^|a3| <a3>)
+   (<w> ^modeled 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-black-late
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name assume-black)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<o> ^m <m>)
+   (<m> ^value 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-white-late
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name assume-white)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<o> ^m <m>)
+   (<m> ^value 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-before-consider
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name assume-black)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name consider-knows)
+   (<o2> ^wd <other-wd>)
+   (<o2> ^k <other-k>)
+   (<o2> ^w <other-w>)
+   (<o2> ^|a1| <other-a1>)
+   (<o2> ^|a2| <other-a2>)
+   (<o2> ^|a3| <other-a3>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {wizards*select*assume-white-before-consider
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name assume-white)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name consider-knows)
+   (<o2> ^wd <other-wd>)
+   (<o2> ^k <other-k>)
+   (<o2> ^w <other-w>)
+   (<o2> ^|a1| <other-a1>)
+   (<o2> ^|a2| <other-a2>)
+   (<o2> ^|a3| <other-a3>)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {wizards*select*prefer-deeper
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name consider-knows)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^w <w>)
+   (<o> ^|a1| <a1>)
+   (<o> ^|a2| <a2>)
+   (<o> ^|a3| <a3>)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name consider-knows)
+   (<o2> ^wd <other-wd>)
+   (<o2> ^k <other-k>)
+   (<o2> ^w <other-w>)
+   (<o2> ^|a1| <other-a1>)
+   (<o2> ^|a2| <other-a2>)
+   (<o2> ^|a3| <other-a3>)
+   (<other-k> ^parent <k>)
+-->
+   (<s> ^operator <o> -)
+}
+
+sp {wizards*select*prefer-new-names
+   (state <s> ^name wizards)
+   (<s> ^operator <o> +)
+   (<o> ^name consider-knows)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^w <w>)
+   (<o> ^|a1| <a1>)
+   (<o> ^|a2| <a2>)
+   (<o> ^|a3| <a3>)
+   (<s> ^operator { <o2> <> <o> } +)
+   (<o2> ^name consider-knows)
+   (<o2> ^wd <other-wd>)
+   (<o2> ^k <other-k>)
+   (<o2> ^w <other-w>)
+   (<o2> ^|a1| <other-a1>)
+   (<o2> ^|a2| <other-a2>)
+   (<o2> ^|a3| <other-a3>)
+   (<other-w> ^wiz <other-w-wiz>)
+   (<w> ^wiz <w-wiz>)
+   -{ (<s> ^view <none1>) (<none1> ^owner <other-w-wiz>) }
+   (<s> ^view <some2>)
+   (<some2> ^owner <w-wiz>)
+-->
+   (<s> ^operator <o> -)
+}

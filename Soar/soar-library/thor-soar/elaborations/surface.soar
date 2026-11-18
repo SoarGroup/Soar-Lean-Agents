@@ -1,0 +1,23 @@
+## surface.soar -- thor-soar: 2 elaborations.
+
+## Elaborate state surface -> sets surface.
+sp {elaborations*state*surface
+    :default
+   (state <s> ^superstate nil
+              ^scene.on.argument2 <arg2>)
+   (<arg2> -^class floor
+           -^openable true
+           -^open false)
+-->
+   (<arg2> ^surface true)
+}
+
+## Elaborate class surface -> sets surface.
+sp {elaborations*class*surface
+    :default
+   (state <s> ^superstate nil
+              ^scene.objects.object <object>)
+   (<object> ^class << countertop shelf stoveburner sink sinkbasin plate >> )
+-->
+   (<object> ^surface true)
+}

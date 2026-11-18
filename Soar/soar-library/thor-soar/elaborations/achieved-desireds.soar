@@ -1,0 +1,1362 @@
+## achieved-desireds.soar -- thor-soar: 81 elaborations.
+
+## Elaborate state achieved-desired anchored -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*anchored
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^anchored true
+                     ^object-handle <handle>
+                    -^ { <> anchored <> object-handle })
+   (<s> ^world.objects.object <object>)
+   (<object> ^anchored true
+              ^<< object-handle origin-object-handle >>  <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin accessible -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*accessible
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^accessible <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^accessible <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin activated -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*activated
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^activated <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin broken -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*broken
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^broken <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^broken <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin cookable -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*cookable
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cookable <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cookable <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin confirmed -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*confirmed
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^confirmed <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^confirmed <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin cook-state -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*cook-state
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cook-state <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cook-state <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin dirty -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*dirty
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^dirty <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^dirty <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin discarded -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*discarded
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^discarded <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^discarded <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin fill-amount -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*fill-amount
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^fill-amount <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^fill-amount <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin liquid-contents -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*liquid-contents
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^liquid-contents <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^liquid-contents <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin looked-at -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*looked-at
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^looked-at true
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^looked-at true
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin open -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*open
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^open <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^open <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin reachable -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*reachable
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^reachable <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin sliced -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*sliced
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^sliced <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^sliced <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin visible -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*visible
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^visible <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^visible <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin in-view -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*in-view
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^in-view <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^in-view <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin cooked-by -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*cooked-by
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cooked-by <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cooked-by <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle origin cleaned-by -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*origin*cleaned-by
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cleaned-by <desired-value>
+             ^anchored true
+             ^origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cleaned-by <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object accessible -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*accessible
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^accessible <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^accessible <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object activated -> sets achieved, unachieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*activated
+   :o-support  # having trouble with justifications
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^activated <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>
+               ^unachieved <desired> -)
+}
+
+## Elaborate state achieved-desired handle object broken -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*broken
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^broken <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^broken <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object class -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*class
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^class <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^class <desired-value>
+                    -^{ <> class <> object-handle }
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object confirmed -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*confirmed
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^confirmed <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^confirmed <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object cook-state -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*cook-state
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cook-state <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cook-state <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object dirty -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*dirty
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^dirty <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^dirty <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object discarded -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*discarded
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^discarded <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^discarded <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object fill-amount -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*fill-amount
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^fill-amount <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^fill-amount <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object looked-at -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*looked-at
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^looked-at true
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^looked-at true
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object dishes-clean -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*dishes-clean
+    :default
+   (state <s> ^desireds <desireds>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^dirty true
+             -^material food)}
+   (<desireds> ^desired <desired>)
+   (<desired> ^dishes-clean true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object liquid-contents -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*liquid-contents
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^liquid-contents <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^liquid-contents <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object open -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*open
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^open <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^open <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object reachable -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*reachable
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^reachable <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object sliced -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*sliced
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^sliced <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^sliced <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle object visible -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*object*visible
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^visible <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^visible <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle cooked-by -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*cooked-by
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cooked-by <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cooked-by <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired handle cleaned-by -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*handle*cleaned-by
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^cleaned-by <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cleaned-by <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state unachieved-desired accessible -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*accessible
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property accessible)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^accessible true
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^accessible true
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+   -{(<desireds> ^achieved <desired2>)
+     (<desired> ^disjunction <desired2>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired-activated -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired-activated
+    :default
+   (state <s> ^desireds <desireds>
+              ^quiescence t  #new
+             -^world.abstract-property activated)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^activated <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^activated <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+ #  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired cookable -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*cookable
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property cookable)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cookable <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^cookable <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+ -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired broken -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*broken
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property broken)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^broken <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^broken <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired class -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*class
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property class)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^class <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^class <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired confirmed -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*confirmed
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property confirmed)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^confirmed <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^confirmed <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired anchored -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*anchored
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^anchored true
+                     ^object-handle <handle>
+                    -^ { <> anchored <> object-handle })
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^anchored true
+              ^<< object-handle origin-object-handle >>  <handle>)}
+  -(<desireds> ^achieved <desired>)
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired cook-state -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*cook-state
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property cook-state)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cook-state <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^cook-state <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+   -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired dirty -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*dirty
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property dirty)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^dirty <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^dirty <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired discarded -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*discarded
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property dirty)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^discarded <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^discarded <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired fill-amount -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*fill-amount
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property fill-amount)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^fill-amount <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^fill-amount <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired handle object dishes-clean -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*handle*object*dishes-clean
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object.dirty true)
+   (<desireds> ^desired <desired>)
+   (<desired> ^dishes-clean true)
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired liquid-contents -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*liquid-contents
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property liquid-contents)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^liquid-contents <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^liquid-contents <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired looked-at -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*looked-at
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property looked-at)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^looked-at <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^looked-at <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired open -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*open
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property open)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^open <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^open <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired reachable -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*reachable
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property reachable)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^reachable <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^reachable <desired-value>
+              ^<< object-handle origin-object-handle >> <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired sliced -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*sliced
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property sliced)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^sliced <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^sliced <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+   -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired visible -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*visible
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property visible)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^visible <desired-value>
+                     ^object-handle <handle>)
+  -{(<s> ^world.objects.object <object>)
+    (<object> ^visible <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+                       -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired in-view -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*in-view
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property visible
+              ^world.objects <objects>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^in-view <desired-value>
+                     ^object-handle <handle>)
+  -{(<objects> ^object <object>)
+    (<object> ^in-view <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+   -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired cooked-by -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*cooked-by
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property visible
+              ^world.objects <objects>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cooked-by <desired-value>
+                     ^object-handle <handle>)
+  -{(<objects> ^object <object>)
+    (<object> ^cooked-by <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired cleaned-by -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*cleaned-by
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.abstract-property visible
+              ^world.objects <objects>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^cleaned-by <desired-value>
+                     ^object-handle <handle>)
+  -{(<objects> ^object <object>)
+    (<object> ^cleaned-by <desired-value>
+              ^<< object-handle origin-object-handle >>  <handle>
+              ^anchored true)}
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state achieved-desired holding -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*holding
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.holding-object.object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^holding-object.object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired holding-origin -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*holding-origin
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.holding-object.origin-object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^holding-object.object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state unachieved-desired holding unachieved1 -> sets unachieved, achieved.
+sp {thor-soar*elaborate*state*unachieved-desired*holding*unachieved1
+    :default
+   (state <s> ^desireds <desireds>)
+  -{(<s> ^world.holding-object <holding-object>)
+    (<holding-object> ^object-handle <object-handle>  # don't use <> because can be holding something that is on something else and both are held
+                      )}
+  -{(<s> ^world.holding-object <holding-object>)
+    (<holding-object> ^origin-object-handle <object-handle>  # don't use <> because can be holding something that is on something else and both are held
+                      )}
+   (<desireds> ^desired <desired>)
+   (<desired> ^holding-object.object-handle <object-handle>)
+-->
+   (<desireds> ^unachieved <desired>
+               ^achieved <desired> -)
+}
+
+## Elaborate state unachieved-desired holding unachieved2 -> sets unachieved, achieved.
+sp {thor-soar*elaborate*state*unachieved-desired*holding*unachieved2
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.holding-object <holding-object>)
+   (<holding-object> ^object-handle { <> <object-handle> }
+                     ^origin-object-handle { <> <object-handle> })
+   (<desireds> ^desired <desired>)
+   (<desired> ^holding-object.object-handle <object-handle>)
+-->
+   (<desireds> ^unachieved <desired>
+               ^achieved <desired> -)
+}
+
+## Elaborate state achieved-desired self -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*self
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.self.<attribute> <value>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^self.<attribute> <value>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state unachieved-desire self -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desire**self
+    :default
+   (state <s> ^desireds <desireds>
+             -^world.self.<attribute> <value>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^self.<attribute> <value>)
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state achieved-desired container stored -> sets achieved.
+## Container or Location
+## separate better for chunking
+sp {thor-soar*elaborate*state*achieved-desired*container*stored
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.in <in-container-object>
+              ^world.objects.object <object>)
+   (<object> ^open false
+             ^object-handle <container-handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^stored <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired container on -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*container*on
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.on <in-container-object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^on <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired container in -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*container*in
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.in <in-container-object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^in <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)}
+
+## Elaborate state achieved-desired controlled-by -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*controlled-by
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.controlled-by <in-container-object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^controlled-by <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired container origin stored -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*container*origin*stored
+    :default
+   (state <s> ^desireds <desireds>
+              ^world <world>)
+   (<world> ^in <in-container-object>
+            ^objects.object <container> <object>)
+   (<container> ^open false
+                ^object-handle <container-handle>)
+   (<object> ^origin-object-handle <object-handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^stored <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^origin-object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired container origin on -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*container*origin*on
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.on <in-container-object>
+              ^world.objects.object <object>)
+   (<object> ^origin-object-handle <object-handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^on <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^origin-object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state achieved-desired container origin in -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*container*origin*in
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.in <in-container-object>
+              ^world.objects.object <object>)
+   (<object> ^origin-object-handle <object-handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^in <d-in-container-object>)
+   (<in-container-object> ^argument1 <argument1>
+                          ^argument2 <argument2>)
+   (<d-in-container-object> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <container-handle>)
+   (<argument1> ^origin-object-handle <object-handle>
+                ^anchored true)
+   (<argument2> ^object-handle <container-handle>
+                ^anchored true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state unachieved-desired container stored -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*container*stored
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^stored <in-container-object>)
+   (<in-container-object> ^argument1.object-handle <object-handle>
+                          ^argument2.object-handle <container-handle>)
+  -{(<s> ^world.in <in-container-object2>
+         ^world.objects.object <container-object2>)
+    (<container-object2> ^open false
+                         ^object-handle <container-handle>)
+    (<in-container-object2> ^argument1 <argument1>
+                            ^argument2 <argument2>)
+    (<argument1> ^<< origin-object-handle object-handle >> <object-handle>
+                 ^anchored true)
+    (<argument2> ^object-handle <container-handle>
+                 ^anchored true)}
+                          -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired container on -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*container*on
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^on <in-container-object>)
+   (<in-container-object> ^argument1.object-handle <object-handle>
+                          ^argument2.object-handle <container-handle>)
+  -{(<s> ^world.on <in-container-object2>)
+    (<in-container-object2> ^argument1 <argument1>
+                            ^argument2 <argument2>)
+    (<argument1> ^<< origin-object-handle object-handle >> <object-handle>
+                 ^anchored true)
+    (<argument2> ^object-handle <container-handle>
+                 ^anchored true)}
+                          -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired container in -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*container*in
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^in <in-container-object>)
+   (<in-container-object> ^argument1.object-handle <object-handle>
+                          ^argument2.object-handle <container-handle>)
+  -{(<s> ^world.in <in-container-object2>)
+    (<in-container-object2> ^argument1 <argument1>
+                            ^argument2 <argument2>)
+    (<argument1> ^<< origin-object-handle object-handle >> <object-handle>
+                 ^anchored true)
+    (<argument2> ^object-handle <container-handle>
+                 ^anchored true)}
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state unachieved-desired controlled-by -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*controlled-by
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^controlled-by <in-container-object>)
+   (<in-container-object> ^argument1.object-handle <object-handle>
+                          ^argument2.object-handle <container-handle>)
+  -{(<s> ^world.controlled-by <in-container-object2>)
+    (<in-container-object2> ^argument1 <argument1>
+                            ^argument2 <argument2>)
+    (<argument1> ^object-handle <object-handle>
+                 ^anchored true)
+    (<argument2> ^object-handle <container-handle>
+                 ^anchored true)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state achieved-desired sliced -> sets achieved.
+sp {thor-soar*elaborate*state*achieved-desired*sliced
+    :default
+   (state <s> ^desireds <desireds>
+              ^world.objects.object <sliced-object>)
+   (<sliced-object> ^origin-object-handle <object-handle>
+                    ^anchored true
+                    ^sliced true)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <sliced-d-object>)
+   (<sliced-d-object> ^origin-object-handle <object-handle>
+                      ^sliced true)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state unachieved-desired sliced unachieved2 -> sets unachieved.
+sp {thor-soar*elaborate*state*unachieved-desired*sliced*unachieved2
+    :default
+   (state <s> ^desireds <desireds>)
+  -{(<s> ^world.objects.object <sliced-object>)
+    (<sliced-object> ^origin-object-handle <object-handle>
+                     ^anchored true
+                     ^sliced true)}
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <sliced-d-object>)
+   (<sliced-d-object> ^origin-object-handle <object-handle>
+                      ^sliced true)
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate state desireds achieved desired completed-task -> sets achieved.
+## Desired: completed-task
+## Achieved when there is a completed-task event on the world
+sp {thor-soar*elaborate*state*desireds*achieved*desired*completed-task
+    :default
+   (state <s> ^desireds <desireds>
+              ^world <world>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^completed-task <task>)
+   (<world> ^completed-task <task>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate state desireds unachieved desired completed-task -> sets unachieved.
+## Unachieved if there is not a completed-task event on the world
+sp {thor-soar*elaborate*state*desireds*unachieved*desired*completed-task
+    :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^completed-task <task>)
+  -{(<s> ^world.completed-task <task>)}
+  -{(<desireds> ^achieved <desired>)}
+-->
+   (<desireds> ^unachieved <desired>)
+}
+
+## Elaborate achieved desired from interaction -> sets achieved.
+## Top-state: elaborate task achieved from interaction
+## (When the instructor told us the goal was achieved)
+sp {thor-soar*elaborate*achieved*desired*from*interaction
+   :i-support
+    :default
+   (state <s> ^superstate nil
+              ^interaction-stack.top-segment <top-segment>
+              ^desireds <desireds>)
+   (<top-segment> ^parameters <parameters>)
+   (<parameters> ^achieved <desired>)
+   (<desireds> ^desired <desired>)
+-->
+   (<desireds> ^achieved <desired>)
+}
+
+## Elaborate world-context object onto task operator -> sets object.
+## If we are proposing a task operator, then copy objects
+## from the local world-context onto the operator as well
+sp {thor-soar*elaborate*world-context*object*onto*task*operator
+    :default
+   (state <s> ^desireds <desireds>
+              ^operator <operator> +)
+   (<operator> ^instance-of composite-operator
+               ^task-handle <task-handle>
+               ^desireds <op-desireds>)
+   (<desireds> ^world-context.objects.object <object>)
+   (<op-desireds> ^world-context.objects <objects>)
+-->
+   (<objects> ^object <object>)
+}

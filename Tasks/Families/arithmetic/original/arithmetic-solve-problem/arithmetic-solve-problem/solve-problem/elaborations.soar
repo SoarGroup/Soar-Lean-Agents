@@ -1,0 +1,19 @@
+
+sp {solve-problem*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name solve-problem)
+   (<so> ^p <p>)
+   (<so> ^|c1| <c1>)
+   (<so> ^|c2| <c2>)
+   (<so> ^|c3| <c3>)
+-->
+   (<s> ^name solve-problem)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^task-state <ss>)
+}

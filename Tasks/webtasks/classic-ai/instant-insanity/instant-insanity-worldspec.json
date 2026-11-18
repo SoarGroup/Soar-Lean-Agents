@@ -1,0 +1,3676 @@
+{
+  "format": "worldspec-1",
+  "name": "instant-insanity",
+  "title": "Instant Insanity (instant-insanity)",
+  "statements": [
+    [
+      1,
+      "There are four cubes. Each face of a cube is red, green, blue, white or yellow."
+    ],
+    [
+      2,
+      "Each cube is given by its three pairs of opposite faces: cube 1: red and green, blue and white, red and yellow; cube 2: green and blue, yellow and red, white and white; cube 3: yellow and white, green and red, blue and blue; cube 4: blue and red, white and yellow, green and green."
+    ],
+    [
+      3,
+      "You stack the four cubes in a column, each turned any way you like."
+    ],
+    [
+      4,
+      "The column has four sides: front, back, left and right."
+    ],
+    [
+      5,
+      "The goal is that each of the four sides of the column shows four different colours."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-II1",
+      "kind": "intent",
+      "text": "\"turned any way you like\": each cube has one orientation object per distinct assignment of colours to the four sides (front, back, left, right); the top and bottom faces do not matter. Cube 1 has 24, cubes 2 to 4 have 16 (each has a pair of equal colours).",
+      "stmts": [
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "A-II2",
+      "kind": "intent",
+      "text": "\"stack in a column\": cubes are placed one at a time in the order 1, 2, 3, 4, each on the one before; cube 1 goes on the ground, which counts as placed from the start.",
+      "stmts": [
+        3
+      ]
+    },
+    {
+      "id": "A-II3",
+      "kind": "intent",
+      "text": "\"four different colours\" on a side: two placed cubes showing the same colour on the same side is a losing state, so a partial column that cannot be completed is cut off at once.",
+      "stmts": [
+        5
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "ground",
+      "type": "ground",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "ground"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "ground-pose",
+      "type": "pose",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "ground-pose"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "cube-a",
+      "type": "cube",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "cube-a"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o0x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o0x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o1x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o1x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o2x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o2x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o3x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o3x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o4x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o4x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o5x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o5x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o6x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o6x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o7x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o7x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o8x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o8x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o9x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o9x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o10x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o10x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o11x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o11x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o12x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o12x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o13x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o13x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o14x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o14x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o15x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o15x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o16x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o16x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o17x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o17x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o18x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o18x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o19x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o19x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o20x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o20x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o21x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o21x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o22x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o22x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a-o23x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a-o23x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "cube-b",
+      "type": "cube",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "cube-b"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o0x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o0x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o1x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o1x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o2x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o2x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o3x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o3x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o4x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o4x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o5x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o5x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o6x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o6x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o7x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o7x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o8x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o8x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o9x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o9x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o10x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o10x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o11x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o11x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o12x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o12x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o13x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o13x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o14x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o14x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b-o15x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b-o15x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "cube-c",
+      "type": "cube",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "cube-c"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o0x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o0x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o1x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o1x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o2x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o2x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o3x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o3x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o4x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o4x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o5x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o5x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o6x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o6x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o7x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o7x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o8x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o8x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o9x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o9x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o10x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o10x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o11x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o11x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o12x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o12x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o13x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o13x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o14x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o14x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-o15x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-o15x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "cube-d",
+      "type": "cube",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "cube-d"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o0x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o0x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o1x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o1x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o2x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o2x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o3x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o3x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o4x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o4x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o5x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o5x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o6x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o6x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o7x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o7x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o8x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o8x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o9x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o9x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o10x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o10x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o11x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o11x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "green"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o12x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o12x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "blue"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "red"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o13x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o13x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "red"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "blue"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o14x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o14x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "white"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "yellow"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-o15x",
+      "type": "orientation",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-o15x"
+          }
+        ],
+        [
+          "front",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "back",
+          {
+            "sym": "green"
+          }
+        ],
+        [
+          "left",
+          {
+            "sym": "yellow"
+          }
+        ],
+        [
+          "right",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "orient",
+      [
+        "a-o0x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o1x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o2x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o3x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o4x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o5x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o6x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o7x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o8x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o9x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o10x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o11x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o12x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o13x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o14x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o15x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o16x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o17x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o18x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o19x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o20x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o21x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o22x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "a-o23x",
+        "cube-a"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o0x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o1x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o2x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o3x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o4x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o5x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o6x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o7x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o8x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o9x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o10x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o11x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o12x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o13x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o14x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "b-o15x",
+        "cube-b"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o0x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o1x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o2x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o3x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o4x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o5x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o6x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o7x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o8x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o9x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o10x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o11x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o12x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o13x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o14x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "c-o15x",
+        "cube-c"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o0x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o1x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o2x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o3x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o4x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o5x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o6x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o7x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o8x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o9x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o10x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o11x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o12x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o13x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o14x",
+        "cube-d"
+      ]
+    ],
+    [
+      "orient",
+      [
+        "d-o15x",
+        "cube-d"
+      ]
+    ],
+    [
+      "prev",
+      [
+        "cube-a",
+        "ground"
+      ]
+    ],
+    [
+      "prev",
+      [
+        "cube-b",
+        "cube-a"
+      ]
+    ],
+    [
+      "prev",
+      [
+        "cube-c",
+        "cube-b"
+      ]
+    ],
+    [
+      "prev",
+      [
+        "cube-d",
+        "cube-c"
+      ]
+    ],
+    [
+      "placed",
+      [
+        "ground",
+        "ground-pose"
+      ]
+    ],
+    [
+      "unplaced",
+      [
+        "cube-a"
+      ]
+    ],
+    [
+      "unplaced",
+      [
+        "cube-b"
+      ]
+    ],
+    [
+      "unplaced",
+      [
+        "cube-c"
+      ]
+    ],
+    [
+      "unplaced",
+      [
+        "cube-d"
+      ]
+    ]
+  ],
+  "maintained": [
+    {
+      "name": "unplaced",
+      "var": "x",
+      "defn": [
+        {
+          "obj": "x",
+          "type": "cube"
+        },
+        {
+          "none": [
+            {
+              "rel": "placed",
+              "args": [
+                {
+                  "var": "x"
+                },
+                {
+                  "var": "y"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        3
+      ]
+    }
+  ],
+  "sums": [],
+  "ops": [
+    {
+      "name": "place",
+      "params": [
+        [
+          "c",
+          "cube"
+        ],
+        [
+          "o",
+          "orientation"
+        ]
+      ],
+      "stmts": [
+        3,
+        4
+      ],
+      "pre": [
+        {
+          "rel": "unplaced",
+          "args": [
+            {
+              "var": "c"
+            }
+          ]
+        },
+        {
+          "rel": "orient",
+          "args": [
+            {
+              "var": "o"
+            },
+            {
+              "var": "c"
+            }
+          ]
+        },
+        {
+          "rel": "prev",
+          "args": [
+            {
+              "var": "c"
+            },
+            {
+              "var": "q"
+            }
+          ]
+        },
+        {
+          "rel": "placed",
+          "args": [
+            {
+              "var": "q"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "add": "placed",
+          "args": [
+            {
+              "var": "c"
+            },
+            {
+              "var": "o"
+            }
+          ]
+        },
+        {
+          "del": "unplaced",
+          "args": [
+            {
+              "var": "c"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "Place "
+        },
+        {
+          "handle": "c"
+        },
+        {
+          "text": " turned as "
+        },
+        {
+          "handle": "o"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "all": {
+      "outer": [],
+      "var": "x",
+      "type": "cube",
+      "filter": [],
+      "body": [
+        {
+          "rel": "placed",
+          "args": [
+            {
+              "var": "x"
+            },
+            {
+              "var": "o"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "goalStmts": [
+    3,
+    5
+  ],
+  "failures": [
+    {
+      "name": "same-colour-front",
+      "stmts": [
+        5
+      ],
+      "cond": {
+        "ex": [
+          {
+            "obj": "c1",
+            "type": "cube"
+          },
+          {
+            "obj": "c2",
+            "type": "cube"
+          },
+          {
+            "distinct": [
+              "c1",
+              "c2"
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c1"
+              },
+              {
+                "var": "o1"
+              }
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c2"
+              },
+              {
+                "var": "o2"
+              }
+            ]
+          },
+          {
+            "has": "o1",
+            "prop": "front",
+            "cmp": "eq",
+            "rhs": {
+              "prop": [
+                "o2",
+                "front"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "same-colour-back",
+      "stmts": [
+        5
+      ],
+      "cond": {
+        "ex": [
+          {
+            "obj": "c1",
+            "type": "cube"
+          },
+          {
+            "obj": "c2",
+            "type": "cube"
+          },
+          {
+            "distinct": [
+              "c1",
+              "c2"
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c1"
+              },
+              {
+                "var": "o1"
+              }
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c2"
+              },
+              {
+                "var": "o2"
+              }
+            ]
+          },
+          {
+            "has": "o1",
+            "prop": "back",
+            "cmp": "eq",
+            "rhs": {
+              "prop": [
+                "o2",
+                "back"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "same-colour-left",
+      "stmts": [
+        5
+      ],
+      "cond": {
+        "ex": [
+          {
+            "obj": "c1",
+            "type": "cube"
+          },
+          {
+            "obj": "c2",
+            "type": "cube"
+          },
+          {
+            "distinct": [
+              "c1",
+              "c2"
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c1"
+              },
+              {
+                "var": "o1"
+              }
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c2"
+              },
+              {
+                "var": "o2"
+              }
+            ]
+          },
+          {
+            "has": "o1",
+            "prop": "left",
+            "cmp": "eq",
+            "rhs": {
+              "prop": [
+                "o2",
+                "left"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "same-colour-right",
+      "stmts": [
+        5
+      ],
+      "cond": {
+        "ex": [
+          {
+            "obj": "c1",
+            "type": "cube"
+          },
+          {
+            "obj": "c2",
+            "type": "cube"
+          },
+          {
+            "distinct": [
+              "c1",
+              "c2"
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c1"
+              },
+              {
+                "var": "o1"
+              }
+            ]
+          },
+          {
+            "rel": "placed",
+            "args": [
+              {
+                "var": "c2"
+              },
+              {
+                "var": "o2"
+              }
+            ]
+          },
+          {
+            "has": "o1",
+            "prop": "right",
+            "cmp": "eq",
+            "rhs": {
+              "prop": [
+                "o2",
+                "right"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

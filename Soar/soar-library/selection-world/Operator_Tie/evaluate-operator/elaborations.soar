@@ -1,0 +1,606 @@
+## elaborations.soar -- selection-world: 27 elaborations, 1 proposal, 9 applications.
+
+## ---- elaborations ----
+
+## Elaborate selection selection-substate -> sets selection-sup.
+sp {selection-world*elaborate*selection*selection-substate
+   :default
+   (state <s> ^superstate <ss>)
+   (<ss> ^name selection)
+-->
+   (<s> ^selection-superstate <ss>)
+}
+
+## Elaborate evaluate-operator evaluate-operator internal-actions -> sets internal-actions, real, top-state ....
+sp {selection-world*elaborate*evaluate-operator*evaluate-operator*internal-actions
+   :default
+   (state <s> ^name evaluate-operator)
+-->
+   (force-learn <s>)
+   (<s> ^internal-actions true
+        ^real false
+        ^top-state <s>
+        ^deep-copy-world true)
+}
+
+## Elaborate selection selection-substate copy -> sets selection-supe.
+sp {selection-world*elaborate*selection*selection-substate*copy
+   :default
+   (state <s> ^superstate <ss>)
+   (<ss> -^name selection
+          ^selection-superstate <sss>)
+-->
+   (<s> ^selection-superstate <sss>)
+}
+
+## Elaborate evaluate-operator state desireds -> sets desireds, duplicate-of, desired-count.
+## Create new desireds to which desired will be copied
+sp {selection-world*elaborate*evaluate-operator*state*desireds
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+             -^problem-space.no-local-negations <nln>
+              ^superstate.operator <super-operator>)
+   (<super-operator>  -^default-desired-copy yes
+                       ^name evaluate-operator
+                       ^evaluation.desireds <desireds>)
+   (<desireds> ^desired-count <desired-count>)
+-->
+   (<s> ^desireds <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>
+                ^desired-count <desired-count>)}
+
+## Elaborate evaluate-operator state desired nln -> sets desireds, duplicate-of, desired-count.
+sp {selection-world*elaborate*evaluate-operator*state*desired*nln
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^problem-space.no-local-negations <nln>
+              ^superstate.operator <super-operator>)
+   (<super-operator> ^name evaluate-operator # ddc is assumed no with nln
+                     ^evaluation.desireds <desireds>)
+   (<desireds> ^desired-count <desired-count>)
+-->
+   (<s> ^desireds <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>
+                ^desired-count <desired-count>)}
+
+## Elaborate evaluate-operator state name.
+## Copies down name of supersuper state to be name of substate
+sp {selection-world*elaborate*evaluate-operator*state*name
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.operator <super-operator>)
+   (<super-operator> ^name evaluate-operator
+                     ^superstate.name {<> evaluate-operator <name> })
+-->
+   (<s> ^name <name>)}
+
+## Elaborate evaluate-operator untried-tied-operator -> sets untried-tied-oper.
+## Propose look-ahead-operator
+sp {selection-world*elaborate*evaluate-operator*untried-tied-operator
+   :default
+   (state <s> ^look-ahead-operator <operator>
+             -^tried-tied-operator <operator>)
+-->
+   (<s> ^untried-tied-operator <operator>)}
+
+## Elaborate evaluate-operator state hierarchical-properties true -> sets abstract-property.
+## abstraction
+## Copies down which properties should be abstracted.
+sp {selection-world*elaborate*evaluate-operator*state*hierarchical-properties*true
+    :default
+   (state <s> ^impasse no-change
+              ^flags.hierarchical-properties true
+              ^constants.property-abstraction-hierarchy.object-property <obj-prop>
+              ^attribute operator
+              ^world <world>
+              ^name evaluate-operator)
+-->
+   (<world> ^abstract-property <obj-prop>) #reachable
+}
+
+## Elaborate evaluate-operator time anchored-world -> sets anchor.
+sp {selection-world*elaborate*evaluate-operator*time*anchored-world
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of.anchored-world <true>)
+-->
+   (<new-world> ^anchored-world <true>)}
+
+## Elaborate evaluate-operator time anchored-world false -> sets ancho.
+sp {selection-world*elaborate*evaluate-operator*time*anchored-world*false
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+  -(<new-world> ^duplicate-of.anchored-world <true>)
+-->
+   (<new-world> ^anchored-world false)}
+
+## Elaborate evaluate-operator time initialize-room false -> sets ancho.
+sp {selection-world*elaborate*evaluate-operator*time*initialize-room*false
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <world>)
+   (<world> -^room-name <room>
+            -^anchored-world true)
+-->
+   (<new-world> ^anchored-world false)}
+
+## Elaborate evaluate-operator default-state-copy-stamp -> sets parent-stamp (v2.28).
+## The look-ahead world starts with the version stamp of the world it was copied from (see ground-state.soar).
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-stamp
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of.stamp <p>)
+-->
+   (<new-world> ^parent-stamp <p>)}
+
+## Elaborate evaluate-operator default-state-copy-object -> sets object, object-handle, duplicate-.
+## Maybe cause chunks to test duplicate-of in deep substates. Might need to match ^handles instead..
+## Bug
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-object
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^objects <new-objects>
+                ^duplicate-of.objects.object <old-object>)
+   (<old-object> ^object-handle <handle>)
+-->
+   (<new-objects> ^object <new-object>)
+   (<new-object> ^object-handle <handle>
+                 ^duplicate-of <old-object>)}
+
+## Elaborate evaluate-operator default-state-copy-object-attributes.
+## Careful on copying ones that are elaborations. So issues here
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-object-attributes
+   :default
+   (state <s> ^deep-copy-world true
+              ^world.objects.object <new-object>
+              ^superstate.operator.super-problem-space <ps>)
+   (<new-object> ^duplicate-of <old-object>)
+   (<old-object> ^{ <> object-handle <> duplicate-of <> anchored <attribute> } <value>)
+  -(<ps> ^dont-copy-object-attribute <attribute>)
+-->
+   (<new-object> ^<attribute> <value>)}
+
+## Elaborate evaluate-operator default-state-copy-object-attributes anchored -> sets a.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-object-attributes*anchored
+   :default
+   (state <s> ^deep-copy-world true
+              ^world.objects.object <new-object>)
+   (<new-object> ^duplicate-of <old-object>)
+   (<old-object> ^anchored <value>) # don't copy accessible because it is an elaboration
+  -(<new-object> ^anchored <> <value>)  ## MEans can only have one value... Will get overflow if two values
+-->
+   (<new-object> ^anchored <value>)}
+
+## Elaborate evaluate-operator default-state-copy-relation in-container above-location -> sets above, duplicate-of, argument2 ....
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*in-container*above-location
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <on-new> <object-new>)
+   (<on-new> ^object-handle <location-handle>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^above <relation-object>)
+   (<relation-object> ^argument2 <cl-object>
+                      ^argument1 <object-value>)
+   (<cl-object> ^object-handle <location-handle>)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^above <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument2 <on-new>
+                          ^argument1 <object-new>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation in-container on-location -> sets on, duplicate-of, argument2 ....
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*in-container*on-location
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <on-new> <object-new>)
+   (<on-new> ^object-handle <location-handle>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^on <relation-object>)
+   (<relation-object> ^argument2 <cl-object>
+                      ^argument1 <object-value>)
+   (<cl-object> ^object-handle <location-handle>)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^on <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument2 <on-new>
+                          ^argument1 <object-new>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation in-container in-location -> sets in, duplicate-of, argument2 ....
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*in-container*in-location
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <on-new> <object-new>)
+   (<on-new> ^object-handle <location-handle>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^in <relation-object>)
+   (<relation-object> ^argument2 <cl-object>
+                      ^argument1 <object-value>)
+   (<cl-object> ^object-handle <location-handle>)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^in <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument2 <on-new>
+                          ^argument1 <object-new>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation declared -> sets duplicate-of, argument2, argument.
+## Copy any relation the task declares: (<problem-space> ^copy-relation <name>) on the task's problem space.
+## (P-004) Relations are copied by name; on, above, in are always copied by the rules above. Do not declare derived relations
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*declared
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>
+              ^superstate.operator.super-problem-space.copy-relation <relation>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <on-new> <object-new>)
+   (<on-new> ^object-handle <location-handle>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^<relation> <relation-object>)
+   (<relation-object> ^argument2 <cl-object>
+                      ^argument1 <object-value>)
+   (<cl-object> ^object-handle <location-handle>)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^<relation> <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument2 <on-new>
+                          ^argument1 <object-new>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation declared one-argument -> sets duplicate-of, argument1 (v2.29).
+## A declared relation with ^argument1 and no ^argument2 (for example a maintained ^clear) is copied with its one argument.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*declared*one-argument
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>
+              ^superstate.operator.super-problem-space.copy-relation <relation>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <object-new>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^<relation> <relation-object>)
+   (<relation-object> ^argument1 <object-value>
+                     -^argument2)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^<relation> <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument1 <object-new>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation controlled-by -> sets controlled-by.
+## No need to copy as will never be destroyed or modified. Can use original
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*controlled-by
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of.controlled-by <controlled-by>)
+-->
+   (<new-world> ^controlled-by <controlled-by>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation holding -> sets holding-object.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*holding
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <new-world-object>)
+   (<new-world-object> ^object-handle <object-handle>)
+   (<old-world> ^holding-object.object-handle <object-handle>)
+-->
+   (<new-world> ^holding-object <new-world-object>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation holding none -> sets holding-object.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*holding*none
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>)
+   (<old-world> ^holding-object.object-handle none)
+-->
+   (<new-world> ^holding-object.object-handle none)
+}
+
+## Elaborate evaluate-operator default-state-copy-self -> sets m.
+## Need to copy because it is internally created.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-self
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of.self.mobile <mobile>
+                ^self <new-self>)
+-->
+   (<new-self> ^mobile <mobile>)
+}
+
+## Elaborate evaluate-operator default-state-copy-relation future-event -> sets future-event, duplicate-of, argument1 ....
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*future-event
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^objects.object <on-new> <object-new>)
+   (<on-new> ^object-handle <location-handle>)
+   (<object-new> ^object-handle <object-handle>)
+   (<old-world> ^future-event <relation-object>)
+   (<relation-object> ^argument1 <object-value>
+                      ^argument2 <cl-object>
+                      ^completion-time <ctime>
+                      ^type <type>
+                      ^property-change-count <prop-count>)
+   (<cl-object> ^object-handle <location-handle>)
+   (<object-value> ^object-handle <object-handle>)
+-->
+   (<new-world> ^future-event <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^argument1 <object-new>
+                          ^argument2 <on-new>
+                          ^argument-count 2
+                          ^property-change-count <prop-count>
+                          ^completion-time <ctime> ###
+                          ^type <type>)
+}
+
+## Elaborate evaluate-operator default-state-copy-property-change -> sets property-change, object, property-handle ....
+## copies property-change to copied future-event
+## must use the local version of <object> via <object-handle>
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-property-change
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^future-event <new-relation-object>
+                ^objects.object <copied-object>)
+   (<copied-object> ^object-handle <object-handle>)
+   (<new-relation-object> ^duplicate-of <relation-object>)
+   (<old-world> ^future-event <relation-object>)
+   (<relation-object> ^property-change <property-change>)
+   (<property-change> ^object.object-handle <object-handle>
+                      ^property-handle <property-handle>
+                      ^original-property-value <original-property-value>
+                      ^new-property-value <new-property-value>)
+-->
+   (<new-relation-object> ^property-change <new-property-change>)
+   (<new-property-change> ^object <copied-object>
+                          ^property-handle <property-handle>
+                          ^original-property-value <original-property-value>
+                          ^new-property-value <new-property-value>)
+}
+
+## Elaborate evaluate-operator default-state-copy-primary-property-change -> sets primary-property-change.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-primary-property-change
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^future-event <new-relation-object>
+                ^objects.object <copied-object>)
+   (<copied-object> ^object-handle <object-handle>)
+   (<new-relation-object> ^duplicate-of <relation-object>
+                          ^property-change <new-property-change>)
+   (<old-world> ^future-event <relation-object>)
+   (<relation-object> ^primary-property-change.object <object>)
+   (<new-property-change> ^object <object>)
+-->
+   (<new-relation-object> ^primary-property-change <new-property-change>)
+}
+
+## Elaborate evaluate-operator default-state-copy-new-desired -> sets new-desired, object.
+## copies new-desired
+## must use the local version of <object> via <object-handle>
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-new-desired
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old-world>
+                ^future-event <new-relation-object>)
+   (<new-relation-object> ^duplicate-of <relation-object>)
+   (<old-world> ^future-event <relation-object>)
+   (<relation-object> ^new-desired <new-desired>)
+   (<new-desired> ^object <new-desired-object>)
+-->
+   (<new-relation-object> ^new-desired <new-desired2>)
+   (<new-desired2> ^object <new-desired-object>)
+}
+
+## ---- operator proposal ----
+
+## Propose evaluate-operator look-ahead acceptable.
+sp {selection-world*propose*evaluate-operator*look-ahead*acceptable
+   :default
+   (state <s> ^look-ahead-operator <operator>
+              ^untried-tied-operator <operator>)
+-->
+   (<s> ^operator <operator> +)}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> sets duplica.
+sp {selection-world*apply*evaluate-operator*state*duplicate-of
+   :default
+   (state <s> ^superstate <superstate>
+              ^default-state-copy yes)
+   (<superstate> ^operator <super-operator>)
+   (<super-operator> ^name evaluate-operator
+                     ^superstate <sss>)
+-->
+   (<s> ^duplicate-of <sss>)}
+
+## Apply look-ahead tried-tied-operator -> sets tried-tied-oper.
+sp {selection-world*apply*look-ahead*tried-tied-operator
+   :default
+   (state <s> ^operator <operator>
+              ^look-ahead-operator <operator>)
+-->
+   (<s> ^tried-tied-operator <operator>)}
+
+## Apply evaluate-operator -> sets symbolic-val.
+## Return Results
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal
+   :default
+   (state <s> ^superstate <superstate>
+              ^ { << required-success partial-success
+                  indifferent partial-failure exhaustion-failure failure prohibit-failure
+                  >> <svalue> } <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value <svalue>)}
+
+## Apply evaluate-operator -> sets symbolic-va.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*success
+   :default
+   (state <s> ^superstate <superstate>
+              ^success <desireds2>
+              ^flags.cost-metric none
+             -^flags.iterative-step cost
+             -^cost-exceeded true)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value success)}
+
+## Apply evaluate-operator -> sets symbolic-value success with a cost metric and a task state value (the path cost is not returned).
+## With a cost metric and no state value agent-world*apply*evaluate-operator*numeric-evaluation-return*path-cost returns the success
+## together with its path cost, so the chunk built from the result holds both and a success is never learned without its cost.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*success*state-value
+   :default
+   (state <s> ^superstate <superstate>
+              ^success <desireds2>
+              ^flags.cost-metric << unit time >>
+              ^state-value <state-value>
+             -^flags.iterative-step cost
+             -^cost-exceeded true)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value success)}
+
+## Apply evaluate-operator -> sets symbolic-value success under cost-cap iteration (waits for the current cost-within-cap marker).
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*success*cost-cap
+   :default
+   (state <s> ^superstate <superstate>
+              ^success <desireds2>
+              ^flags.iterative-step cost
+              ^cost-within-cap true
+             -^cost-exceeded true)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value success)}
+
+## Apply evaluate-operator -> sets numeri.
+sp {selection-world*apply*evaluate-operator*numeric-evaluation*from-subgoal
+   :default
+   (state <superstate> ^superstate <s>
+                       ^desireds <desireds2>
+                       ^numeric-value <v>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<s> ^operator <super-operator>
+        ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^numeric-value <v>)}
+
+## Apply evaluate-operator -> sets expecte.
+sp {selection-world*apply*evaluate-operator*expected-evaluation*from-subgoal
+   :default
+   (state <superstate> ^superstate <s>
+                       ^desireds <desireds2>
+                       ^expected-value <v>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<s> ^operator <super-operator>
+        ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^expected-value <v>)}
+
+## Apply evaluate-operator state world-copy -> sets world, objects, self ....
+## Creates world pointer and initiailized objects and self from super.superstate for deep copy
+sp {selection-world*apply*evaluate-operator*state*world-copy
+   :default
+   (state <s> ^impasse no-change
+              ^deep-copy-world true
+              ^attribute operator
+              ^superstate <ss>)
+   (<ss> ^superstate.world <old-world>
+         ^operator <super-operator>)
+-->
+   (<s> ^world <new-world>)
+   (<new-world> ^objects <objects>
+                ^self <self>
+                ^duplicate-of <old-world>)}
+
+## Apply evaluate-operator -> sets symbolic-value, failure-string.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*constraint-failure
+   :default
+   (state <s> ^superstate <superstate>
+              ^constraint-failure <desireds2>
+              ^failure-string <failure-string>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value constraint-failure
+                 ^failure-string <failure-string>)}
+
+## Elaborate evaluate-operator state desireds better -> copies ^better to the look-ahead desireds, so nested selections
+## compare numeric values the way the top selection does (v2.40).
+sp {selection-world*elaborate*evaluate-operator*state*desireds*better
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^desireds <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^better <better>)
+-->
+   (<desireds2> ^better <better>)}

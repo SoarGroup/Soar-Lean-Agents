@@ -1,0 +1,12 @@
+## Impasse__State_No-Change__skip-wait.soar -- thor-soar: 1 compare.
+
+## Preference for Impasse State No-Change skip-wait soonest-wait.
+sp {Impasse__State_No-Change*compare*skip-wait*soonest-wait
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name skip-wait)
+   (<op2> ^name << wait scan-room >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}

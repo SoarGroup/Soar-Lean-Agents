@@ -1,0 +1,69 @@
+## clean-counters.soar -- thor-soar: 3 elaborations, 1 proposal.
+
+## Propose clean-counters.
+sp {thor-soar*propose*clean-counters
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^clean-counters true)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name clean-counters)
+}
+
+## Elaborate clean-counters achieved -> sets achieved.
+sp {thor-soar*elaborate*clean-counters*achieved
+    :default
+   (state <s> ^superstate nil
+              ^world <world>
+              ^desireds <desireds>)
+   (<desireds> ^desired <clean-desired>)
+   (<clean-desired> ^clean-counters true)
+   (<world> ^anchored-world true)
+  -{(<world> ^on <on>)
+    (<on> ^argument2 <argument2>
+         -^argument1.class << spatula potato pan soapbottle toaster papertowelroll houseplant coffeemachine >> )
+    (<argument2> ^class countertop
+                 ^anchored true
+                -^object-handle CounterTop21)}
+-->
+   (<desireds> ^achieved <clean-desired>)
+}
+
+## Elaborate clean-counters unachieved -> sets unachieved.
+sp {thor-soar*elaborate*clean-counters*unachieved
+    :default
+   (state <s> ^superstate nil
+              ^world <world>
+              ^desireds <desireds>)
+   (<desireds> ^desired <clean-desired>)
+   (<clean-desired> ^clean-counters true)
+   (<world> ^anchored-world true)
+   (<world> ^on <on>)
+   (<on> ^argument2 <argument2>
+        -^argument1.class << spatula potato pan soapbottle toaster papertowelroll houseplant coffeemachine >> )
+   (<argument2> ^class countertop
+                ^anchored true
+               -^object-handle CounterTop21)
+-->
+   (<desireds> ^unachieved <clean-desired>)
+}
+
+## Elaborate clean-counters attend -> sets attend.
+sp {thor-soar*elaborate*clean-counters*attend
+    :default
+   (state <s> ^superstate nil
+              ^desireds.desired.clean-counters true
+              ^attends <attends>
+              ^scene <scene>)
+   (<scene> ^objects.object <object>)
+   (<object> #^graspable true
+             ^object-handle <object-handle>)
+  -{(<scene> ^in <in>)
+    (<in> ^argument1.object-handle <object-handle>)}
+-->
+   (<attends> ^attend <object-handle>)
+}

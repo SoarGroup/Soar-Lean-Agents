@@ -1,0 +1,3 @@
+pushd knights-6
+source knights-6_source.soar
+popd

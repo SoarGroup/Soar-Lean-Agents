@@ -1,0 +1,9 @@
+trimmed 165 unused edges (see datamaps/datamap-trimmed.txt)
+soar-base: 26 vertices, 41 edges; 0 operator substates carried over, 0 new empty
+selection-world: 389 vertices, 677 edges; 13 operator substates carried over, 0 new empty
+agent-world: 426 vertices, 817 edges; 8 operator substates carried over, 0 new empty
+object-world: 375 vertices, 794 edges; 3 operator substates carried over, 0 new empty
+thor-soar: 848 vertices, 2029 edges; 9 operator substates carried over, 0 new empty
+thor-tasks: 601 vertices, 1702 edges; 0 operator substates carried over, 0 new empty
+edges owned (root datamap): agent-world 291, thor-soar 1184, selection-world 318, soar-base 41, object-world 48
+type disagreements between the old datamaps: 34 resolved by rule, 51 genuine (id vs symbol), see datamap-conflicts.txt

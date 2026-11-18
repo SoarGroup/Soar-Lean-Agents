@@ -1,0 +1,56 @@
+## elaborations.soar -- selection-world: 3 compares.
+
+## Preference for selection same-symbolic-evaluations-are-indifferent.
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { < <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value { <> exhaustion-failure <> success <> depth-exceeded <> depth-exhaustion <v> }
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value <v>
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+   (<x> ^task-operator true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection success-evaluation-better-than-partial-success.
+sp {selection-world*compare*selection*success-evaluation-better-than-partial-success
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value partial-success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection select success-evaluation-becomes-best-preference.
+## Only where ^unary-success-best true (Operator_Tie/elaborations.soar): not with tie-impasse depth, a cost metric and optimize true.
+## There a success wins only by pairwise comparisons: whether it is the best depends on the other evaluations, and a chunk built from a
+## unary best preference tests the success alone and fires where a cheaper operator exists.
+sp {selection-world*compare*selection*select*success-evaluation-becomes-best-preference
+   :default
+   (state <s> ^name selection
+              ^unary-success-best true
+              ^superstate <superstate>
+              ^evaluation <evaluation1>)
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better)
+   (<evaluation1> ^symbolic-value << partial-success success >>
+                  ^desireds.duplicate-of <desireds>
+                  ^super-operator <operator1>)
+-->
+   (<superstate> ^operator <operator1> >)}

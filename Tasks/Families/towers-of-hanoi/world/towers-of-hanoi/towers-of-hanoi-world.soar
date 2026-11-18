@@ -1,0 +1,152 @@
+##############################################################################
+## towers-of-hanoi: world, goal, problem space, end of episode
+## World objects: pegs A, B, C (^type peg); disks 1..5 (^type disk, ^size 1..5), one base
+##   disk per peg (base-A/B/C, ^size 6) and ground (^size 7), as in the original.
+## World relations (replacing the original's ^holds structures): ^on (argument1 disk,
+##   argument2 peg) and ^above (argument1 disk, argument2 the disk directly below it).
+## Derived: disk ^clear true (no disk above it).  It is derived on world objects; this program
+##   does no look-ahead, so no copied world can hold a stale value.
+## Goal (^desireds, 5 relation desireds): disks 1..5 ^on peg C.
+## ^control (^lastsize, ^lastpeg handle) is the strategy's memory of the last move; it is
+##   agent state, not task situation, so it is on the top state, not in the world.
+##############################################################################
+
+sp {towers-of-hanoi*propose*initialize-towers-of-hanoi
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-towers-of-hanoi
+        ^task-operator false)
+}
+
+sp {towers-of-hanoi*compare*initialize*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-towers-of-hanoi)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {towers-of-hanoi*apply*initialize-towers-of-hanoi
+   (state <s> ^operator.name initialize-towers-of-hanoi
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name towers-of-hanoi
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>
+        ^control <control>)
+   (<f> ^look-ahead-planning false)
+   (<control> ^lastsize 2 ^lastpeg B)
+   (<objs> ^object <A> <B> <C> <d1> <d2> <d3> <d4> <d5> <bA> <bB> <bC> <ground>)
+   (<A> ^object-handle A ^anchored true ^type peg ^name A)
+   (<B> ^object-handle B ^anchored true ^type peg ^name B)
+   (<C> ^object-handle C ^anchored true ^type peg ^name C)
+   (<d1> ^object-handle |1| ^anchored true ^type disk ^size 1)
+   (<d2> ^object-handle |2| ^anchored true ^type disk ^size 2)
+   (<d3> ^object-handle |3| ^anchored true ^type disk ^size 3)
+   (<d4> ^object-handle |4| ^anchored true ^type disk ^size 4)
+   (<d5> ^object-handle |5| ^anchored true ^type disk ^size 5)
+   (<bA> ^object-handle base-A ^anchored true ^type disk ^size 6)
+   (<bB> ^object-handle base-B ^anchored true ^type disk ^size 6)
+   (<bC> ^object-handle base-C ^anchored true ^type disk ^size 6)
+   (<ground> ^object-handle ground ^anchored true ^type disk ^size 7)
+   (<w> ^on <o1> <o2> <o3> <o4> <o5> <oA> <oB> <oC>
+        ^above <a1> <a2> <a3> <a4> <a5> <aA> <aB> <aC>)
+   (<o1> ^argument-count 2 ^argument1 <d1> ^argument2 <A>)
+   (<o2> ^argument-count 2 ^argument1 <d2> ^argument2 <A>)
+   (<o3> ^argument-count 2 ^argument1 <d3> ^argument2 <A>)
+   (<o4> ^argument-count 2 ^argument1 <d4> ^argument2 <A>)
+   (<o5> ^argument-count 2 ^argument1 <d5> ^argument2 <A>)
+   (<oA> ^argument-count 2 ^argument1 <bA> ^argument2 <A>)
+   (<oB> ^argument-count 2 ^argument1 <bB> ^argument2 <B>)
+   (<oC> ^argument-count 2 ^argument1 <bC> ^argument2 <C>)
+   (<a1> ^argument-count 2 ^argument1 <d1> ^argument2 <d2>)
+   (<a2> ^argument-count 2 ^argument1 <d2> ^argument2 <d3>)
+   (<a3> ^argument-count 2 ^argument1 <d3> ^argument2 <d4>)
+   (<a4> ^argument-count 2 ^argument1 <d4> ^argument2 <d5>)
+   (<a5> ^argument-count 2 ^argument1 <d5> ^argument2 <bA>)
+   (<aA> ^argument-count 2 ^argument1 <bA> ^argument2 <ground>)
+   (<aB> ^argument-count 2 ^argument1 <bB> ^argument2 <ground>)
+   (<aC> ^argument-count 2 ^argument1 <bC> ^argument2 <ground>)
+   (<ds> ^desired <g1> <g2> <g3> <g4> <g5> ^desired-count 5)
+   (<g1> ^on <r1>) (<r1> ^argument1.object-handle |1| ^argument2.object-handle C)
+   (<g2> ^on <r2>) (<r2> ^argument1.object-handle |2| ^argument2.object-handle C)
+   (<g3> ^on <r3>) (<r3> ^argument1.object-handle |3| ^argument2.object-handle C)
+   (<g4> ^on <r4>) (<r4> ^argument1.object-handle |4| ^argument2.object-handle C)
+   (<g5> ^on <r5>) (<r5> ^argument1.object-handle |5| ^argument2.object-handle C)
+}
+
+sp {towers-of-hanoi*elaborate*problem-space
+   (state <s> ^name towers-of-hanoi)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name towers-of-hanoi
+        ^agent-world true)
+}
+
+### Derived: a disk with nothing above it is clear
+sp {towers-of-hanoi*elaborate*disk*clear
+   (state <s> ^superstate nil
+              ^name towers-of-hanoi
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <d>)
+   (<d> ^type disk)
+  -{(<w> ^above <a>)
+    (<a> ^argument2 <d>)}
+-->
+   (<d> ^clear true)
+}
+
+### Achievement of relation desireds (task-supplied, W-DBK-002)
+
+sp {towers-of-hanoi*elaborate*desireds*achieved*relation
+   (state <s> ^problem-space.name towers-of-hanoi
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^<< on above >> <r>)
+   (<ds> ^desired <d>)
+   (<d> ^<< on above >> <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+   (<r> ^argument1.object-handle $ <h1>
+        ^argument2.object-handle $ <h2>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {towers-of-hanoi*elaborate*desireds*unachieved*relation
+   (state <s> ^problem-space.name towers-of-hanoi
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^{ << on above >> <rel> } <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+  -{(<w> ^<rel> <r>)
+    (<r> ^argument1.object-handle <h1>
+         ^argument2.object-handle <h2>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+### End of episode
+
+sp {towers-of-hanoi*halt*success
+   (state <s> ^superstate nil
+              ^name towers-of-hanoi
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

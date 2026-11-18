@@ -1,0 +1,17 @@
+## smem-store-in.soar -- object-world: 1 elaboration.
+
+## Elaborate smem-store-object in-location first-time -> sets store, s.
+sp {object-world*elaborate*smem-store-object*in-location*first-time
+   :default
+   :o-support
+   (state <s> ^superstate nil
+              ^scene.objects.object <object>
+              ^flags.smem-store true
+              ^scene.in <in>
+              ^smem.command <cmd>)
+   (<in> ^argument1 <object>)
+  -(<in> ^smem-stored true)
+-->
+   (<cmd> ^store <in>)
+   (<in> ^smem-stored true)
+}

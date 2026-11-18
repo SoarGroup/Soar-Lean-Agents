@@ -1,0 +1,94 @@
+## world-from-scene.soar -- thor-soar: 6 elaborations.
+
+## Elaborate state world-from-scene copy-in arg1 -> sets in.
+sp {thor-soar*elaborate*state*world-from-scene*copy-in*arg1
+    :default
+   (state <s> ^name thor-soar
+              ^top-state <s>
+              ^scene.in <in>
+              ^world <world>)
+   (<in> ^argument1.object-handle <object-handle>
+        -^argument2.class floor)
+   (<world> ^objects.object.object-handle <object-handle>
+            ^anchored-world true)
+  -(<world> ^duplicate-of.in <in>)
+-->
+   (<world> ^in <in>)
+}
+
+## Elaborate state world-from-scene copy-in arg2 -> sets in.
+sp {thor-soar*elaborate*state*world-from-scene*copy-in*arg2
+    :default
+   (state <s> ^name thor-soar
+              ^top-state <s>
+              ^scene.in <in>
+              ^world <world>)
+   (<in> ^argument2 <object>
+        -^argument1.object-handle <object-handle>)
+   (<object> ^object-handle <object-handle>
+            -^class floor)
+   (<world> ^objects.object.object-handle <object-handle>
+            ^anchored-world true)
+  -(<world> ^duplicate-of.in <in>)
+-->
+   (<world> ^in <in>)
+}
+
+## Elaborate state world-from-scene copy-on arg1 -> sets on.
+sp {thor-soar*elaborate*state*world-from-scene*copy-on*arg1
+    :default
+   (state <s> ^name thor-soar
+             # ^superstate nil
+              ^scene.on <on>
+              ^world <world>)
+   (<on> ^argument1.object-handle <object-handle>
+        -^argument2.class floor)
+   (<world> ^objects.object.object-handle <object-handle>
+            ^anchored-world true)
+  -(<world> ^duplicate-of.on <on>)
+-->
+   (<world> ^on <on>)
+}
+
+## Elaborate state world-from-scene holding-object -> sets holding-object.
+## Always include holding-object
+sp {thor-soar*elaborate*state*world-from-scene*holding-object
+    :default
+   (state <s> ^name thor-soar
+              ^top-state <s>
+              ^scene.holding-object <holding-object>
+              ^world <world>)
+   (<holding-object> ^object-handle <object-handle>)
+   (<world> ^anchored-world true)
+  -(<world> ^duplicate-of.holding-object <holding-object>)
+-->
+   (<world> ^holding-object <holding-object>)
+}
+
+## Elaborate state world-from-scene room -> sets room-name.
+## Always include room
+sp {thor-soar*elaborate*state*world-from-scene*room
+    :default
+   (state <s> ^name thor-soar
+              ^top-state <s>
+              ^scene.room-name <room>
+              ^world <world>)
+   (<world> ^anchored-world true)
+-->
+   (<world> ^room-name <room>)
+}
+
+## Elaborate state world-from-scene controlled-by -> sets controlled-by.
+sp {thor-soar*elaborate*state*world-from-scene*controlled-by
+    :default
+   (state <s> ^name thor-soar
+              ^top-state <s>
+              ^scene.controlled-by <controlled-by>
+              ^world <world>)
+   (<controlled-by> ^argument1.object-handle <object-handle>)
+   (<world> ^objects.object.object-handle <object-handle>
+            ^anchored-world true)
+  -(<world> ^duplicate-of.in <controlled-by>)
+-->
+   (<world> ^controlled-by <controlled-by>)
+}

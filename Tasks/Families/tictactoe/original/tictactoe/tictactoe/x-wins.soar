@@ -1,0 +1,35 @@
+
+sp {TicTacToe*propose*x-wins
+   (state <s> ^name TicTacToe)
+   (<s> ^line <line>)
+   (<s> ^game <game>)
+   (<game> ^over 0)
+   (<line> ^cell <lk2x1>)
+   (<lk2x1> ^content 1)
+   (<line> ^cell { <lk2x2> <> <lk2x1> })
+   (<lk2x2> ^content 1)
+   (<line> ^cell { <lk2x3> <> <lk2x1> <> <lk2x2> })
+   (<lk2x3> ^content 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name x-wins)
+   (<o> ^line <line>)
+   (<o> ^game <game>)
+}
+
+sp {TicTacToe*apply*x-wins
+   (state <s> ^name TicTacToe)
+   (<s> ^operator <o>)
+   (<o> ^name x-wins)
+   (<o> ^line <line>)
+   (<o> ^game <game>)
+   (<game> ^over <game-over>)
+   (<game> ^winner <game-winner>)
+-->
+   (<game> ^over 1)
+   (<game> ^over <game-over> -)
+   (<game> ^winner 1)
+   (<game> ^winner <game-winner> -)
+   (write |Side X won.|)
+}

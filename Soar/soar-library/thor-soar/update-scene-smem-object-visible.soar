@@ -1,0 +1,66 @@
+## update-scene-smem-object-visible.soar -- thor-soar: 2 elaborations.
+
+## Elaborate update-scene-object-visible remove-changed-feature.
+sp {thor-soar*elaborate*update-scene-object-visible*remove-changed-feature
+   :o-support
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^scene.objects.object <scene-object>
+              ^io.input-link.objects.object <io-object>)
+   (<io-object> ^object-handle <object-handle>
+               -^<attribute> <value>)
+   (<scene-object> ^object-handle <object-handle>
+                   ^{<attribute>
+                     <> accessible
+                     <> activatable
+                     <> activated #
+                     <> anchored
+                     <> breakable
+                     <> confirmed
+                     <> controls-object-handle
+                     <> cookable
+                     <> cooked-by
+                     <> cooks-on-stove
+                     <> cooks
+                     <> derived-from-input
+                     <> dirtyable
+                     <> discarded
+                     <> distance
+                     <> fillable
+                     <> graspable
+                     <> in-view
+                     <> looked-at
+                     <> ms-remaining
+                     <> open
+                     <> openable
+                     <> reachable
+                     <> receptacle
+                     <> recyclable
+                     <> searched
+                     <> sliceable
+                     <> sliced
+                     <> smem-stored
+                     <> surface
+                     <> visible }
+                    <value>)
+-->
+   (<scene-object> ^<attribute> <value> -)
+}
+
+## Elaborate update-scene-object-visible remove-changed-feature activated.
+## some attributes are maintained both by perception and internal reasoning - so need to check them.
+sp {thor-soar*elaborate*update-scene-object-visible*remove-changed-feature*activated
+   :o-support
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^scene.objects.object <scene-object>
+              ^io.input-link.objects.object <io-object>)
+   (<io-object> ^object-handle <object-handle>
+                ^<attribute> <> <value>)
+   (<scene-object> ^object-handle <object-handle>
+                   ^{<attribute> << open activated in-view >> } <value>)
+-->
+   (<scene-object> ^<attribute> <value> -)
+}

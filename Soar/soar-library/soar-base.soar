@@ -1,0 +1,3 @@
+pushd soar-base
+source soar-base_source.soar
+popd

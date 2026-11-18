@@ -1,0 +1,68 @@
+## Problem space of the task state and of the look-ahead states (which selection-world names
+## after the task state); the world is copied into look-ahead by selection-world.
+sp {eight-puzzle*elaborate*problem-space
+   (state <s> ^name eight-puzzle)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name eight-puzzle
+        ^agent-world true)
+}
+
+## Achievement of the arrangement desired (task-supplied, W-DBK-002): achieved when every
+## binding of the arrangement holds in the anchored world (the cell holds the tile),
+## otherwise unachieved.
+sp {eight-puzzle*elaborate*desireds*arrangement*achieved
+   (state <s> ^problem-space.name eight-puzzle
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ board
+         ^arrangement <arr>)
+  -{(<arr> ^binding <b>)
+    (<b> ^cell <ch>
+         ^tile <th>)
+   -{(<w> ^objects.object <c>)
+     (<c> ^object-handle <ch>
+          ^anchored true
+          ^tile <th>)}}
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {eight-puzzle*elaborate*desireds*arrangement*unachieved
+   (state <s> ^problem-space.name eight-puzzle
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ board
+         ^arrangement <arr>)
+   (<arr> ^binding <b>)
+   (<b> ^cell <ch>
+        ^tile <th>)
+  -{(<w> ^objects.object <c>)
+    (<c> ^object-handle <ch>
+         ^anchored true
+         ^tile <th>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## End of the task: agent-world marks (<s> ^success <desireds>) when all desireds are
+## achieved; in the real top state this ends the episode with the original's message.
+sp {eight-puzzle*halt*success
+   (state <s> ^superstate nil
+              ^name eight-puzzle
+              ^desireds <ds>
+              ^success <ds>
+              ^world <w>)
+   (<w> ^real true
+        ^anchored-world true)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}

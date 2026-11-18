@@ -1,0 +1,15 @@
+## Rules that support the agent conventions
+
+## For an agent to use these rules, they have to be sourced (soar-library.soar).
+## Historical note (default-world): ^problem-space.agent-world true is deprecated (P-006);
+## no library rule tests it and tasks do not set it.
+
+## Using logs for writing to stnd out
+## 0-9 for agent 
+
+## Some thor-specific parts
+###   external-operator-application includes test for turn-on, turn-off look-at and not apply cook-microwave make-coffee toast
+
+### remove-object tests for on / in
+### monitor-desireds
+### goal-completed

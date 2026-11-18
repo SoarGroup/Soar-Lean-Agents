@@ -1,0 +1,47 @@
+
+sp {mac*rl*move-boat
+   :template
+   (state <s> ^name mac)
+   (<s> ^operator <o> +)
+   (<o> ^name move-boat)
+   (<o> ^from <from>)
+   (<o> ^to <to>)
+   (<o> ^missionaries <missionaries>)
+   (<o> ^cannibals <cannibals>)
+   (<from> ^name <from-name>)
+   (<from> ^missionaries <from-missionaries>)
+   (<from> ^cannibals <from-cannibals>)
+   (<from> ^boat <from-boat>)
+   (<to> ^name <to-name>)
+   (<to> ^missionaries <to-missionaries>)
+   (<to> ^cannibals <to-cannibals>)
+   (<to> ^boat <to-boat>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {mac*reward*failure
+   (state <s> ^name mac)
+   (<s> ^reward-link <r>)
+   (<s> ^failure <_v2>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -1)
+}
+
+sp {mac*reward*success
+   (state <s> ^name mac)
+   (<s> ^reward-link <r>)
+   (<s> ^success <_v2>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value 1)
+}
+
+sp {mac*reward*step
+   (state <s> ^name mac)
+   (<s> ^reward-link <r>)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -0.010000)
+}

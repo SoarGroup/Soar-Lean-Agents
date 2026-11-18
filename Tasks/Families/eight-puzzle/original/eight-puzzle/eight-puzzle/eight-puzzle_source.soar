@@ -1,0 +1,7 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-eight-puzzle.soar
+source move-tile.soar
+source preferences.soar

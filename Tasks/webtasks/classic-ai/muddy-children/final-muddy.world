@@ -1,0 +1,140 @@
+objid 1
+category child
+name amy
+
+objid 2
+category child
+name ben
+
+objid 3
+category child
+name cal
+
+objid 4
+category world
+name w-ccc
+
+objid 5
+category world
+name w-ccm
+
+objid 6
+category world
+name w-cmc
+
+objid 7
+category world
+name w-cmm
+
+objid 8
+category world
+name w-mcc
+
+objid 9
+category world
+name w-mcm
+
+objid 10
+category world
+name w-mmc
+
+objid 11
+category world
+name w-mmm
+
+objid 12
+category round
+name father-round
+n 0.0
+
+objid 13
+category round
+name first
+n 1.0
+
+objid 14
+category round
+name second
+n 2.0
+
+objid 15
+category round
+name third
+n 3.0
+
+objid 16
+category round
+name fourth
+n 4.0
+
+objid 17
+category stage
+name talk
+step 4.0
+
+predicate muddy
+3 5
+2 6
+2 7
+3 7
+1 8
+1 9
+3 9
+1 10
+2 10
+1 11
+2 11
+3 11
+
+predicate clean
+1 4
+2 4
+3 4
+1 5
+2 5
+1 6
+3 6
+1 7
+2 8
+3 8
+2 9
+3 10
+
+predicate view-mate
+1 4 8
+2 4 6
+3 4 5
+1 5 9
+2 5 7
+3 5 4
+1 6 10
+2 6 4
+3 6 7
+1 7 11
+2 7 5
+3 7 6
+1 8 4
+2 8 10
+3 8 9
+1 9 5
+2 9 11
+3 9 8
+1 10 6
+2 10 8
+3 10 11
+1 11 7
+2 11 9
+3 11 10
+
+predicate actual
+10
+
+predicate out-at
+4 12
+
+predicate said-yes
+1 14
+2 14
+3 15
+1 15
+2 15

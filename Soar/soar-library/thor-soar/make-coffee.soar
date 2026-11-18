@@ -1,0 +1,56 @@
+## make-coffee.soar -- thor-soar: 1 proposal.
+
+## Propose make-coffee.
+## MEA Selection
+sp {thor-soar*propose*make-coffee*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^constants.brew-time <brew-time>
+            # -^world.future-event.argument2.object-handle <coffee-machine-handle>
+              ^world <world1> <world2>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <fill-object>)
+   (<world2> ^anchored-world true
+             ^objects.object <coffee-machine>)
+   (<desireds> ^desired <desired1> # <desired2>
+               ^unachieved-desireds true
+               ^unachieved <desired1>)# <desired2>)  #doesn't need to be full
+   (<desired1> ^object <object1>)
+#   (<desired2> ^object <object2>)
+   (<object1> ^liquid-contents coffee
+              ^object-handle <fill-object-handle>)
+#   (<object2> ^fill-amount full
+#              ^object-handle <fill-object-handle>)
+   (<fill-object> ^object-handle <fill-object-handle>
+                  ^fillable true)
+   (<coffee-machine> ^class coffeemachine
+                     ^object-handle <coffee-machine-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name make-coffee
+               ^task-operator true
+               ^super-desired <desired1>
+               ^argument1 <fill-object>
+               ^argument2 <coffee-machine>
+               ^argument3 <brew-time>
+               ^argument-count 3
+               ^desireds <desireds2>
+               ^effect-desireds <effect-desireds>)
+   (<desireds2> ^desired-count 2
+                ^desired <desired3> <desired4>
+                ^preferred-desired <desired4>)
+   (<desired3> ^object <coffee-machine-desired>)
+   (<coffee-machine-desired> ^reachable true
+                             ^object-handle <coffee-machine-handle>)
+   (<desired4> ^in <in>)
+   (<in> ^argument1 <fill-object>
+         ^argument2 <coffee-machine>)
+   (<effect-desireds> ^desired <desired-ef1>
+               ^desired-count 1)
+   (<desired-ef1> ^object <ef-object>)
+   (<ef-object> ^activated true
+                ^event-time <brew-time>
+                ^object-handle <coffee-machine-handle>)
+}

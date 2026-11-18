@@ -1,0 +1,9 @@
+source elaborations.soar
+source init-local.soar
+source borrow-from.soar
+pushd borrow-from
+source borrow-from_source.soar
+popd
+source take-one.soar
+source write-borrow.soar
+source add-ten-up.soar

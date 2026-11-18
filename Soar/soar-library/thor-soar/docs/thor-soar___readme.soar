@@ -1,0 +1,128 @@
+#########################################
+## thor-soar Agent Phase 1b
+## Created 10/23/2023
+## John Laird: john.laird@cic.iqmri.org
+## Last Modified 7/17/2025
+## Soar version 9.6.22
+#########################################
+
+## Using logs for writing to stnd out
+## 0-9 for agent (John)
+## 10-19 for Lucia (Peter)
+## 20-29 for the interpreter. (Peter)
+## 30-39 for ITL stuff (Aaron)
+
+## Mobility might not be working for closing open drawers, etc. - 7/17/2025
+
+## There are profiles that sets the flags in  personal load files, such as thor-soar-JEL.soar, which is shown below:
+#pushd thor-soar
+#source thor-soar_source.soar
+#popd
+#
+#sp {elaborate*init-thor-soar*flags*profile*JEL
+#   (state <s> ^external-top-state <s>
+#              ^flags <flags>)
+#-->
+#   (<flags> ^profile JEL)
+#}
+
+
+#12/20/2024
+# 1. Have added significant control knowledge so the agent rarely searches
+# 2. Have not gone back and tested with chunking. Recommend chunking always.
+# 3. Added detection of illegal desireds
+
+#11/21/2024
+#1. Gets stuck with clean-counters when refrigerator door is open and trying to put something in there.
+#2. Need to go back and test chunking and look-ahead search
+
+#11/4/#2024
+#All with chunk always.
+#1. Problem with apple tasking. No action when has to throw out chunk that is duplicate.apple-in-microwave-then-potato-in-fridge-then-swap-then-cook-back-to-original
+#2. Learns rule that test for empty holding and something else.
+#3. Cycles between different goals
+
+
+## 11/2/2024
+## 1. added unachieved-desireds-count to desireds. This is tested in an MEA proposal (currently only goto/approach) with a constant 1 so do learn 
+##    to apply goto whenever it can achieve a desired. Only when it is the last one.
+##    Generatl calculation for unachieved-desireds-count for 1, 2, 3 desireds count. Can example to more (4, 5, 6)
+##    Might need to add tests for it (such as 1, 2) for other MEA proposals. In that case, can use gp with [ 1 2 3 4 ] to generate multiple rules so the right 
+##    number is tested. This is a hack as it will get the constant ( 1 2 3) into a chunk whereas if you did << 1 2 3 >> it would get the disjunction which wouldn't 
+##    necessarily be correct.
+
+############################################
+## Chunks are in chunk.soar file. Uncomment to get post-chunking behavior
+##  V4: June 26, 2024
+##  1. Add argument-count to operators
+##  2. Add operator-action-map so can have two rules for external action execution [since removed]
+##  3. Added search-control (optional) for avoiding undoing actions (close after open for example). 
+##  4. Eliminated transformation search control because #3 is more natural.
+##  5. SVS substates disabled.
+##
+### Version V3:
+##  Modifies V2:
+##   1. in-container -> in x
+##   2. on-location -> on x
+##   3. count -> desired-count x
+##   4. add argument-count to in and on relations  x
+##   5. add argument-count to operator <---
+##   6. Change all operator and relation arguments to argument1 (usually the object being manipulated) and argument2. x
+##   7. Modify rules to take advantage of this. x
+##   8. Start to address comments below.
+##
+##  Experimental Version with Rosie State/object representations.
+##    laird-thor-soar without V2 is the original that this was copied from.
+##    moved mutable features from world model into objects.
+##  1. Modified datamap by adding true/false attributes to ^object; removed corresponding attributes from ^world
+##  2. Operator by operator, moved those features. 3:02pm;  cook finished at 3:45pm (43min) cook substate finished 4:30pm (45 min); break-object 4:45 (15 min); close 5:07 (22min) 
+##     open 5:33 (26 min); get-object (19 min); go-to (18 min)
+
+## Comments
+## A. Before, all desireds were attributes of the world. Now, many are attributes of an object. Need
+## B. In new - if have multiple properties of an object, hard to represent? Must create new object with properties copied?  In cooking, next to the closed object being used to cook. 
+##   - create a new object with the handle - doesn't have all properties. with a duplicate-of pointer?  Will copy in substate?
+## C. Holding needs to be thought through. Might be on object and on world. Maybe a relation between self and an object. Need to know if not holding anything (none). Easier if relation - don't have to test for absence of holding on all objects.
+## D. Type graspable should be graspable true - did it...
+## E. Looks like get-object can have just one external pickup !!!!!
+## F. Unsure about go - why a separate mea proposal for a closed container - why preconditions achieved by has a desired to open container. !!!!!!  Other Changes!!!
+## G. apply*go-to*internal*object-on-location1 - not clear object on a location should be reachable  !!!
+## H. possible error in slice-object - all relations in proposal don't point to same object. !!
+## J. Added elaborations for false values of activatable; breakable; cookable; fillable;  
+## K. Needed to add sliceable (added all); toggle (haven't added...)
+## L. !!! Need to check if thor-soar*elaborate*state*unacheived-desired is necessary !!!
+## M. Fill-object external doesn't bind the <liquid> in the condition apply*fill-object*external
+## N. No way to empy hand via MEA - should through put-on or put-in.
+
+## Goal - Non-ITL agent that exists in AI2Thor simulation environment
+##   Embodies many conventions for thor-soar agents.
+##   Baseline for simple tasks, hierarchical tasks, lookahead tasks without ITL task stack, etc.
+##
+
+## Need object functionality - microwave cook stuff. Needs to be in SMEM or somewhere For now fake it in attended-objects
+
+#chat window, the output link (I3) should look like this:
+#(I3 ^send-message M1)
+#  (M1 ^type |message type here| ^fields F1)
+#    (F1 ^args here…)
+
+#
+#Action Format Example
+#(I3 ^perform-action P1)
+#  (P1 ^name |action name here| ^args here…)
+#The list of action names are here: https://github.com/Center-for-Integrated-Cognition/ITL-Thor/blob/master/RobotConnector.py
+#L189. Some of them require arguments. For example, the “pick-up” command requires an “object” argument containing the handle (unique ID) of the object to be picked up.
+#
+# 
+#
+#Language Input Format Example
+#(I2 ^language L2 ^objects O1 ^self I5 ^time T1)
+#  (L2 ^sentence I66)
+#    (I66 ^complete-sentence |Pick up the lettuce| ^next N1 ^sentence-number 1
+#           ^spelling *)
+#      (N1 ^next N2 ^spelling pick)
+#        (N2 ^next N3 ^spelling up)
+#          (N3 ^next N4 ^spelling the)
+#            (N4 ^next N5 ^spelling lettuce)
+#              (N5 ^next nil ^spelling |.|)
+

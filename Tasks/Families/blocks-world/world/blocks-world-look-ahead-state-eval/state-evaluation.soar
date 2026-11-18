@@ -1,0 +1,88 @@
+## State evaluation of the original (look-ahead states, after the evaluated operator is applied):
+## an expected value by how far the tower is built from the bottom. selection-world turns it into
+## a numeric-indifferent preference (W-LAH-021). The conditions on the support of every block are
+## the original's (they make learned rules specific to the situation).
+
+sp {blocks-world*evaluate*state*level*A
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<s> ^in-place <l0>)
+   (<l0> ^object-handle $ A)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^expected-value 1)
+}
+
+sp {blocks-world*evaluate*state*level*B
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u0>)
+   (<u0> ^argument1.object-handle $ A
+         ^argument2.object-handle <> B)
+   (<s> ^in-place <l1>)
+   (<l1> ^object-handle $ B)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^expected-value 0.600000)
+}
+
+sp {blocks-world*evaluate*state*level*C
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u1>)
+   (<u1> ^argument1.object-handle $ B
+         ^argument2.object-handle <> C)
+   (<s> ^in-place <l2>)
+   (<l2> ^object-handle $ C)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^expected-value 0.300000)
+}
+
+sp {blocks-world*evaluate*state*level*none
+   (state <s> ^problem-space.name blocks-world
+              ^tried-tied-operator
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<w> ^on <u2>)
+   (<u2> ^argument1.object-handle $ C
+         ^argument2.object-handle <> table)
+   (<w> ^on <r0> <r1> <r2>)
+   (<r0> ^argument1.object-handle $ A ^argument2.object-handle $ <a-on>)
+   (<r1> ^argument1.object-handle $ B ^argument2.object-handle $ <b-on>)
+   (<r2> ^argument1.object-handle $ C ^argument2.object-handle $ <c-on>)
+-->
+   (<s> ^expected-value 0)
+}
+
+## Reward when the real goal holds (top state only, as in the original, where success was only
+## recognised at the top state). agent-world's own reward rule is off (^flags.rl false) because
+## it would also reward look-ahead states.
+sp {blocks-world*reward*goal
+   (state <s> ^superstate nil
+              ^desireds <ds>
+              ^success <ds>
+              ^reward-link <r>)
+-->
+   (<r> ^reward <rw>)
+   (<rw> ^value 1)
+}

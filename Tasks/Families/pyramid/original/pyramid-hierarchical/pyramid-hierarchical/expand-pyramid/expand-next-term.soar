@@ -1,0 +1,33 @@
+
+sp {expand-pyramid*propose*expand-next-term
+   (state <s> ^name expand-pyramid)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<pyramid> ^height { <pyramid-height> >= 0 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name expand-next-term)
+}
+
+sp {expand-pyramid*apply*expand-next-term
+   (state <s> ^name expand-pyramid)
+   (<s> ^superstate <ss>)
+   (<s> ^pyramid <pyramid>)
+   (<s> ^operator <o>)
+   (<o> ^name expand-next-term)
+   (<pyramid> ^terms <pyramid-terms>)
+   (<pyramid> ^term <pyramid-term>)
+   (<pyramid> ^height <pyramid-height>)
+-->
+   (<ss> ^term <new>)
+   (<new> ^index <pyramid-terms>)
+   (<new> ^value <pyramid-term>)
+   (<pyramid> ^terms (+ <pyramid-terms> 1))
+   (<pyramid> ^terms <pyramid-terms> -)
+   (<pyramid> ^term (- <pyramid-term> 1))
+   (<pyramid> ^term <pyramid-term> -)
+   (<pyramid> ^height (- <pyramid-height> 1))
+   (<pyramid> ^height <pyramid-height> -)
+   (write | + | <pyramid-term>)
+}

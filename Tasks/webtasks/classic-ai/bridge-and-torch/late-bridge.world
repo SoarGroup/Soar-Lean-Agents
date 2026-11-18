@@ -1,0 +1,47 @@
+objid 1
+category bank
+name near-side
+
+objid 2
+category bank
+name far-side
+
+objid 3
+category torch
+name torch
+
+objid 4
+category clock
+name clock
+elapsed 19.0
+
+objid 5
+category person
+name ann
+minutes 1.0
+
+objid 6
+category person
+name bob
+minutes 2.0
+
+objid 7
+category person
+name cy
+minutes 5.0
+
+objid 8
+category person
+name di
+minutes 10.0
+
+predicate at
+5 2
+6 2
+7 2
+8 2
+3 2
+
+predicate other
+1 2
+2 1

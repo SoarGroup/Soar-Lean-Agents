@@ -1,0 +1,46 @@
+#
+## Long-term object data
+#
+## Knife location 
+#smem --add {
+#           (<in-drawer> ^type relation 
+#                        ^relation in 
+#                        ^argument1 <arg1> 
+#                        ^argument2 <arg2>
+#                        ^agrument1-class knife)
+#           (<arg1> ^class knife 
+#                   ^object-handle Knife44 
+#                   ^confirmed true 
+#                   ^anchored true)
+#           (<arg2> ^object-handle Drawer29)
+#}
+#
+## egg location 
+##smem --add {
+##           (<in> ^type relation ^relation in ^argument1 <arg1> ^argument2 <arg2>)
+##           (<arg1> ^class egg 
+##                   ^object-handle Egg36
+##                   ^confirmed true 
+##                   ^anchored true)
+##           (<arg2> ^object-handle Fridge40 
+##                   ^anchored true)}
+##   
+#
+### For testing - normally incorrect
+#smem --add {
+#           (<apple> ^type relation ^relation in ^argument1 <arg1> ^argument2 <arg2> 
+#                 ^argument1-class apple ^argument2-class microwave)
+#           (<arg1> ^object-handle Apple1 ^confirmed true ^anchored true)
+#           (<arg2> ^object-handle Microwave47 ^anchored true)
+#}
+#
+#
+#smem --add {
+#           (<in> ^type relation ^relation in ^argument1 <arg1> ^argument2 <arg2> 
+#                 ^argument1-class egg ^argument2-class fridge)
+#           (<arg1> ^object-handle Egg36 
+#                   ^class egg
+#                   ^anchored true)
+#           (<arg2> ^object-handle Fridge40 
+#                   ^class fridge 
+#                   ^anchored true)}

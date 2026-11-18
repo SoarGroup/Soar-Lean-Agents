@@ -1,0 +1,491 @@
+## achieved-desired-operators.soar -- agent-world: 30 elaborations, 4 applications.
+
+## ---- elaborations ----
+
+## Elaborate operator acheived-all-next-desireds -> sets desireds.
+## Operators next-desired
+sp {agent-world*elaborate*operator*acheived-all-next-desireds
+   :default
+   :o-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count $ <count>
+               ^achieved-desireds-count <count>
+               ^unachieved-desireds-count 0
+               ^next-desireds <next>)
+-->
+   (<operator> ^desireds <desireds> -
+                         <next>)
+}
+
+## Elaborate operator pre-conditions-satisfied -> sets pre-conditions-satisfied.
+## Operators pre-conditions
+sp {agent-world*elaborate*operator*pre-conditions-satisfied
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count <count>
+               ^achieved-desireds-count <count>
+               ^unachieved-desireds-count 0
+              -^next-desireds)
+-->
+   (<operator> ^pre-conditions-satisfied true)
+}
+
+## Elaborate operator desired-count0 achieved-0 -> sets achieved-desireds-count, unachieved-desireds-count.
+## Need to handle the case where there are 0 desireds on an operator
+## (Could be that there are only effect-desireds)
+sp {agent-world*elaborate*operator*desired-count0*achieved-0
+   :i-support
+    :default
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 0)
+-->
+   (<desireds> ^achieved-desireds-count 0
+               ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count1 achieved-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+## Operators
+sp {agent-world*elaborate*operator*desired-count1*achieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+               ^achieved <desired>)
+-->
+   (log 1 (crlf) |Success (1) : | <desireds>)
+   (<desireds> ^achieved-desireds-count 1
+               ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count1 unachieved-1 -> sets unachieved-desireds-count, achieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count1*unachieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+               ^unachieved <desired>)
+-->
+   (<desireds> ^unachieved-desireds-count 1
+               ^achieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count2 unachieved-2 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count2*unachieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 2
+               ^unachieved <desired>
+                           < <desired>)
+-->
+   (<desireds> ^achieved-desireds-count 0
+               ^unachieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count2 achieved-1-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count2*achieved-1-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 2
+               ^achieved <desired>
+               ^unachieved <desired2>)
+-->
+   (<desireds> ^achieved-desireds-count 1
+               ^unachieved-desireds-count 1)
+}
+
+## Elaborate operator desired-count2 achieved-2 -> sets unachieved-desireds-count, achieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count2*achieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 2
+               ^achieved <desired>
+                         < <desired>)
+-->
+#   (log 1 (crlf) |Success (2) : | <desireds>)
+   (<desireds> ^unachieved-desireds-count 0
+               ^achieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count3 achieved-3 -> sets achieved-desireds-count, unachieved-desireds-count.
+## 3
+sp {agent-world*elaborate*operator*desired-count3*achieved-3
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 3
+               ^achieved <desired> { < <desired> <desired2> } { < <desired2> <desired3> }
+              -^next-desireds)
+-->
+#   (log 1 (crlf) |Success (3) : | <desireds>)
+   (<desireds> ^achieved-desireds-count 3
+               ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count3 achieved-2 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count3*achieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 3
+               ^achieved <desired> { < <desired> <desired2> }
+               ^unachieved <desired3>)
+-->
+   (<desireds> ^achieved-desireds-count 2
+               ^unachieved-desireds-count 1)
+}
+
+## Elaborate operator desired-count3 achieved-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count3*achieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 3
+               ^achieved <desired>
+               ^unachieved <desired2> { < <desired2> <desired3> })
+-->
+   (<desireds> ^achieved-desireds-count 1
+               ^unachieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count3 achieved-0 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count3*achieved-0
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 3
+               ^unachieved <desired1> { < <desired1> <desired2> } { < <desired1>  < <desired2> <desired3> })
+-->
+   (<desireds> ^achieved-desireds-count 0
+               ^unachieved-desireds-count 3)
+}
+
+## Elaborate operator desired-count4 achieved-4 -> sets achieved-desireds-count, unachieved-desireds-count.
+## 4
+sp {agent-world*elaborate*operator*desired-count4*achieved-4
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 4
+               ^achieved <desired> { < <desired> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> })
+-->
+#   (log 1 (crlf) |Success (4) : | <desireds>)
+   (<desireds> ^achieved-desireds-count 4
+               ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count4 achieved-3 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count4*achieved-3
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 4
+               ^achieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> }
+               ^unachieved <desired4>)
+-->
+   (<desireds> ^achieved-desireds-count 3
+               ^unachieved-desireds-count 1)
+}
+
+## Elaborate operator desired-count4 achieved-2 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count4*achieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 4
+               ^achieved <desired1> { < <desired1> <desired2> }
+               ^unachieved <desired3> { < <desired3> <desired4> })
+-->
+   (<desireds> ^achieved-desireds-count 2
+               ^unachieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count4 achieved-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count4*achieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 4
+               ^achieved <desired1>
+               ^unachieved <desired2> { < <desired2> <desired3> } { < <desired3> <desired4> })
+-->
+   (<desireds>  ^achieved-desireds-count 1
+                ^unachieved-desireds-count 3)
+}
+
+## Elaborate operator desired-count4 achieved-0 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count4*achieved-0
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 4
+               ^unachieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> })
+-->
+   (<desireds>  ^achieved-desireds-count 0
+                ^unachieved-desireds-count 4)
+}
+
+## Elaborate operator desired-count5 achieved-5 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-5
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^achieved <desired> { < <desired> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> } { < <desired4> <desired5> })
+-->
+#   (log 1 (crlf) |Success (5) : | <desireds>)
+   (<desireds> ^achieved-desireds-count 5
+               ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count5 achieved-4 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-4
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^unachieved <desired5>
+               ^achieved <desired> { < <desired> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> })
+-->
+   (<desireds> ^achieved-desireds-count 4
+               ^unachieved-desireds-count 1)
+}
+
+## Elaborate operator desired-count5 achieved-3 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-3
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^achieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> }
+               ^unachieved <desired4> { < <desired4> <desired5> })
+-->
+   (<desireds> ^achieved-desireds-count 3
+               ^unachieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count5 achieved-2 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^achieved <desired1> { < <desired1> <desired2> }
+               ^unachieved <desired3> { < <desired3> <desired4> } { < <desired4> <desired5> })
+-->
+   (<desireds> ^achieved-desireds-count 2
+               ^unachieved-desireds-count 3)
+}
+
+## Elaborate operator desired-count5 achieved-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^achieved <desired1>
+               ^unachieved <desired2> { < <desired2> <desired3> } { < <desired3> <desired4> }  { < <desired4> <desired5> })
+-->
+   (<desireds>  ^achieved-desireds-count 1
+                ^unachieved-desireds-count 4)
+}
+
+## Elaborate operator desired-count5 achieved-0 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count5*achieved-0
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 5
+               ^unachieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> }  { < <desired4> <desired5> })
+-->
+   (<desireds>  ^achieved-desireds-count 0
+                ^unachieved-desireds-count 5)
+}
+
+## Elaborate operator achieved-all-desired6 -> sets achieved-desireds-count, unachieved-desireds-count.
+## 6
+sp {agent-world*elaborate*operator*achieved-all-desired6
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds>  ^desired-count 6
+                ^achieved <desired> { < <desired> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> } { < <desired4> <desired5> }{ < <desired5> <desired6> })
+-->
+#   (log 1 (crlf) |Success (6) : | <desireds>)
+   (<desireds>  ^achieved-desireds-count 6
+                ^unachieved-desireds-count 0)
+}
+
+## Elaborate operator desired-count6 achieved-5 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-5
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^achieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> } { < <desired4> <desired5> }
+               ^unachieved <desired6>)
+-->
+   (<desireds> ^achieved-desireds-count 5
+               ^unachieved-desireds-count 1)
+}
+
+## Elaborate operator desired-count6 achieved-4 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-4
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^achieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> }
+               ^unachieved <desired5> { < <desired5> <desired6> })
+-->
+   (<desireds> ^achieved-desireds-count 4
+               ^unachieved-desireds-count 2)
+}
+
+## Elaborate operator desired-count6 achieved-3 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-3
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^achieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> }
+               ^unachieved <desired4> { < <desired4> <desired5> } { < <desired5> <desired6> })
+-->
+   (<desireds> ^achieved-desireds-count 3
+               ^unachieved-desireds-count 3)
+}
+
+## Elaborate operator desired-count6 achieved-2 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-2
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^achieved <desired1> { < <desired1> <desired2> }
+               ^unachieved <desired3> { < <desired3> <desired4> } { < <desired4> <desired5> } { < <desired5> <desired6> })
+-->
+   (<desireds> ^achieved-desireds-count 2
+               ^unachieved-desireds-count 4)
+}
+
+## Elaborate operator desired-count6 achieved-1 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-1
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^achieved <desired1>
+               ^unachieved <desired2> { < <desired2> <desired3> } { < <desired3> <desired4> } { < <desired4> <desired5> } { < <desired5> <desired6> })
+-->
+   (<desireds> ^achieved-desireds-count 1
+               ^unachieved-desireds-count 5)
+}
+
+## Elaborate operator desired-count6 achieved-0 -> sets achieved-desireds-count, unachieved-desireds-count.
+sp {agent-world*elaborate*operator*desired-count6*achieved-0
+   :default
+   :i-support
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count 6
+               ^unachieved <desired1> { < <desired1> <desired2> } { < <desired2> <desired3> } { < <desired3> <desired4> } { < <desired4> <desired5> } { < <desired5> <desired6> })
+-->
+   (<desireds> ^achieved-desireds-count 0
+               ^unachieved-desireds-count 6)
+}
+
+## ---- operator application ----
+
+## Apply operator acheived-desired handle anchored-only -> sets achieved, unachieved.
+sp {agent-world*apply*operator*acheived-desired*handle*anchored-only
+   :default
+   (state <s> ^operator.desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^object-handle <handle>
+                     ^anchored true
+                    -^{ <> object-handle <> anchored })
+-->
+   (<desireds> ^achieved <desired>
+               ^unachieved <desired> -)
+}
+
+## Apply operator acheived-desired handle -> sets achieved, unachieved.
+sp {agent-world*apply*operator*acheived-desired*handle
+   :default
+   (state <s> ^operator.desireds <desireds>
+              ^world.objects.object <object>)
+   (<object> ^{ <> object-handle <> anchored  <> duplicate-of <desired-attribute>} <desired-value>
+             ^anchored true
+             ^object-handle <handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^{ <> object-handle  <> duplicate-of <desired-attribute>} <desired-value>
+                     ^object-handle <handle>)
+-->
+   (<desireds> ^achieved <desired>
+               ^unachieved <desired> -)
+}
+
+## Apply operator acheived-desired info -> sets achieved, unachieved, anchored-object.
+sp {agent-world*apply*operator*acheived-desired*info
+   :default
+   (state <s> ^operator.desireds <desireds>
+              ^world.info <info>)
+   (<info> ^unanchored-object.object-handle <object-handle>
+           ^anchored-object <anchored-object>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^info <info2>)
+   (<info2> ^unanchored-object.object-handle <object-handle>)
+-->
+   (<desireds> ^achieved <desired>
+               ^unachieved <desired> -)
+   (<info2> ^anchored-object <anchored-object>)
+}
+
+## Apply operator desired-count too-many.
+## More than 6 desireds is an error
+sp {agent-world*apply*operator*desired-count*too-many
+   :default
+   (state <s> ^operator <operator> +)
+   (<operator> ^desireds <desireds>)
+   (<desireds> ^desired-count { > 6 <n> })
+-->
+   (write (crlf) |ERROR: operator desireds | <desireds> | has desired-count | <n> |; agent-world counts at most 6 desireds.|)
+   (interrupt)
+}

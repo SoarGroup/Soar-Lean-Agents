@@ -1,0 +1,67 @@
+## cutoff-search.soar -- agent-world: 1 proposal, 2 compares, 1 application.
+
+## ---- operator proposal ----
+
+## Propose cutoff-search.
+## Stops a look-ahead branch whose path cost already exceeds the selection's minimum numeric value (cost metric only).
+## Measured on test set v1.32 (v2.38, 16 Nov 2026): same plans on all 20 affected tests; without it decisions rise,
+## most under tie-impasse with optimize (water jug 435/909/461 -> 878/1,047/981; cost graph c 933/215/1,095 -> 1,603/395/1,179).
+sp {agent-world*propose*evaluate-operator*cutoff-search
+   :default
+   (state <s> ^quiescence t
+              ^selection-superstate <superstate>
+              ^world.path-cost { <world-time> > <mnv> })
+   (<superstate> ^evaluation <evaluation>
+                 ^operator <superoperator>
+                 ^minimum-numeric-value $ <mnv>)
+   (<superoperator> ^super-operator.name $ <name>
+                    ^evaluation <evaluation>)
+  -(<evaluation> ^numeric-value <mnv>)  # waste of time if this is the one...
+  -(<superstate> ^superstate.desireds.better higher)  # the minimum is meaningful only when lower is better
+-->
+   (log 1 (crlf) <s> |: | <name> | --Pass back (failure cutoff)-- world-time: | <world-time> | > minimum: | <mnv>)
+   (<s> ^operator <op> + =, >)
+   (<op> ^name cutoff-search
+         ^evaluation <evaluation>)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for evaluate-operator cutoff-search.
+sp {agent-world*compare*evaluate-operator*cutoff-search
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name cutoff-search)
+   (<op2> ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for evaluate-operator cutoff-search2.
+sp {agent-world*compare*evaluate-operator*cutoff-search2
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name cutoff-search)
+   (<op2> ^name find-object)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply cutoff-search -> sets failure-cutoff.
+sp {agent-world*apply*cutoff-search
+   :default
+   (state <s> ^operator <op>
+              ^selection-superstate <superstate>)
+   (<op> ^name cutoff-search
+         ^evaluation <evaluation>)
+   (<superstate> ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Cutoff-search Evaluation: | <evaluation>)
+   (<evaluation> ^failure-cutoff true
+                 ^value true)
+}

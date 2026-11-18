@@ -1,0 +1,40 @@
+
+sp {subtract-digits*propose*store-sub
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^base <_v5>)
+   (<s> ^n <ss-d2>)
+   (<ss> ^|d2| <ss-d2>)
+   (<s> ^stored 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name store-sub)
+}
+
+sp {subtract-digits*apply*store-sub
+   (state <s> ^name subtract-digits)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name store-sub)
+   (<s> ^stored <s-stored>)
+   (<up> ^|d1| <up-d1>)
+   (<up> ^|d2| <up-d2>)
+   (<local> ^base <local-base>)
+   (<s> ^smem <sms>)
+   (<sms> ^command <smsc>)
+-->
+   (<s> ^stored 1)
+   (<s> ^stored <s-stored> -)
+   (<smsc> ^store <st0>)
+   (<st0> ^kind sub-fact)
+   (<st0> ^|d1| <up-d1>)
+   (<st0> ^|d2| <up-d2>)
+   (<st0> ^diff <local-base>)
+}

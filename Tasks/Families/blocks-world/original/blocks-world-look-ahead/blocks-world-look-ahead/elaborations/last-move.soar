@@ -1,0 +1,29 @@
+
+sp {blocks-world*apply*move-block*last-move*replace
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o>)
+   (<s> ^last-move <l>)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+-->
+   (<s> ^last-move <l> -)
+   (<s> ^last-move <n>)
+   (<n> ^name move-block)
+   (<n> ^block <block>)
+   (<n> ^dest <dest>)
+}
+
+sp {blocks-world*apply*move-block*last-move*first
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o>)
+   -(<s> ^last-move <_v2>)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+-->
+   (<s> ^last-move <n>)
+   (<n> ^name move-block)
+   (<n> ^block <block>)
+   (<n> ^dest <dest>)
+}

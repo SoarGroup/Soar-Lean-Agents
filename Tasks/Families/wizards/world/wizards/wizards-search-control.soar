@@ -1,0 +1,132 @@
+##############################################################################
+## Search control (the original's preferences, on the operators' arguments).
+## The original also makes every operator indifferent; kept as task search control while
+## look-ahead planning is off.
+##############################################################################
+
+sp {wizards*select*task-operator*indifferent
+   (state <s> ^problem-space.name wizards
+              ^flags.look-ahead-planning false
+              ^operator <o> +)
+   (<o> ^task-operator true)
+-->
+   (<s> ^operator <o> =)
+}
+
+sp {wizards*select*self-unknown-first
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name self-unknown
+        ^argument1.var 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*complement-first
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name complement
+        ^argument2.contra 1)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*guess-first
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name guess-white
+        ^argument2.done 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*guess-black-first
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name guess-black
+        ^argument2.done 0)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {wizards*select*consider-last
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name consider-knows
+        ^argument1.modeled 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-black-late
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name assume-black
+        ^argument2.value 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-white-late
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +)
+   (<o> ^name assume-white
+        ^argument2.value 0)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {wizards*select*assume-before-consider
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name assume-black)
+   (<o2> ^name consider-knows)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+sp {wizards*select*assume-white-before-consider
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name assume-white)
+   (<o2> ^name consider-knows)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+## Reject modelling a wizard in a view when another candidate models one in a view nested in it.
+sp {wizards*select*prefer-deeper
+   (state <s> ^problem-space.name wizards
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name consider-knows
+        ^argument1.view <k>)
+   (<o2> ^name consider-knows
+         ^argument1.view.parent <k>)
+-->
+   (<s> ^operator <o> -)
+}
+
+## Reject modelling a wizard who already owns a view when another candidate models a wizard
+## who owns none.
+sp {wizards*select*prefer-new-names
+   (state <s> ^problem-space.name wizards
+              ^world <w>
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name consider-knows
+        ^argument1.wiz <w-wiz>)
+   (<o2> ^name consider-knows
+         ^argument1.wiz <other-w-wiz>)
+   (<w> ^anchored-world true
+        ^objects.object <some2>)
+   (<some2> ^type view
+            ^owner <w-wiz>)
+  -{(<w> ^objects.object <none1>)
+    (<none1> ^type view
+             ^owner <other-w-wiz>)}
+-->
+   (<s> ^operator <o> -)
+}

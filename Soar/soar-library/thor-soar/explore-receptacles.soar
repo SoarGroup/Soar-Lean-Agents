@@ -1,0 +1,94 @@
+## explore-receptacles.soar -- thor-soar: 2 elaborations, 1 proposal, 1 compare, 1 application.
+
+## Elaborate explore-receptacles -> sets desireds, desired-count, desired.
+sp {elaborate*explore-receptacles
+    :default
+   (state <s> ^superstate nil
+              ^flags.explore-receptacles true)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^desired-count 1
+               ^desired.explore-receptacles true)}
+
+## Propose explore-receptacles.
+sp {thor-soar*propose*explore-receptacles
+    :default
+   (state <s> ^desireds.desired.explore-receptacles true
+            #  ^flags.explore-receptacles true
+              ^scene.objects <objects>)
+   (<objects> ^object <object>)
+   (<object> ^receptacle true
+             ^openable true
+            -^graspable true
+            -^explored true
+             ^object-handle <receptacle-handle>)
+  -{(<objects> ^object <object1>)
+    (<object1> ^receptacle true
+               ^openable true
+              -^graspable true
+              -^explored true
+               ^object-handle > <receptacle-handle>)}
+-->
+   (<s> ^operator <operator> +, =)
+   (<operator> ^name explore-receptacles
+               ^explore-operator true
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds1>)
+   (<desireds1> ^desired-count 1
+                ^desired.object <desired-object1>
+                ^next-desireds <desireds3>)
+   (<desired-object1> ^open true
+                      ^object-handle <receptacle-handle>)
+#   (<desireds2> ^desired-count 1
+#                ^desired.explore-in-receptacle-handle <receptacle-handle>
+#                ^next-desireds <desireds3>)
+   (<desireds3> ^desired-count 1
+                ^desired.object <desired-object3>)
+   (<desired-object3> ^open false
+                      ^object-handle <receptacle-handle>)
+}
+
+## Preference for explore-receptacles.
+sp {thor-soar*compare*explore-receptacles
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name explore-receptacles)
+   (<op2> ^name <> explore-receptacles
+          ^task-operator true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply explore-receptacles -> sets explored.
+sp {apply*explore-receptacles
+    :default
+   (state <s> ^operator <operator>
+              ^scene <scene>)
+   (<operator> ^name explore-receptacles
+               ^pre-conditions-satisfied true
+               ^argument1 <object>)
+   (<object> ^object-handle <receptable-handle>)
+-->
+   (log 1 (crlf) |Apply explore-receptacles | <receptable-handle> | internal.|)
+   (<object> ^explored false -
+                       true)
+}
+
+## Elaborate explore-receptacles -> sets achieved.
+sp {thor-soar*elaborate*explore-receptacles
+    :default
+   (state <s> ^desireds <desireds>
+              ^scene.objects <objects>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^explore-receptacles true)
+  -{(<objects> ^object <object>)
+    (<object> ^receptacle true
+              ^openable true
+            # -^graspable true
+             -^explored true)}
+-->
+   (<desireds> ^achieved <desired>)}

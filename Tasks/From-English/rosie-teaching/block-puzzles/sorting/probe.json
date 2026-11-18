@@ -1,0 +1,114 @@
+{
+ "task": "./sorting-puzzle-rules.soar",
+ "library": "/home/claude/repo/Soar/soar-library",
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "cap": 200000,
+ "fixed_by_task": {},
+ "configs": [
+  {
+   "config": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 3648,
+     "operators": 3,
+     "wall_s": 18.09,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 3396,
+     "operators": 3,
+     "wall_s": 5.16,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 3340,
+     "operators": 3,
+     "wall_s": 12.81,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 10384,
+   "quality": 9,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 80528,
+     "operators": 8,
+     "wall_s": 238.43,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": false,
+     "decisions": 200000,
+     "operators": 16,
+     "wall_s": 479.07,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": false,
+     "decisions": 200000,
+     "operators": 15,
+     "wall_s": 322.93,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 1,
+   "decisions": 480528,
+   "quality": 39,
+   "quality_kind": "operators"
+  }
+ ],
+ "recommended": {
+  "effective": {
+   "iterative-step": "operator",
+   "cost-metric": "none",
+   "optimize": "false"
+  },
+  "override": {},
+  "solved_all": true,
+  "rule": "no override: library defaults"
+ },
+ "warnings": []
+}

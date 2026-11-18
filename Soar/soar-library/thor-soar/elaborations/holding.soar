@@ -1,0 +1,23 @@
+## holding.soar -- thor-soar: 2 elaborations.
+
+## Elaborate state scene holding none -> sets holding-object.
+sp {elaborations*elaborate*state*scene*holding*none
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>
+              ^io.input-link.self.arm.holding-object none)
+-->
+   (<scene> ^holding-object.object-handle none)
+}
+
+## Elaborate state scene holding -> sets holding-object.
+sp {elaborations*elaborate*state*scene*holding
+    :default
+   (state <s> ^superstate nil
+              ^scene <scene>
+              ^io.input-link.self.arm.holding-object <handle>)
+   (<scene> ^objects.object <object>)
+   (<object> ^object-handle <handle>)
+-->
+   (<scene> ^holding-object <object>)
+}

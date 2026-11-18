@@ -1,0 +1,7 @@
+Langford's problem: English input
+
+Rules (one instance to be chosen from the source before formalizing):
+  Arrange two copies of 1..n so the two k's have exactly k numbers between them.
+
+Source of the task in AI research: CSPLib prob024.
+Kind of agent: CSP.

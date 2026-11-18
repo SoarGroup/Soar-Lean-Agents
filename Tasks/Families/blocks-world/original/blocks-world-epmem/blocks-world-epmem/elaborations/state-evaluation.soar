@@ -1,0 +1,53 @@
+
+sp {blocks-world*evaluate*state*level*A
+   (state <s> ^name blocks-world)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^object <l0>)
+   (<l0> ^name A)
+   (<l0> ^in-place 1)
+-->
+   (<s> ^numeric-value 3)
+}
+
+sp {blocks-world*evaluate*state*level*B
+   (state <s> ^name blocks-world)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^object <u0>)
+   (<u0> ^name A)
+   (<u0> ^on <u0t>)
+   (<u0t> ^name <> B)
+   (<s> ^object <l1>)
+   (<l1> ^name B)
+   (<l1> ^in-place 1)
+-->
+   (<s> ^numeric-value 2)
+}
+
+sp {blocks-world*evaluate*state*level*C
+   (state <s> ^name blocks-world)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^object <u1>)
+   (<u1> ^name B)
+   (<u1> ^on <u1t>)
+   (<u1t> ^name <> C)
+   (<s> ^object <l2>)
+   (<l2> ^name C)
+   (<l2> ^in-place 1)
+-->
+   (<s> ^numeric-value 1)
+}
+
+sp {blocks-world*evaluate*state*level*none
+   (state <s> ^name blocks-world)
+   (<s> ^tried-tied-operator <_v1>)
+   (<s> ^desired <d>)
+   (<s> ^object <u2>)
+   (<u2> ^name C)
+   (<u2> ^on <u2t>)
+   (<u2t> ^name <> table)
+-->
+   (<s> ^numeric-value 0)
+}

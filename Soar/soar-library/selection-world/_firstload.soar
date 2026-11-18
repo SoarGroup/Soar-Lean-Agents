@@ -1,0 +1,111 @@
+## A visual-soar project for the selection and evaluation substates
+############################# -*- Mode: Soar -*- #############################
+## 
+## File            : default/selection-world-only.soar
+## Author          : John Laird
+## Created on      : Mon Feb 27 16:15:34 1989  
+## Last Modified On: January 22, 2024
+## 
+## Contents:     Default productions for selection problem space for Soar 9.6.3
+##  1. in evaluation substate, copy the desireds.desired instead of the desireds <d> pointer
+##     important because substates add and remove achieved flags which become o-supported
+###########################################################################
+##  1. Changed ^desired to ^desireds.desired so can support multiple desired conditions (many changes)
+##  2. Add ^achieved true as an augmentation of individual desireds.
+##  3. Updated datamap to remove errors
+###########################################################################
+##  1. Added rule that cover failures in the selection space
+##     default*select*reject*conflict
+##
+#############################################################################
+##  Checked and tested for 9.6.1 
+##  1. Has datamap warnings for variable attributes
+##
+###########################################################################
+##  Changes made in Soar 9.6.0
+##   1. Modified state representations to include ^world for all task data
+##      only world information is copied to evaluation substate. 
+##      many rules changed in section 7.3.2.1 State Copying
+##   
+###########################################################################
+##  Change made for Soar 9.3
+##   1. Added expected-value as a result - these get translated into numeric preferences
+#########################################################################
+##  Change made for Soar 9.0 
+##   Added exhaustion-failure so could make sure no attempts to chunk over it.
+##   1. modify top-goal*halt*failure
+##   2. add selection*select*exhaustion-failure-evaluation-becomes-reject-preference
+##   3. modify evaluate-operator*elaborate*symbolic-evaluation*from-subgoal
+##   4. modify evaluate-operator*elaborate*evaluation*from-subgoal*duplicate-desired
+##   5. modify monitor*goal*failure
+##   6. evaluate-operator*elaborate*evaluation*failure*constraint-failure
+##   7. evaluate-operator*elaborate*evaluation*failure*no-operators
+##   8. selection*elaborate*state*all-objects-evaluated mod so not test for non evaluate-operator
+########################################################################
+### Change made for Soar 8.5
+###
+### Significant Changes made to Convert to Soar 8.2
+###    1. evaluate-object -> evaluate-operator
+###    2. Removed other types of evaulate-
+###    3. Change from problem-space.name selection -> name selection
+###    4. Simplified so only handles vanillia evaluate-operator
+###    5. Don't copy down problem space, just copy down name and
+###       assume problem space will be regenerated in subgoal based on name
+###    6. Added some documentation
+###    
+
+###
+
+###    State structure:
+###    (state <s> ^evaluation <evaluation>
+###               ^not-all-operators-evaulated true
+###               ^operator-selection not-indifferent
+###               ^found-value true)
+###    (<evaluation> ^numeric-value  no-value
+###         ^expected-al
+###         ^symbolic-value no-value/success/failure
+###         ^value true
+###         ^operator (identifier of operator being evaluated)
+###         ^desireds <desired>
+###
+###
+###    (<operator> ^name evaluate-operator
+###         ^operator <super-operator>
+###         ^evaluation <evaluation>  ;# same as on state
+###         ^super-problem-space
+###         ^superstate 
+
+### Changes May 2007 (SBW):
+### Added a 'no local negations' mode. If the problem space has a ^no-local-negations flag, rules will be used 
+### that avoid local negations, supporting versions of Soar that refuse to chunk over local negations.
+### There are a number of assumptions that must hold for this mode to work, though:
+###
+###  ^default-operator-copy yes must be on the problem-space
+###  ^default-state-copy yes must be on the problem-space
+###  ^default-desired-copy yes is not supported
+###  ^dont-copy and ^dont-copy-anything are not supported
+###  all-attributes-at-level mode are not supported
+###  attributes on task operators cannot refer to attributes attached to the state
+###  the state must be a tree-- no value can be referred to by multiple attributes
+
+# Not needed in 9.6.3
+#chunk singleton state superstate-set state
+#chunk singleton operator super-problem-space identifier
+#chunk singleton operator super-operator operator
+#chunk singleton any top-state any
+#chunk singleton any superstate any   # the architectural one doesn't apply to operators 
+#chunk singleton any numeric-value any
+#chunk singleton any symbolic-value any
+#chunk singleton any expected-value any
+#chunk singleton any super-operator any
+#chunk singleton any found-value any
+#chunk singleton any operator-selection any
+#chunk singleton any evaluation any
+#chunk singleton any duplicate-of any
+#chunk singleton any super-problemspace any
+#chunk singleton any look-ahead-operator any
+#chunk singleton any untried-tied-operator any
+#chunk singleton any tried-tied-operator any
+#chunk singleton any name identifier
+
+multi-attributes evaluation 5

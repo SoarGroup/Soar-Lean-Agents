@@ -1,0 +1,34 @@
+## _flags.soar -- selection-world: 2 elaborations.
+
+## Elaborate flags default iterative-step -> sets iterative-step.
+## operator: an iterative step is a task operator; tie-impasse: it is a tie impasse.
+sp {selection-world*elaborate*flags*default*iterative-step
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.iterative-step <any>)
+-->
+   (<f> ^iterative-step operator)   # v2.34: tie-impasse loses where every step is a choice; set per task (probe_settings.py)
+}
+
+## Elaborate flags default init-evaluation-depth -> sets init-evaluation-depth.
+## one: start at depth 1; unachieved-desireds: start at the number of unachieved desireds.
+sp {selection-world*elaborate*flags*default*init-evaluation-depth
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.init-evaluation-depth <any>)
+-->
+   (<f> ^init-evaluation-depth one)
+}
+
+## Elaborate flags default max-evaluation-depth -> sets max-evaluation-depth (v2.37; the value was fixed in the rules before).
+## The depth at which iterative deepening stops and achieved-max-depth breaks the tie. Not used with iterative-step cost (1000).
+sp {selection-world*elaborate*flags*default*max-evaluation-depth
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.max-evaluation-depth <any>)
+-->
+   (<f> ^max-evaluation-depth 12)
+}

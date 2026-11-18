@@ -1,0 +1,13 @@
+Mutilated checkerboard: English input
+
+Statements, numbered (the input to formalization):
+ 1. A chessboard has 8 rows and 8 columns of squares, coloured alternately black and white.
+ 2. Two diagonally opposite corner squares are removed, leaving 62 squares.
+ 3. A domino covers exactly two squares that share a side.
+ 4. The question is whether 31 dominoes can cover the 62 remaining squares, with no overlap and nothing off the board.
+ 5. The goal is to answer the question and prove the answer.
+
+Source of the task in AI research: McCarthy 1964 (representation-change challenge).
+Kind of agent: Reasoning / proof.
+Status: Asks for a proof of impossibility, not a plan. A Lean proof is natural; a Soar agent is not.
+Raised with John.

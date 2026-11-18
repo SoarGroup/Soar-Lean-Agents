@@ -1,0 +1,197 @@
+## Print the solved grid, one row per print-row operator (real top state only)
+sp {kenken*propose*print-row*r-1
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 0
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 1 ^col 1)
+   (<k2> ^type cell ^row 1 ^col 2)
+   (<k3> ^type cell ^row 1 ^col 3)
+   (<k4> ^type cell ^row 1 ^col 4)
+   (<k5> ^type cell ^row 1 ^col 5)
+   (<k6> ^type cell ^row 1 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 1
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*propose*print-row*r-2
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 1
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 2 ^col 1)
+   (<k2> ^type cell ^row 2 ^col 2)
+   (<k3> ^type cell ^row 2 ^col 3)
+   (<k4> ^type cell ^row 2 ^col 4)
+   (<k5> ^type cell ^row 2 ^col 5)
+   (<k6> ^type cell ^row 2 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 2
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*propose*print-row*r-3
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 2
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 3 ^col 1)
+   (<k2> ^type cell ^row 3 ^col 2)
+   (<k3> ^type cell ^row 3 ^col 3)
+   (<k4> ^type cell ^row 3 ^col 4)
+   (<k5> ^type cell ^row 3 ^col 5)
+   (<k6> ^type cell ^row 3 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 3
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*propose*print-row*r-4
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 3
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 4 ^col 1)
+   (<k2> ^type cell ^row 4 ^col 2)
+   (<k3> ^type cell ^row 4 ^col 3)
+   (<k4> ^type cell ^row 4 ^col 4)
+   (<k5> ^type cell ^row 4 ^col 5)
+   (<k6> ^type cell ^row 4 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 4
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*propose*print-row*r-5
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 4
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 5 ^col 1)
+   (<k2> ^type cell ^row 5 ^col 2)
+   (<k3> ^type cell ^row 5 ^col 3)
+   (<k4> ^type cell ^row 5 ^col 4)
+   (<k5> ^type cell ^row 5 ^col 5)
+   (<k6> ^type cell ^row 5 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 5
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*propose*print-row*r-6
+   (state <s> ^problem-space.name kenken
+              ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows 5
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <k1> ^object <k2> ^object <k3> ^object <k4> ^object <k5> ^object <k6>)
+   (<k1> ^type cell ^row 6 ^col 1)
+   (<k2> ^type cell ^row 6 ^col 2)
+   (<k3> ^type cell ^row 6 ^col 3)
+   (<k4> ^type cell ^row 6 ^col 4)
+   (<k5> ^type cell ^row 6 ^col 5)
+   (<k6> ^type cell ^row 6 ^col 6)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name print-row
+        ^task-operator false
+        ^row-number 6
+        ^cell1 <k1>
+        ^cell2 <k2>
+        ^cell3 <k3>
+        ^cell4 <k4>
+        ^cell5 <k5>
+        ^cell6 <k6>)
+}
+
+sp {kenken*apply*print-row
+   (state <s> ^operator <o>
+              ^printed-rows <old>)
+   (<o> ^name print-row
+        ^row-number { <r> <> <old> }
+        ^cell1.mark <m1>
+        ^cell2.mark <m2>
+        ^cell3.mark <m3>
+        ^cell4.mark <m4>
+        ^cell5.mark <m5>
+        ^cell6.mark <m6>)
+-->
+   (<s> ^printed-rows <old> -
+        ^printed-rows <r>)
+   (write |\| | <m1> | \| | <m2> | \| | <m3> | \| | <m4> | \| | <m5> | \| | <m6> | \| |)
+}

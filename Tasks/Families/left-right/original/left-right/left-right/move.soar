@@ -1,0 +1,40 @@
+
+sp {left-right*propose*move*direction--1
+   (state <s> ^name left-right)
+   (<s> ^agent <agent>)
+   (<agent> ^location 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name move)
+   (<o> ^agent <agent>)
+   (<o> ^direction -1)
+}
+
+sp {left-right*propose*move*direction-1
+   (state <s> ^name left-right)
+   (<s> ^agent <agent>)
+   (<agent> ^location 0)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name move)
+   (<o> ^agent <agent>)
+   (<o> ^direction 1)
+}
+
+sp {left-right*apply*move
+   (state <s> ^name left-right)
+   (<s> ^operator <o>)
+   (<o> ^name move)
+   (<o> ^agent <agent>)
+   (<o> ^direction <direction>)
+   (<agent> ^location <agent-location>)
+   (<agent> ^moved <agent-moved>)
+-->
+   (<agent> ^location <direction>)
+   (<agent> ^location <agent-location> -)
+   (<agent> ^moved 1)
+   (<agent> ^moved <agent-moved> -)
+   (write |Moved: | <direction>)
+}

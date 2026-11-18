@@ -1,0 +1,8 @@
+# strategies: first-success, plus a depth strategy
+pushd iterative-deepening
+source iterative-deepening_source.soar
+popd
+pushd first-success
+source first-success_source.soar
+popd
+# strategies/optimal was retired in v2.15: cost-aware selection is provided by the cost-metric and optimize flags (see CHANGES.md).

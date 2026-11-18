@@ -1,0 +1,143 @@
+## Problem space of the task states (W-WLD-014, W-LAH-009): the top state and the look-ahead
+## (evaluate-operator) states, which get ^name blocks-world from selection-world.
+sp {blocks-world*elaborate*problem-space
+   (state <s> ^name blocks-world)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name blocks-world
+        ^agent-world true)
+}
+
+## Achievement of relation desireds is task knowledge (W-DBK-002/003): each ^on desired is
+## either achieved or unachieved in the state's anchored world, compared by object handle.
+sp {blocks-world*elaborate*desired*on*achieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^on <r>)
+   (<ds> ^desired <d>)
+   (<d> ^on <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+   (<r> ^argument1.object-handle $ <h1>
+        ^argument2.object-handle $ <h2>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {blocks-world*elaborate*desired*on*unachieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^on <dr>)
+   (<dr> ^argument1.object-handle $ <h1>
+         ^argument2.object-handle $ <h2>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1.object-handle <h1>
+         ^argument2.object-handle <h2>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## ^clear true on world objects: the table is always clear, a block is clear when nothing is on
+## it. It is an object property because move-block's precondition desireds are object-property
+## desireds, which agent-world matches against world objects (W-DBK-006). (No look-ahead is used
+## in this program, so the derived property is never copied.)
+sp {blocks-world*elaborate*object*clear*table
+   (state <s> ^superstate nil
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^class table)
+-->
+   (<t> ^clear true)
+}
+
+sp {blocks-world*elaborate*object*clear*block
+   (state <s> ^superstate nil
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <b>)
+   (<b> ^class block)
+  -{(<w> ^on <r>)
+    (<r> ^argument2 <b>)}
+-->
+   (<b> ^clear true)
+}
+
+## Achievement of ^clear object desireds on states (task-supplied, W-DBK-002) ...
+sp {blocks-world*elaborate*desired*clear*achieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^clear true)
+   (<x> ^object-handle $ <h>
+        ^clear true)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {blocks-world*elaborate*desired*clear*unachieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^clear true)
+  -{(<w> ^objects.object <x>)
+    (<x> ^object-handle <h>
+         ^clear true)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## ... and the unachieved half for operator precondition desireds (agent-world supplies achieved).
+sp {blocks-world*elaborate*operator*desired*clear*unachieved
+   (state <s> ^operator <o> +
+              ^world <w>)
+   (<w> ^anchored-world true)
+   (<o> ^desireds <ds>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^clear true)
+  -{(<w> ^objects.object <x>)
+    (<x> ^object-handle <h>
+         ^clear true)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## An MEA operator subgoal (operator no-change of a task operator whose preconditions are not
+## satisfied) works in the same problem space as its superstate (W-MEA-005/006).
+sp {blocks-world*elaborate*mea-substate*problem-space
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>)
+   (<ss> ^problem-space.name blocks-world
+         ^operator <o>)
+   (<o> ^task-operator true
+       -^pre-conditions-satisfied true
+        ^desireds)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name blocks-world
+        ^agent-world true)
+}
+
+## End of the episode: agent-world marks (<s> ^success <desireds>) when every desired is
+## achieved (W-DBK-009). At the real top state this prints the original's message and halts.
+sp {blocks-world*halt*goal*success
+   (state <s> ^superstate nil
+              ^desireds <ds>
+              ^success <ds>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

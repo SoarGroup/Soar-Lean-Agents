@@ -1,0 +1,14 @@
+
+chunk always
+chunk add-osk on
+chunk allow-local-negations off
+multi-attributes cell 37
+multi-attributes cand 217
+multi-attributes tuple 169
+multi-attributes puzzle 2
+multi-attributes ancestor 20
+
+pushd ../default
+source selection.soar
+popd
+

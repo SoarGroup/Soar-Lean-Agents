@@ -1,0 +1,745 @@
+## kenken task rules (world conventions, the shared library, no external environment)
+## Task situation: ^world.objects.object holds every cell, candidate, cage tuple and the puzzle
+## record, each with ^object-handle and ^anchored true. Links between objects are handles
+## (cell ^cand <cand-handle>, cand ^in-tuple <tuple-handle>, tuple ^uses-cand <cand-handle>), so
+## that the selection-world look-ahead copy keeps them consistent.
+## Goal: ^desireds with one desired: the puzzle object has ^marks = number of cells.
+
+########################################################################
+## Problem space and flags
+########################################################################
+
+sp {kenken*elaborate*problem-space
+   (state <s> ^name kenken)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name kenken
+        ^agent-world true)
+}
+
+########################################################################
+## Goal bookkeeping (task supplies achieved/unachieved for state desireds)
+########################################################################
+
+sp {kenken*elaborate*desired*achieved
+   (state <s> ^problem-space.name kenken
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^marks <m>)
+   (<w> ^anchored-world true
+        ^objects.object <o>)
+   (<o> ^object-handle $ <h>
+        ^anchored true
+        ^marks <m>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {kenken*elaborate*desired*unachieved
+   (state <s> ^problem-space.name kenken
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^marks <m>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+  -{(<objs> ^object <o>)
+    (<o> ^object-handle <h>
+         ^anchored true
+         ^marks <m>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+
+## Derived indexes on the state (i-supported, re-derived for every world, including look-ahead
+## copies): they turn the handle links between world objects into identifier links.
+sp {kenken*elaborate*index*cell
+   (state <s> ^problem-space.name kenken
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <c>)
+   (<c> ^type cell)
+-->
+   (<s> ^cell-info <ci>)
+   (<ci> ^cell <c>)
+}
+
+sp {kenken*elaborate*index*cell*cand
+   (state <s> ^problem-space.name kenken
+              ^cell-info <ci>
+              ^world <w>)
+   (<ci> ^cell <c>)
+   (<c> ^cand <h>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^object-handle $ <h>)
+-->
+   (<ci> ^cand <x>)
+}
+
+sp {kenken*elaborate*index*cand
+   (state <s> ^problem-space.name kenken
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^type cand)
+-->
+   (<s> ^cand-info <ki>)
+   (<ki> ^cand <x>)
+}
+
+sp {kenken*elaborate*index*cand*tuple
+   (state <s> ^problem-space.name kenken
+              ^cand-info <ki>
+              ^world <w>)
+   (<ki> ^cand <x>)
+   (<x> ^in-tuple <h>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^object-handle $ <h>)
+-->
+   (<ki> ^tuple <t>)
+}
+
+sp {kenken*elaborate*index*tuple
+   (state <s> ^problem-space.name kenken
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^type tuple)
+-->
+   (<s> ^tuple-info <ti>)
+   (<ti> ^tuple <t>)
+}
+
+sp {kenken*elaborate*index*tuple*cand
+   (state <s> ^problem-space.name kenken
+              ^tuple-info <ti>
+              ^world <w>)
+   (<ti> ^tuple <t>)
+   (<t> ^uses-cand <h>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^object-handle $ <h>)
+-->
+   (<ti> ^cand <x>)
+}
+
+sp {kenken*elaborate*index*puzzle
+   (state <s> ^problem-space.name kenken
+              ^desireds.desired.object.object-handle $ <ph>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ <ph>)
+-->
+   (<s> ^puzzle <p>)
+}
+
+## Failure: a cell without a mark has no live candidate, or a marked cell's candidate is dead.
+## (Tested on the world itself, not on the derived indexes, so that it never holds while an
+## index is still being built.)
+sp {kenken*elaborate*failure*no-candidate
+   (state <s> ^problem-space.name kenken
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <c>)
+   (<c> ^type cell
+        ^mark 0)
+  -{(<c> ^cand <xh>)
+    (<objs> ^object <x>)
+    (<x> ^object-handle <xh>
+         ^alive 1)}
+-->
+   (<s> ^failure <ds>)
+}
+
+sp {kenken*elaborate*failure*mark-dead
+   (state <s> ^problem-space.name kenken
+              ^desireds <ds>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <c>)
+   (<c> ^type cell
+        ^mark { <m> <> 0 })
+  -{(<c> ^cand <xh>)
+    (<objs> ^object <x>)
+    (<x> ^object-handle <xh>
+         ^value <m>
+         ^alive 1)}
+-->
+   (<s> ^failure <ds>)
+}
+
+########################################################################
+## Task operators: MEA proposals (serve the unachieved puzzle desired)
+## Each has ^task-operator true, ^action-handle, ^argumentN, ^argument-count,
+## ^super-desired and empty precondition ^desireds.
+## ^puzzle is the world object named by the desired.
+########################################################################
+
+## cleanup: a marked cell's other live candidates die
+sp {kenken*propose*cleanup
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci> ^cell <c>
+         ^cand <z>)
+   (<c> ^mark { <m> <> 0 })
+   (<z> ^alive 1
+        ^value <> <m>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name cleanup
+        ^task-operator true
+        ^action-handle cleanup
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <z>
+        ^argument-count 2
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## eliminate: a value marked in a cell dies in the other cells of its row / column
+sp {kenken*propose*eliminate*row
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci1>
+              ^cell-info { <ci2> <> <ci1> })
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci1> ^cell <c1>)
+   (<c1> ^mark { <m> <> 0 }
+         ^row <r>)
+   (<ci2> ^cell <c2>
+          ^cand <y>)
+   (<c2> ^row <r>)
+   (<y> ^alive 1
+        ^value <m>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name eliminate
+        ^task-operator true
+        ^action-handle eliminate
+        ^super-desired <d>
+        ^argument1 <c1>
+        ^argument2 <c2>
+        ^argument3 <y>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+sp {kenken*propose*eliminate*col
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci1>
+              ^cell-info { <ci2> <> <ci1> })
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci1> ^cell <c1>)
+   (<c1> ^mark { <m> <> 0 }
+         ^col <col>)
+   (<ci2> ^cell <c2>
+          ^cand <y>)
+   (<c2> ^col <col>)
+   (<y> ^alive 1
+        ^value <m>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name eliminate
+        ^task-operator true
+        ^action-handle eliminate
+        ^super-desired <d>
+        ^argument1 <c1>
+        ^argument2 <c2>
+        ^argument3 <y>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## prune: a live candidate that is in no live cage tuple dies
+sp {kenken*propose*prune
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cand-info <ki>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ki> ^cand <x>)
+   (<x> ^alive 1)
+  -{(<ki> ^tuple <t>)
+    (<t> ^alive 1)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name prune
+        ^task-operator true
+        ^action-handle prune
+        ^super-desired <d>
+        ^argument1 <x>
+        ^argument-count 1
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## drop-tuple: a live cage tuple that uses a dead candidate dies
+sp {kenken*propose*drop-tuple
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^tuple-info <ti>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ti> ^tuple <t>
+         ^cand <x>)
+   (<t> ^alive 1)
+   (<x> ^alive 0)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name drop-tuple
+        ^task-operator true
+        ^action-handle drop-tuple
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument2 <x>
+        ^argument-count 2
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## assign (1): an unmarked cell whose live candidates all have one value
+sp {kenken*propose*assign*single-value
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci> ^cell <c>
+         ^cand <x>)
+   (<c> ^mark 0)
+   (<x> ^alive 1
+        ^value <v>)
+  -{(<ci> ^cand <other>)
+    (<other> ^alive 1
+             ^value <> <v>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name assign
+        ^task-operator true
+        ^action-handle assign
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument3 <x>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## assign (2): the only live candidate for a value in its row
+sp {kenken*propose*assign*row
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci> ^cell <c>
+         ^cand <x>)
+   (<c> ^mark 0
+        ^row <r>
+        ^coord <coord>)
+   (<x> ^alive 1
+        ^value <v>)
+  -{(<s> ^cand-info.cand <other>)
+    (<other> ^row <r>
+             ^value <v>
+             ^alive 1
+             ^coord <> <coord>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name assign
+        ^task-operator true
+        ^action-handle assign
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument3 <x>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## assign (3): the only live candidate for a value in its column
+sp {kenken*propose*assign*col
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<ci> ^cell <c>
+         ^cand <x>)
+   (<c> ^mark 0
+        ^col <col>
+        ^coord <coord>)
+   (<x> ^alive 1
+        ^value <v>)
+  -{(<s> ^cand-info.cand <other>)
+    (<other> ^col <col>
+             ^value <v>
+             ^alive 1
+             ^coord <> <coord>)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name assign
+        ^task-operator true
+        ^action-handle assign
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument3 <x>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## choose-cell: pick an unmarked cell with exactly two live candidates to guess next
+sp {kenken*propose*choose-cell
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<p> ^gcell 0)
+   (<ci> ^cell <c>
+         ^cand <x1>
+         ^cand { <x2> <> <x1> })
+   (<c> ^mark 0)
+   (<x1> ^alive 1)
+   (<x2> ^alive 1)
+  -{(<ci> ^cand <y1>
+          ^cand { <y2> <> <y1> }
+          ^cand { <y3> <> <y1> <> <y2> })
+    (<y1> ^alive 1)
+    (<y2> ^alive 1)
+    (<y3> ^alive 1)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name choose-cell
+        ^task-operator true
+        ^action-handle choose-cell
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument-count 2
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## choose-cell-3: pick an unmarked cell with exactly three live candidates to guess next
+sp {kenken*propose*choose-cell-3
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<p> ^gcell 0)
+   (<ci> ^cell <c>
+         ^cand <x1>
+         ^cand { <x2> <> <x1> }
+         ^cand { <x3> <> <x1> <> <x2> })
+   (<c> ^mark 0)
+   (<x1> ^alive 1)
+   (<x2> ^alive 1)
+   (<x3> ^alive 1)
+  -{(<ci> ^cand <y1>
+          ^cand { <y2> <> <y1> }
+          ^cand { <y3> <> <y1> <> <y2> }
+          ^cand { <y4> <> <y1> <> <y2> <> <y3> })
+    (<y1> ^alive 1)
+    (<y2> ^alive 1)
+    (<y3> ^alive 1)
+    (<y4> ^alive 1)}
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name choose-cell-3
+        ^task-operator true
+        ^action-handle choose-cell-3
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument-count 2
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+## guess: give the chosen cell one of its live candidate values (alternatives tie -> look-ahead)
+sp {kenken*propose*guess
+   (state <s> ^problem-space.name kenken
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^puzzle <p>
+              ^cell-info <ci>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<p> ^gcell <coord>)
+   (<ci> ^cell <c>
+         ^cand <x>)
+   (<c> ^coord <coord>)
+   (<x> ^alive 1)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name guess
+        ^task-operator true
+        ^action-handle guess
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument3 <x>
+        ^argument-count 3
+        ^desireds <od>)
+   (<od> ^desired-count 0)
+}
+
+########################################################################
+## Search control (the original program's preferences)
+########################################################################
+
+sp {kenken*select*propagation*indifferent
+   (state <s> ^problem-space.name kenken
+              ^operator <o> +)
+   (<o> ^name << cleanup eliminate prune drop-tuple assign choose-cell choose-cell-3 >>)
+-->
+   (<s> ^operator <o> =)
+}
+
+sp {kenken*select*choose-cell*worst
+   (state <s> ^problem-space.name kenken
+              ^operator <o> +)
+   (<o> ^name << choose-cell choose-cell-3 >>)
+-->
+   (<s> ^operator <o> <)
+}
+
+sp {kenken*select*two-before-three
+   (state <s> ^problem-space.name kenken
+              ^operator <o> +
+              ^operator { <o2> <> <o> } +)
+   (<o> ^name choose-cell)
+   (<o2> ^name choose-cell-3)
+-->
+   (<s> ^operator <o> > <o2>)
+}
+
+########################################################################
+## Internal application (environment none: every state, one decision per action).
+## Arguments are mapped by object-handle to the objects of this state's world,
+## so the same rules apply the real operator and the evaluated operator in look-ahead.
+########################################################################
+
+sp {kenken*apply*cleanup
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name cleanup
+        ^pre-conditions-satisfied true
+        ^argument2.object-handle $ <zh>)
+   (<w> ^anchored-world true
+        ^objects.object <z>)
+   (<z> ^object-handle $ <zh>
+        ^alive 1)
+-->
+   (<z> ^alive 1 -
+        ^alive 0)
+}
+
+sp {kenken*apply*eliminate
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name eliminate
+        ^pre-conditions-satisfied true
+        ^argument3.object-handle $ <yh>)
+   (<w> ^anchored-world true
+        ^objects.object <y>)
+   (<y> ^object-handle $ <yh>
+        ^alive 1)
+-->
+   (<y> ^alive 1 -
+        ^alive 0)
+}
+
+sp {kenken*apply*prune
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name prune
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <xh>)
+   (<w> ^anchored-world true
+        ^objects.object <x>)
+   (<x> ^object-handle $ <xh>
+        ^alive 1)
+-->
+   (<x> ^alive 1 -
+        ^alive 0)
+}
+
+sp {kenken*apply*drop-tuple
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name drop-tuple
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^object-handle $ <th>
+        ^alive 1)
+-->
+   (<t> ^alive 1 -
+        ^alive 0)
+}
+
+sp {kenken*apply*assign
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name assign
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <ph>
+        ^argument2.object-handle $ <ch>
+        ^argument3.object-handle $ <xh>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <p> ^object <c> ^object <x>)
+   (<p> ^object-handle $ <ph>
+        ^marks <marks>)
+   (<c> ^object-handle $ <ch>
+        ^mark 0
+        ^coord <coord>)
+   (<x> ^object-handle $ <xh>
+        ^value <v>)
+-->
+   (<c> ^mark 0 -
+        ^mark <v>)
+   (<p> ^marks <marks> -
+        ^marks (+ <marks> 1))
+   (write |Set cell: | <coord> | to | <v>)
+}
+
+sp {kenken*apply*choose-cell
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name << choose-cell choose-cell-3 >>
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <ph>
+        ^argument2.object-handle $ <ch>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <p> ^object <c>)
+   (<p> ^object-handle $ <ph>
+        ^gcell 0)
+   (<c> ^object-handle $ <ch>
+        ^coord <coord>)
+-->
+   (<p> ^gcell 0 -
+        ^gcell <coord>)
+   (write |Guess cell: | <coord>)
+}
+
+sp {kenken*apply*guess
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name guess
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <ph>
+        ^argument2.object-handle $ <ch>
+        ^argument3.object-handle $ <xh>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <p> ^object <c> ^object <x>)
+   (<p> ^object-handle $ <ph>
+        ^marks <marks>
+        ^gcell { <coord> <> 0 })
+   (<c> ^object-handle $ <ch>
+        ^coord <coord>
+        ^mark <old-mark>)
+   (<x> ^object-handle $ <xh>
+        ^value <v>)
+-->
+   (<c> ^mark <old-mark> -
+        ^mark <v>)
+   (<p> ^marks <marks> -
+        ^marks (+ <marks> 1)
+        ^gcell <coord> -
+        ^gcell 0)
+   (write |Guess: | <coord> | is | <v>)
+}
+
+########################################################################
+## Printing the solution (real top state only) and ending the episode
+########################################################################
+
+sp {kenken*select*print-row*indifferent
+   (state <s> ^problem-space.name kenken
+              ^operator <o> +)
+   (<o> ^name print-row)
+-->
+   (<s> ^operator <o> =)
+}
+
+sp {kenken*halt*success
+   (state <s> ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^success <ds>
+              ^printed-rows <n>
+              ^grid-size <n>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (write (crlf) |TASK-RESULT: success|)
+   (halt)
+}
+
+sp {kenken*halt*failure
+   (state <s> ^superstate nil
+              ^real true
+              ^desireds <ds>
+              ^failure <ds>)
+-->
+   (write (crlf) |Failure state: the task has failed.|)
+   (write (crlf) |TASK-RESULT: failure|)
+   (halt)
+}

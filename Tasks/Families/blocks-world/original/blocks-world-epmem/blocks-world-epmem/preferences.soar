@@ -1,0 +1,15 @@
+
+sp {blocks-world*select*reject-twice
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o> +)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name evaluate-operator)
+   (<o> ^name move-block)
+   (<o> ^block <v1>)
+   (<s> ^last-move <l>)
+   (<l> ^name move-block)
+   (<l> ^block <v1>)
+-->
+   (<s> ^operator <o> -)
+}

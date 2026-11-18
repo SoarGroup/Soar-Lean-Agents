@@ -1,0 +1,127 @@
+## lower-bound.soar -- selection-world: 2 elaborations, 6 applications (v2.30).
+## Lower bounds of evaluations (^flags.iterative-step tie-impasse or operator (operator from v2.40), ^flags.optimize true, cost metric).
+## With tie-impasse depth the depth counts nested ties, not operators: after a nested tie is decided the look-ahead goes on applying
+## operators, so the value of an operator is the result of one look-ahead path whose nested choices were made on partial information.
+## A success on that path is a real cost (an upper bound); a failure or failure-cutoff on it does not prove the operator worse.
+## Each evaluation holds one ^lower-bound: none while no branch below it has been cut off by the depth, otherwise the lowest cost bound
+## of such a branch. It starts as none and is replaced, never negated, so chunks built over it keep the test.
+## The top selection (^bound-check true) lets an evaluation lose only when it is closed (Operator_Tie/elaborations.soar): its lower bound is
+## none or not below the best value found. Otherwise the top tie stays, the depth is incremented, and the evaluation is evaluated again.
+
+## ---- elaborations ----
+
+## Elaborate lower-bound: of two bounds the higher is removed (bounds can arrive from two branches in one phase).
+sp {selection-world*elaborate*evaluation*lower-bound*keep-lowest
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound { <low> <> none }
+                 ^lower-bound { > <low> <high> })
+-->
+   (<evaluation> ^lower-bound <high> -)}
+
+## Elaborate lower-bound: none is removed once a bound has arrived.
+sp {selection-world*elaborate*evaluation*lower-bound*replace-none
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound none
+                 ^lower-bound <> none)
+-->
+   (<evaluation> ^lower-bound none -)}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> lower-bound none (every mode). Every rule that writes a value into an evaluation tests its ^lower-bound with $,
+## so the chunk built from the value tests the bound literally. A value with lower-bound none was computed with no depth cut-off below it,
+## and its chunk holds at any depth. A value computed below a cut-off is learned with that bound (or not at all, when its derivation reaches
+## exceed-depth, which tests ^quiescence t); its chunk never fires in a fresh evaluation, which starts with lower-bound none.
+sp {selection-world*apply*evaluate-operator*lower-bound*none
+   :default
+   (state <s> ^name selection
+              ^operator <operator>)
+   (<operator> ^name evaluate-operator
+               ^evaluation <evaluation>)
+-->
+   (<evaluation> ^lower-bound none)}
+
+## Apply depth-exceeded (o-support) -> lower-bound: a depth-exceeded evaluation is bounded by its estimated total cost.
+sp {selection-world*apply*evaluation*lower-bound*depth-exceeded
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^flags <flags>
+              ^evaluation <evaluation>)
+   (<flags> ^iterative-step << tie-impasse operator >>
+            ^optimize true
+            ^cost-metric << unit time >>)
+   (<evaluation> ^symbolic-value depth-exceeded
+                 ^estimated-total-cost <bound>
+                 ^lower-bound none)
+-->
+   (<evaluation> ^lower-bound <bound>
+                 ^lower-bound none -)}
+
+## Apply depth-exceeded (o-support) -> lower-bound: a lower estimated total cost replaces a bound.
+sp {selection-world*apply*evaluation*lower-bound*depth-exceeded*lower
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^flags <flags>
+              ^evaluation <evaluation>)
+   (<flags> ^iterative-step << tie-impasse operator >>
+            ^optimize true
+            ^cost-metric << unit time >>)
+   (<evaluation> ^symbolic-value depth-exceeded
+                 ^estimated-total-cost <bound>
+                 ^lower-bound { <old> > <bound> })
+-->
+   (<evaluation> ^lower-bound <bound>
+                 ^lower-bound <old> -)}
+
+## Apply pass-up (o-support) -> lower-bound: a bound in a nested selection bounds the evaluation of the operator whose look-ahead holds it.
+## None is then removed by replace-none.
+sp {selection-world*apply*evaluation*lower-bound*pass-up*none
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^flags <flags>
+              ^superstate.evaluation <parent>
+              ^evaluation.lower-bound { <bound> <> none })
+   (<flags> ^iterative-step << tie-impasse operator >>
+            ^optimize true
+            ^cost-metric << unit time >>)
+   (<parent> ^lower-bound none)
+-->
+   (<parent> ^lower-bound <bound>
+             ^lower-bound none -)}
+
+## Apply pass-up (o-support) -> lower-bound: a lower bound in a nested selection; the higher one is then removed by keep-lowest.
+sp {selection-world*apply*evaluation*lower-bound*pass-up*lower
+   :default
+   :o-support
+   (state <s> ^name selection
+              ^flags <flags>
+              ^superstate.evaluation <parent>
+              ^evaluation.lower-bound { <bound> <> none })
+   (<flags> ^iterative-step << tie-impasse operator >>
+            ^optimize true
+            ^cost-metric << unit time >>)
+   (<parent> ^lower-bound { <old> > <bound> })
+-->
+   (<parent> ^lower-bound <bound>
+             ^lower-bound <old> -)}
+
+## Apply increment-current-evaluation-depth -> removes the evaluations that are not closed; they are evaluated again at the new depth.
+## The negated test is on the top selection's own evaluations and makes no result, so no chunk is built from it.
+sp {selection-world*apply*increment-current-evaluation-depth*remove-open-evaluations
+   :default
+   (state <s> ^operator.name increment-current-evaluation-depth
+              ^bound-check true
+              ^evaluation <evaluation>)
+   (<evaluation> ^lower-bound <> none
+                -^closed true)
+-->
+   (<s> ^evaluation <evaluation> -)}

@@ -1,0 +1,3 @@
+source derived.soar
+source goal.soar
+source last-operator.soar

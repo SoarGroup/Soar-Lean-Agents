@@ -1,0 +1,220 @@
+## put-on.soar -- thor-soar: 1 elaboration, 3 proposals, 4 compares, 1 application.
+
+## Propose put-on.
+sp {thor-soar*propose*put-on*mea1
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1> <world2>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <container-object>)
+   (<world2> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <o-object-handle>
+             ^object-handle <object-handle>)
+   (<container-object> ^object-handle <location-object-handle>
+                       ^anchored <location-anchored>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^on <desired-in-container>)
+   (<desired-in-container> ^argument2.object-handle <location-object-handle>
+                           ^argument1.object-handle <o-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name put-on
+               ^task-operator true
+               ^action-handle put-down
+               ^super-desired <desired>
+               ^argument1 <container-object>
+               ^argument2 <object>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 3
+                ^preferred-desired <desired4> # <desired3>
+                ^avoid-desired <desired2>  # removed <desired4> - both preferred and avoid
+                ^desired <desired1> <desired2> <desired4>) # <desired3>
+   (<desired1> ^holding-object.object-handle <object-handle>)
+   (<desired2> ^object <desired-object2>)
+   (<desired-object2> ^reachable true
+                      ^object-handle <location-object-handle>
+                      ^anchored <location-anchored>)
+   (<desired4> ^object <desired-object4>)
+   (<desired-object4> ^accessible true
+                      ^object-handle <location-object-handle>
+                      ^anchored <location-anchored>)
+}
+
+## Propose put-on.
+## MEA Selection When want to achieve Empty Hand - no known location
+## Bug - would like to have reachable surfaces attended to.
+sp {thor-soar*propose*put-on*mea*empty-hand*no-surface-yet
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world.holding-object <hobject>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^holding-object.object-handle none)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name put-on
+               ^task-operator true
+               ^action-handle put-down
+               ^super-desired <desired>
+               ^argument1 <desired-object1>
+               ^argument2 <hobject>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 1
+                ^desired <desired1>
+                ^world-context <world-context>)
+   (<desired1> ^object <desired-object1>)
+   (<desired-object1> ^reachable true
+                      ^anchored false
+                      ^object-handle (concat |Undefined-Surface| <desired-object1>))
+   (<world-context> ^objects.object <world-location-object>)
+   (<world-location-object> ^object-handle (concat |Undefined-Surface| <desired-object1>)
+                            ^class countertop
+                            ^anchored false)
+   ## Would like to add constraint that it is the closest surface (hard) and it has avaialble space (easy)
+}
+
+## Preference for put-on reachable-indifferent.
+sp {thor-soar*compare*put-on*reachable-indifferent
+    :default
+   (state <s> ^operator <op1> +
+                        { > <op1> <op2> }  +
+              ^flags.task-search-control true)
+   (<op1> ^name << put-in put-on >>
+          ^argument2.reachable true)
+   (<op2> ^name  << put-in put-on >>
+          ^argument2.reachable true)
+  -{(<op1> ^argument2.origin-object-handle <origin-object-handle>)   # covered by reject*twin
+    (<op2> ^argument2.origin-object-handle <origin-object-handle>)}
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for put-on reachable-indifferent3.
+sp {thor-soar*compare*put-on*reachable-indifferent3
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.task-search-control true)
+  -(<s> ^world.holding-object.object-handle <> none)
+   (<op1> ^name { <put> << put-in put-on >> }
+          ^argument2.reachable true)
+   (<op2> ^name  << put-in put-on >> #<put>
+          ^argument2.reachable false)
+  -{(<op1> ^argument2.origin-object-handle <origin-object-handle>)
+    (<op2> ^argument2.origin-object-handle <origin-object-handle>)}
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for put-on reachable-indifferent2.
+sp {thor-soar*compare*put-on*reachable-indifferent2
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.task-search-control true)
+   (<op1> ^name { <put> << put-in put-on >> }
+         -^argument2.reachable true)
+   (<op2> ^name  << put-in put-on >> # <put>
+         -^argument2.reachable true)
+  -{(<op1> ^argument2.origin-object-handle <origin-object-handle>)
+    (<op2> ^argument2.origin-object-handle <origin-object-handle>)}
+-->
+   (<s> ^operator <op1> = <op2>)
+}
+
+## Preference for put-on reachable-distance.
+sp {thor-soar*compare*put-on*reachable-distance
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^flags.task-search-control true)
+   (<op1> ^name { <put> << put-in put-on >> }
+         -^argument2.reachable true
+          ^expected-distance <expected-distance1>)
+   (<op2> ^name  << put-in put-on >> # <put>
+         -^argument2.reachable true
+          ^expected-distance > <expected-distance1>)
+  -{(<op1> ^argument2.origin-object-handle <origin-object-handle>)
+    (<op2> ^argument2.origin-object-handle <origin-object-handle>)}
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply put-on -> sets holding-object, on, reachable ....
+## Internal Application
+sp {apply*put-on*internal
+    :default
+   (state <s> ^internal-actions true
+              ^world <world>
+              ^operator <operator>)
+   (<world> ^holding-object <holding-object>
+            ^objects.object <location-object2>)
+   (<location-object2> ^object-handle <location-object-handle>)
+   (<operator> ^name put-on
+               ^argument1 <location-object>
+               ^argument2 <holding-object>
+               ^pre-conditions-satisfied true)
+   (<holding-object> ^object-handle <holding-object-handle>
+                     ^reachable <x>)
+   (<location-object> ^object-handle <location-object-handle>)
+-->
+   (log 1 (crlf) |Apply put-on : | <holding-object-handle> | on | <location-object-handle> | internal.|)
+   (<world> ^holding-object.object-handle none
+            ^holding-object <holding-object> -
+            ^on <on>)
+   (<holding-object> ^reachable true
+                                false -)
+   (<on> ^argument1 <holding-object>
+         ^argument2 <location-object2>)
+}
+
+## Elaborate put-on external x-y-x -> sets x, y, z.
+## External Application
+sp {apply*put-on*external*x-y-x
+   :o-support
+    :default
+   (state <s> ^real true
+              ^io.output-link.perform-action <pa>
+              ^external-top-state.scene.objects.object <holding-object>)
+   (<pa> ^status success
+         ^argument2 <holding-object-handle>
+         ^name put-down)
+   (<holding-object> ^object-handle <holding-object-handle>
+                     ^x <x>
+                     ^y <y>
+                     ^z <z>)
+-->
+   (<holding-object> ^x <x> -
+                     ^y <y> -
+                     ^z <z> -)
+}
+
+## Propose put-on.
+## Non MEA
+sp {thor-soar*propose*put-on
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.holding-object <holding-object>
+              ^world.objects.object <location-object>)
+   (<holding-object> ^object-handle <> none)
+   (<location-object> ^surface true
+                      ^reachable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name put-on
+               ^task-operator true
+               ^action-handle put-down
+               ^argument2 <holding-object>
+               ^argument1 <location-object>
+               ^argument-count 2
+               ^pre-conditions-satisfied true)
+}

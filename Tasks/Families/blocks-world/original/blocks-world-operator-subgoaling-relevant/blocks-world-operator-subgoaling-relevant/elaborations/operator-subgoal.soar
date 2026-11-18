@@ -1,0 +1,25 @@
+
+sp {blocks-world*elaborate*operator-subgoal*move-block
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^name blocks-world)
+   (<ss> ^operator <so>)
+   (<so> ^name move-block)
+   (<so> ^block <block>)
+   (<so> ^dest <dest>)
+-->
+   (<s> ^type operator-subgoal)
+   (<s> ^name blocks-world)
+   (<s> ^desired <sgd>)
+   (<sgd> ^clear <block>)
+   (<sgd> ^clear <dest>)
+}
+
+sp {blocks-world*elaborate*operator-subgoal*share*object
+   (state <s> ^type operator-subgoal)
+   (<s> ^superstate <ss>)
+   (<ss> ^object <x>)
+-->
+   (<s> ^object <x>)
+}

@@ -1,0 +1,49 @@
+
+sp {towers-of-hanoi*elaborate*operator-subgoal*move-disk
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^name towers-of-hanoi)
+   (<ss> ^operator <so>)
+   (<so> ^name move-disk)
+   (<so> ^d <d>)
+   (<so> ^target <target>)
+-->
+   (<s> ^type operator-subgoal)
+   (<s> ^name towers-of-hanoi)
+   (<s> ^desired <sgd>)
+   (<sgd> ^disk <d>)
+   (<sgd> ^peg <target>)
+}
+
+sp {towers-of-hanoi*elaborate*operator-subgoal*share*disk
+   (state <s> ^type operator-subgoal)
+   (<s> ^superstate <ss>)
+   (<ss> ^disk <x>)
+-->
+   (<s> ^disk <x>)
+}
+
+sp {towers-of-hanoi*elaborate*operator-subgoal*share*peg
+   (state <s> ^type operator-subgoal)
+   (<s> ^superstate <ss>)
+   (<ss> ^peg <x>)
+-->
+   (<s> ^peg <x>)
+}
+
+sp {towers-of-hanoi*elaborate*operator-subgoal*share*holds
+   (state <s> ^type operator-subgoal)
+   (<s> ^superstate <ss>)
+   (<ss> ^holds <x>)
+-->
+   (<s> ^holds <x>)
+}
+
+sp {towers-of-hanoi*elaborate*operator-subgoal*share*control
+   (state <s> ^type operator-subgoal)
+   (<s> ^superstate <ss>)
+   (<ss> ^control <x>)
+-->
+   (<s> ^control <x>)
+}

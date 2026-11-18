@@ -1,0 +1,48 @@
+## Task initialization: proposed after agent-world's initialize-agent-world (tests ^world).
+## Creates the task name, ^environment none, problem space, flags, the world object
+## (greeting) and the goal as ^desireds.
+sp {hello-world*propose*initialize-hello-world
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-hello-world
+        ^task-operator false)
+}
+
+## initialize-agent-world (best, proposed while the top state has no ^name) stays acceptable
+## after it applies; prefer the task's initialization to it so that it is not reselected.
+sp {hello-world*compare*initialize-hello-world*initialize-agent-world
+   (state <s> ^superstate nil
+              ^operator <o1> +
+              ^operator <o2> +)
+   (<o1> ^name initialize-hello-world)
+   (<o2> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o1> > <o2>)
+}
+
+sp {hello-world*apply*initialize-hello-world
+   (state <s> ^operator.name initialize-hello-world
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name hello-world
+        ^environment none
+        ^problem-space <ps>
+        ^flag-override <f>
+        ^desireds <ds>)
+   (<ps> ^name hello-world
+         ^agent-world true)
+   (<f> ^mea-operator-selection true)
+   (<objs> ^object <g>)
+   (<g> ^object-handle greeting
+        ^anchored true
+        ^written 0)
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle greeting
+         ^written 1)
+}

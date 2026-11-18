@@ -1,0 +1,9 @@
+source elaborations.soar
+source pick-up.soar
+pushd pick-up
+source pick-up_source.soar
+popd
+source put-down.soar
+pushd put-down
+source put-down_source.soar
+popd

@@ -1,0 +1,50 @@
+#
+#sp {thor-soar*elaborations*contaminated*top
+#   :o-support
+#   (state <s> ^world <world>)
+#   (<world> ^on <ontop>)
+#   (<ontop> ^argument1 <argument1>
+#            ^argument2 <argument2>)
+#   (<argument1> ^contaminated true)
+#  -(<argument2> ^contaminated true)
+#-->
+#   (<argument2> ^contaminated true)
+#}
+#
+#sp {thor-soar*elaborations*contaminated*bottom
+#   :o-support
+#   (state <s> ^world <world>)
+#   (<world> ^on <ontop>)
+#   (<ontop> ^argument1 <argument1>
+#            ^argument2 <argument2>)
+#   (<argument2> ^contaminated true)
+#  -(<argument1> ^contaminated true)
+#-->
+#   (<argument1> ^contaminated true)
+#}
+#
+##sp {elaborations*elaborate*state*scene*sliced*contaminated
+##   :o-support
+##   (state <s> ^superstate nil
+##              ^world.holding-object <holding-object>
+##              ^scene.objects.object <object-int>)
+##   (<holding-object> ^class knife
+##                     ^contaminated true)
+##   (<object-int> ^class <<  carrotsliced applesliced breadsliced >> #potatosliced
+##                -^contaminated)
+##-->
+##   (<object-int> ^contaminated true)
+##}
+#
+#sp {elaborations*elaborate*state*scene*sliced*not*contaminated
+#   :o-support
+#   (state <s> ^superstate nil
+#              ^world.holding-object <holding-object>
+#              ^scene.objects.object <object-int>)
+#   (<holding-object> ^class knife
+#                    -^contaminated true)
+#   (<object-int> ^class <<  carrotsliced applesliced breadsliced >> #potatosliced
+#                -^contaminated)
+#-->
+#   (<object-int> ^contaminated false)
+#}

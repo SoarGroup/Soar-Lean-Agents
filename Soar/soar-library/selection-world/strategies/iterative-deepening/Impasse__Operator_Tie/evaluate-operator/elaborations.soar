@@ -1,0 +1,89 @@
+## elaborations.soar -- selection-world: 3 elaborations, 3 applications.
+
+## ---- elaborations ----
+
+## Elaborate evaluate-operator current-evaluate-depth -> sets current-evaluation-depth.
+sp {selection-world*elaborate*evaluate-operator*current-evaluate-depth
+   :default
+   (state <s> ^superstate.operator <operator>
+              ^flags.iterative-step << operator cost >>)
+   (<operator> ^name evaluate-operator
+               ^current-evaluation-depth.value <current-evaluation-depth>)
+-->
+   (<s> ^current-evaluation-depth.value <current-evaluation-depth>)
+}
+
+## Elaborate evaluate-operator current-evaluate-depth tie-impasse -> sets current-evaluation-depth.
+sp {selection-world*elaborate*evaluate-operator*current-evaluate-depth*tie-impasse
+   :default
+   (state <s> ^superstate.operator <operator>
+              ^flags.iterative-step tie-impasse)
+   (<operator> ^name evaluate-operator
+               ^current-evaluation-depth.value <current-evaluation-depth>)
+-->
+   (<s> ^current-evaluation-depth.value (- <current-evaluation-depth> 1))
+}
+
+## Elaborate operator internal iterative-deepening error.
+sp {selection-world*elaborate*operator*internal*iterative-deepening*error
+   :default
+   (state <s> ^current-evaluation-depth <current-evaluation-depth>)
+   (<current-evaluation-depth> ^value < 0)
+-->
+   (log 1 (crlf) |Error - Current-evaluation-depth is < 0 | <current-evaluation-depth>)
+}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> sets symbolic-value.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*depth-exceeded
+   :default
+   (state <s> ^selection-superstate <superstate>
+              ^depth-exceeded.duplicate-of <desireds>)
+   (<superstate> ^operator <so>
+                 ^evaluation <evaluation>)
+   (<so> ^name evaluate-operator
+         ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^symbolic-value depth-exceeded)}
+
+## Apply evaluate-operator -> sets estimated-total-cost for a depth-exceeded branch (operator step).
+## The path cost so far (plus the task's optional ^estimated-remaining-cost) bounds the cost of any solution through this branch.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*depth-exceeded*numeric
+   :default
+   (state <s> ^selection-superstate <superstate>
+              ^depth-exceeded.duplicate-of <desireds>
+              ^flags.cost-metric << unit time >>
+             -^progress-cut true
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^path-cost <cost>
+           -^estimated-remaining-cost)
+   (<superstate> ^operator <so>
+                 ^evaluation <evaluation>)
+   (<so> ^name evaluate-operator
+         ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^estimated-total-cost <cost>)}
+
+## As above, with a task-supplied admissible estimate of the remaining cost.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*depth-exceeded*numeric*remaining
+   :default
+   (state <s> ^selection-superstate <superstate>
+              ^depth-exceeded.duplicate-of <desireds>
+              ^flags.cost-metric << unit time >>
+             -^progress-cut true
+              ^flags.heuristic-weight <weight>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^path-cost <cost>
+            ^estimated-remaining-cost <rem>)
+   (<superstate> ^operator <so>
+                 ^evaluation <evaluation>)
+   (<so> ^name evaluate-operator
+         ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^estimated-total-cost (+ <cost> (* <weight> <rem>)))}

@@ -1,0 +1,7 @@
+Missionaries and cannibals: English input
+
+English description as given to the solver. Both the world-conventions agent in this folder and the first version, UWM/missionaries-cannibals.soar, were written from it alone.
+
+Three missionaries and three cannibals are on one bank of a river. They have a boat that holds at most two people, and it cannot cross empty. Get all six people to the other bank. If at any time the cannibals on either bank outnumber the missionaries on that bank, the cannibals will eat those missionaries; cannibals alone on a bank, with no missionaries there, are harmless. How can everyone cross safely?
+
+Source: task 3 of UWM/UWM_Tasks_problem_definitions.docx ("English description (as given to the solver)"), Universal Weak Method tasks (Laird & Newell, 1983, CMU-CS-83-141); repeated in the header comment of missionaries-cannibals-rules.soar.

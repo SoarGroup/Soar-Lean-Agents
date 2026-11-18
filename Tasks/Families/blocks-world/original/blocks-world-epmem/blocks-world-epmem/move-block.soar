@@ -1,0 +1,44 @@
+
+sp {blocks-world*propose*move-block*1
+   (state <s> ^name blocks-world)
+   (<s> ^object <block>)
+   (<s> ^object { <dest> <> <block> })
+   (<block> ^table 0)
+   (<block> ^on { <block-on> <> <dest> })
+   (<dest> ^table 1)
+   -{ (<s> ^object <none2>) (<none2> ^on <block>) }
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+}
+
+sp {blocks-world*propose*move-block*2
+   (state <s> ^name blocks-world)
+   (<s> ^object <block>)
+   (<s> ^object { <dest> <> <block> })
+   (<block> ^table 0)
+   (<block> ^on { <block-on> <> <dest> })
+   (<dest> ^table 0)
+   -{ (<s> ^object <none2>) (<none2> ^on <block>) }
+   -{ (<s> ^object <none6>) (<none6> ^on <dest>) }
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+}
+
+sp {blocks-world*apply*move-block
+   (state <s> ^name blocks-world)
+   (<s> ^operator <o>)
+   (<o> ^name move-block)
+   (<o> ^block <block>)
+   (<o> ^dest <dest>)
+   (<block> ^on <block-on>)
+   -(<s> ^look-ahead-operator <o>)
+-->
+   (<block> ^on <dest>)
+   (<block> ^on <block-on> -)
+}

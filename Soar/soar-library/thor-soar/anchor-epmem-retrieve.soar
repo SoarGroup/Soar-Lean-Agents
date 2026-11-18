@@ -1,0 +1,250 @@
+## anchor-epmem-retrieve.soar -- thor-soar: 1 proposal, 3 compares, 9 applications.
+
+## Propose anchor-epmem-retrieve.
+sp {thor-soar*propose*anchor-epmem-retrieve
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^desireds.desired.info <dinfo>  # real-object
+              ^flags.epmem-retrieve true)
+   (<dinfo> ^unanchored-object <unanchored-object>
+           -^epmem-retrieval <unanchored-object>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1 <unanchored-object> # unanchored object - object-handle defines it
+         ^argument2 <object>            # new object being created to search for
+         ^argument3 <world>
+         ^argument4 <dinfo>)
+   (<world> ^objects <objects>
+            ^anchored-world true
+            ^real true)
+   (<objects> ^object <object>)
+   (<object> ^anchored true)
+}
+
+## Apply anchor-epmem-retrieve.
+sp {elabrate*anchor-epmem-retrieve*copy-object-features
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^anchored-world false
+            ^objects.object <unanchored-object-world>)
+   (<unanchored-object-world> ^object-handle <object-handle>
+                              ^{<> object-handle <> anchored <attribute> } <value>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1.object-handle <object-handle>
+         ^argument2 <object>)
+-->
+   (<object> ^<attribute> <value>)
+}
+
+## Apply anchor-epmem-retrieve -> sets argument1, argument2.
+sp {elabrate*anchor-epmem-retrieve*copy-relations*argument1*ungrounded
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^anchored-world false
+            ^{<< in on controlled-by >> <relation> } <in-on>)
+   (<in-on> ^argument1 <argument1>
+            ^argument2 <argument2>)
+   (<argument1> ^object-handle <object-handle>)
+#   (<argument2> ^anchored true)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1.object-handle <object-handle>
+         ^argument2 <object>
+         ^argument3 <new-world>)
+-->
+   (<new-world> ^<relation> <new-in-on>)
+   (<new-in-on> ^argument1 <object>
+                ^argument2 <argument2>)       # assumes argument2 is anchored
+}
+
+## Apply anchor-epmem-retrieve -> sets argument1, argument2.
+sp {elabrate*anchor-epmem-retrieve*copy-relations*argument2*ungrounded
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^anchored-world false
+            ^{<< in on controlled-by >> <relation> } <in-on>)
+   (<in-on> ^argument1 <argument1>
+            ^argument2 <argument2>)
+   (<argument1> ^anchored true)
+   (<argument2> ^object-handle <object-handle>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1.object-handle <object-handle>
+         ^argument2 <object>
+         ^argument3 <world>)
+-->
+   (<world> ^<relation> <new-in-on>)
+   (<in-on> ^argument1 <object>
+            ^argument2 <argument2>)       # assumes argument2 is anchored
+}
+
+## Preference for anchor-epmem-retrieve.
+## If can anchor to existing object directly, don't look in epmem.
+sp {thor-soar*compare*anchor-epmem-retrieve
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-epmem-retrieve)
+   (<op2> ^name anchor-info-existing-object)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for anchor-epmem-retrieve search.
+## epmem should be tried before smem or physical search
+sp {thor-soar*compare*anchor-epmem-retrieve*search
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-epmem-retrieve)
+   (<op2> ^name << search-smem search-closed-receptacles anchor-smem-object-retrieve >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for anchor-epmem-retrieve search find-object.
+## epmem should be tried before smem or physical search
+sp {thor-soar*compare*anchor-epmem-retrieve*search*find-object
+    :default
+   (state <s>^operator <op1> +
+                       { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-epmem-retrieve)
+   (<op2> ^name find-object-direct
+          ^argument2.memory-retrieved true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply anchor-epmem-retrieve -> sets query, neg-query, problem-space ....
+sp {apply*anchor-epmem-retrieve*search
+    :default
+   (state <s> ^operator <op>
+              ^epmem.command <command>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1 <unanchored-object>
+         ^argument2 <object>
+         ^argument3 <world>)
+-->
+   (log 1 (crlf) |Query EPMEM for unanchored-object (| <unanchored-object> |)|)
+   (<command> ^query <query>
+              ^neg-query <nq>)
+   (<query> ^problem-space.name thor-world
+            ^world <world>)
+}
+
+## Apply anchor-epmem-retrieve -> sets query, info, unanchored-object ....
+sp {apply*anchor-epmem-retrieve*search*process-results
+    :default
+   (state <s> ^operator <op>
+              ^world <world>
+              ^epmem <epmem>)
+   (<epmem> ^command <command>
+            ^result <result>)
+   (<command> ^query <q>)
+   (<world> ^objects.object <unanchored-object>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1 <unanchored-object>
+         ^argument2 <argument2>
+         ^argument4 <dinfo>)
+   (<result> ^graph-match 1
+             ^mapping.node <node>)
+   (<node> ^retrieved <anchored-object>
+           ^cue <argument2>)
+   (<anchored-object> ^object-handle <object-handle>)
+-->
+   (<command> ^query <q> -)
+   (<world> ^info <info>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+   (<dinfo> ^epmem-retrieval <unanchored-object>)
+}
+
+## Apply anchor-epmem-retrieve -> sets object, memory-retrieved.
+sp {apply*anchor-epmem-retrieve*search*process-results*object
+    :default
+   (state <s> ^operator <op>
+              ^scene <scene>
+              ^epmem.result <result>)
+   (<scene> ^objects <objects>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument2 <argument2>)
+   (<result> ^graph-match 1
+             ^mapping.node <node>)
+   (<node> ^retrieved <anchored-object>
+           ^cue <argument2>)
+-->
+   (<objects> ^object <anchored-object>)
+   (<anchored-object> ^memory-retrieved true)
+}
+
+## Apply anchor-epmem-retrieve -> sets in, argument1, argument2.
+sp {apply*anchor-epmem-retrieve*search*process-results*in
+    :default
+   (state <s> ^operator <op>
+              ^scene <scene>
+              ^epmem.result <result>)
+   (<scene> ^objects <objects>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument2 <argument2>)
+   (<result> ^graph-match 1
+             ^retrieved.world <ep-world>
+             ^mapping.node <node>)
+   (<ep-world> ^anchored-world true
+               ^in <in>)
+   (<node> ^retrieved <anchored-object>
+           ^cue <argument2>)
+   (<in> ^argument1 <anchored-object>
+         ^argument2.object-handle <container-object-handle>)
+   (<objects> ^object <container2>)
+   (<container2> ^object-handle <container-object-handle>)
+-->
+   (<scene> ^in <in-new>)
+   (<in-new> ^argument1 <anchored-object>
+             ^argument2 <container2>)
+}
+
+## Apply anchor-epmem-retrieve -> sets on, argument1, argument2.
+sp {apply*anchor-epmem-retrieve*search*process-results*on
+    :default
+   (state <s> ^operator <op>
+              ^scene <scene>
+              ^epmem.result <result>)
+   (<scene> ^anchored-world true
+            ^objects <objects>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument2 <argument2>)
+   (<result> ^graph-match 1
+             ^retrieved.world <ep-world>
+             ^mapping.node <node>)
+   (<ep-world> ^anchored-world true
+               ^on <on>)
+   (<node> ^retrieved <anchored-object>
+           ^cue <argument2>)
+   (<on> ^argument1 <anchored-object>
+         ^argument2.object-handle <container-object-handle>)
+   (<objects> ^object <container2>)
+   (<container2> ^object-handle <container-object-handle>)
+-->
+   (<scene> ^on <on-new>)
+   (<on-new> ^argument1 <anchored-object>
+             ^argument2 <container2>)
+}
+
+## Apply anchor-epmem-retrieve -> sets query, epmem-retrieval.
+sp {apply*anchor-epmem-retrieve*search*process-results*fail
+    :default
+   (state <s> ^operator <op>
+              ^epmem <epmem>)
+   (<op> ^name anchor-epmem-retrieve
+         ^argument1 <unanchored-object>
+         ^argument4 <dinfo>)
+   (<epmem> ^command <command>
+            ^result <result>)
+   (<command> ^query <q>)
+   (<result> ^graph-match <> 1)
+-->
+   (<command> ^query <q> -)
+   (<dinfo> ^epmem-retrieval <unanchored-object>)
+}

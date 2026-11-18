@@ -1,0 +1,76 @@
+## svs-extract.soar -- thor-soar: 1 proposal, 3 applications.
+
+## Propose svs-extract-above.
+sp {thor-soar*propose*svs-extract-above*drawer
+    :default
+   (state <s> ^name thor-soar
+              ^superstate nil
+              ^flags.above-computed true
+              ^scene.objects.object <object>
+             -^scene.above.argument2.object-handle <object-handle>)
+   (<object> ^class drawer
+             ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name svs-extract-above
+               ^argument1 <object-handle>
+               ^task-operator false)
+}
+
+## Apply svs-extract-above -> sets extract_once, type, axis ....
+sp {apply*svs-extract-above*above*drawer
+    :default
+   (state <s> ^svs <svs>
+              ^scene.objects.object <object>
+              ^operator <operator>)
+   (<operator> ^name svs-extract-above
+               ^argument1 <object-handle>)
+   (<svs> ^command <cmd>
+          ^spatial-scene.child <child>)
+   (<child> ^id <object-handle>)
+   (<object> ^object-handle <object-handle>
+             ^class drawer)
+-->
+   (<cmd> ^extract_once <xsel>)
+   (<xsel> ^type axis_distance_select ^axis x
+           ^a <node> ^b <ysel> ^min 0 ^max 0)
+   (<ysel> ^type axis_distance_select ^axis y
+           ^a <node> ^b <zsel> ^min 0 ^max 0)
+   (<zsel> ^type axis_distance_select ^axis z
+           ^a <node> ^b <all-nodes> ^min 0.001)
+   (<node> ^type node ^id <object-handle>) # The svs id of the node to test is the object-handle
+   (<all-nodes> ^type all_nodes)
+}
+
+## Apply svs-extract-above -> sets above, argument1, argument2.
+sp {apply*svs-extract-above*above2
+    :default
+   (state <s> ^superstate nil
+              ^svs.command.extract_once <extract>
+              ^scene <scene>
+              ^operator <operator>)
+   (<operator> ^name svs-extract-above
+               ^argument1 <object-handle1>)
+   (<extract> ^status success
+              ^result.record.value <object-handle2>)
+   (<scene> ^objects.object <object-int1>
+                            { <> <object-int1> <object-int2>})
+   (<object-int1> ^object-handle <object-handle1>)
+   (<object-int2> ^object-handle <object-handle2>)
+-->
+   (<scene> ^above <above>)
+   (<above> ^argument1 <object-int2> # above object
+            ^argument2 <object-int1>) # below object
+}
+
+## Apply svs-extract-above remove -> sets extract_once.
+sp {apply*svs-extract-above*remove
+    :default
+   (state <s> ^superstate nil
+              ^svs.command <command>
+              ^operator <operator>)
+   (<command> ^extract_once <extract>)
+   (<extract> ^status success)
+-->
+   (<command> ^extract_once <extract> -)
+}

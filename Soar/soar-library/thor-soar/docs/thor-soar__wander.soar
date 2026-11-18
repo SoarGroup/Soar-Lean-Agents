@@ -1,0 +1,32 @@
+## when don't see an object that agent is trying to go to
+##   wander around - go to a distance object
+##
+
+#
+#sp {thor-soar*propose*wander
+#   (state <s> ^world.real true
+#              ^flags.view-frustum true
+#              ^top-state <top-state>
+#              ^desireds.desired.info.anchored-object <anchored-object>)
+#   (<top-state> ^io.input-link.self.pose <pose>
+#                ^scan-record <scan-record>)  # only do if already scanned
+#   (<scan-record> ^x <x>
+#                  ^y <y>
+#                  ^complete true)
+#   (<pose> ^x <x>
+#           ^y <y>)
+#   (<anchored-object> ^object-handle <object-handle>)
+#  -{(<top-state> ^scene.objects.object <anchored-objectx>)  # object is not known at all
+#    (<anchored-objectx> ^anchored true
+#                        ^object-handle <object-handle>)}
+#-->
+#   (<s> ^operator <op> + =)
+#   (<op> ^name wander)
+#}
+#
+#sp {apply*wander
+#   (state <s> ^operator <op>)
+#   (<op> ^name wander)
+#-->
+#   (<s>)
+#}

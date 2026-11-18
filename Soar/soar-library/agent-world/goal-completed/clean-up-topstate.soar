@@ -1,0 +1,89 @@
+## clean-up-topstate.soar -- agent-world: 1 proposal, 4 applications.
+
+## ---- operator proposal ----
+
+## Propose clean-u.
+sp {agent-world*propose*goal-completed*clean-up-topstate
+   :default
+   (state <s> ^name goal-completed)
+-->
+   (<s> ^operator <operator> + = >)
+   (<operator> ^name clean-up-topstate)
+}
+
+## ---- operator application ----
+
+## Apply clean-up-topstate -> sets desireds.
+## If desireds-source = language, Remove the desireds from the top state
+sp {agent-world*apply*goal-completed*clean-up-topstate*remove*desireds
+   :default
+   (state <s> ^name goal-completed
+              ^operator.name clean-up-topstate
+              ^superstate <top-state>)
+   (<top-state> ^superstate nil
+                ^flags.desireds-source language
+                ^operator <operator>)
+   (<operator> ^name goal-completed
+               ^completed-desireds <desireds>)
+-->
+   (<top-state> ^desireds <desireds> -)
+}
+
+## Apply clean-up-topstate -> sets top-segment-sati.
+## If the current segment has a satisfaction of achieving the desireds,
+## Mark the segment as satisfied
+sp {agent-world*apply*goal-completed*clean-up-topstate*mark*top-segment-satisfied
+   :default
+   (state <s> ^name goal-completed
+              ^operator.name clean-up-topstate
+              ^superstate <top-state>)
+   (<top-state> ^superstate nil
+                ^operator <operator>
+                ^interaction-stack <stack>)
+   (<operator> ^name goal-completed
+               ^completed-desireds <desireds>)
+   (<stack> ^pending-changes <changes>
+            ^top-segment.satisfaction.action-event <satisfaction>)
+   (<satisfaction> ^type achieved-desireds
+                   ^desireds <desireds>)
+-->
+   (<changes> ^top-segment-satisfied true)
+}
+
+## Apply clean-up-topstate -> sets learning-event.
+## Remove learning-events corresponding to desireds
+sp {agent-world*apply*goal-completed*clean-up-topstate*remove*learning-event*task-goal
+   :default
+   (state <s> ^name goal-completed
+              ^operator.name clean-up-topstate
+              ^superstate <top-state>)
+   (<top-state> ^superstate nil
+                ^operator <operator>
+                ^events <events>)
+   (<operator> ^name goal-completed
+               ^completed-desireds <desireds>)
+   (<events> ^learning-event <event>)
+   (<event> ^type task-goal
+            ^action-handle <action-handle>)
+   (<desireds> ^desired <desired>)
+   (<desired> ^learn task-goal
+              ^action-handle <action-handle>)
+-->
+   (<events> ^learning-event <event> -)
+}
+
+## Apply clean-up-topstate.
+## Remove all action-events
+sp {agent-world*apply*goal-completed*clean-up-topstate*remove*action-event
+   :default
+   (state <s> ^name goal-completed
+              ^operator.name clean-up-topstate
+              ^superstate <top-state>)
+   (<top-state> ^superstate nil
+                ^operator <operator>
+                ^events <events>)
+   (<operator> ^name goal-completed)
+   (<events> ^{ <event-type> << executed-action failed-action >> } <event>)
+-->
+   (<events> ^<event-type> <event> -)
+}

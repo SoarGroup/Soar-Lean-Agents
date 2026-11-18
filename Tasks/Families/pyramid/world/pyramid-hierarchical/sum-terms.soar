@@ -1,0 +1,127 @@
+##############################################################################
+## sum-terms (complex composite task operator)
+##   Proposed when the pyramid is expanded (height -1) and not summed (summed 0), through an
+##   i-supported "relevant" elaboration as in the original.
+##   Effect: pyramid ^summed 1, achieved in its implementation substate:
+##   init-local  (internal): local accumulator ^sum 0 ^next 0 on the substate
+##   add-term    (internal): adds the value of the term object whose index is ^next
+##   final-sum   (task-action): writes the local sum to the pyramid and sets ^summed 1
+## The local accumulator is substate structure (the original's), not world: it is
+## reasoning state of this implementation, not part of the task situation.
+##############################################################################
+
+sp {pyramid-hierarchical*elaborate*sum-terms-relevant
+   (state <s> ^problem-space.name pyramid-hierarchical
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^height -1
+        ^summed 0)
+-->
+   (<s> ^sum-terms-relevant <p>)
+}
+
+sp {pyramid-hierarchical*propose*sum-terms
+   (state <s> ^problem-space.name pyramid-hierarchical
+              ^sum-terms-relevant <p>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name sum-terms
+        ^task-operator true
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>
+        ^effect-desireds <ed>)
+   (<pre> ^desired-count 0)
+   (<ed> ^desired <d> ^desired-count 1)
+   (<d> ^object <dp>)
+   (<dp> ^object-handle pyramid ^summed 1)
+}
+
+sp {sum-terms*propose*init-local
+   (state <s> ^problem-space.name sum-terms
+             -^sum)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name init-local
+        ^task-operator false)
+}
+
+sp {sum-terms*apply*init-local
+   (state <s> ^problem-space.name sum-terms
+              ^operator.name init-local)
+-->
+   (<s> ^sum 0
+        ^next 0)
+}
+
+sp {sum-terms*propose*add-term
+   (state <s> ^problem-space.name sum-terms
+              ^sum
+              ^next <next>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <t>)
+   (<t> ^index <next>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name add-term
+        ^task-operator false
+        ^argument1 <t>
+        ^argument-count 1)
+}
+
+sp {sum-terms*apply*add-term
+   (state <s> ^problem-space.name sum-terms
+              ^operator <o>
+              ^sum <sum>
+              ^next <next>)
+   (<o> ^name add-term
+        ^argument1 <t>)
+   (<t> ^index <next>
+        ^value <value>)
+-->
+   (<s> ^sum <sum> - (+ <sum> <value>)
+        ^next <next> - (+ <next> 1))
+}
+
+sp {sum-terms*propose*final-sum
+   (state <s> ^problem-space.name sum-terms
+              ^sum
+              ^next <terms>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ pyramid
+        ^terms <terms>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name final-sum
+        ^task-operator true
+        ^action-handle final-sum
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+## The local sum is read from the substate (the operator is applied in the state that has it).
+sp {apply*final-sum*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^sum <local-sum>
+              ^world <w>)
+   (<o> ^name final-sum
+        ^pre-conditions-satisfied true
+        ^argument1.object-handle $ <h>)
+   (<w> ^anchored-world true
+        ^objects.object <p>)
+   (<p> ^object-handle $ <h>
+        ^sum <sum>
+        ^summed 0)
+-->
+   (log 1 (crlf) |Apply final-sum: | <local-sum>)
+   (<p> ^sum <sum> - <local-sum>
+        ^summed 0 - 1)
+}

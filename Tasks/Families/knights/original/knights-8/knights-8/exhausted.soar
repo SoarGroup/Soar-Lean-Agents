@@ -1,0 +1,31 @@
+
+sp {knights*propose*exhausted
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<s> ^square <c>)
+   (<t> ^at <c>)
+   (<t> ^first <c>)
+   (<c> ^visit <c-visit>)
+   (<t> ^done 0)
+   -{ (<c> ^move <lk4>) (<lk4> ^used 0) -{ (<lk4> ^tried <c-visit>) } }
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name exhausted)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+}
+
+sp {knights*apply*exhausted
+   (state <s> ^name knights)
+   (<s> ^operator <o>)
+   (<o> ^name exhausted)
+   (<o> ^t <t>)
+   (<o> ^c <c>)
+   (<t> ^done <t-done>)
+   (<t> ^solutions <t-solutions>)
+-->
+   (<t> ^done 1)
+   (<t> ^done <t-done> -)
+   (write |Search complete: | <t-solutions> | solutions|)
+}

@@ -1,0 +1,75 @@
+## empty-object.soar -- thor-soar: 2 proposals, 1 application.
+
+## Propose empty-object.
+## MEA Selection
+sp {thor-soar*propose*empty-object*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <filled-object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<filled-object> ^object-handle <filled-object-handle>
+                    ^fillable true)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^object-handle <filled-object-handle>
+                     ^liquid-contents none)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name empty-object
+               ^task-operator true
+               ^action-handle empty
+               ^super-desired <desired>
+               ^argument1 <filled-object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^desired.object <object1>
+                ^desired.object <object2>)
+   (<object1> ^reachable true
+              ^object-handle <filled-object-handle>)
+   (<object2> ^fill-amount full
+              ^object-handle <filled-object-handle>)
+}
+
+## Apply empty-object -> sets liquid-contents, fill-amount.
+sp {apply*empty-object*internal
+#   :interrupt
+    :default
+   (state <s> ^operator <operator>
+              ^internal-actions true)
+   (<operator> ^name empty-object
+               ^argument1 <object>
+               ^pre-conditions-satisfied true)
+   (<object> ^object-handle <object-handle>
+             ^liquid-contents <liquid>
+             ^fill-amount <fill-amount>)
+-->
+   (log 1 (crlf) |Apply empty: | <object-handle>)
+   (<object> ^liquid-contents <liquid> -
+             ^liquid-contents none
+             ^fill-amount <fill-amount> -
+             ^fill-amount empty)
+}
+
+## Propose empty-object.
+## Non MEA Selection
+sp {thor-soar*propose*empty-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection false
+              ^world.objects.object <filled-object-liquid>)
+   (<filled-object-liquid> ^liquid-contents <> none
+                           ^reachable true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name empty-object
+               ^task-operator true
+               ^action-handle empty
+               ^argument1 <filled-object-liquid>
+               ^argument-count 1
+               ^pre-conditions-satisfied true)
+}

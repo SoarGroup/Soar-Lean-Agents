@@ -1,0 +1,59 @@
+
+sp {process-column*propose*add-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^|d1| <_v4>)
+   (<p> ^operation 1)
+   (<s> ^adj 1)
+   (<s> ^r -1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-digits)
+}
+
+sp {process-column*apply*add-digits*query
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name add-digits)
+   -(<s> ^queried <o>)
+   (<s> ^smem <sm>)
+   (<sm> ^command <smc>)
+   (<s> ^|d1| <s-d1>)
+   (<s> ^|d2| <s-d2>)
+-->
+   (<s> ^queried <o>)
+   (<smc> ^query <smq>)
+   (<smq> ^kind add-fact)
+   (<smq> ^|d1| <s-d1>)
+   (<smq> ^|d2| <s-d2>)
+}
+
+sp {process-column*apply*add-digits
+   (state <s> ^name process-column)
+   (<s> ^superstate <ss>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name add-digits)
+   (<s> ^smem <sm>)
+   (<sm> ^result <smr>)
+   (<smr> ^retrieved <f>)
+   (<sm> ^command <smc>)
+   (<smc> ^query <smq>)
+   (<s> ^r <s-r>)
+   (<f> ^sum <f-sum>)
+   (<s> ^cout <s-cout>)
+   (<f> ^carry <f-carry>)
+-->
+   (<s> ^r <f-sum>)
+   (<s> ^r <s-r> -)
+   (<s> ^cout <f-carry>)
+   (<s> ^cout <s-cout> -)
+   (<smc> ^query <smq> -)
+}

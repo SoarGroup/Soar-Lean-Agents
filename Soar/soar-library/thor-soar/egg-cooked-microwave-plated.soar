@@ -1,0 +1,42 @@
+## egg-cooked-microwave-plated.soar -- thor-soar: 1 proposal.
+
+## Propose egg-cooked-microwave-plated.
+## What is a more concise representation of these desireds?
+sp {thor-soar*propose*egg-cooked-microwave-plated
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^objects <objects>)
+   (<objects> ^object <egg-object>
+              ^object <plate-object>)
+   (<desireds> ^desired <desired1> <desired2> <desired3>
+               ^unachieved-desireds true)
+   (<desired1> ^object <egg-object>)
+   (<egg-object> ^cook-state cooked
+                 ^object-handle <egg-object-handle>
+                 ^class egg)
+   (<desired2> ^on <on2>)
+   (<on2> ^argument1.object-handle <egg-object-handle>
+          ^argument2 <plate-object>)
+   (<plate-object> ^class plate
+                   ^object-handle <plate-object-handle>)
+   (<desired3> ^on <on3>)
+   (<on3> ^argument1.object-handle <plate-object-handle>
+          ^argument2.class countertop)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name egg-cooked-microwave-plated)
+   (<s> ^desireds <desiredsx1>)
+# egg on plate - plate in microwave
+   (<desiredsx1> ^desired <desiredx11> <desiredx12> <desiredx13>
+                 ^desired-count 3
+                 ^next-desireds <desiredsx2>)
+   (<desiredx11> ^on <onx1>)
+   (<onx1> ^argument1.object-handle <egg-object-handle>
+           ^argument2.object-handle <plate-object-handle>)
+   (<desiredx12> ^in <in2x>)
+   (<in2x> ^argument1.object-handle <plate-object-handle>
+           ^argument2.object-handle Microwave47)
+}

@@ -1,0 +1,4 @@
+
+wma -s activation off # on
+#wma -s decay-rate .001
+#wma -s forgetting on

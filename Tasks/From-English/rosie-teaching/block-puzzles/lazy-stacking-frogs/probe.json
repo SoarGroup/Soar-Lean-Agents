@@ -1,0 +1,116 @@
+{
+ "task": "./lazy-stacked-frogs-rules.soar",
+ "library": "/home/claude/repo/Soar/soar-library",
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "cap": 200000,
+ "fixed_by_task": {},
+ "configs": [
+  {
+   "config": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "operator",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 197,
+     "operators": 3,
+     "wall_s": 2.1,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 190,
+     "operators": 3,
+     "wall_s": 1.05,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 170,
+     "operators": 3,
+     "wall_s": 2.06,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 557,
+   "quality": 9,
+   "quality_kind": "operators"
+  },
+  {
+   "config": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "effective": [
+    "tie-impasse",
+    "none",
+    "false"
+   ],
+   "runs": [
+    {
+     "seed": 1,
+     "solved": true,
+     "decisions": 76,
+     "operators": 3,
+     "wall_s": 1.09,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 2,
+     "solved": true,
+     "decisions": 99,
+     "operators": 3,
+     "wall_s": 0.83,
+     "load_error": false,
+     "cost": null
+    },
+    {
+     "seed": 3,
+     "solved": true,
+     "decisions": 75,
+     "operators": 3,
+     "wall_s": 0.78,
+     "load_error": false,
+     "cost": null
+    }
+   ],
+   "solved": 3,
+   "decisions": 250,
+   "quality": 9,
+   "quality_kind": "operators"
+  }
+ ],
+ "recommended": {
+  "effective": {
+   "iterative-step": "tie-impasse",
+   "cost-metric": "none",
+   "optimize": "false"
+  },
+  "override": {
+   "iterative-step": "tie-impasse"
+  },
+  "solved_all": true,
+  "rule": "(<f> ^iterative-step tie-impasse)"
+ },
+ "warnings": []
+}

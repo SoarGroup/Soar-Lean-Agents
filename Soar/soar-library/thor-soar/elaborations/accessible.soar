@@ -1,0 +1,187 @@
+## accessible.soar -- thor-soar: 11 elaborations.
+
+## Elaborate state accessible on -> sets accessible.
+## if it is on something, then it is accessible
+sp {elaborations*state*accessible*on
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>
+            ^on <on>)
+   (<on> ^argument1 <object>
+         ^argument2 <object2>)
+  -{(<s> ^world.future-event.argument1 <object>)}
+                                      -{(<s> ^world <world2>)
+                                        (<world2> ^anchored-world true
+                                                  ^in <in>)
+                                        (<in> ^argument1 <object>
+                                              ^argument2.open false)}
+                                                             -{(<s> ^world <world3>)
+                                                               (<world3> ^anchored-world true
+                                                                         ^in <in2>)
+                                                               (<in2> ^argument1 <object2>
+                                                                      ^argument2.open false)}
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible on-no -> sets accessible.
+sp {elaborations*state*accessible*on-no
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+  -(<world> ^<< in on >>.argument1 <object>)
+  -{(<s> ^world.future-event.argument1 <object>)}
+                                      -{(<s> ^world <world2>)
+                                        (<world2> ^anchored-world true
+                                                  ^in <in>)
+                                        (<in> ^argument1 <object>
+                                              ^argument2.open false)}
+                                                             -{(<s> ^world <world3>)
+                                                               (<world3> ^anchored-world true
+                                                                         ^in <in2>)
+                                                               (<in2> ^argument1 <object2>
+                                                                      ^argument2.open false)}
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible surface -> sets accessible.
+sp {elaborations*state*accessible*surface
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>
+           -^in.argument1 <object>)
+   (<object> ^surface true)
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible in -> sets accessible.
+## if it is in something, that is open, it is accessible
+sp {elaborations*state*accessible*in
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <object>
+         ^argument2.open true)
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible in false -> sets accessible.
+sp {elaborations*state*accessible*in*false
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^in <in>)
+   (<in> ^argument1 <object>
+        -^argument2.open true)
+-->
+   (<object> ^accessible false)
+}
+
+## Elaborate state accessible receptacle in-closed -> sets accessible.
+sp {elaborations*state*accessible*receptacle*in-closed
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>
+            ^in <in>)
+   (<in> ^argument1 <object>
+        -^argument2.open true)
+   (<object> ^receptacle true)
+-->
+   (<object> ^accessible false)
+}
+
+## Elaborate state accessible false -> sets accessible.
+sp {elaborations*elaborate*state*accessible*false
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>
+            ^in <in>
+            ^on <on>)
+   (<on> ^argument1 <object>
+         ^argument2 <object2>)
+   (<in> ^argument1 <object2>
+         ^argument2.open false)
+-->
+   (<object> ^accessible false)
+}
+
+## Elaborate state accessible cabinet -> sets accessible.
+sp {elaborations*state*accessible*cabinet
+    :default
+   (state <s> ^top-state <s>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^class << drawer cabinet fridge >>)
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible on imaginary -> sets accessible.
+## For imaginary objects that aren't on anything
+sp {elaborations*state*accessible*on*imaginary
+    :default
+   (state <s> ^top-state <s>
+             -^name find-object
+              ^world <world>)
+   (<world> ^anchored-world false
+            ^objects.object <object>)
+   (<object> -^class << countertop floor drawer >>)
+  -(<s> ^world.future-event.argument1 <object>)
+  -(<s> ^world.in.argument1 <object>)
+  -(<s> ^world.on.argument1 <object>)
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible not-on-in -> sets accessible.
+sp {elaborations*state*accessible*not-on-in
+    :default
+   (state <s> ^top-state <s>
+             -^name find-object
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+  -(<s> ^world.future-event.argument1 <object>)
+  -{(<s> ^world <world2>)
+    (<world2> ^anchored-world true
+              ^in <in>)
+    (<in> ^argument1 <object>)}
+                    -{(<s> ^world <world3>)
+                      (<world3> ^anchored-world true
+                                ^on <in2>)
+                      (<in2> ^argument1 <object>)}
+  -(<object> ^memory-retrieved true)
+-->
+   (<object> ^accessible true)
+}
+
+## Elaborate state accessible looked-at-from-memory -> sets accessible.
+sp {elaborations*state*accessible*looked-at-from-memory
+    :default
+   (state <s> ^top-state <s>
+             -^name find-object
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^objects.object <object>)
+   (<object> ^memory-retrieved true
+             ^looked-at true)
+-->
+   (<object> ^accessible true)
+}

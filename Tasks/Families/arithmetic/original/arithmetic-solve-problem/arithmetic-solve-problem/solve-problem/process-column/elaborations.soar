@@ -1,0 +1,22 @@
+
+sp {process-column*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name process-column)
+   (<ss> ^task-state <ts>)
+   (<so> ^c <c>)
+   (<ss> ^p <p>)
+   (<ss> ^|c1| <c1>)
+   (<ss> ^|c2| <c2>)
+   (<ss> ^|c3| <c3>)
+-->
+   (<s> ^name process-column)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^|c1| <c1>)
+   (<s> ^|c2| <c2>)
+   (<s> ^|c3| <c3>)
+   (<s> ^c <c>)
+}

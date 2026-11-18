@@ -1,0 +1,37 @@
+## discard.soar -- thor-soar: 1 proposal.
+
+## Propose discard.
+sp {thor-soar*propose*discard*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^<< origin-object-handle object-handle >> <object-handle>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <d-object>)
+   (<d-object> ^discarded true
+               ^object-handle <object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name discard
+               ^task-operator true
+               ^super-desired <desired>
+               ^argument1 <object-garbagecan>
+               ^argument2 <object>
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 1
+                ^desired <desired1>
+                ^world-context <wc>)
+   (<wc> ^objects.object <object-garbagecan>)
+   (<object-garbagecan> ^object-handle <unanchored-object-garbagecan>
+                        ^anchored false
+                        ^class garbagecan)
+   (<desired1> ^in <desired-in-container1>)
+   (<desired-in-container1> ^argument1.object-handle <object-handle>
+                            ^argument2.object-handle <unanchored-object-garbagecan>)
+}

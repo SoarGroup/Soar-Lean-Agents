@@ -1,0 +1,24 @@
+
+sp {pyramid-hierarchical*propose*initialize-pyramid-hierarchical
+   (state <s> ^superstate nil)
+   -(<s> ^name <_v1>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-pyramid-hierarchical)
+}
+
+sp {pyramid-hierarchical*apply*initialize-pyramid-hierarchical
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-pyramid-hierarchical)
+-->
+   (<s> ^name pyramid-hierarchical)
+   (<s> ^pyramid <x0>)
+   (<x0> ^term 10)
+   (<x0> ^height 6)
+   (<x0> ^terms 0)
+   (<x0> ^sum 0)
+   (<x0> ^summed 0)
+   (<s> ^desired <d>)
+   (<d> ^pyramid <dg>)
+   (<dg> ^summed 1)
+}

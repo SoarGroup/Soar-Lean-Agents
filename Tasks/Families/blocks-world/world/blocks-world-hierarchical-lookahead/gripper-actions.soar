@@ -1,0 +1,370 @@
+## pick-up space (implementation substate of pick-up, problem space pick-up): gripper actions
+## are task-action operators applied internally. The object to pick up is the substate's
+## ^argument1 (copied from the pick-up operator by agent-world).
+
+sp {pick-up*propose*move-gripper-up
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position down)
+   (<w> ^holding-object.object-handle $ none)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-up
+        ^task-operator true
+        ^action-handle move-gripper-up
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*move-gripper-up
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-up
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position down)
+-->
+   (log 1 (crlf) |Apply move-gripper-up|)
+   (<g> ^position down -
+        ^position up)
+}
+
+sp {pick-up*propose*move-gripper-above
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position up)
+   (<w> ^holding-object.object-handle $ none)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-above
+        ^task-operator true
+        ^action-handle move-gripper-above
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*move-gripper-above
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-above
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<s> ^argument1 <a1>)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 { <> <a1> })
+-->
+   (log 1 (crlf) |Apply move-gripper-above|)
+   (<w> ^above <ab> -
+        ^above <nab>)
+   (<nab> ^argument1 <g>
+          ^argument2 <a1>
+          ^argument-count 2)
+}
+
+sp {pick-up*propose*move-gripper-down
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position up)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <a1>)
+   (<w> ^holding-object.object-handle $ none)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-down
+        ^task-operator true
+        ^action-handle move-gripper-down
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*move-gripper-down
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-down
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position up)
+-->
+   (log 1 (crlf) |Apply move-gripper-down|)
+   (<g> ^position up -
+        ^position down)
+}
+
+sp {pick-up*propose*close-gripper
+   (state <s> ^problem-space.name pick-up
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<g> ^position down
+        ^open true)
+   (<w> ^holding-object.object-handle $ none)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <a1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name close-gripper
+        ^task-operator true
+        ^action-handle close-gripper
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {pick-up*apply*close-gripper
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name close-gripper
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^open true
+        ^last-held <lh>)
+   (<w> ^holding-object <h>)
+   (<s> ^argument1 <a1>)
+   (<a1> ^object-handle $ <a1h>)
+-->
+   (log 1 (crlf) |Apply close-gripper|)
+   (<g> ^open true -
+        ^open false
+        ^last-held <lh> -
+        ^last-held <a1h>)
+   (<w> ^holding-object <h> -
+        ^holding-object <a1>)
+}
+
+## put-down space (implementation substate of put-down): ^argument1 is the held block,
+## ^argument2 the destination.
+
+sp {put-down*propose*move-gripper-up-holding
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<s> ^argument2 <a2>)
+   (<g> ^position down)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-up-holding
+        ^task-operator true
+        ^action-handle move-gripper-up-holding
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*move-gripper-up-holding
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-up-holding
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position down)
+-->
+   (log 1 (crlf) |Apply move-gripper-up-holding|)
+   (<g> ^position down -
+        ^position up)
+}
+
+sp {put-down*propose*move-gripper-above-destination
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<s> ^argument2 <a2>)
+   (<g> ^position up)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <> <a2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-above-destination
+        ^task-operator true
+        ^action-handle move-gripper-above-destination
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*move-gripper-above-destination
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-above-destination
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<s> ^argument2 <a2>)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 { <> <a2> })
+-->
+   (log 1 (crlf) |Apply move-gripper-above-destination|)
+   (<w> ^above <ab> -
+        ^above <nab>)
+   (<nab> ^argument1 <g>
+          ^argument2 <a2>
+          ^argument-count 2)
+}
+
+sp {put-down*propose*move-gripper-down-holding
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<s> ^argument2 <a2>)
+   (<g> ^position up)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <a2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name move-gripper-down-holding
+        ^task-operator true
+        ^action-handle move-gripper-down-holding
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*move-gripper-down-holding
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<o> ^name move-gripper-down-holding
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true)
+   (<g> ^position up)
+-->
+   (log 1 (crlf) |Apply move-gripper-down-holding|)
+   (<g> ^position up -
+        ^position down)
+}
+
+sp {put-down*propose*open-gripper
+   (state <s> ^problem-space.name put-down
+              ^argument1 <a1>
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects.object <g>)
+   (<g> ^class gripper)
+   (<s> ^argument2 <a2>)
+   (<g> ^position down
+        ^open false)
+   (<w> ^above <ab>)
+   (<ab> ^argument1 <g>
+         ^argument2 <a2>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name open-gripper
+        ^task-operator true
+        ^action-handle open-gripper
+        ^argument1 <g>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {put-down*apply*open-gripper*gripper
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^argument1 <a1>
+              ^argument2 <a2>
+              ^world <w>)
+   (<o> ^name open-gripper
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true
+        ^holding-object <y>
+        ^above <ab>)
+   (<y> ^object-handle <> none)
+   (<ab> ^argument1 <g>
+         ^argument2 <a2>)
+   (<g> ^open false)
+-->
+   (log 1 (crlf) |Apply open-gripper|)
+   (<g> ^open false -
+        ^open true)
+   (<w> ^holding-object <y> -
+        ^holding-object <hn>
+        ^above <ab> -
+        ^above <nab>)
+   (<hn> ^object-handle none)
+   (<nab> ^argument1 <g>
+          ^argument2 <a1>
+          ^argument-count 2)
+}
+
+sp {put-down*apply*open-gripper*on
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^argument1 <a1>
+              ^argument2 <a2>
+              ^world <w>)
+   (<o> ^name open-gripper
+        ^pre-conditions-satisfied true
+        ^argument1 <g>)
+   (<w> ^anchored-world true
+        ^holding-object <a1>
+        ^above.argument2 <a2>
+        ^on <r>)
+   (<r> ^argument1 <a1>
+        ^argument2 <> <a2>)
+-->
+   (<w> ^on <r> -
+        ^on <nr>)
+   (<nr> ^argument1 <a1>
+         ^argument2 <a2>
+         ^argument-count 2)
+}

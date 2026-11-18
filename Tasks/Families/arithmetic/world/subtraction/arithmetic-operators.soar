@@ -1,0 +1,409 @@
+## subtraction: top-level task operators. Each is applied by an internal application rule that
+## updates the world in the decision it is selected (^environment none).
+
+sp {arithmetic*propose*choose-operation*k-1
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>)
+   (<p> ^object-handle $ problem
+        ^operation 0
+        ^count > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name choose-operation
+        ^task-operator true
+        ^action-handle choose-operation
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 1
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*choose-operation*k-2
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>)
+   (<p> ^object-handle $ problem
+        ^operation 0
+        ^count > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name choose-operation
+        ^task-operator true
+        ^action-handle choose-operation
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 2
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*apply*choose-operation*internal
+   (state <s> ^operator <o>
+              ^internal-actions true)
+   (<o> ^name choose-operation
+        ^pre-conditions-satisfied true
+        ^argument1 <p>
+        ^argument2 <k>)
+   (<p> ^operation <p-operation>
+        ^carry <p-carry>)
+-->
+   (log 1 (crlf) |Apply choose-operation: | <k>)
+   (<p> ^operation <k>)
+   (<p> ^operation <p-operation> -)
+   (<p> ^carry 0)
+   (<p> ^carry <p-carry> -)
+}
+
+sp {arithmetic*propose*generate-digit1*addition
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^pos
+        ^gen1 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit1
+        ^task-operator true
+        ^action-handle generate-digit1
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*generate-digit1*subtraction*not-last
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^pos
+        ^gen1 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 2)
+   (<c> ^last 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit1
+        ^task-operator true
+        ^action-handle generate-digit1
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*generate-digit1*subtraction*last
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^pos
+        ^gen1 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 2)
+   (<c> ^last 1)
+   (<dg> ^val > 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit1
+        ^task-operator true
+        ^action-handle generate-digit1
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*apply*generate-digit1*internal
+   (state <s> ^operator <o>
+              ^internal-actions true)
+   (<o> ^name generate-digit1
+        ^pre-conditions-satisfied true
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>)
+   (<c> ^digit1 <c-digit1>
+        ^gen1 <c-gen1>)
+   (<p> ^pid <pid>
+        ^digits <p-digits>)
+-->
+   (log 1 (crlf) |Apply generate-digit1: column | <c> | digit | <val>)
+   (<c> ^digit1 <val>)
+   (<c> ^digit1 <c-digit1> -)
+   (<c> ^gen1 <pid>)
+   (<c> ^gen1 <c-gen1> -)
+   (<p> ^digits (+ <p-digits> 1))
+   (<p> ^digits <p-digits> -)
+}
+
+sp {arithmetic*propose*generate-digit2*addition
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^gen1 <pid>
+        ^gen2 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 1)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit2
+        ^task-operator true
+        ^action-handle generate-digit2
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*generate-digit2*subtraction*not-last
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^gen1 <pid>
+        ^gen2 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 2)
+   (<c> ^last 0)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit2
+        ^task-operator true
+        ^action-handle generate-digit2
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*generate-digit2*subtraction*last
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>)
+   (<c> ^gen1 <pid>
+        ^gen2 <> <pid>)
+   (<s> ^facts.digit <dg>)
+   (<dg> ^val <val>)
+   (<p> ^operation 2)
+   (<c> ^last 1
+        ^digit1 <c-digit1>)
+   (<dg> ^val < <c-digit1>)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name generate-digit2
+        ^task-operator true
+        ^action-handle generate-digit2
+        ^super-desired <d>
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>
+        ^argument-count 3
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*apply*generate-digit2*internal
+   (state <s> ^operator <o>
+              ^internal-actions true)
+   (<o> ^name generate-digit2
+        ^pre-conditions-satisfied true
+        ^argument1 <c>
+        ^argument2 <val>
+        ^argument3 <p>)
+   (<c> ^digit2 <c-digit2>
+        ^gen2 <c-gen2>)
+   (<p> ^pid <pid>
+        ^digits <p-digits>)
+-->
+   (log 1 (crlf) |Apply generate-digit2: column | <c> | digit | <val>)
+   (<c> ^digit2 <val>)
+   (<c> ^digit2 <c-digit2> -)
+   (<c> ^gen2 <pid>)
+   (<c> ^gen2 <c-gen2> -)
+   (<p> ^digits (+ <p-digits> 1))
+   (<p> ^digits <p-digits> -)
+}
+
+sp {arithmetic*propose*process-column
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>
+        ^digits 6)
+   (<c> ^pos <c-pos>
+        ^done <> <pid>)
+  -{(<objs> ^object <cx>)
+    (<cx> ^pos < <c-pos>
+          ^done <> <pid>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name process-column
+        ^task-operator true
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument2 <c>
+        ^argument-count 2
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*propose*finish-problem
+   (state <s> ^problem-space.name arithmetic
+              ^world <w>
+              ^desireds <ds>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<objs> ^object <p>
+           ^object <c1>
+           ^object <c2>
+           ^object <c3>)
+   (<p> ^object-handle $ problem
+        ^pid <pid>
+        ^digits 6)
+   (<c1> ^pos 1)
+   (<c2> ^pos 2)
+   (<c3> ^pos 3)
+  -{(<objs> ^object <cx>)
+    (<cx> ^done <> <pid>)}
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name finish-problem
+        ^task-operator true
+        ^action-handle finish-problem
+        ^super-desired <d>
+        ^argument1 <p>
+        ^argument-count 1
+        ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+
+sp {arithmetic*apply*finish-problem*internal
+   (state <s> ^operator <o>
+              ^internal-actions true
+              ^world <w>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<o> ^name finish-problem
+        ^pre-conditions-satisfied true
+        ^argument1 <p>)
+   (<objs> ^object <c1> ^object <c2> ^object <c3>)
+   (<c1> ^pos 1
+         ^digit1 <c1-digit1>
+         ^digit2 <c1-digit2>
+         ^result <c1-result>)
+   (<c2> ^pos 2
+         ^digit1 <c2-digit1>
+         ^digit2 <c2-digit2>
+         ^result <c2-result>)
+   (<c3> ^pos 3
+         ^digit1 <c3-digit1>
+         ^digit2 <c3-digit2>
+         ^result <c3-result>)
+   (<p> ^count <p-count>
+        ^pid <p-pid>
+        ^digits <p-digits>
+        ^operation <p-operation>
+        ^carry <p-carry>)
+-->
+   (log 1 (crlf) |Apply finish-problem|)
+   (<p> ^count (- <p-count> 1))
+   (<p> ^count <p-count> -)
+   (<p> ^pid (+ <p-pid> 1))
+   (<p> ^pid <p-pid> -)
+   (<p> ^digits 0)
+   (<p> ^digits <p-digits> -)
+   (<p> ^operation 0)
+   (<p> ^operation <p-operation> -)
+   (write |problem op | <p-operation> | top | <c3-digit1> <c2-digit1> <c1-digit1> | bottom | <c3-digit2> <c2-digit2> <c1-digit2> | answer | <c3-result> <c2-result> <c1-result> | carry | <p-carry>)
+}
+

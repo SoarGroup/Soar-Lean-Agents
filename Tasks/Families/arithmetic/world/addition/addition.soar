@@ -1,0 +1,22 @@
+## addition: rewritten to the world conventions (the shared library, no external environment).
+## Load: libraries (absolute paths), then the original learning/memory settings, then the task.
+
+## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+
+## Settings kept from the original
+chunk always
+chunk add-osk on
+multi-attributes problem 2
+multi-attributes column 3
+multi-attributes digit 11
+multi-attributes add-fact 111
+multi-attributes sub-fact 166
+multi-attributes inc-fact 11
+multi-attributes ten-fact 11
+
+source arithmetic-world.soar
+source arithmetic-operators.soar
+source process-column.soar

@@ -1,0 +1,40 @@
+
+sp {get-digit1*propose*add-carry
+   (state <s> ^name get-digit1)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<ts> ^add-fact <f>)
+   (<f> ^|d1| <ss-d1>)
+   (<ss> ^|d1| <ss-d1>)
+   (<f> ^|d2| 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-carry)
+   (<o> ^f <f>)
+}
+
+sp {get-digit1*apply*add-carry
+   (state <s> ^name get-digit1)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^operator <o>)
+   (<o> ^name add-carry)
+   (<o> ^f <f>)
+   (<ss> ^|d1| <ss-d1>)
+   (<f> ^sum <f-sum>)
+   (<ss> ^cout <ss-cout>)
+   (<f> ^carry <f-carry>)
+   (<ss> ^got1 <ss-got1>)
+-->
+   (<ss> ^|d1| <f-sum>)
+   (<ss> ^|d1| <ss-d1> -)
+   (<ss> ^cout <f-carry>)
+   (<ss> ^cout <ss-cout> -)
+   (<ss> ^got1 1)
+   (<ss> ^got1 <ss-got1> -)
+}

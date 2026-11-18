@@ -1,0 +1,16 @@
+
+sp {TicTacToe*select*x-wins-best
+   (state <s> ^name TicTacToe)
+   (<s> ^operator <o> +)
+   (<o> ^name x-wins)
+-->
+   (<s> ^operator <o> >)
+}
+
+sp {TicTacToe*select*o-wins-best
+   (state <s> ^name TicTacToe)
+   (<s> ^operator <o> +)
+   (<o> ^name o-wins)
+-->
+   (<s> ^operator <o> >)
+}

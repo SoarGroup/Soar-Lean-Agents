@@ -1,0 +1,12 @@
+
+sp {count-to-limit*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name count-to-limit)
+   (<so> ^counter <counter>)
+-->
+   (<s> ^name count-to-limit)
+   (<s> ^counter <counter>)
+}

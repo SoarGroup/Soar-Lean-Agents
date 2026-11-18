@@ -1,0 +1,3 @@
+pushd mac-rl
+source mac-rl_source.soar
+popd

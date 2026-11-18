@@ -1,0 +1,4750 @@
+## Task initialization (generated from the original puzzle data)
+sp {kenken*propose*initialize-kenken
+   (state <s> ^superstate nil
+              ^world <w>
+             -^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-kenken
+        ^task-operator false)
+}
+
+## agent-world keeps initialize-agent-world proposed (best) until the top state has a name
+sp {kenken*select*initialize-kenken*after-agent-world
+   (state <s> ^operator <o> +
+              ^operator <aw> +)
+   (<o> ^name initialize-kenken)
+   (<aw> ^name initialize-agent-world)
+-->
+   (<s> ^operator <o> > <aw>)
+}
+
+sp {kenken*apply*initialize-kenken
+   (state <s> ^operator.name initialize-kenken
+              ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name kenken
+        ^environment none
+        ^flag-override <f>
+        ^desireds <ds>
+        ^printed-rows 0
+        ^grid-size 6)
+   (<f> ^mea-operator-selection true ^iterative-step tie-impasse)   # probe_settings.py, 16 Nov 2026 (library v2.34): tie-impasse solves 3/3 (2,429 decisions); operator depth 1/3
+   (<ds> ^desired <d>
+         ^desired-count 1)
+   (<d> ^object <do>)
+   (<do> ^object-handle puzzle
+         ^marks 36)
+   (<objs> ^object <x0>)
+   (<x0> ^object-handle c11
+        ^anchored true
+        ^type cell
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^mark 0
+        ^cand v111
+        ^cand v112
+        ^cand v113
+        ^cand v114
+        ^cand v115
+        ^cand v116)
+   (<objs> ^object <x1>)
+   (<x1> ^object-handle c12
+        ^anchored true
+        ^type cell
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^mark 0
+        ^cand v121
+        ^cand v122
+        ^cand v123
+        ^cand v124
+        ^cand v125
+        ^cand v126)
+   (<objs> ^object <x2>)
+   (<x2> ^object-handle c13
+        ^anchored true
+        ^type cell
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^mark 0
+        ^cand v131
+        ^cand v132
+        ^cand v133
+        ^cand v134
+        ^cand v135
+        ^cand v136)
+   (<objs> ^object <x3>)
+   (<x3> ^object-handle c14
+        ^anchored true
+        ^type cell
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^mark 0
+        ^cand v141
+        ^cand v142
+        ^cand v143
+        ^cand v144
+        ^cand v145
+        ^cand v146)
+   (<objs> ^object <x4>)
+   (<x4> ^object-handle c15
+        ^anchored true
+        ^type cell
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^mark 0
+        ^cand v151
+        ^cand v152
+        ^cand v153
+        ^cand v154
+        ^cand v155
+        ^cand v156)
+   (<objs> ^object <x5>)
+   (<x5> ^object-handle c16
+        ^anchored true
+        ^type cell
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^mark 0
+        ^cand v161
+        ^cand v162
+        ^cand v163
+        ^cand v164
+        ^cand v165
+        ^cand v166)
+   (<objs> ^object <x6>)
+   (<x6> ^object-handle c21
+        ^anchored true
+        ^type cell
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^mark 0
+        ^cand v211
+        ^cand v212
+        ^cand v213
+        ^cand v214
+        ^cand v215
+        ^cand v216)
+   (<objs> ^object <x7>)
+   (<x7> ^object-handle c22
+        ^anchored true
+        ^type cell
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^mark 0
+        ^cand v221
+        ^cand v222
+        ^cand v223
+        ^cand v224
+        ^cand v225
+        ^cand v226)
+   (<objs> ^object <x8>)
+   (<x8> ^object-handle c23
+        ^anchored true
+        ^type cell
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^mark 0
+        ^cand v231
+        ^cand v232
+        ^cand v233
+        ^cand v234
+        ^cand v235
+        ^cand v236)
+   (<objs> ^object <x9>)
+   (<x9> ^object-handle c24
+        ^anchored true
+        ^type cell
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^mark 0
+        ^cand v241
+        ^cand v242
+        ^cand v243
+        ^cand v244
+        ^cand v245
+        ^cand v246)
+   (<objs> ^object <x10>)
+   (<x10> ^object-handle c25
+        ^anchored true
+        ^type cell
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^mark 0
+        ^cand v251
+        ^cand v252
+        ^cand v253
+        ^cand v254
+        ^cand v255
+        ^cand v256)
+   (<objs> ^object <x11>)
+   (<x11> ^object-handle c26
+        ^anchored true
+        ^type cell
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^mark 0
+        ^cand v261
+        ^cand v262
+        ^cand v263
+        ^cand v264
+        ^cand v265
+        ^cand v266)
+   (<objs> ^object <x12>)
+   (<x12> ^object-handle c31
+        ^anchored true
+        ^type cell
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^mark 0
+        ^cand v311
+        ^cand v312
+        ^cand v313
+        ^cand v314
+        ^cand v315
+        ^cand v316)
+   (<objs> ^object <x13>)
+   (<x13> ^object-handle c32
+        ^anchored true
+        ^type cell
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^mark 0
+        ^cand v321
+        ^cand v322
+        ^cand v323
+        ^cand v324
+        ^cand v325
+        ^cand v326)
+   (<objs> ^object <x14>)
+   (<x14> ^object-handle c33
+        ^anchored true
+        ^type cell
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^mark 0
+        ^cand v331
+        ^cand v332
+        ^cand v333
+        ^cand v334
+        ^cand v335
+        ^cand v336)
+   (<objs> ^object <x15>)
+   (<x15> ^object-handle c34
+        ^anchored true
+        ^type cell
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^mark 0
+        ^cand v341
+        ^cand v342
+        ^cand v343
+        ^cand v344
+        ^cand v345
+        ^cand v346)
+   (<objs> ^object <x16>)
+   (<x16> ^object-handle c35
+        ^anchored true
+        ^type cell
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^mark 0
+        ^cand v351
+        ^cand v352
+        ^cand v353
+        ^cand v354
+        ^cand v355
+        ^cand v356)
+   (<objs> ^object <x17>)
+   (<x17> ^object-handle c36
+        ^anchored true
+        ^type cell
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^mark 0
+        ^cand v361
+        ^cand v362
+        ^cand v363
+        ^cand v364
+        ^cand v365
+        ^cand v366)
+   (<objs> ^object <x18>)
+   (<x18> ^object-handle c41
+        ^anchored true
+        ^type cell
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^mark 0
+        ^cand v411
+        ^cand v412
+        ^cand v413
+        ^cand v414
+        ^cand v415
+        ^cand v416)
+   (<objs> ^object <x19>)
+   (<x19> ^object-handle c42
+        ^anchored true
+        ^type cell
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^mark 0
+        ^cand v421
+        ^cand v422
+        ^cand v423
+        ^cand v424
+        ^cand v425
+        ^cand v426)
+   (<objs> ^object <x20>)
+   (<x20> ^object-handle c43
+        ^anchored true
+        ^type cell
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^mark 0
+        ^cand v431
+        ^cand v432
+        ^cand v433
+        ^cand v434
+        ^cand v435
+        ^cand v436)
+   (<objs> ^object <x21>)
+   (<x21> ^object-handle c44
+        ^anchored true
+        ^type cell
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^mark 0
+        ^cand v441
+        ^cand v442
+        ^cand v443
+        ^cand v444
+        ^cand v445
+        ^cand v446)
+   (<objs> ^object <x22>)
+   (<x22> ^object-handle c45
+        ^anchored true
+        ^type cell
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^mark 0
+        ^cand v451
+        ^cand v452
+        ^cand v453
+        ^cand v454
+        ^cand v455
+        ^cand v456)
+   (<objs> ^object <x23>)
+   (<x23> ^object-handle c46
+        ^anchored true
+        ^type cell
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^mark 0
+        ^cand v461
+        ^cand v462
+        ^cand v463
+        ^cand v464
+        ^cand v465
+        ^cand v466)
+   (<objs> ^object <x24>)
+   (<x24> ^object-handle c51
+        ^anchored true
+        ^type cell
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^mark 0
+        ^cand v511
+        ^cand v512
+        ^cand v513
+        ^cand v514
+        ^cand v515
+        ^cand v516)
+   (<objs> ^object <x25>)
+   (<x25> ^object-handle c52
+        ^anchored true
+        ^type cell
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^mark 0
+        ^cand v521
+        ^cand v522
+        ^cand v523
+        ^cand v524
+        ^cand v525
+        ^cand v526)
+   (<objs> ^object <x26>)
+   (<x26> ^object-handle c53
+        ^anchored true
+        ^type cell
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^mark 0
+        ^cand v531
+        ^cand v532
+        ^cand v533
+        ^cand v534
+        ^cand v535
+        ^cand v536)
+   (<objs> ^object <x27>)
+   (<x27> ^object-handle c54
+        ^anchored true
+        ^type cell
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^mark 0
+        ^cand v541
+        ^cand v542
+        ^cand v543
+        ^cand v544
+        ^cand v545
+        ^cand v546)
+   (<objs> ^object <x28>)
+   (<x28> ^object-handle c55
+        ^anchored true
+        ^type cell
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^mark 0
+        ^cand v551
+        ^cand v552
+        ^cand v553
+        ^cand v554
+        ^cand v555
+        ^cand v556)
+   (<objs> ^object <x29>)
+   (<x29> ^object-handle c56
+        ^anchored true
+        ^type cell
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^mark 0
+        ^cand v561
+        ^cand v562
+        ^cand v563
+        ^cand v564
+        ^cand v565
+        ^cand v566)
+   (<objs> ^object <x30>)
+   (<x30> ^object-handle c61
+        ^anchored true
+        ^type cell
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^mark 0
+        ^cand v611
+        ^cand v612
+        ^cand v613
+        ^cand v614
+        ^cand v615
+        ^cand v616)
+   (<objs> ^object <x31>)
+   (<x31> ^object-handle c62
+        ^anchored true
+        ^type cell
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^mark 0
+        ^cand v621
+        ^cand v622
+        ^cand v623
+        ^cand v624
+        ^cand v625
+        ^cand v626)
+   (<objs> ^object <x32>)
+   (<x32> ^object-handle c63
+        ^anchored true
+        ^type cell
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^mark 0
+        ^cand v631
+        ^cand v632
+        ^cand v633
+        ^cand v634
+        ^cand v635
+        ^cand v636)
+   (<objs> ^object <x33>)
+   (<x33> ^object-handle c64
+        ^anchored true
+        ^type cell
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^mark 0
+        ^cand v641
+        ^cand v642
+        ^cand v643
+        ^cand v644
+        ^cand v645
+        ^cand v646)
+   (<objs> ^object <x34>)
+   (<x34> ^object-handle c65
+        ^anchored true
+        ^type cell
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^mark 0
+        ^cand v651
+        ^cand v652
+        ^cand v653
+        ^cand v654
+        ^cand v655
+        ^cand v656)
+   (<objs> ^object <x35>)
+   (<x35> ^object-handle c66
+        ^anchored true
+        ^type cell
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^mark 0
+        ^cand v661
+        ^cand v662
+        ^cand v663
+        ^cand v664
+        ^cand v665
+        ^cand v666)
+   (<objs> ^object <x36>)
+   (<x36> ^object-handle v111
+        ^anchored true
+        ^type cand
+        ^cid 111
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 1
+        ^alive 1
+        ^in-tuple t3
+        ^in-tuple t5)
+   (<objs> ^object <x37>)
+   (<x37> ^object-handle v112
+        ^anchored true
+        ^type cand
+        ^cid 112
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x38>)
+   (<x38> ^object-handle v113
+        ^anchored true
+        ^type cand
+        ^cid 113
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x39>)
+   (<x39> ^object-handle v114
+        ^anchored true
+        ^type cand
+        ^cid 114
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 4
+        ^alive 1
+        ^in-tuple t1
+        ^in-tuple t4)
+   (<objs> ^object <x40>)
+   (<x40> ^object-handle v115
+        ^anchored true
+        ^type cand
+        ^cid 115
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 5
+        ^alive 1
+        ^in-tuple t0
+        ^in-tuple t2)
+   (<objs> ^object <x41>)
+   (<x41> ^object-handle v116
+        ^anchored true
+        ^type cand
+        ^cid 116
+        ^coord 11
+        ^row 1
+        ^col 1
+        ^value 6
+        ^alive 1)
+   (<objs> ^object <x42>)
+   (<x42> ^object-handle v121
+        ^anchored true
+        ^type cand
+        ^cid 121
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 1
+        ^alive 1
+        ^in-tuple t2
+        ^in-tuple t4)
+   (<objs> ^object <x43>)
+   (<x43> ^object-handle v122
+        ^anchored true
+        ^type cand
+        ^cid 122
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x44>)
+   (<x44> ^object-handle v123
+        ^anchored true
+        ^type cand
+        ^cid 123
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x45>)
+   (<x45> ^object-handle v124
+        ^anchored true
+        ^type cand
+        ^cid 124
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 4
+        ^alive 1
+        ^in-tuple t0
+        ^in-tuple t5)
+   (<objs> ^object <x46>)
+   (<x46> ^object-handle v125
+        ^anchored true
+        ^type cand
+        ^cid 125
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 5
+        ^alive 1
+        ^in-tuple t1
+        ^in-tuple t3)
+   (<objs> ^object <x47>)
+   (<x47> ^object-handle v126
+        ^anchored true
+        ^type cand
+        ^cid 126
+        ^coord 12
+        ^row 2
+        ^col 1
+        ^value 6
+        ^alive 1)
+   (<objs> ^object <x48>)
+   (<x48> ^object-handle v131
+        ^anchored true
+        ^type cand
+        ^cid 131
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 1
+        ^alive 1
+        ^in-tuple t0
+        ^in-tuple t1)
+   (<objs> ^object <x49>)
+   (<x49> ^object-handle v132
+        ^anchored true
+        ^type cand
+        ^cid 132
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x50>)
+   (<x50> ^object-handle v133
+        ^anchored true
+        ^type cand
+        ^cid 133
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x51>)
+   (<x51> ^object-handle v134
+        ^anchored true
+        ^type cand
+        ^cid 134
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 4
+        ^alive 1
+        ^in-tuple t2
+        ^in-tuple t3)
+   (<objs> ^object <x52>)
+   (<x52> ^object-handle v135
+        ^anchored true
+        ^type cand
+        ^cid 135
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 5
+        ^alive 1
+        ^in-tuple t4
+        ^in-tuple t5)
+   (<objs> ^object <x53>)
+   (<x53> ^object-handle v136
+        ^anchored true
+        ^type cand
+        ^cid 136
+        ^coord 13
+        ^row 3
+        ^col 1
+        ^value 6
+        ^alive 1)
+   (<objs> ^object <x54>)
+   (<x54> ^object-handle v141
+        ^anchored true
+        ^type cand
+        ^cid 141
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 1
+        ^alive 1)
+   (<objs> ^object <x55>)
+   (<x55> ^object-handle v142
+        ^anchored true
+        ^type cand
+        ^cid 142
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x56>)
+   (<x56> ^object-handle v143
+        ^anchored true
+        ^type cand
+        ^cid 143
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x57>)
+   (<x57> ^object-handle v144
+        ^anchored true
+        ^type cand
+        ^cid 144
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 4
+        ^alive 1)
+   (<objs> ^object <x58>)
+   (<x58> ^object-handle v145
+        ^anchored true
+        ^type cand
+        ^cid 145
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x59>)
+   (<x59> ^object-handle v146
+        ^anchored true
+        ^type cand
+        ^cid 146
+        ^coord 14
+        ^row 4
+        ^col 1
+        ^value 6
+        ^alive 1
+        ^in-tuple t74)
+   (<objs> ^object <x60>)
+   (<x60> ^object-handle v151
+        ^anchored true
+        ^type cand
+        ^cid 151
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 1
+        ^alive 1
+        ^in-tuple t117
+        ^in-tuple t119
+        ^in-tuple t124
+        ^in-tuple t126
+        ^in-tuple t130
+        ^in-tuple t132
+        ^in-tuple t139
+        ^in-tuple t141
+        ^in-tuple t143
+        ^in-tuple t145
+        ^in-tuple t149
+        ^in-tuple t151)
+   (<objs> ^object <x61>)
+   (<x61> ^object-handle v152
+        ^anchored true
+        ^type cand
+        ^cid 152
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 2
+        ^alive 1
+        ^in-tuple t109
+        ^in-tuple t111
+        ^in-tuple t114
+        ^in-tuple t116
+        ^in-tuple t136
+        ^in-tuple t144
+        ^in-tuple t147
+        ^in-tuple t150)
+   (<objs> ^object <x62>)
+   (<x62> ^object-handle v153
+        ^anchored true
+        ^type cand
+        ^cid 153
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 3
+        ^alive 1
+        ^in-tuple t105
+        ^in-tuple t108
+        ^in-tuple t128
+        ^in-tuple t131
+        ^in-tuple t135
+        ^in-tuple t138
+        ^in-tuple t142)
+   (<objs> ^object <x63>)
+   (<x63> ^object-handle v154
+        ^anchored true
+        ^type cand
+        ^cid 154
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 4
+        ^alive 1
+        ^in-tuple t103
+        ^in-tuple t107
+        ^in-tuple t121
+        ^in-tuple t125
+        ^in-tuple t134
+        ^in-tuple t140)
+   (<objs> ^object <x64>)
+   (<x64> ^object-handle v155
+        ^anchored true
+        ^type cand
+        ^cid 155
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 5
+        ^alive 1
+        ^in-tuple t101
+        ^in-tuple t102
+        ^in-tuple t104
+        ^in-tuple t110
+        ^in-tuple t113
+        ^in-tuple t118
+        ^in-tuple t120
+        ^in-tuple t122
+        ^in-tuple t123
+        ^in-tuple t127
+        ^in-tuple t129
+        ^in-tuple t146
+        ^in-tuple t148)
+   (<objs> ^object <x65>)
+   (<x65> ^object-handle v156
+        ^anchored true
+        ^type cand
+        ^cid 156
+        ^coord 15
+        ^row 5
+        ^col 1
+        ^value 6
+        ^alive 1
+        ^in-tuple t100
+        ^in-tuple t106
+        ^in-tuple t112
+        ^in-tuple t115
+        ^in-tuple t133
+        ^in-tuple t137)
+   (<objs> ^object <x66>)
+   (<x66> ^object-handle v161
+        ^anchored true
+        ^type cand
+        ^cid 161
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 1
+        ^alive 1
+        ^in-tuple t112
+        ^in-tuple t113
+        ^in-tuple t120
+        ^in-tuple t121
+        ^in-tuple t127
+        ^in-tuple t128
+        ^in-tuple t133
+        ^in-tuple t134
+        ^in-tuple t135
+        ^in-tuple t136
+        ^in-tuple t146
+        ^in-tuple t147)
+   (<objs> ^object <x67>)
+   (<x67> ^object-handle v162
+        ^anchored true
+        ^type cand
+        ^cid 162
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 2
+        ^alive 1
+        ^in-tuple t100
+        ^in-tuple t101
+        ^in-tuple t122
+        ^in-tuple t137
+        ^in-tuple t138
+        ^in-tuple t139
+        ^in-tuple t148
+        ^in-tuple t149)
+   (<objs> ^object <x68>)
+   (<x68> ^object-handle v163
+        ^anchored true
+        ^type cand
+        ^cid 163
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 3
+        ^alive 1
+        ^in-tuple t102
+        ^in-tuple t103
+        ^in-tuple t114
+        ^in-tuple t129
+        ^in-tuple t130
+        ^in-tuple t140
+        ^in-tuple t141)
+   (<objs> ^object <x69>)
+   (<x69> ^object-handle v164
+        ^anchored true
+        ^type cand
+        ^cid 164
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 4
+        ^alive 1
+        ^in-tuple t104
+        ^in-tuple t105
+        ^in-tuple t123
+        ^in-tuple t124
+        ^in-tuple t142
+        ^in-tuple t143)
+   (<objs> ^object <x70>)
+   (<x70> ^object-handle v165
+        ^anchored true
+        ^type cand
+        ^cid 165
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 5
+        ^alive 1
+        ^in-tuple t106
+        ^in-tuple t107
+        ^in-tuple t108
+        ^in-tuple t109
+        ^in-tuple t115
+        ^in-tuple t116
+        ^in-tuple t117
+        ^in-tuple t125
+        ^in-tuple t126
+        ^in-tuple t131
+        ^in-tuple t132
+        ^in-tuple t150
+        ^in-tuple t151)
+   (<objs> ^object <x71>)
+   (<x71> ^object-handle v166
+        ^anchored true
+        ^type cand
+        ^cid 166
+        ^coord 16
+        ^row 6
+        ^col 1
+        ^value 6
+        ^alive 1
+        ^in-tuple t110
+        ^in-tuple t111
+        ^in-tuple t118
+        ^in-tuple t119
+        ^in-tuple t144
+        ^in-tuple t145)
+   (<objs> ^object <x72>)
+   (<x72> ^object-handle v211
+        ^anchored true
+        ^type cand
+        ^cid 211
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t21)
+   (<objs> ^object <x73>)
+   (<x73> ^object-handle v212
+        ^anchored true
+        ^type cand
+        ^cid 212
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 2
+        ^alive 1
+        ^in-tuple t9
+        ^in-tuple t11
+        ^in-tuple t17
+        ^in-tuple t19
+        ^in-tuple t22)
+   (<objs> ^object <x74>)
+   (<x74> ^object-handle v213
+        ^anchored true
+        ^type cand
+        ^cid 213
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 3
+        ^alive 1
+        ^in-tuple t16)
+   (<objs> ^object <x75>)
+   (<x75> ^object-handle v214
+        ^anchored true
+        ^type cand
+        ^cid 214
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 4
+        ^alive 1
+        ^in-tuple t6
+        ^in-tuple t8
+        ^in-tuple t10
+        ^in-tuple t12
+        ^in-tuple t14
+        ^in-tuple t15
+        ^in-tuple t18
+        ^in-tuple t20
+        ^in-tuple t23)
+   (<objs> ^object <x76>)
+   (<x76> ^object-handle v215
+        ^anchored true
+        ^type cand
+        ^cid 215
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x77>)
+   (<x77> ^object-handle v216
+        ^anchored true
+        ^type cand
+        ^cid 216
+        ^coord 21
+        ^row 1
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t7
+        ^in-tuple t13)
+   (<objs> ^object <x78>)
+   (<x78> ^object-handle v221
+        ^anchored true
+        ^type cand
+        ^cid 221
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t20
+        ^in-tuple t23)
+   (<objs> ^object <x79>)
+   (<x79> ^object-handle v222
+        ^anchored true
+        ^type cand
+        ^cid 222
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 2
+        ^alive 1
+        ^in-tuple t7
+        ^in-tuple t10
+        ^in-tuple t12
+        ^in-tuple t18)
+   (<objs> ^object <x80>)
+   (<x80> ^object-handle v223
+        ^anchored true
+        ^type cand
+        ^cid 223
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 3
+        ^alive 1
+        ^in-tuple t8
+        ^in-tuple t15)
+   (<objs> ^object <x81>)
+   (<x81> ^object-handle v224
+        ^anchored true
+        ^type cand
+        ^cid 224
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 4
+        ^alive 1
+        ^in-tuple t11
+        ^in-tuple t13
+        ^in-tuple t16
+        ^in-tuple t19
+        ^in-tuple t21
+        ^in-tuple t22)
+   (<objs> ^object <x82>)
+   (<x82> ^object-handle v225
+        ^anchored true
+        ^type cand
+        ^cid 225
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x83>)
+   (<x83> ^object-handle v226
+        ^anchored true
+        ^type cand
+        ^cid 226
+        ^coord 22
+        ^row 2
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t6
+        ^in-tuple t9
+        ^in-tuple t14
+        ^in-tuple t17)
+   (<objs> ^object <x84>)
+   (<x84> ^object-handle v231
+        ^anchored true
+        ^type cand
+        ^cid 231
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t53)
+   (<objs> ^object <x85>)
+   (<x85> ^object-handle v232
+        ^anchored true
+        ^type cand
+        ^cid 232
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x86>)
+   (<x86> ^object-handle v233
+        ^anchored true
+        ^type cand
+        ^cid 233
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x87>)
+   (<x87> ^object-handle v234
+        ^anchored true
+        ^type cand
+        ^cid 234
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 4
+        ^alive 1)
+   (<objs> ^object <x88>)
+   (<x88> ^object-handle v235
+        ^anchored true
+        ^type cand
+        ^cid 235
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x89>)
+   (<x89> ^object-handle v236
+        ^anchored true
+        ^type cand
+        ^cid 236
+        ^coord 23
+        ^row 3
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t52)
+   (<objs> ^object <x90>)
+   (<x90> ^object-handle v241
+        ^anchored true
+        ^type cand
+        ^cid 241
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t52)
+   (<objs> ^object <x91>)
+   (<x91> ^object-handle v242
+        ^anchored true
+        ^type cand
+        ^cid 242
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 2
+        ^alive 1)
+   (<objs> ^object <x92>)
+   (<x92> ^object-handle v243
+        ^anchored true
+        ^type cand
+        ^cid 243
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x93>)
+   (<x93> ^object-handle v244
+        ^anchored true
+        ^type cand
+        ^cid 244
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 4
+        ^alive 1)
+   (<objs> ^object <x94>)
+   (<x94> ^object-handle v245
+        ^anchored true
+        ^type cand
+        ^cid 245
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x95>)
+   (<x95> ^object-handle v246
+        ^anchored true
+        ^type cand
+        ^cid 246
+        ^coord 24
+        ^row 4
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t53)
+   (<objs> ^object <x96>)
+   (<x96> ^object-handle v251
+        ^anchored true
+        ^type cand
+        ^cid 251
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t115
+        ^in-tuple t118
+        ^in-tuple t123
+        ^in-tuple t125
+        ^in-tuple t129
+        ^in-tuple t131
+        ^in-tuple t137
+        ^in-tuple t140
+        ^in-tuple t142
+        ^in-tuple t144
+        ^in-tuple t148
+        ^in-tuple t150)
+   (<objs> ^object <x97>)
+   (<x97> ^object-handle v252
+        ^anchored true
+        ^type cand
+        ^cid 252
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 2
+        ^alive 1
+        ^in-tuple t106
+        ^in-tuple t110
+        ^in-tuple t122
+        ^in-tuple t133
+        ^in-tuple t138
+        ^in-tuple t145
+        ^in-tuple t146
+        ^in-tuple t151)
+   (<objs> ^object <x98>)
+   (<x98> ^object-handle v253
+        ^anchored true
+        ^type cand
+        ^cid 253
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 3
+        ^alive 1
+        ^in-tuple t104
+        ^in-tuple t107
+        ^in-tuple t116
+        ^in-tuple t127
+        ^in-tuple t132
+        ^in-tuple t134
+        ^in-tuple t143)
+   (<objs> ^object <x99>)
+   (<x99> ^object-handle v254
+        ^anchored true
+        ^type cand
+        ^cid 254
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 4
+        ^alive 1
+        ^in-tuple t102
+        ^in-tuple t108
+        ^in-tuple t120
+        ^in-tuple t126
+        ^in-tuple t135
+        ^in-tuple t141)
+   (<objs> ^object <x100>)
+   (<x100> ^object-handle v255
+        ^anchored true
+        ^type cand
+        ^cid 255
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 5
+        ^alive 1
+        ^in-tuple t100
+        ^in-tuple t103
+        ^in-tuple t105
+        ^in-tuple t111
+        ^in-tuple t112
+        ^in-tuple t114
+        ^in-tuple t119
+        ^in-tuple t121
+        ^in-tuple t124
+        ^in-tuple t128
+        ^in-tuple t130
+        ^in-tuple t147
+        ^in-tuple t149)
+   (<objs> ^object <x101>)
+   (<x101> ^object-handle v256
+        ^anchored true
+        ^type cand
+        ^cid 256
+        ^coord 25
+        ^row 5
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t101
+        ^in-tuple t109
+        ^in-tuple t113
+        ^in-tuple t117
+        ^in-tuple t136
+        ^in-tuple t139)
+   (<objs> ^object <x102>)
+   (<x102> ^object-handle v261
+        ^anchored true
+        ^type cand
+        ^cid 261
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 1
+        ^alive 1
+        ^in-tuple t100
+        ^in-tuple t101
+        ^in-tuple t102
+        ^in-tuple t103
+        ^in-tuple t104
+        ^in-tuple t105
+        ^in-tuple t106
+        ^in-tuple t107
+        ^in-tuple t108
+        ^in-tuple t109
+        ^in-tuple t110
+        ^in-tuple t111)
+   (<objs> ^object <x103>)
+   (<x103> ^object-handle v262
+        ^anchored true
+        ^type cand
+        ^cid 262
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 2
+        ^alive 1
+        ^in-tuple t112
+        ^in-tuple t113
+        ^in-tuple t114
+        ^in-tuple t115
+        ^in-tuple t116
+        ^in-tuple t117
+        ^in-tuple t118
+        ^in-tuple t119)
+   (<objs> ^object <x104>)
+   (<x104> ^object-handle v263
+        ^anchored true
+        ^type cand
+        ^cid 263
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 3
+        ^alive 1
+        ^in-tuple t120
+        ^in-tuple t121
+        ^in-tuple t122
+        ^in-tuple t123
+        ^in-tuple t124
+        ^in-tuple t125
+        ^in-tuple t126)
+   (<objs> ^object <x105>)
+   (<x105> ^object-handle v264
+        ^anchored true
+        ^type cand
+        ^cid 264
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 4
+        ^alive 1
+        ^in-tuple t127
+        ^in-tuple t128
+        ^in-tuple t129
+        ^in-tuple t130
+        ^in-tuple t131
+        ^in-tuple t132)
+   (<objs> ^object <x106>)
+   (<x106> ^object-handle v265
+        ^anchored true
+        ^type cand
+        ^cid 265
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 5
+        ^alive 1
+        ^in-tuple t133
+        ^in-tuple t134
+        ^in-tuple t135
+        ^in-tuple t136
+        ^in-tuple t137
+        ^in-tuple t138
+        ^in-tuple t139
+        ^in-tuple t140
+        ^in-tuple t141
+        ^in-tuple t142
+        ^in-tuple t143
+        ^in-tuple t144
+        ^in-tuple t145)
+   (<objs> ^object <x107>)
+   (<x107> ^object-handle v266
+        ^anchored true
+        ^type cand
+        ^cid 266
+        ^coord 26
+        ^row 6
+        ^col 2
+        ^value 6
+        ^alive 1
+        ^in-tuple t146
+        ^in-tuple t147
+        ^in-tuple t148
+        ^in-tuple t149
+        ^in-tuple t150
+        ^in-tuple t151)
+   (<objs> ^object <x108>)
+   (<x108> ^object-handle v311
+        ^anchored true
+        ^type cand
+        ^cid 311
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t29)
+   (<objs> ^object <x109>)
+   (<x109> ^object-handle v312
+        ^anchored true
+        ^type cand
+        ^cid 312
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t28)
+   (<objs> ^object <x110>)
+   (<x110> ^object-handle v313
+        ^anchored true
+        ^type cand
+        ^cid 313
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 3
+        ^alive 1
+        ^in-tuple t27)
+   (<objs> ^object <x111>)
+   (<x111> ^object-handle v314
+        ^anchored true
+        ^type cand
+        ^cid 314
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 4
+        ^alive 1
+        ^in-tuple t26)
+   (<objs> ^object <x112>)
+   (<x112> ^object-handle v315
+        ^anchored true
+        ^type cand
+        ^cid 315
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 5
+        ^alive 1
+        ^in-tuple t25)
+   (<objs> ^object <x113>)
+   (<x113> ^object-handle v316
+        ^anchored true
+        ^type cand
+        ^cid 316
+        ^coord 31
+        ^row 1
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t24)
+   (<objs> ^object <x114>)
+   (<x114> ^object-handle v321
+        ^anchored true
+        ^type cand
+        ^cid 321
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t13
+        ^in-tuple t14)
+   (<objs> ^object <x115>)
+   (<x115> ^object-handle v322
+        ^anchored true
+        ^type cand
+        ^cid 322
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t15
+        ^in-tuple t16
+        ^in-tuple t17
+        ^in-tuple t22)
+   (<objs> ^object <x116>)
+   (<x116> ^object-handle v323
+        ^anchored true
+        ^type cand
+        ^cid 323
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 3
+        ^alive 1
+        ^in-tuple t18
+        ^in-tuple t19)
+   (<objs> ^object <x117>)
+   (<x117> ^object-handle v324
+        ^anchored true
+        ^type cand
+        ^cid 324
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 4
+        ^alive 1
+        ^in-tuple t6
+        ^in-tuple t7
+        ^in-tuple t8
+        ^in-tuple t9
+        ^in-tuple t12
+        ^in-tuple t23)
+   (<objs> ^object <x118>)
+   (<x118> ^object-handle v325
+        ^anchored true
+        ^type cand
+        ^cid 325
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x119>)
+   (<x119> ^object-handle v326
+        ^anchored true
+        ^type cand
+        ^cid 326
+        ^coord 32
+        ^row 2
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t10
+        ^in-tuple t11
+        ^in-tuple t20
+        ^in-tuple t21)
+   (<objs> ^object <x120>)
+   (<x120> ^object-handle v331
+        ^anchored true
+        ^type cand
+        ^cid 331
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t6)
+   (<objs> ^object <x121>)
+   (<x121> ^object-handle v332
+        ^anchored true
+        ^type cand
+        ^cid 332
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t7
+        ^in-tuple t8
+        ^in-tuple t9
+        ^in-tuple t10
+        ^in-tuple t11)
+   (<objs> ^object <x122>)
+   (<x122> ^object-handle v333
+        ^anchored true
+        ^type cand
+        ^cid 333
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 3
+        ^alive 1
+        ^in-tuple t12)
+   (<objs> ^object <x123>)
+   (<x123> ^object-handle v334
+        ^anchored true
+        ^type cand
+        ^cid 334
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 4
+        ^alive 1
+        ^in-tuple t13
+        ^in-tuple t14
+        ^in-tuple t15
+        ^in-tuple t16
+        ^in-tuple t17
+        ^in-tuple t18
+        ^in-tuple t19
+        ^in-tuple t20
+        ^in-tuple t21)
+   (<objs> ^object <x124>)
+   (<x124> ^object-handle v335
+        ^anchored true
+        ^type cand
+        ^cid 335
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x125>)
+   (<x125> ^object-handle v336
+        ^anchored true
+        ^type cand
+        ^cid 336
+        ^coord 33
+        ^row 3
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t22
+        ^in-tuple t23)
+   (<objs> ^object <x126>)
+   (<x126> ^object-handle v341
+        ^anchored true
+        ^type cand
+        ^cid 341
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t77)
+   (<objs> ^object <x127>)
+   (<x127> ^object-handle v342
+        ^anchored true
+        ^type cand
+        ^cid 342
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t78)
+   (<objs> ^object <x128>)
+   (<x128> ^object-handle v343
+        ^anchored true
+        ^type cand
+        ^cid 343
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x129>)
+   (<x129> ^object-handle v344
+        ^anchored true
+        ^type cand
+        ^cid 344
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 4
+        ^alive 1)
+   (<objs> ^object <x130>)
+   (<x130> ^object-handle v345
+        ^anchored true
+        ^type cand
+        ^cid 345
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 5
+        ^alive 1
+        ^in-tuple t75)
+   (<objs> ^object <x131>)
+   (<x131> ^object-handle v346
+        ^anchored true
+        ^type cand
+        ^cid 346
+        ^coord 34
+        ^row 4
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t76)
+   (<objs> ^object <x132>)
+   (<x132> ^object-handle v351
+        ^anchored true
+        ^type cand
+        ^cid 351
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t75)
+   (<objs> ^object <x133>)
+   (<x133> ^object-handle v352
+        ^anchored true
+        ^type cand
+        ^cid 352
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t76)
+   (<objs> ^object <x134>)
+   (<x134> ^object-handle v353
+        ^anchored true
+        ^type cand
+        ^cid 353
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 3
+        ^alive 1)
+   (<objs> ^object <x135>)
+   (<x135> ^object-handle v354
+        ^anchored true
+        ^type cand
+        ^cid 354
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 4
+        ^alive 1)
+   (<objs> ^object <x136>)
+   (<x136> ^object-handle v355
+        ^anchored true
+        ^type cand
+        ^cid 355
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 5
+        ^alive 1
+        ^in-tuple t77)
+   (<objs> ^object <x137>)
+   (<x137> ^object-handle v356
+        ^anchored true
+        ^type cand
+        ^cid 356
+        ^coord 35
+        ^row 5
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t78)
+   (<objs> ^object <x138>)
+   (<x138> ^object-handle v361
+        ^anchored true
+        ^type cand
+        ^cid 361
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 1
+        ^alive 1
+        ^in-tuple t153)
+   (<objs> ^object <x139>)
+   (<x139> ^object-handle v362
+        ^anchored true
+        ^type cand
+        ^cid 362
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 2
+        ^alive 1
+        ^in-tuple t152
+        ^in-tuple t155)
+   (<objs> ^object <x140>)
+   (<x140> ^object-handle v363
+        ^anchored true
+        ^type cand
+        ^cid 363
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 3
+        ^alive 1
+        ^in-tuple t154
+        ^in-tuple t157)
+   (<objs> ^object <x141>)
+   (<x141> ^object-handle v364
+        ^anchored true
+        ^type cand
+        ^cid 364
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 4
+        ^alive 1
+        ^in-tuple t156
+        ^in-tuple t159)
+   (<objs> ^object <x142>)
+   (<x142> ^object-handle v365
+        ^anchored true
+        ^type cand
+        ^cid 365
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 5
+        ^alive 1
+        ^in-tuple t158
+        ^in-tuple t161)
+   (<objs> ^object <x143>)
+   (<x143> ^object-handle v366
+        ^anchored true
+        ^type cand
+        ^cid 366
+        ^coord 36
+        ^row 6
+        ^col 3
+        ^value 6
+        ^alive 1
+        ^in-tuple t160)
+   (<objs> ^object <x144>)
+   (<x144> ^object-handle v411
+        ^anchored true
+        ^type cand
+        ^cid 411
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t24)
+   (<objs> ^object <x145>)
+   (<x145> ^object-handle v412
+        ^anchored true
+        ^type cand
+        ^cid 412
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t25)
+   (<objs> ^object <x146>)
+   (<x146> ^object-handle v413
+        ^anchored true
+        ^type cand
+        ^cid 413
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t26)
+   (<objs> ^object <x147>)
+   (<x147> ^object-handle v414
+        ^anchored true
+        ^type cand
+        ^cid 414
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t27)
+   (<objs> ^object <x148>)
+   (<x148> ^object-handle v415
+        ^anchored true
+        ^type cand
+        ^cid 415
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 5
+        ^alive 1
+        ^in-tuple t28)
+   (<objs> ^object <x149>)
+   (<x149> ^object-handle v416
+        ^anchored true
+        ^type cand
+        ^cid 416
+        ^coord 41
+        ^row 1
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t29)
+   (<objs> ^object <x150>)
+   (<x150> ^object-handle v421
+        ^anchored true
+        ^type cand
+        ^cid 421
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t37)
+   (<objs> ^object <x151>)
+   (<x151> ^object-handle v422
+        ^anchored true
+        ^type cand
+        ^cid 422
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t36
+        ^in-tuple t40)
+   (<objs> ^object <x152>)
+   (<x152> ^object-handle v423
+        ^anchored true
+        ^type cand
+        ^cid 423
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t41)
+   (<objs> ^object <x153>)
+   (<x153> ^object-handle v424
+        ^anchored true
+        ^type cand
+        ^cid 424
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t38)
+   (<objs> ^object <x154>)
+   (<x154> ^object-handle v425
+        ^anchored true
+        ^type cand
+        ^cid 425
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x155>)
+   (<x155> ^object-handle v426
+        ^anchored true
+        ^type cand
+        ^cid 426
+        ^coord 42
+        ^row 2
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t39)
+   (<objs> ^object <x156>)
+   (<x156> ^object-handle v431
+        ^anchored true
+        ^type cand
+        ^cid 431
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t69
+        ^in-tuple t73)
+   (<objs> ^object <x157>)
+   (<x157> ^object-handle v432
+        ^anchored true
+        ^type cand
+        ^cid 432
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t64
+        ^in-tuple t72)
+   (<objs> ^object <x158>)
+   (<x158> ^object-handle v433
+        ^anchored true
+        ^type cand
+        ^cid 433
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t60
+        ^in-tuple t63
+        ^in-tuple t68)
+   (<objs> ^object <x159>)
+   (<x159> ^object-handle v434
+        ^anchored true
+        ^type cand
+        ^cid 434
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t57
+        ^in-tuple t59
+        ^in-tuple t67
+        ^in-tuple t71)
+   (<objs> ^object <x160>)
+   (<x160> ^object-handle v435
+        ^anchored true
+        ^type cand
+        ^cid 435
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 5
+        ^alive 1
+        ^in-tuple t55
+        ^in-tuple t58
+        ^in-tuple t62
+        ^in-tuple t66
+        ^in-tuple t70)
+   (<objs> ^object <x161>)
+   (<x161> ^object-handle v436
+        ^anchored true
+        ^type cand
+        ^cid 436
+        ^coord 43
+        ^row 3
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t54
+        ^in-tuple t56
+        ^in-tuple t61
+        ^in-tuple t65)
+   (<objs> ^object <x162>)
+   (<x162> ^object-handle v441
+        ^anchored true
+        ^type cand
+        ^cid 441
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t82)
+   (<objs> ^object <x163>)
+   (<x163> ^object-handle v442
+        ^anchored true
+        ^type cand
+        ^cid 442
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t83)
+   (<objs> ^object <x164>)
+   (<x164> ^object-handle v443
+        ^anchored true
+        ^type cand
+        ^cid 443
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t84)
+   (<objs> ^object <x165>)
+   (<x165> ^object-handle v444
+        ^anchored true
+        ^type cand
+        ^cid 444
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t79)
+   (<objs> ^object <x166>)
+   (<x166> ^object-handle v445
+        ^anchored true
+        ^type cand
+        ^cid 445
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 5
+        ^alive 1
+        ^in-tuple t80)
+   (<objs> ^object <x167>)
+   (<x167> ^object-handle v446
+        ^anchored true
+        ^type cand
+        ^cid 446
+        ^coord 44
+        ^row 4
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t81)
+   (<objs> ^object <x168>)
+   (<x168> ^object-handle v451
+        ^anchored true
+        ^type cand
+        ^cid 451
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t79)
+   (<objs> ^object <x169>)
+   (<x169> ^object-handle v452
+        ^anchored true
+        ^type cand
+        ^cid 452
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t80)
+   (<objs> ^object <x170>)
+   (<x170> ^object-handle v453
+        ^anchored true
+        ^type cand
+        ^cid 453
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t81)
+   (<objs> ^object <x171>)
+   (<x171> ^object-handle v454
+        ^anchored true
+        ^type cand
+        ^cid 454
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t82)
+   (<objs> ^object <x172>)
+   (<x172> ^object-handle v455
+        ^anchored true
+        ^type cand
+        ^cid 455
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 5
+        ^alive 1
+        ^in-tuple t83)
+   (<objs> ^object <x173>)
+   (<x173> ^object-handle v456
+        ^anchored true
+        ^type cand
+        ^cid 456
+        ^coord 45
+        ^row 5
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t84)
+   (<objs> ^object <x174>)
+   (<x174> ^object-handle v461
+        ^anchored true
+        ^type cand
+        ^cid 461
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 1
+        ^alive 1
+        ^in-tuple t152)
+   (<objs> ^object <x175>)
+   (<x175> ^object-handle v462
+        ^anchored true
+        ^type cand
+        ^cid 462
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 2
+        ^alive 1
+        ^in-tuple t153
+        ^in-tuple t154)
+   (<objs> ^object <x176>)
+   (<x176> ^object-handle v463
+        ^anchored true
+        ^type cand
+        ^cid 463
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 3
+        ^alive 1
+        ^in-tuple t155
+        ^in-tuple t156)
+   (<objs> ^object <x177>)
+   (<x177> ^object-handle v464
+        ^anchored true
+        ^type cand
+        ^cid 464
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 4
+        ^alive 1
+        ^in-tuple t157
+        ^in-tuple t158)
+   (<objs> ^object <x178>)
+   (<x178> ^object-handle v465
+        ^anchored true
+        ^type cand
+        ^cid 465
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 5
+        ^alive 1
+        ^in-tuple t159
+        ^in-tuple t160)
+   (<objs> ^object <x179>)
+   (<x179> ^object-handle v466
+        ^anchored true
+        ^type cand
+        ^cid 466
+        ^coord 46
+        ^row 6
+        ^col 4
+        ^value 6
+        ^alive 1
+        ^in-tuple t161)
+   (<objs> ^object <x180>)
+   (<x180> ^object-handle v511
+        ^anchored true
+        ^type cand
+        ^cid 511
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 1
+        ^alive 1
+        ^in-tuple t33)
+   (<objs> ^object <x181>)
+   (<x181> ^object-handle v512
+        ^anchored true
+        ^type cand
+        ^cid 512
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t34)
+   (<objs> ^object <x182>)
+   (<x182> ^object-handle v513
+        ^anchored true
+        ^type cand
+        ^cid 513
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t35)
+   (<objs> ^object <x183>)
+   (<x183> ^object-handle v514
+        ^anchored true
+        ^type cand
+        ^cid 514
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t30)
+   (<objs> ^object <x184>)
+   (<x184> ^object-handle v515
+        ^anchored true
+        ^type cand
+        ^cid 515
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 5
+        ^alive 1
+        ^in-tuple t31)
+   (<objs> ^object <x185>)
+   (<x185> ^object-handle v516
+        ^anchored true
+        ^type cand
+        ^cid 516
+        ^coord 51
+        ^row 1
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t32)
+   (<objs> ^object <x186>)
+   (<x186> ^object-handle v521
+        ^anchored true
+        ^type cand
+        ^cid 521
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 1
+        ^alive 1
+        ^in-tuple t36)
+   (<objs> ^object <x187>)
+   (<x187> ^object-handle v522
+        ^anchored true
+        ^type cand
+        ^cid 522
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t37
+        ^in-tuple t38)
+   (<objs> ^object <x188>)
+   (<x188> ^object-handle v523
+        ^anchored true
+        ^type cand
+        ^cid 523
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t39)
+   (<objs> ^object <x189>)
+   (<x189> ^object-handle v524
+        ^anchored true
+        ^type cand
+        ^cid 524
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t40)
+   (<objs> ^object <x190>)
+   (<x190> ^object-handle v525
+        ^anchored true
+        ^type cand
+        ^cid 525
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 5
+        ^alive 1)
+   (<objs> ^object <x191>)
+   (<x191> ^object-handle v526
+        ^anchored true
+        ^type cand
+        ^cid 526
+        ^coord 52
+        ^row 2
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t41)
+   (<objs> ^object <x192>)
+   (<x192> ^object-handle v531
+        ^anchored true
+        ^type cand
+        ^cid 531
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 1
+        ^alive 1
+        ^in-tuple t65
+        ^in-tuple t70)
+   (<objs> ^object <x193>)
+   (<x193> ^object-handle v532
+        ^anchored true
+        ^type cand
+        ^cid 532
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t61
+        ^in-tuple t66
+        ^in-tuple t71)
+   (<objs> ^object <x194>)
+   (<x194> ^object-handle v533
+        ^anchored true
+        ^type cand
+        ^cid 533
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t62
+        ^in-tuple t67)
+   (<objs> ^object <x195>)
+   (<x195> ^object-handle v534
+        ^anchored true
+        ^type cand
+        ^cid 534
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t56
+        ^in-tuple t58
+        ^in-tuple t68
+        ^in-tuple t72)
+   (<objs> ^object <x196>)
+   (<x196> ^object-handle v535
+        ^anchored true
+        ^type cand
+        ^cid 535
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 5
+        ^alive 1
+        ^in-tuple t54
+        ^in-tuple t59
+        ^in-tuple t63
+        ^in-tuple t73)
+   (<objs> ^object <x197>)
+   (<x197> ^object-handle v536
+        ^anchored true
+        ^type cand
+        ^cid 536
+        ^coord 53
+        ^row 3
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t55
+        ^in-tuple t57
+        ^in-tuple t60
+        ^in-tuple t64
+        ^in-tuple t69)
+   (<objs> ^object <x198>)
+   (<x198> ^object-handle v541
+        ^anchored true
+        ^type cand
+        ^cid 541
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 1
+        ^alive 1
+        ^in-tuple t54
+        ^in-tuple t55)
+   (<objs> ^object <x199>)
+   (<x199> ^object-handle v542
+        ^anchored true
+        ^type cand
+        ^cid 542
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t56
+        ^in-tuple t57)
+   (<objs> ^object <x200>)
+   (<x200> ^object-handle v543
+        ^anchored true
+        ^type cand
+        ^cid 543
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t58
+        ^in-tuple t59
+        ^in-tuple t60)
+   (<objs> ^object <x201>)
+   (<x201> ^object-handle v544
+        ^anchored true
+        ^type cand
+        ^cid 544
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t61
+        ^in-tuple t62
+        ^in-tuple t63
+        ^in-tuple t64)
+   (<objs> ^object <x202>)
+   (<x202> ^object-handle v545
+        ^anchored true
+        ^type cand
+        ^cid 545
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 5
+        ^alive 1
+        ^in-tuple t65
+        ^in-tuple t66
+        ^in-tuple t67
+        ^in-tuple t68
+        ^in-tuple t69)
+   (<objs> ^object <x203>)
+   (<x203> ^object-handle v546
+        ^anchored true
+        ^type cand
+        ^cid 546
+        ^coord 54
+        ^row 4
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t70
+        ^in-tuple t71
+        ^in-tuple t72
+        ^in-tuple t73)
+   (<objs> ^object <x204>)
+   (<x204> ^object-handle v551
+        ^anchored true
+        ^type cand
+        ^cid 551
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 1
+        ^alive 1)
+   (<objs> ^object <x205>)
+   (<x205> ^object-handle v552
+        ^anchored true
+        ^type cand
+        ^cid 552
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t85
+        ^in-tuple t86)
+   (<objs> ^object <x206>)
+   (<x206> ^object-handle v553
+        ^anchored true
+        ^type cand
+        ^cid 553
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t87
+        ^in-tuple t88)
+   (<objs> ^object <x207>)
+   (<x207> ^object-handle v554
+        ^anchored true
+        ^type cand
+        ^cid 554
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t89
+        ^in-tuple t90
+        ^in-tuple t91)
+   (<objs> ^object <x208>)
+   (<x208> ^object-handle v555
+        ^anchored true
+        ^type cand
+        ^cid 555
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 5
+        ^alive 1
+        ^in-tuple t92
+        ^in-tuple t93
+        ^in-tuple t94)
+   (<objs> ^object <x209>)
+   (<x209> ^object-handle v556
+        ^anchored true
+        ^type cand
+        ^cid 556
+        ^coord 55
+        ^row 5
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t95
+        ^in-tuple t96
+        ^in-tuple t97
+        ^in-tuple t98
+        ^in-tuple t99)
+   (<objs> ^object <x210>)
+   (<x210> ^object-handle v561
+        ^anchored true
+        ^type cand
+        ^cid 561
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 1
+        ^alive 1
+        ^in-tuple t167)
+   (<objs> ^object <x211>)
+   (<x211> ^object-handle v562
+        ^anchored true
+        ^type cand
+        ^cid 562
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 2
+        ^alive 1
+        ^in-tuple t166)
+   (<objs> ^object <x212>)
+   (<x212> ^object-handle v563
+        ^anchored true
+        ^type cand
+        ^cid 563
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 3
+        ^alive 1
+        ^in-tuple t165)
+   (<objs> ^object <x213>)
+   (<x213> ^object-handle v564
+        ^anchored true
+        ^type cand
+        ^cid 564
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 4
+        ^alive 1
+        ^in-tuple t164)
+   (<objs> ^object <x214>)
+   (<x214> ^object-handle v565
+        ^anchored true
+        ^type cand
+        ^cid 565
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 5
+        ^alive 1
+        ^in-tuple t163)
+   (<objs> ^object <x215>)
+   (<x215> ^object-handle v566
+        ^anchored true
+        ^type cand
+        ^cid 566
+        ^coord 56
+        ^row 6
+        ^col 5
+        ^value 6
+        ^alive 1
+        ^in-tuple t162)
+   (<objs> ^object <x216>)
+   (<x216> ^object-handle v611
+        ^anchored true
+        ^type cand
+        ^cid 611
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 1
+        ^alive 1
+        ^in-tuple t30)
+   (<objs> ^object <x217>)
+   (<x217> ^object-handle v612
+        ^anchored true
+        ^type cand
+        ^cid 612
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t31)
+   (<objs> ^object <x218>)
+   (<x218> ^object-handle v613
+        ^anchored true
+        ^type cand
+        ^cid 613
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t32)
+   (<objs> ^object <x219>)
+   (<x219> ^object-handle v614
+        ^anchored true
+        ^type cand
+        ^cid 614
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t33)
+   (<objs> ^object <x220>)
+   (<x220> ^object-handle v615
+        ^anchored true
+        ^type cand
+        ^cid 615
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t34)
+   (<objs> ^object <x221>)
+   (<x221> ^object-handle v616
+        ^anchored true
+        ^type cand
+        ^cid 616
+        ^coord 61
+        ^row 1
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t35)
+   (<objs> ^object <x222>)
+   (<x222> ^object-handle v621
+        ^anchored true
+        ^type cand
+        ^cid 621
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 1
+        ^alive 1
+        ^in-tuple t43)
+   (<objs> ^object <x223>)
+   (<x223> ^object-handle v622
+        ^anchored true
+        ^type cand
+        ^cid 622
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t42
+        ^in-tuple t45)
+   (<objs> ^object <x224>)
+   (<x224> ^object-handle v623
+        ^anchored true
+        ^type cand
+        ^cid 623
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t44
+        ^in-tuple t47)
+   (<objs> ^object <x225>)
+   (<x225> ^object-handle v624
+        ^anchored true
+        ^type cand
+        ^cid 624
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t46
+        ^in-tuple t49)
+   (<objs> ^object <x226>)
+   (<x226> ^object-handle v625
+        ^anchored true
+        ^type cand
+        ^cid 625
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t48
+        ^in-tuple t51)
+   (<objs> ^object <x227>)
+   (<x227> ^object-handle v626
+        ^anchored true
+        ^type cand
+        ^cid 626
+        ^coord 62
+        ^row 2
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t50)
+   (<objs> ^object <x228>)
+   (<x228> ^object-handle v631
+        ^anchored true
+        ^type cand
+        ^cid 631
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 1
+        ^alive 1
+        ^in-tuple t42)
+   (<objs> ^object <x229>)
+   (<x229> ^object-handle v632
+        ^anchored true
+        ^type cand
+        ^cid 632
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t43
+        ^in-tuple t44)
+   (<objs> ^object <x230>)
+   (<x230> ^object-handle v633
+        ^anchored true
+        ^type cand
+        ^cid 633
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t45
+        ^in-tuple t46)
+   (<objs> ^object <x231>)
+   (<x231> ^object-handle v634
+        ^anchored true
+        ^type cand
+        ^cid 634
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t47
+        ^in-tuple t48)
+   (<objs> ^object <x232>)
+   (<x232> ^object-handle v635
+        ^anchored true
+        ^type cand
+        ^cid 635
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t49
+        ^in-tuple t50)
+   (<objs> ^object <x233>)
+   (<x233> ^object-handle v636
+        ^anchored true
+        ^type cand
+        ^cid 636
+        ^coord 63
+        ^row 3
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t51)
+   (<objs> ^object <x234>)
+   (<x234> ^object-handle v641
+        ^anchored true
+        ^type cand
+        ^cid 641
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 1
+        ^alive 1)
+   (<objs> ^object <x235>)
+   (<x235> ^object-handle v642
+        ^anchored true
+        ^type cand
+        ^cid 642
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t94
+        ^in-tuple t99)
+   (<objs> ^object <x236>)
+   (<x236> ^object-handle v643
+        ^anchored true
+        ^type cand
+        ^cid 643
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t91
+        ^in-tuple t98)
+   (<objs> ^object <x237>)
+   (<x237> ^object-handle v644
+        ^anchored true
+        ^type cand
+        ^cid 644
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t88
+        ^in-tuple t90
+        ^in-tuple t97)
+   (<objs> ^object <x238>)
+   (<x238> ^object-handle v645
+        ^anchored true
+        ^type cand
+        ^cid 645
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t86
+        ^in-tuple t93
+        ^in-tuple t96)
+   (<objs> ^object <x239>)
+   (<x239> ^object-handle v646
+        ^anchored true
+        ^type cand
+        ^cid 646
+        ^coord 64
+        ^row 4
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t85
+        ^in-tuple t87
+        ^in-tuple t89
+        ^in-tuple t92
+        ^in-tuple t95)
+   (<objs> ^object <x240>)
+   (<x240> ^object-handle v651
+        ^anchored true
+        ^type cand
+        ^cid 651
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 1
+        ^alive 1
+        ^in-tuple t95)
+   (<objs> ^object <x241>)
+   (<x241> ^object-handle v652
+        ^anchored true
+        ^type cand
+        ^cid 652
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t92
+        ^in-tuple t96)
+   (<objs> ^object <x242>)
+   (<x242> ^object-handle v653
+        ^anchored true
+        ^type cand
+        ^cid 653
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t89
+        ^in-tuple t93
+        ^in-tuple t97)
+   (<objs> ^object <x243>)
+   (<x243> ^object-handle v654
+        ^anchored true
+        ^type cand
+        ^cid 654
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t87
+        ^in-tuple t98)
+   (<objs> ^object <x244>)
+   (<x244> ^object-handle v655
+        ^anchored true
+        ^type cand
+        ^cid 655
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t85
+        ^in-tuple t90
+        ^in-tuple t99)
+   (<objs> ^object <x245>)
+   (<x245> ^object-handle v656
+        ^anchored true
+        ^type cand
+        ^cid 656
+        ^coord 65
+        ^row 5
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t86
+        ^in-tuple t88
+        ^in-tuple t91
+        ^in-tuple t94)
+   (<objs> ^object <x246>)
+   (<x246> ^object-handle v661
+        ^anchored true
+        ^type cand
+        ^cid 661
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 1
+        ^alive 1
+        ^in-tuple t162)
+   (<objs> ^object <x247>)
+   (<x247> ^object-handle v662
+        ^anchored true
+        ^type cand
+        ^cid 662
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 2
+        ^alive 1
+        ^in-tuple t163)
+   (<objs> ^object <x248>)
+   (<x248> ^object-handle v663
+        ^anchored true
+        ^type cand
+        ^cid 663
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 3
+        ^alive 1
+        ^in-tuple t164)
+   (<objs> ^object <x249>)
+   (<x249> ^object-handle v664
+        ^anchored true
+        ^type cand
+        ^cid 664
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 4
+        ^alive 1
+        ^in-tuple t165)
+   (<objs> ^object <x250>)
+   (<x250> ^object-handle v665
+        ^anchored true
+        ^type cand
+        ^cid 665
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 5
+        ^alive 1
+        ^in-tuple t166)
+   (<objs> ^object <x251>)
+   (<x251> ^object-handle v666
+        ^anchored true
+        ^type cand
+        ^cid 666
+        ^coord 66
+        ^row 6
+        ^col 6
+        ^value 6
+        ^alive 1
+        ^in-tuple t167)
+   (<objs> ^object <x252>)
+   (<x252> ^object-handle t0
+        ^anchored true
+        ^type tuple
+        ^tid 0
+        ^alive 1
+        ^uses-cand v115
+        ^uses-cand v124
+        ^uses-cand v131)
+   (<objs> ^object <x253>)
+   (<x253> ^object-handle t1
+        ^anchored true
+        ^type tuple
+        ^tid 1
+        ^alive 1
+        ^uses-cand v114
+        ^uses-cand v125
+        ^uses-cand v131)
+   (<objs> ^object <x254>)
+   (<x254> ^object-handle t2
+        ^anchored true
+        ^type tuple
+        ^tid 2
+        ^alive 1
+        ^uses-cand v115
+        ^uses-cand v121
+        ^uses-cand v134)
+   (<objs> ^object <x255>)
+   (<x255> ^object-handle t3
+        ^anchored true
+        ^type tuple
+        ^tid 3
+        ^alive 1
+        ^uses-cand v111
+        ^uses-cand v125
+        ^uses-cand v134)
+   (<objs> ^object <x256>)
+   (<x256> ^object-handle t4
+        ^anchored true
+        ^type tuple
+        ^tid 4
+        ^alive 1
+        ^uses-cand v114
+        ^uses-cand v121
+        ^uses-cand v135)
+   (<objs> ^object <x257>)
+   (<x257> ^object-handle t5
+        ^anchored true
+        ^type tuple
+        ^tid 5
+        ^alive 1
+        ^uses-cand v111
+        ^uses-cand v124
+        ^uses-cand v135)
+   (<objs> ^object <x258>)
+   (<x258> ^object-handle t6
+        ^anchored true
+        ^type tuple
+        ^tid 6
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v226
+        ^uses-cand v324
+        ^uses-cand v331)
+   (<objs> ^object <x259>)
+   (<x259> ^object-handle t7
+        ^anchored true
+        ^type tuple
+        ^tid 7
+        ^alive 1
+        ^uses-cand v216
+        ^uses-cand v222
+        ^uses-cand v324
+        ^uses-cand v332)
+   (<objs> ^object <x260>)
+   (<x260> ^object-handle t8
+        ^anchored true
+        ^type tuple
+        ^tid 8
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v223
+        ^uses-cand v324
+        ^uses-cand v332)
+   (<objs> ^object <x261>)
+   (<x261> ^object-handle t9
+        ^anchored true
+        ^type tuple
+        ^tid 9
+        ^alive 1
+        ^uses-cand v212
+        ^uses-cand v226
+        ^uses-cand v324
+        ^uses-cand v332)
+   (<objs> ^object <x262>)
+   (<x262> ^object-handle t10
+        ^anchored true
+        ^type tuple
+        ^tid 10
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v222
+        ^uses-cand v326
+        ^uses-cand v332)
+   (<objs> ^object <x263>)
+   (<x263> ^object-handle t11
+        ^anchored true
+        ^type tuple
+        ^tid 11
+        ^alive 1
+        ^uses-cand v212
+        ^uses-cand v224
+        ^uses-cand v326
+        ^uses-cand v332)
+   (<objs> ^object <x264>)
+   (<x264> ^object-handle t12
+        ^anchored true
+        ^type tuple
+        ^tid 12
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v222
+        ^uses-cand v324
+        ^uses-cand v333)
+   (<objs> ^object <x265>)
+   (<x265> ^object-handle t13
+        ^anchored true
+        ^type tuple
+        ^tid 13
+        ^alive 1
+        ^uses-cand v216
+        ^uses-cand v224
+        ^uses-cand v321
+        ^uses-cand v334)
+   (<objs> ^object <x266>)
+   (<x266> ^object-handle t14
+        ^anchored true
+        ^type tuple
+        ^tid 14
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v226
+        ^uses-cand v321
+        ^uses-cand v334)
+   (<objs> ^object <x267>)
+   (<x267> ^object-handle t15
+        ^anchored true
+        ^type tuple
+        ^tid 15
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v223
+        ^uses-cand v322
+        ^uses-cand v334)
+   (<objs> ^object <x268>)
+   (<x268> ^object-handle t16
+        ^anchored true
+        ^type tuple
+        ^tid 16
+        ^alive 1
+        ^uses-cand v213
+        ^uses-cand v224
+        ^uses-cand v322
+        ^uses-cand v334)
+   (<objs> ^object <x269>)
+   (<x269> ^object-handle t17
+        ^anchored true
+        ^type tuple
+        ^tid 17
+        ^alive 1
+        ^uses-cand v212
+        ^uses-cand v226
+        ^uses-cand v322
+        ^uses-cand v334)
+   (<objs> ^object <x270>)
+   (<x270> ^object-handle t18
+        ^anchored true
+        ^type tuple
+        ^tid 18
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v222
+        ^uses-cand v323
+        ^uses-cand v334)
+   (<objs> ^object <x271>)
+   (<x271> ^object-handle t19
+        ^anchored true
+        ^type tuple
+        ^tid 19
+        ^alive 1
+        ^uses-cand v212
+        ^uses-cand v224
+        ^uses-cand v323
+        ^uses-cand v334)
+   (<objs> ^object <x272>)
+   (<x272> ^object-handle t20
+        ^anchored true
+        ^type tuple
+        ^tid 20
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v221
+        ^uses-cand v326
+        ^uses-cand v334)
+   (<objs> ^object <x273>)
+   (<x273> ^object-handle t21
+        ^anchored true
+        ^type tuple
+        ^tid 21
+        ^alive 1
+        ^uses-cand v211
+        ^uses-cand v224
+        ^uses-cand v326
+        ^uses-cand v334)
+   (<objs> ^object <x274>)
+   (<x274> ^object-handle t22
+        ^anchored true
+        ^type tuple
+        ^tid 22
+        ^alive 1
+        ^uses-cand v212
+        ^uses-cand v224
+        ^uses-cand v322
+        ^uses-cand v336)
+   (<objs> ^object <x275>)
+   (<x275> ^object-handle t23
+        ^anchored true
+        ^type tuple
+        ^tid 23
+        ^alive 1
+        ^uses-cand v214
+        ^uses-cand v221
+        ^uses-cand v324
+        ^uses-cand v336)
+   (<objs> ^object <x276>)
+   (<x276> ^object-handle t24
+        ^anchored true
+        ^type tuple
+        ^tid 24
+        ^alive 1
+        ^uses-cand v316
+        ^uses-cand v411)
+   (<objs> ^object <x277>)
+   (<x277> ^object-handle t25
+        ^anchored true
+        ^type tuple
+        ^tid 25
+        ^alive 1
+        ^uses-cand v315
+        ^uses-cand v412)
+   (<objs> ^object <x278>)
+   (<x278> ^object-handle t26
+        ^anchored true
+        ^type tuple
+        ^tid 26
+        ^alive 1
+        ^uses-cand v314
+        ^uses-cand v413)
+   (<objs> ^object <x279>)
+   (<x279> ^object-handle t27
+        ^anchored true
+        ^type tuple
+        ^tid 27
+        ^alive 1
+        ^uses-cand v313
+        ^uses-cand v414)
+   (<objs> ^object <x280>)
+   (<x280> ^object-handle t28
+        ^anchored true
+        ^type tuple
+        ^tid 28
+        ^alive 1
+        ^uses-cand v312
+        ^uses-cand v415)
+   (<objs> ^object <x281>)
+   (<x281> ^object-handle t29
+        ^anchored true
+        ^type tuple
+        ^tid 29
+        ^alive 1
+        ^uses-cand v311
+        ^uses-cand v416)
+   (<objs> ^object <x282>)
+   (<x282> ^object-handle t30
+        ^anchored true
+        ^type tuple
+        ^tid 30
+        ^alive 1
+        ^uses-cand v514
+        ^uses-cand v611)
+   (<objs> ^object <x283>)
+   (<x283> ^object-handle t31
+        ^anchored true
+        ^type tuple
+        ^tid 31
+        ^alive 1
+        ^uses-cand v515
+        ^uses-cand v612)
+   (<objs> ^object <x284>)
+   (<x284> ^object-handle t32
+        ^anchored true
+        ^type tuple
+        ^tid 32
+        ^alive 1
+        ^uses-cand v516
+        ^uses-cand v613)
+   (<objs> ^object <x285>)
+   (<x285> ^object-handle t33
+        ^anchored true
+        ^type tuple
+        ^tid 33
+        ^alive 1
+        ^uses-cand v511
+        ^uses-cand v614)
+   (<objs> ^object <x286>)
+   (<x286> ^object-handle t34
+        ^anchored true
+        ^type tuple
+        ^tid 34
+        ^alive 1
+        ^uses-cand v512
+        ^uses-cand v615)
+   (<objs> ^object <x287>)
+   (<x287> ^object-handle t35
+        ^anchored true
+        ^type tuple
+        ^tid 35
+        ^alive 1
+        ^uses-cand v513
+        ^uses-cand v616)
+   (<objs> ^object <x288>)
+   (<x288> ^object-handle t36
+        ^anchored true
+        ^type tuple
+        ^tid 36
+        ^alive 1
+        ^uses-cand v422
+        ^uses-cand v521)
+   (<objs> ^object <x289>)
+   (<x289> ^object-handle t37
+        ^anchored true
+        ^type tuple
+        ^tid 37
+        ^alive 1
+        ^uses-cand v421
+        ^uses-cand v522)
+   (<objs> ^object <x290>)
+   (<x290> ^object-handle t38
+        ^anchored true
+        ^type tuple
+        ^tid 38
+        ^alive 1
+        ^uses-cand v424
+        ^uses-cand v522)
+   (<objs> ^object <x291>)
+   (<x291> ^object-handle t39
+        ^anchored true
+        ^type tuple
+        ^tid 39
+        ^alive 1
+        ^uses-cand v426
+        ^uses-cand v523)
+   (<objs> ^object <x292>)
+   (<x292> ^object-handle t40
+        ^anchored true
+        ^type tuple
+        ^tid 40
+        ^alive 1
+        ^uses-cand v422
+        ^uses-cand v524)
+   (<objs> ^object <x293>)
+   (<x293> ^object-handle t41
+        ^anchored true
+        ^type tuple
+        ^tid 41
+        ^alive 1
+        ^uses-cand v423
+        ^uses-cand v526)
+   (<objs> ^object <x294>)
+   (<x294> ^object-handle t42
+        ^anchored true
+        ^type tuple
+        ^tid 42
+        ^alive 1
+        ^uses-cand v622
+        ^uses-cand v631)
+   (<objs> ^object <x295>)
+   (<x295> ^object-handle t43
+        ^anchored true
+        ^type tuple
+        ^tid 43
+        ^alive 1
+        ^uses-cand v621
+        ^uses-cand v632)
+   (<objs> ^object <x296>)
+   (<x296> ^object-handle t44
+        ^anchored true
+        ^type tuple
+        ^tid 44
+        ^alive 1
+        ^uses-cand v623
+        ^uses-cand v632)
+   (<objs> ^object <x297>)
+   (<x297> ^object-handle t45
+        ^anchored true
+        ^type tuple
+        ^tid 45
+        ^alive 1
+        ^uses-cand v622
+        ^uses-cand v633)
+   (<objs> ^object <x298>)
+   (<x298> ^object-handle t46
+        ^anchored true
+        ^type tuple
+        ^tid 46
+        ^alive 1
+        ^uses-cand v624
+        ^uses-cand v633)
+   (<objs> ^object <x299>)
+   (<x299> ^object-handle t47
+        ^anchored true
+        ^type tuple
+        ^tid 47
+        ^alive 1
+        ^uses-cand v623
+        ^uses-cand v634)
+   (<objs> ^object <x300>)
+   (<x300> ^object-handle t48
+        ^anchored true
+        ^type tuple
+        ^tid 48
+        ^alive 1
+        ^uses-cand v625
+        ^uses-cand v634)
+   (<objs> ^object <x301>)
+   (<x301> ^object-handle t49
+        ^anchored true
+        ^type tuple
+        ^tid 49
+        ^alive 1
+        ^uses-cand v624
+        ^uses-cand v635)
+   (<objs> ^object <x302>)
+   (<x302> ^object-handle t50
+        ^anchored true
+        ^type tuple
+        ^tid 50
+        ^alive 1
+        ^uses-cand v626
+        ^uses-cand v635)
+   (<objs> ^object <x303>)
+   (<x303> ^object-handle t51
+        ^anchored true
+        ^type tuple
+        ^tid 51
+        ^alive 1
+        ^uses-cand v625
+        ^uses-cand v636)
+   (<objs> ^object <x304>)
+   (<x304> ^object-handle t52
+        ^anchored true
+        ^type tuple
+        ^tid 52
+        ^alive 1
+        ^uses-cand v236
+        ^uses-cand v241)
+   (<objs> ^object <x305>)
+   (<x305> ^object-handle t53
+        ^anchored true
+        ^type tuple
+        ^tid 53
+        ^alive 1
+        ^uses-cand v231
+        ^uses-cand v246)
+   (<objs> ^object <x306>)
+   (<x306> ^object-handle t54
+        ^anchored true
+        ^type tuple
+        ^tid 54
+        ^alive 1
+        ^uses-cand v436
+        ^uses-cand v535
+        ^uses-cand v541)
+   (<objs> ^object <x307>)
+   (<x307> ^object-handle t55
+        ^anchored true
+        ^type tuple
+        ^tid 55
+        ^alive 1
+        ^uses-cand v435
+        ^uses-cand v536
+        ^uses-cand v541)
+   (<objs> ^object <x308>)
+   (<x308> ^object-handle t56
+        ^anchored true
+        ^type tuple
+        ^tid 56
+        ^alive 1
+        ^uses-cand v436
+        ^uses-cand v534
+        ^uses-cand v542)
+   (<objs> ^object <x309>)
+   (<x309> ^object-handle t57
+        ^anchored true
+        ^type tuple
+        ^tid 57
+        ^alive 1
+        ^uses-cand v434
+        ^uses-cand v536
+        ^uses-cand v542)
+   (<objs> ^object <x310>)
+   (<x310> ^object-handle t58
+        ^anchored true
+        ^type tuple
+        ^tid 58
+        ^alive 1
+        ^uses-cand v435
+        ^uses-cand v534
+        ^uses-cand v543)
+   (<objs> ^object <x311>)
+   (<x311> ^object-handle t59
+        ^anchored true
+        ^type tuple
+        ^tid 59
+        ^alive 1
+        ^uses-cand v434
+        ^uses-cand v535
+        ^uses-cand v543)
+   (<objs> ^object <x312>)
+   (<x312> ^object-handle t60
+        ^anchored true
+        ^type tuple
+        ^tid 60
+        ^alive 1
+        ^uses-cand v433
+        ^uses-cand v536
+        ^uses-cand v543)
+   (<objs> ^object <x313>)
+   (<x313> ^object-handle t61
+        ^anchored true
+        ^type tuple
+        ^tid 61
+        ^alive 1
+        ^uses-cand v436
+        ^uses-cand v532
+        ^uses-cand v544)
+   (<objs> ^object <x314>)
+   (<x314> ^object-handle t62
+        ^anchored true
+        ^type tuple
+        ^tid 62
+        ^alive 1
+        ^uses-cand v435
+        ^uses-cand v533
+        ^uses-cand v544)
+   (<objs> ^object <x315>)
+   (<x315> ^object-handle t63
+        ^anchored true
+        ^type tuple
+        ^tid 63
+        ^alive 1
+        ^uses-cand v433
+        ^uses-cand v535
+        ^uses-cand v544)
+   (<objs> ^object <x316>)
+   (<x316> ^object-handle t64
+        ^anchored true
+        ^type tuple
+        ^tid 64
+        ^alive 1
+        ^uses-cand v432
+        ^uses-cand v536
+        ^uses-cand v544)
+   (<objs> ^object <x317>)
+   (<x317> ^object-handle t65
+        ^anchored true
+        ^type tuple
+        ^tid 65
+        ^alive 1
+        ^uses-cand v436
+        ^uses-cand v531
+        ^uses-cand v545)
+   (<objs> ^object <x318>)
+   (<x318> ^object-handle t66
+        ^anchored true
+        ^type tuple
+        ^tid 66
+        ^alive 1
+        ^uses-cand v435
+        ^uses-cand v532
+        ^uses-cand v545)
+   (<objs> ^object <x319>)
+   (<x319> ^object-handle t67
+        ^anchored true
+        ^type tuple
+        ^tid 67
+        ^alive 1
+        ^uses-cand v434
+        ^uses-cand v533
+        ^uses-cand v545)
+   (<objs> ^object <x320>)
+   (<x320> ^object-handle t68
+        ^anchored true
+        ^type tuple
+        ^tid 68
+        ^alive 1
+        ^uses-cand v433
+        ^uses-cand v534
+        ^uses-cand v545)
+   (<objs> ^object <x321>)
+   (<x321> ^object-handle t69
+        ^anchored true
+        ^type tuple
+        ^tid 69
+        ^alive 1
+        ^uses-cand v431
+        ^uses-cand v536
+        ^uses-cand v545)
+   (<objs> ^object <x322>)
+   (<x322> ^object-handle t70
+        ^anchored true
+        ^type tuple
+        ^tid 70
+        ^alive 1
+        ^uses-cand v435
+        ^uses-cand v531
+        ^uses-cand v546)
+   (<objs> ^object <x323>)
+   (<x323> ^object-handle t71
+        ^anchored true
+        ^type tuple
+        ^tid 71
+        ^alive 1
+        ^uses-cand v434
+        ^uses-cand v532
+        ^uses-cand v546)
+   (<objs> ^object <x324>)
+   (<x324> ^object-handle t72
+        ^anchored true
+        ^type tuple
+        ^tid 72
+        ^alive 1
+        ^uses-cand v432
+        ^uses-cand v534
+        ^uses-cand v546)
+   (<objs> ^object <x325>)
+   (<x325> ^object-handle t73
+        ^anchored true
+        ^type tuple
+        ^tid 73
+        ^alive 1
+        ^uses-cand v431
+        ^uses-cand v535
+        ^uses-cand v546)
+   (<objs> ^object <x326>)
+   (<x326> ^object-handle t74
+        ^anchored true
+        ^type tuple
+        ^tid 74
+        ^alive 1
+        ^uses-cand v146)
+   (<objs> ^object <x327>)
+   (<x327> ^object-handle t75
+        ^anchored true
+        ^type tuple
+        ^tid 75
+        ^alive 1
+        ^uses-cand v345
+        ^uses-cand v351)
+   (<objs> ^object <x328>)
+   (<x328> ^object-handle t76
+        ^anchored true
+        ^type tuple
+        ^tid 76
+        ^alive 1
+        ^uses-cand v346
+        ^uses-cand v352)
+   (<objs> ^object <x329>)
+   (<x329> ^object-handle t77
+        ^anchored true
+        ^type tuple
+        ^tid 77
+        ^alive 1
+        ^uses-cand v341
+        ^uses-cand v355)
+   (<objs> ^object <x330>)
+   (<x330> ^object-handle t78
+        ^anchored true
+        ^type tuple
+        ^tid 78
+        ^alive 1
+        ^uses-cand v342
+        ^uses-cand v356)
+   (<objs> ^object <x331>)
+   (<x331> ^object-handle t79
+        ^anchored true
+        ^type tuple
+        ^tid 79
+        ^alive 1
+        ^uses-cand v444
+        ^uses-cand v451)
+   (<objs> ^object <x332>)
+   (<x332> ^object-handle t80
+        ^anchored true
+        ^type tuple
+        ^tid 80
+        ^alive 1
+        ^uses-cand v445
+        ^uses-cand v452)
+   (<objs> ^object <x333>)
+   (<x333> ^object-handle t81
+        ^anchored true
+        ^type tuple
+        ^tid 81
+        ^alive 1
+        ^uses-cand v446
+        ^uses-cand v453)
+   (<objs> ^object <x334>)
+   (<x334> ^object-handle t82
+        ^anchored true
+        ^type tuple
+        ^tid 82
+        ^alive 1
+        ^uses-cand v441
+        ^uses-cand v454)
+   (<objs> ^object <x335>)
+   (<x335> ^object-handle t83
+        ^anchored true
+        ^type tuple
+        ^tid 83
+        ^alive 1
+        ^uses-cand v442
+        ^uses-cand v455)
+   (<objs> ^object <x336>)
+   (<x336> ^object-handle t84
+        ^anchored true
+        ^type tuple
+        ^tid 84
+        ^alive 1
+        ^uses-cand v443
+        ^uses-cand v456)
+   (<objs> ^object <x337>)
+   (<x337> ^object-handle t85
+        ^anchored true
+        ^type tuple
+        ^tid 85
+        ^alive 1
+        ^uses-cand v646
+        ^uses-cand v655
+        ^uses-cand v552)
+   (<objs> ^object <x338>)
+   (<x338> ^object-handle t86
+        ^anchored true
+        ^type tuple
+        ^tid 86
+        ^alive 1
+        ^uses-cand v645
+        ^uses-cand v656
+        ^uses-cand v552)
+   (<objs> ^object <x339>)
+   (<x339> ^object-handle t87
+        ^anchored true
+        ^type tuple
+        ^tid 87
+        ^alive 1
+        ^uses-cand v646
+        ^uses-cand v654
+        ^uses-cand v553)
+   (<objs> ^object <x340>)
+   (<x340> ^object-handle t88
+        ^anchored true
+        ^type tuple
+        ^tid 88
+        ^alive 1
+        ^uses-cand v644
+        ^uses-cand v656
+        ^uses-cand v553)
+   (<objs> ^object <x341>)
+   (<x341> ^object-handle t89
+        ^anchored true
+        ^type tuple
+        ^tid 89
+        ^alive 1
+        ^uses-cand v646
+        ^uses-cand v653
+        ^uses-cand v554)
+   (<objs> ^object <x342>)
+   (<x342> ^object-handle t90
+        ^anchored true
+        ^type tuple
+        ^tid 90
+        ^alive 1
+        ^uses-cand v644
+        ^uses-cand v655
+        ^uses-cand v554)
+   (<objs> ^object <x343>)
+   (<x343> ^object-handle t91
+        ^anchored true
+        ^type tuple
+        ^tid 91
+        ^alive 1
+        ^uses-cand v643
+        ^uses-cand v656
+        ^uses-cand v554)
+   (<objs> ^object <x344>)
+   (<x344> ^object-handle t92
+        ^anchored true
+        ^type tuple
+        ^tid 92
+        ^alive 1
+        ^uses-cand v646
+        ^uses-cand v652
+        ^uses-cand v555)
+   (<objs> ^object <x345>)
+   (<x345> ^object-handle t93
+        ^anchored true
+        ^type tuple
+        ^tid 93
+        ^alive 1
+        ^uses-cand v645
+        ^uses-cand v653
+        ^uses-cand v555)
+   (<objs> ^object <x346>)
+   (<x346> ^object-handle t94
+        ^anchored true
+        ^type tuple
+        ^tid 94
+        ^alive 1
+        ^uses-cand v642
+        ^uses-cand v656
+        ^uses-cand v555)
+   (<objs> ^object <x347>)
+   (<x347> ^object-handle t95
+        ^anchored true
+        ^type tuple
+        ^tid 95
+        ^alive 1
+        ^uses-cand v646
+        ^uses-cand v651
+        ^uses-cand v556)
+   (<objs> ^object <x348>)
+   (<x348> ^object-handle t96
+        ^anchored true
+        ^type tuple
+        ^tid 96
+        ^alive 1
+        ^uses-cand v645
+        ^uses-cand v652
+        ^uses-cand v556)
+   (<objs> ^object <x349>)
+   (<x349> ^object-handle t97
+        ^anchored true
+        ^type tuple
+        ^tid 97
+        ^alive 1
+        ^uses-cand v644
+        ^uses-cand v653
+        ^uses-cand v556)
+   (<objs> ^object <x350>)
+   (<x350> ^object-handle t98
+        ^anchored true
+        ^type tuple
+        ^tid 98
+        ^alive 1
+        ^uses-cand v643
+        ^uses-cand v654
+        ^uses-cand v556)
+   (<objs> ^object <x351>)
+   (<x351> ^object-handle t99
+        ^anchored true
+        ^type tuple
+        ^tid 99
+        ^alive 1
+        ^uses-cand v642
+        ^uses-cand v655
+        ^uses-cand v556)
+   (<objs> ^object <x352>)
+   (<x352> ^object-handle t100
+        ^anchored true
+        ^type tuple
+        ^tid 100
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v255
+        ^uses-cand v162
+        ^uses-cand v261)
+   (<objs> ^object <x353>)
+   (<x353> ^object-handle t101
+        ^anchored true
+        ^type tuple
+        ^tid 101
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v256
+        ^uses-cand v162
+        ^uses-cand v261)
+   (<objs> ^object <x354>)
+   (<x354> ^object-handle t102
+        ^anchored true
+        ^type tuple
+        ^tid 102
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v254
+        ^uses-cand v163
+        ^uses-cand v261)
+   (<objs> ^object <x355>)
+   (<x355> ^object-handle t103
+        ^anchored true
+        ^type tuple
+        ^tid 103
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v255
+        ^uses-cand v163
+        ^uses-cand v261)
+   (<objs> ^object <x356>)
+   (<x356> ^object-handle t104
+        ^anchored true
+        ^type tuple
+        ^tid 104
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v253
+        ^uses-cand v164
+        ^uses-cand v261)
+   (<objs> ^object <x357>)
+   (<x357> ^object-handle t105
+        ^anchored true
+        ^type tuple
+        ^tid 105
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v255
+        ^uses-cand v164
+        ^uses-cand v261)
+   (<objs> ^object <x358>)
+   (<x358> ^object-handle t106
+        ^anchored true
+        ^type tuple
+        ^tid 106
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v252
+        ^uses-cand v165
+        ^uses-cand v261)
+   (<objs> ^object <x359>)
+   (<x359> ^object-handle t107
+        ^anchored true
+        ^type tuple
+        ^tid 107
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v253
+        ^uses-cand v165
+        ^uses-cand v261)
+   (<objs> ^object <x360>)
+   (<x360> ^object-handle t108
+        ^anchored true
+        ^type tuple
+        ^tid 108
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v254
+        ^uses-cand v165
+        ^uses-cand v261)
+   (<objs> ^object <x361>)
+   (<x361> ^object-handle t109
+        ^anchored true
+        ^type tuple
+        ^tid 109
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v256
+        ^uses-cand v165
+        ^uses-cand v261)
+   (<objs> ^object <x362>)
+   (<x362> ^object-handle t110
+        ^anchored true
+        ^type tuple
+        ^tid 110
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v252
+        ^uses-cand v166
+        ^uses-cand v261)
+   (<objs> ^object <x363>)
+   (<x363> ^object-handle t111
+        ^anchored true
+        ^type tuple
+        ^tid 111
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v255
+        ^uses-cand v166
+        ^uses-cand v261)
+   (<objs> ^object <x364>)
+   (<x364> ^object-handle t112
+        ^anchored true
+        ^type tuple
+        ^tid 112
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v255
+        ^uses-cand v161
+        ^uses-cand v262)
+   (<objs> ^object <x365>)
+   (<x365> ^object-handle t113
+        ^anchored true
+        ^type tuple
+        ^tid 113
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v256
+        ^uses-cand v161
+        ^uses-cand v262)
+   (<objs> ^object <x366>)
+   (<x366> ^object-handle t114
+        ^anchored true
+        ^type tuple
+        ^tid 114
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v255
+        ^uses-cand v163
+        ^uses-cand v262)
+   (<objs> ^object <x367>)
+   (<x367> ^object-handle t115
+        ^anchored true
+        ^type tuple
+        ^tid 115
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v251
+        ^uses-cand v165
+        ^uses-cand v262)
+   (<objs> ^object <x368>)
+   (<x368> ^object-handle t116
+        ^anchored true
+        ^type tuple
+        ^tid 116
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v253
+        ^uses-cand v165
+        ^uses-cand v262)
+   (<objs> ^object <x369>)
+   (<x369> ^object-handle t117
+        ^anchored true
+        ^type tuple
+        ^tid 117
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v256
+        ^uses-cand v165
+        ^uses-cand v262)
+   (<objs> ^object <x370>)
+   (<x370> ^object-handle t118
+        ^anchored true
+        ^type tuple
+        ^tid 118
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v251
+        ^uses-cand v166
+        ^uses-cand v262)
+   (<objs> ^object <x371>)
+   (<x371> ^object-handle t119
+        ^anchored true
+        ^type tuple
+        ^tid 119
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v255
+        ^uses-cand v166
+        ^uses-cand v262)
+   (<objs> ^object <x372>)
+   (<x372> ^object-handle t120
+        ^anchored true
+        ^type tuple
+        ^tid 120
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v254
+        ^uses-cand v161
+        ^uses-cand v263)
+   (<objs> ^object <x373>)
+   (<x373> ^object-handle t121
+        ^anchored true
+        ^type tuple
+        ^tid 121
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v255
+        ^uses-cand v161
+        ^uses-cand v263)
+   (<objs> ^object <x374>)
+   (<x374> ^object-handle t122
+        ^anchored true
+        ^type tuple
+        ^tid 122
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v252
+        ^uses-cand v162
+        ^uses-cand v263)
+   (<objs> ^object <x375>)
+   (<x375> ^object-handle t123
+        ^anchored true
+        ^type tuple
+        ^tid 123
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v251
+        ^uses-cand v164
+        ^uses-cand v263)
+   (<objs> ^object <x376>)
+   (<x376> ^object-handle t124
+        ^anchored true
+        ^type tuple
+        ^tid 124
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v255
+        ^uses-cand v164
+        ^uses-cand v263)
+   (<objs> ^object <x377>)
+   (<x377> ^object-handle t125
+        ^anchored true
+        ^type tuple
+        ^tid 125
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v251
+        ^uses-cand v165
+        ^uses-cand v263)
+   (<objs> ^object <x378>)
+   (<x378> ^object-handle t126
+        ^anchored true
+        ^type tuple
+        ^tid 126
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v254
+        ^uses-cand v165
+        ^uses-cand v263)
+   (<objs> ^object <x379>)
+   (<x379> ^object-handle t127
+        ^anchored true
+        ^type tuple
+        ^tid 127
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v253
+        ^uses-cand v161
+        ^uses-cand v264)
+   (<objs> ^object <x380>)
+   (<x380> ^object-handle t128
+        ^anchored true
+        ^type tuple
+        ^tid 128
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v255
+        ^uses-cand v161
+        ^uses-cand v264)
+   (<objs> ^object <x381>)
+   (<x381> ^object-handle t129
+        ^anchored true
+        ^type tuple
+        ^tid 129
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v251
+        ^uses-cand v163
+        ^uses-cand v264)
+   (<objs> ^object <x382>)
+   (<x382> ^object-handle t130
+        ^anchored true
+        ^type tuple
+        ^tid 130
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v255
+        ^uses-cand v163
+        ^uses-cand v264)
+   (<objs> ^object <x383>)
+   (<x383> ^object-handle t131
+        ^anchored true
+        ^type tuple
+        ^tid 131
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v251
+        ^uses-cand v165
+        ^uses-cand v264)
+   (<objs> ^object <x384>)
+   (<x384> ^object-handle t132
+        ^anchored true
+        ^type tuple
+        ^tid 132
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v253
+        ^uses-cand v165
+        ^uses-cand v264)
+   (<objs> ^object <x385>)
+   (<x385> ^object-handle t133
+        ^anchored true
+        ^type tuple
+        ^tid 133
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v252
+        ^uses-cand v161
+        ^uses-cand v265)
+   (<objs> ^object <x386>)
+   (<x386> ^object-handle t134
+        ^anchored true
+        ^type tuple
+        ^tid 134
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v253
+        ^uses-cand v161
+        ^uses-cand v265)
+   (<objs> ^object <x387>)
+   (<x387> ^object-handle t135
+        ^anchored true
+        ^type tuple
+        ^tid 135
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v254
+        ^uses-cand v161
+        ^uses-cand v265)
+   (<objs> ^object <x388>)
+   (<x388> ^object-handle t136
+        ^anchored true
+        ^type tuple
+        ^tid 136
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v256
+        ^uses-cand v161
+        ^uses-cand v265)
+   (<objs> ^object <x389>)
+   (<x389> ^object-handle t137
+        ^anchored true
+        ^type tuple
+        ^tid 137
+        ^alive 1
+        ^uses-cand v156
+        ^uses-cand v251
+        ^uses-cand v162
+        ^uses-cand v265)
+   (<objs> ^object <x390>)
+   (<x390> ^object-handle t138
+        ^anchored true
+        ^type tuple
+        ^tid 138
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v252
+        ^uses-cand v162
+        ^uses-cand v265)
+   (<objs> ^object <x391>)
+   (<x391> ^object-handle t139
+        ^anchored true
+        ^type tuple
+        ^tid 139
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v256
+        ^uses-cand v162
+        ^uses-cand v265)
+   (<objs> ^object <x392>)
+   (<x392> ^object-handle t140
+        ^anchored true
+        ^type tuple
+        ^tid 140
+        ^alive 1
+        ^uses-cand v154
+        ^uses-cand v251
+        ^uses-cand v163
+        ^uses-cand v265)
+   (<objs> ^object <x393>)
+   (<x393> ^object-handle t141
+        ^anchored true
+        ^type tuple
+        ^tid 141
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v254
+        ^uses-cand v163
+        ^uses-cand v265)
+   (<objs> ^object <x394>)
+   (<x394> ^object-handle t142
+        ^anchored true
+        ^type tuple
+        ^tid 142
+        ^alive 1
+        ^uses-cand v153
+        ^uses-cand v251
+        ^uses-cand v164
+        ^uses-cand v265)
+   (<objs> ^object <x395>)
+   (<x395> ^object-handle t143
+        ^anchored true
+        ^type tuple
+        ^tid 143
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v253
+        ^uses-cand v164
+        ^uses-cand v265)
+   (<objs> ^object <x396>)
+   (<x396> ^object-handle t144
+        ^anchored true
+        ^type tuple
+        ^tid 144
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v251
+        ^uses-cand v166
+        ^uses-cand v265)
+   (<objs> ^object <x397>)
+   (<x397> ^object-handle t145
+        ^anchored true
+        ^type tuple
+        ^tid 145
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v252
+        ^uses-cand v166
+        ^uses-cand v265)
+   (<objs> ^object <x398>)
+   (<x398> ^object-handle t146
+        ^anchored true
+        ^type tuple
+        ^tid 146
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v252
+        ^uses-cand v161
+        ^uses-cand v266)
+   (<objs> ^object <x399>)
+   (<x399> ^object-handle t147
+        ^anchored true
+        ^type tuple
+        ^tid 147
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v255
+        ^uses-cand v161
+        ^uses-cand v266)
+   (<objs> ^object <x400>)
+   (<x400> ^object-handle t148
+        ^anchored true
+        ^type tuple
+        ^tid 148
+        ^alive 1
+        ^uses-cand v155
+        ^uses-cand v251
+        ^uses-cand v162
+        ^uses-cand v266)
+   (<objs> ^object <x401>)
+   (<x401> ^object-handle t149
+        ^anchored true
+        ^type tuple
+        ^tid 149
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v255
+        ^uses-cand v162
+        ^uses-cand v266)
+   (<objs> ^object <x402>)
+   (<x402> ^object-handle t150
+        ^anchored true
+        ^type tuple
+        ^tid 150
+        ^alive 1
+        ^uses-cand v152
+        ^uses-cand v251
+        ^uses-cand v165
+        ^uses-cand v266)
+   (<objs> ^object <x403>)
+   (<x403> ^object-handle t151
+        ^anchored true
+        ^type tuple
+        ^tid 151
+        ^alive 1
+        ^uses-cand v151
+        ^uses-cand v252
+        ^uses-cand v165
+        ^uses-cand v266)
+   (<objs> ^object <x404>)
+   (<x404> ^object-handle t152
+        ^anchored true
+        ^type tuple
+        ^tid 152
+        ^alive 1
+        ^uses-cand v362
+        ^uses-cand v461)
+   (<objs> ^object <x405>)
+   (<x405> ^object-handle t153
+        ^anchored true
+        ^type tuple
+        ^tid 153
+        ^alive 1
+        ^uses-cand v361
+        ^uses-cand v462)
+   (<objs> ^object <x406>)
+   (<x406> ^object-handle t154
+        ^anchored true
+        ^type tuple
+        ^tid 154
+        ^alive 1
+        ^uses-cand v363
+        ^uses-cand v462)
+   (<objs> ^object <x407>)
+   (<x407> ^object-handle t155
+        ^anchored true
+        ^type tuple
+        ^tid 155
+        ^alive 1
+        ^uses-cand v362
+        ^uses-cand v463)
+   (<objs> ^object <x408>)
+   (<x408> ^object-handle t156
+        ^anchored true
+        ^type tuple
+        ^tid 156
+        ^alive 1
+        ^uses-cand v364
+        ^uses-cand v463)
+   (<objs> ^object <x409>)
+   (<x409> ^object-handle t157
+        ^anchored true
+        ^type tuple
+        ^tid 157
+        ^alive 1
+        ^uses-cand v363
+        ^uses-cand v464)
+   (<objs> ^object <x410>)
+   (<x410> ^object-handle t158
+        ^anchored true
+        ^type tuple
+        ^tid 158
+        ^alive 1
+        ^uses-cand v365
+        ^uses-cand v464)
+   (<objs> ^object <x411>)
+   (<x411> ^object-handle t159
+        ^anchored true
+        ^type tuple
+        ^tid 159
+        ^alive 1
+        ^uses-cand v364
+        ^uses-cand v465)
+   (<objs> ^object <x412>)
+   (<x412> ^object-handle t160
+        ^anchored true
+        ^type tuple
+        ^tid 160
+        ^alive 1
+        ^uses-cand v366
+        ^uses-cand v465)
+   (<objs> ^object <x413>)
+   (<x413> ^object-handle t161
+        ^anchored true
+        ^type tuple
+        ^tid 161
+        ^alive 1
+        ^uses-cand v365
+        ^uses-cand v466)
+   (<objs> ^object <x414>)
+   (<x414> ^object-handle t162
+        ^anchored true
+        ^type tuple
+        ^tid 162
+        ^alive 1
+        ^uses-cand v566
+        ^uses-cand v661)
+   (<objs> ^object <x415>)
+   (<x415> ^object-handle t163
+        ^anchored true
+        ^type tuple
+        ^tid 163
+        ^alive 1
+        ^uses-cand v565
+        ^uses-cand v662)
+   (<objs> ^object <x416>)
+   (<x416> ^object-handle t164
+        ^anchored true
+        ^type tuple
+        ^tid 164
+        ^alive 1
+        ^uses-cand v564
+        ^uses-cand v663)
+   (<objs> ^object <x417>)
+   (<x417> ^object-handle t165
+        ^anchored true
+        ^type tuple
+        ^tid 165
+        ^alive 1
+        ^uses-cand v563
+        ^uses-cand v664)
+   (<objs> ^object <x418>)
+   (<x418> ^object-handle t166
+        ^anchored true
+        ^type tuple
+        ^tid 166
+        ^alive 1
+        ^uses-cand v562
+        ^uses-cand v665)
+   (<objs> ^object <x419>)
+   (<x419> ^object-handle t167
+        ^anchored true
+        ^type tuple
+        ^tid 167
+        ^alive 1
+        ^uses-cand v561
+        ^uses-cand v666)
+   (<objs> ^object <x420>)
+   (<x420> ^object-handle puzzle
+        ^anchored true
+        ^type puzzle
+        ^pid 1
+        ^marks 0
+        ^gcell 0)
+}

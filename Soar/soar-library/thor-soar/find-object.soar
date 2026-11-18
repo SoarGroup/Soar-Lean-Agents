@@ -1,0 +1,484 @@
+## find-object.soar -- thor-soar: 1 elaboration, 10 proposals, 6 compares, 4 applications.
+
+## Propose find-object.
+## More generally defined in agent-world
+sp {thor-soar*propose*find-object*object-handle*unknown*in*mea-not-anchored
+    :default
+   (state <s> ^problem-space.name thor-world
+            # -^external-top-state.scene.objects.object.object-handle <anchored-object-handle>
+             -^world.objects.object.object-handle <anchored-object-handle>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< on in stored discarded controlled-by >>.argument1 <desired-anchored-object>
+             -^failed-grounding true)  ## In the desired
+   (<desired-anchored-object> ^object-handle <anchored-object-handle>
+                             -^anchored true)
+  -{(<desireds> ^desired <desiredx>
+                ^unachieved <desiredx>)
+    (<desiredx> ^object <desired-anchored-objectx>)
+    (<desired-anchored-objectx> ^object-handle <anchored-object-handle>)}
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-anchored-object> # world object
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <desired-anchored-object>     # object that isn't anchored in world-context  - was info.anchored  why???
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object*object-handle*unknown*in*mea-anchored
+    :default
+   (state <s> ^problem-space.name thor-world
+            # -^external-top-state.scene.objects.object.object-handle <anchored-object-handle>
+             -^world.objects.object.object-handle <anchored-object-handle>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< on in stored discarded controlled-by >>.argument1 <desired-anchored-object>
+             -^failed-grounding true)  ## In the desired
+   (<desired-anchored-object> ^object-handle <anchored-object-handle>
+                              ^anchored true)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-anchored-object> # world object
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <desired-anchored-object>     # object that isn't anchored in world-context  - was info.anchored  why???
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object*object-handle*unknown*in2*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+            # -^external-top-state.scene.objects.object.object-handle <anchored-object-handle>
+             -^world.objects.object.object-handle <anchored-object-handle>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< on in stored controlled-by >>.argument2 <desired-anchored-object>)  ## In the desired
+   (<desired-anchored-object> ^object-handle <anchored-object-handle>)
+-->
+   (<s> ^operator <operator> +, <)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-anchored-object> # world object
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.anchored-object <desired-anchored-object>     # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object-handle*in*argument1*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world.objects.object <unanchored-object>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< in on controlled-by stored discarded >>.argument1 <desired-unanchored-object>)  ## In the desired
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>
+                               -^failed-grounding true)
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <unachored-object-handle>  ## is not anchored
+                        ^anchored false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-unanchored-object>           # desired unanchored object
+               ^argument2 <unanchored-object>            # world unanchored object
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <unanchored-object>    # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object-handle*in*argument2*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world.objects.object <unanchored-object>
+              ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< in on stored controlled-by discarded >>.argument2 <desired-unanchored-object>
+             -^failed-grounding true)  ## In the desired
+  -{(<desireds> ^desired.<< in on stored discarded >>.argument1 <desired-unanchored-object>)} # Avoid duplicate proposals
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>)
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <unachored-object-handle>  ## is not anchored
+                        ^anchored false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-unanchored-object>           # desired unanchored object
+               ^argument2 <unanchored-object>            # world unanchored object
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <unanchored-object>    # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object-handle*in*argument1*world-in
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^anchored-world false
+            ^objects.object <unanchored-object>
+            ^in <in>)
+   (<in> ^argument1 <unanchored-object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< in on controlled-by >>.argument1 <desired-unanchored-object>
+             -^failed-grounding true)  ## In the desired
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>)
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <unachored-object-handle>  ## is not anchored
+                        ^anchored false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-unanchored-object>           # desired unanchored object
+               ^argument2 <unanchored-object>            # world unanchored object
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <unanchored-object>    # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object-handle*in*argument2*world-in
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^anchored-world false
+            ^objects.object <unanchored-object>
+            ^in <in>)
+   (<in> ^argument1 <unanchored-object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^<< in on  controlled-by >>.argument2 <desired-unanchored-object>
+             -^failed-grounding true)  ## In the desired
+  -{(<desireds> ^desired.<< in on controlled-by >>.argument1 <desired-unanchored-object>)}  ## In the desired
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>)
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <unachored-object-handle>  ## is not anchored
+                        ^anchored false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-unanchored-object>           # desired unanchored object
+               ^argument2 <unanchored-object>            # world unanchored object
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <unanchored-object>    # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object*object-handle*known*location*unknown
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds <desireds>)
+   (<world>  ^objects.object <object>
+             ^anchored-world true)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<object> ^object-handle <anchored-object-handle>
+            -^anchored true
+            -^x)
+   (<desired> ^<< holding-object object >> <desired-anchored-object>
+             -^failed-grounding true)  ## In the desired
+   (<desired-anchored-object> ^object-handle <anchored-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-anchored-object> # world object
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <desired-anchored-object>
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object*task*object*unknown*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+            # -^external-top-state.scene.objects.object.object-handle <anchored-object-handle>
+              -^world.objects.object.object-handle <anchored-object-handle>
+               ^desireds <desireds>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^completed-task.<argument-num> <argument>)
+   (<argument> ^instance-of << object-argument location-argument >>
+               ^object <desired-anchored-object>)
+   (<desired-anchored-object> ^object-handle <anchored-object-handle>)
+-->
+   (<s> ^operator <operator> +, <)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-anchored-object> # world object
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.anchored-object <desired-anchored-object>     # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Propose find-object.
+sp {thor-soar*propose*find-object*task*object*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^desireds <desireds>)
+   (<world> ^objects.object <unanchored-object>)
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^completed-task.<argument-name> <argument>)
+   (<argument> ^instance-of << object-argument location-argument >>
+               ^object <desired-unanchored-object>)
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>)
+   (<unanchored-object> ^<< origin-object-handle object-handle discarded >> <unachored-object-handle>  ## is not anchored
+                        ^anchored false)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name find-object
+               ^super-desired <desired>
+               ^argument1 <desired-unanchored-object>           # desired unanchored object
+               ^argument2 <unanchored-object>            # world unanchored object
+               ^argument-count 2
+               ^desireds <desireds2>)
+   (<desireds2> ^desired.info.unanchored-object <unanchored-object>    # object that isn't anchored in world-context
+                ^desired-count 1)
+}
+
+## Preference for find-object worse operator-grounded2.
+sp {agent-world*compare*find-object*worse*operator-grounded2
+   :default
+   (state <s> ^superstate nil
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name <> find-object
+          ^argument1.memory-retrieved true)
+   (<op2> ^name find-object)
+-->
+   (<s> ^operator <op1> -)
+}
+
+## Preference for find-object controlled-by.
+sp {agent-world*compare*find-object*controlled-by
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name find-object
+          ^super-desired.controlled-by)
+   (<op2> ^name find-object
+         -^super-desired.controlled-by)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for prefer language over find-object.
+sp {thor-soar*prefer*language*over*find-object
+    :default
+   (state <s> ^name thor-soar
+              ^operator <operator1> +
+              ^operator <operator2> +)
+   (<operator1> ^name accept-sentence)
+   (<operator2> ^name find-object)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## Preference for prefer find-object over task.
+sp {thor-soar*prefer*find-object*over*task
+    :default
+   (state <s> ^name thor-soar
+              ^operator <operator1> +
+              ^operator <operator2> +)
+   (<operator1> ^name find-object)
+   (<operator2> ^task-handle <any>)
+-->
+   (<s> ^operator <operator1> > <operator2>)
+}
+
+## Preference for find-object on-in prefer arg2.
+## Prefer finding the top object before the bottom object
+sp {agent-world*compare*find-object*on-in*prefer*arg2
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+              ^desireds.desired <desired>)
+   (<desired> ^<< on in >> <relation>)
+   (<relation> ^argument1 <argument1>
+               ^argument2 <argument2>)
+   (<op1> ^name find-object
+          ^super-desired <desired>
+          ^argument1 <argument1>)
+   (<argument1> ^object-handle <object-handle>)
+   (<op2> ^name find-object
+          ^super-desired <desired>
+          ^argument1 <argument1x>)
+   (<argument1x> ^object-handle <> <object-handle>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for find-object worse2.
+## BUG
+sp {agent-world*compare*find-object*worse2
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +
+             -^desireds.failed-grounding-desired.object.object-handle <un-object-handle>)
+   (<op1> ^name { <> find-object <> slice-object   # was commented out. Wwhy - if trying to find the object being sliced, not good.
+                 <> toast <> find-object-direct
+                 <> turn-off }  # need to turn off to avoid burning
+          ^task-operator true
+         -^argument2 <arg2>)
+   (<op2> ^name find-object
+         -^argument1.origin-object-handle)
+-->
+   (<s> ^operator <op1> -) # was -
+}
+
+## Elaborate find-object object effect-desired -> sets argument1.
+## Rule from John that enables effect-desired to be grounded
+sp {thor-soar*elaborate*find-object*object*effect-desired
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^superstate.operator.effect-desireds <desireds>
+              ^operator <operator> +)
+   (<operator> ^name find-object
+               ^argument1 <argument1>
+               ^argument2 <unanchored-object>)
+   (<desireds> ^desired.object { <desired-unanchored-object> <> <argument1> })  ## In the desired
+   (<desired-unanchored-object> ^object-handle <unachored-object-handle>)
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <unachored-object-handle>)  ## is not anchored
+-->
+   (<operator> ^argument1 <desired-unanchored-object>)
+}
+
+## Apply find-object -> sets info, object-handle, anchored.
+## Apply
+sp {apply*find-object*object-found*super-desireds*holding-object
+    :default
+   (state <s> ^operator <operator>
+              # ^quiescence t
+              ^super-desireds.desired.holding-object <desired-object>
+              ^world <world>)
+   (<desired-object> ^object-handle { <> <new-object-handle> <unanchored-object-handle> })
+   (<world> ^info <info>
+            ^objects <objects>)
+   (<objects> ^object <unanchored-object>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+   (<anchored-object> ^object-handle $ <new-object-handle>
+                      ^anchored true)
+   (<operator> ^name find-object
+               ^pre-conditions-satisfied true
+               ^argument2 <unanchored-object>)
+   (<unanchored-object> ^object-handle $ <unanchored-object-handle>)
+-->
+   (<world> ^info <info> -)
+   (log 1 (crlf) |Apply find-object super holding: | <new-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<desired-object> ^object-handle <unanchored-object-handle> -
+                                    <new-object-handle>
+                     ^anchored false -
+                               true)
+}
+
+## Apply find-object -> sets info, object-handle, anchored.
+sp {apply*find-object*object-found*super-desireds*on
+    :default
+   (state <s> ^operator <operator>
+              # ^quiescence t
+              ^super-desireds <super-desired>
+              ^world <world>)
+   (<world> ^info <info>
+            ^objects <objects>)
+   (<super-desired> ^desired.<< in on controlled-by >>.<< argument1 argument2 >> <argument1>)
+   (<argument1> ^object-handle { <> <new-object-handle> <unanchored-object-handle> })
+   (<objects> ^object <unanchored-object>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+   (<anchored-object> ^object-handle $ <new-object-handle>
+                      ^anchored true)
+   (<operator> ^name find-object
+               ^pre-conditions-satisfied true
+               ^argument2 <unanchored-object>)
+   (<unanchored-object> ^object-handle $ <unanchored-object-handle>)
+-->
+   (<world> ^info <info> -)
+   (log 1 (crlf) |Apply find-object super on/in: | <new-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<argument1> ^object-handle <unanchored-object-handle> -
+                               <new-object-handle>
+                ^anchored false -
+                          true)
+}
+
+## Apply find-object -> sets object-handle.
+sp {apply*find-object*object-found*effect-desireds*object
+   :default
+   (state <s> ^operator <operator>
+              ^world <world>
+              ^effect-desireds.desired.object <effect-desired-object>)
+   (<world> ^info <info>
+            ^objects <objects>)
+   (<objects> ^object <unanchored-object>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+   (<anchored-object> ^object-handle $ <new-object-handle>
+                      ^anchored true)
+   (<operator> ^name find-object
+               ^pre-conditions-satisfied true
+               ^argument2 <unanchored-object>)
+   (<effect-desired-object> ^object-handle { <> <new-object-handle> <unanchored-object-handle> })
+   (<unanchored-object> ^object-handle $ <unanchored-object-handle>)
+-->
+   (log 1 (crlf) |Apply find-object effect-desired: | <new-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<effect-desired-object> ^object-handle <unanchored-object-handle> -
+                                           <new-object-handle>)
+}
+
+## Apply find-object -> sets info, object-handle, anchored.
+sp {apply*find-object*object-found*super-desireds*completed-task
+    :default
+   (state <s> ^operator <operator>
+              # ^quiescence t
+              ^super-desireds <super-desired>
+              ^world <world>)
+   (<world> ^info <info>
+            ^objects <objects>)
+   (<super-desired> ^desired.completed-task.<argument-name> <argument>)
+   (<argument> ^instance-of << object-argument location-argument >>
+               ^object <argument-object>)
+   (<argument-object> ^object-handle { <> <new-object-handle> <unanchored-object-handle> })
+   (<objects> ^object <unanchored-object>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+   (<anchored-object> ^object-handle $ <new-object-handle>
+                      ^anchored true)
+   (<operator> ^name find-object
+               ^pre-conditions-satisfied true
+               ^argument2 <unanchored-object>)
+   (<unanchored-object> ^object-handle $ <unanchored-object-handle>)
+-->
+   (<world> ^info <info> -)
+   (log 1 (crlf) |Apply find-object super on/in: | <new-object-handle> | anchors and replaces | <unanchored-object-handle>)
+   (<argument-object> ^object-handle <unanchored-object-handle> -
+                                     <new-object-handle>
+                ^anchored false -
+                          true)
+}

@@ -1,0 +1,1 @@
+{"outcome": "success", "decisions": 15, "actions": [["father-speaks", "talk", null], ["ask", "first", null], ["ask", "second", null], ["ask", "third", null]], "n_actions": 4, "seconds": 35.8, "cpu": "35.809"}

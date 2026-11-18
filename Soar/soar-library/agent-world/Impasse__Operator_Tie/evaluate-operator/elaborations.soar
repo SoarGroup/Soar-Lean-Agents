@@ -1,0 +1,319 @@
+## elaborations.soar -- agent-world: 20 elaborations, 1 application.
+
+## ---- elaborations ----
+
+## Elaborate evaluate-operator evaluate-operator external-top-state -> sets external-top-state.
+sp {agent-world*elaborate*evaluate-operator*evaluate-operator*external-top-state
+   :default
+   (state <s> ^name evaluate-operator
+              ^superstate.superstate.external-top-state <external-top-state>)
+-->
+   (<s> ^external-top-state <external-top-state>)
+}
+
+## Elaborate evaluate-operator state look-ahead-operator copy -> sets look-ahead-operator, copied-from.
+sp {agent-world*elaborate*evaluate-operator*state*look-ahead-operator*copy
+   :default
+   (state <s> ^problem-space.name <problem-space-name>
+              ^superstate.operator <super-operator>)
+   (<super-operator> ^name evaluate-operator
+                     ^super-operator <super-super-operator>
+                     ^super-problem-space.name <problem-space-name>)
+-->
+   (<s> ^look-ahead-operator <copy>)
+   (<copy> ^copied-from <super-super-operator>)
+}
+
+## Elaborate evaluate-operator look-ahead-operator copy attributes.
+sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*attributes
+   :default
+   (state <s> ^look-ahead-operator <copy>)
+   (<copy> ^copied-from <real>)
+   (<real> ^{ <> copied-from <> evaluation <> super-operator <attribute> } <value>)
+-->
+   (<copy> ^<attribute> <value>)
+}
+
+## Elaborate evaluate-operator copy-desired -> sets desired, duplicate-o.
+sp {agent-world*elaborate*evaluate-operator*copy-desired
+   :default
+   (state <s> ^name evaluate-operator
+              ^superstate.operator <super-operator>
+              ^desireds <desireds>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation.desireds <duplicate-desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>)
+   (<duplicate-desireds> ^desired <desired>)
+-->
+   (<desireds> ^desired <new-desired>)
+   (<new-desired> ^duplicate-of <desired>)}
+
+## Elaborate evaluate-operator copy-desired-selection-value -> sets selection-val.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-selection-value
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^selection-value <value>)
+-->
+   (<desired> ^selection-value <value>)
+}
+
+## Elaborate evaluate-operator copy-desired-object -> sets object, object-handle.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-object
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^object <object>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<desired> ^object <new-object>)
+   (<new-object> ^object-handle <object-handle>)}
+
+## Elaborate evaluate-operator copy-desired-object attribute.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-object*attribute
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>
+              ^object <new-object>)
+   (<duplicate-desired> ^object <object>)
+   (<object> ^{ <attribute> <> duplicate-of <> object-handle } <value>)
+-->
+   (<new-object> ^<attribute> <value>)}
+
+## Elaborate evaluate-operator copy-desired-holding-object -> sets holding-object, object-handle.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-holding-object
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^holding-object <object>)
+   (<object> ^object-handle <object-handle>)
+-->
+   (<desired> ^holding-object <new-object>)
+   (<new-object> ^object-handle <object-handle>)}
+
+## Elaborate evaluate-operator copy-desired-holding-object attribute.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-holding-object*attribute
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>
+              ^holding-object <new-object>)
+   (<duplicate-desired> ^holding-object <object>)
+   (<object> ^{ <attribute> <> duplicate-of <> object-handle } <value>)
+-->
+   (<new-object> ^<attribute> <value>)}
+
+## Elaborate evaluate-operator copy-desired-relation -> sets argument1, argument2.
+## Relation - on in controlled-by above
+sp {agent-world*elaborate*evaluate-operator*copy-desired-relation
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^<relation> <value>)
+   (<value> ^argument1.object-handle <argument1-handle>
+            ^argument2.object-handle <argument2-handle>)
+-->
+   (<desired> ^<relation> <value1>)
+   (<value1> ^argument1.object-handle <argument1-handle>
+             ^argument2.object-handle <argument2-handle>)}
+
+## Elaborate evaluate-operator copy-desired-learn task -> sets learn.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-learn*task
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^learn task-goal
+                        ^task <task>)
+-->
+   (<desired> ^learn task-goal
+              ^task <task>)}
+
+## Elaborate evaluate-operator copy-desired-executed-action -> sets executed-acti.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-executed-action
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^executed-action <action>)
+-->
+   (<desired> ^executed-action <action>)}
+
+## Elaborate evaluate-operator copy-desired-info.
+sp {agent-world*elaborate*evaluate-operator*copy-desired-info
+   :default
+   (state <s> ^name evaluate-operator
+              ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^info <info>)
+-->
+   (<desired> ^info <info>)}
+
+## Elaborate evaluate-operator copy-desired-disjunction -> sets disjunction.
+## Disjunction: link the copies of the two disjunct desired
+sp {agent-world*elaborate*evaluate-operator*copy-desired-disjunction
+   :default
+   (state <s> ^name evaluate-operator ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>
+               ^desired <desired> { <> <desired> <desired2> })
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<desired2> ^duplicate-of <duplicate-desired2>)
+   (<duplicate-desired> ^disjunction <duplicate-desired2>)
+-->
+   (<desired> ^disjunction <desired2>)}
+
+## Elaborate evaluate-operator copy-desireds-preferences.
+## Preferred and avoid desired: point to the copies
+sp {agent-world*elaborate*evaluate-operator*copy-desireds-preferences
+   :default
+   (state <s> ^name evaluate-operator ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds> ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desireds> ^{ << preferred-desired avoid-desired >> <attribute> } <duplicate-desired>)
+-->
+   (<desireds> ^<attribute> <desired>)}
+
+## Elaborate evaluate-operator copy-desired-self.
+## Self, world-context and next-desireds: share the (read-only) structure
+sp {agent-world*elaborate*evaluate-operator*copy-desired-self
+   :default
+   (state <s> ^name evaluate-operator ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds> ^desired <desired>)
+   (<desired> ^duplicate-of <duplicate-desired>)
+   (<duplicate-desired> ^self <self>)
+-->
+   (<desired> ^self <self>)}
+
+## Elaborate evaluate-operator copy-desireds-world-context-next.
+sp {agent-world*elaborate*evaluate-operator*copy-desireds-world-context-next
+   :default
+   (state <s> ^name evaluate-operator ^desireds <desireds>)
+   (<desireds> ^duplicate-of <duplicate-desireds>)
+   (<duplicate-desireds> ^{ << world-context next-desireds >> <attribute> } <value>)
+-->
+   (<desireds> ^<attribute> <value>)}
+
+## Elaborate evaluate-operator time copy lock-in.
+sp {agent-world*elaborate*evaluate-operator*time*copy*lock-in
+   :default
+   (state <s> ^name evaluate-operator
+              ^superstate.top-selection true
+              ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^time 0)}
+
+## Elaborate evaluate-operator time copy-not-from-super-state.
+## If not in a look-ahead, but doing a deep copy, uses current time
+## Copy time for superstate world
+sp {agent-world*elaborate*evaluate-operator*time*copy-not-from-super-state
+   :default
+   (state <s> -^name evaluate-operator
+               ^deep-copy-world true
+               ^superstate.superstate.world.time <time>
+               ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^time <time>)}
+
+## Elaborate evaluate-operator time copy.
+sp {agent-world*elaborate*evaluate-operator*time*copy
+   :default
+   (state <s> ^name evaluate-operator
+             -^superstate.top-selection true
+              ^superstate.superstate.world.time <time>
+              ^world <new-world>)
+   (<new-world> ^anchored-world true)
+-->
+   (<new-world> ^time <time>)}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> sets numeric-value, symbolic-value (the path cost: unit or time, see cost.soar).
+sp {agent-world*apply*evaluate-operator*numeric-evaluation-return*path-cost
+   :default
+   (state <s> ^superstate <superstate>
+              ^success.duplicate-of <desireds>
+              ^world.path-cost $ <time>
+             -^state-value
+             -^flags.iterative-step cost
+             -^cost-exceeded true
+              ^flags.cost-metric << unit time >>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) <evaluation> | Pass back numeric-value path-cost: | <time>)
+   (<evaluation> ^numeric-value <time>
+                 ^symbolic-value success)
+}
+## Apply evaluate-operator -> sets numeric-value, symbolic-value under cost-cap iteration (waits for the current cost-within-cap marker).
+sp {agent-world*apply*evaluate-operator*numeric-evaluation-return*path-cost*cost-cap
+   :default
+   (state <s> ^superstate <superstate>
+              ^success.duplicate-of <desireds>
+              ^world.path-cost $ <time>
+             -^state-value
+              ^flags.iterative-step cost
+              ^cost-within-cap true
+             -^cost-exceeded true
+              ^flags.cost-metric << unit time >>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) <evaluation> | Pass back numeric-value path-cost: | <time>)
+   (<evaluation> ^numeric-value <time>
+                 ^symbolic-value success)
+}
+
+## Apply evaluate-operator -> sets numeric-value = net value, symbolic-value (a task that supplies ^state-value on the evaluate-operator state).
+## net value = ^state-value - ^flags.cost-weight * ^world.path-cost. The task states ^better higher on ^desireds.
+sp {agent-world*apply*evaluate-operator*numeric-evaluation-return*net-value
+   :default
+   (state <s> ^superstate <superstate>
+              ^success.duplicate-of <desireds>
+              ^world.path-cost <cost>
+              ^state-value <value>
+              ^flags.cost-metric << unit time >>
+              ^flags.cost-weight <weight>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) <evaluation> | Pass back numeric-value net value: | (- <value> (* <weight> <cost>)))
+   (<evaluation> ^numeric-value (- <value> (* <weight> <cost>))
+                 ^symbolic-value success)
+}

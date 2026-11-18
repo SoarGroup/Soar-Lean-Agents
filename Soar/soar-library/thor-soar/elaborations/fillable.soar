@@ -1,0 +1,25 @@
+## fillable.soar -- thor-soar: 2 elaborations.
+
+## Elaborate state scene not-filled-object-liquid -> sets liquid-contents.
+## Useful for having a default value for liquid contents
+sp {elaborations*elaborate*state*scene*not-filled-object-liquid
+    :default
+   (state <s> ^top-state <s>
+              ^scene <scene>)
+   (<scene> ^objects.object <object-int>)
+   (<object-int> ^derived-from-input.fill-amount empty)
+-->
+   (<object-int> ^liquid-contents none)
+}
+
+## Elaborate state scene not-filled-object-liquid no-fill-amount -> sets liquid-contents.
+sp {elaborations*elaborate*state*scene*not-filled-object-liquid*no-fill-amount
+    :default
+   (state <s> ^top-state <s>
+              ^scene <scene>)
+   (<scene> ^objects.object <object-int>)
+   (<object-int> ^fillable true
+                 ^fill-amount empty)
+-->
+   (<object-int> ^liquid-contents none)
+}

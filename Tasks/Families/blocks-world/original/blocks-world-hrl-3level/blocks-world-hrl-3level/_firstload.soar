@@ -1,0 +1,8 @@
+
+chunk never
+rl --set learning on
+rl --set learning-rate 0.300000
+rl --set discount-rate 0.900000
+indifferent-selection --epsilon-greedy
+multi-attributes object 5
+multi-attributes gripper 2

@@ -1,0 +1,178 @@
+## flags-initialization.soar -- thor-soar: 5 elaborations.
+
+## Elaborate init-thor-soar flags -> sets flag-override, desired-preferences, gps-desired-ordering ....
+## additional flags in agent-world/elaborations/flag-initialization.soar
+sp {elaborate*init-thor-soar*flags
+    :default
+   (state <s> ^type state
+              ^superstate nil)
+-->
+   (<s> ^flag-override <flags>)
+   (<flags> ^desired-preferences true##### Always false for evaluation work # Uses the desired preferences in operator desireds in its actions (preconditions). If false, more look-ahead planning.
+            ^gps-desired-ordering true     # Uses preferences to rank desireds - similar to table of connections is GPS. If false, more look-ahead planning.
+            ^task-search-control true    # false:
+            ^rl false                         # If true reinforement learning is used. Not recently tested.
+            ^iterative-step tie-impasse       # tie-impasse/operator - if impasse, an iterative step is when there is a tie-impasse. if operator, it is when a task operator is applied.
+            ^init-evaluation-depth unachieved-desireds #one - uses unacheived-desireds - 1 as initial evaluation depth
+            ^smem-store false                 # stores class structures in smem
+            ^initialize-scene-with-smem false #### If true, will initialize the scene from smem. Requires previously generating the smem structure (usually with hide-in-container-false) and saving it.
+            ^smem-retrieve true ###########  # retrieves objects from smem for grounding
+            ^epmem-retrieve false             # retrieve class structures in epmem
+            ^clean-up-on-success false        # If true, will clean up after a top-state successful desireds (close doors, turn off the faucet). Haven't tested recently.
+            ^above-computed false             # If true, will compute above relationships automatically
+            ^mea-operator-selection true      # If true use means-ends analysis to propose operators instead of pure forward search (preconditions satisfied). Not kept up to date. Always true.
+            ^cost-metric time                 # none/unit/time. time recommended: the cost of a look-ahead path is the elapsed time (action times), which makes iterative-step tie-impasse meaningful.
+            ^hierarchical-properties false    # true is problematic. When true, reachable desireds are always achieved in lookahead
+            ^explore false                    # Will explore room looking for objects - only needed if view-frustum true
+            ^explore-receptacles false        # Will open all closed receptacles and look to see what is inside
+            ^hide-in-container-objects true  # If true, then cannot see into a container to see a contained object. If false, will see inside a container.
+            ^scan-room true                 # Scans room when wakes up. Need for view-frustum true
+            ^view-frustum true)
+}
+
+## Elaborate top-state flags agent-mode from input-link -> sets agent-mode.
+## Copy the 'agent-mode' wme from the input-link
+## (Currently, this has the value 'testing' when running in the experiment runner)
+sp {top-state*elaborate*flags*agent-mode*from*input-link
+    :default
+   (state <s> ^superstate nil
+              ^io.input-link.agent-mode <agent-mode>
+              ^flags <flags>)
+-->
+   (<flags> ^agent-mode <agent-mode>)
+}
+
+## Elaborate init-thor-soar flags desireds-source profile JEL -> sets desireds-source.
+## Each profile should have there own rule that sets the profile flag in there personal load file, such as thor-soar-JEL.soar, which is shown below:
+## pushd thor-soar
+sp {elaborate*init-thor-soar*flags*desireds-source*profile*JEL
+    :default
+   (state <s> ^superstate nil
+              ^top-state <s>
+              ^flags <flags>)
+   (<flags> ^profile JEL)
+-->
+   (<flags> ^desireds-source elaboration)
+}
+
+## Elaborate init-thor-soar flags desired from-run-file -> sets desired-selection.
+## Specified in run-file
+sp {elaborate*init-thor-soar*flags*desired*from-run-file
+    :default
+   (state <s> ^superstate nil
+              ^io.input-link.task-name <task>
+              ^external-top-state <s>
+              ^flags <flags>)
+   (<flags> ^desireds-source elaboration
+           -^explore true
+           -^explore-receptacles true)
+-->
+   (<flags> ^desired-selection <task>)
+}
+
+## Elaborate init-thor-soar flags desired -> sets desired-selection.
+sp {elaborate*init-thor-soar*flags*desired
+    :default
+   (state <s> ^superstate nil
+             -^io.input-link.task-name
+              ^external-top-state <s>
+              ^flags <flags>)
+   (<flags> ^desireds-source elaboration
+           -^explore true
+           -^explore-receptacles true)
+-->
+   (<flags> ^desired-selection
+#                              reachable-potato55
+#                               reachable-potato-class
+#                               holding-potato55
+#                               holding-potato-class
+#                               holding-soapbottle64
+#                               holding-fork39
+#                               dirty-mug
+#                               turn-off-lightswitch46
+#                               turn-off-lightswitch-class
+#                               turn-on-faucet37
+#                               turn-on-microwave47
+#                               open-microwave47
+#                               break-mug48
+#                               fill-mug48-water
+ #                              potato55-in-sinkBasin63
+#                               potato55-in-pan49
+#                               potato55-in-fridge
+#                               potato55-in-microwave47
+#                               make-coffee
+#                               get-egg-in-fridge-class
+#                               break-egg-in-fridge40
+#                               get-carrot-in-fridge-class
+#                               cook-potato55-stove
+#                               cook-potato-class-stove
+#                               store-apple1-in-fridge40
+#                               discard-potato55
+#                              discard-cup24
+#                              discard-seppershaker51
+##### Search
+ #                              holding-cup-class
+#                               holding-egg-class
+#                               cook-egg36
+#                               holding-fork39
+#                               holding-fork39-restricted #!!!!!
+#                               put-fork39-on-countertop21
+#                             cook-egg-search-for-egg
+#                               get-knife44-put-in-drawer30
+#                               slice-potato55
+#                               slice-apple1
+#                               slice-carrot-know-in-fridge
+#                               slice-carrot
+##### Multi-desired but with pre-existing search knowledge so no planning
+#                               get-potato55-open-fridge40
+#                               put-potato55-in-fridge40-close-door
+#                               store-apple1-in-fridge40-turn-on-faucet37
+#                               slice-potato55-place-slice-in-pan49
+##### Indifferent
+#                               store-pototo55-store-apple1-in-fridge40
+##### multistep explicit sequencing
+#                               dirty-clean-mug48
+#                               cooked-potato-then-countertop20-then-closed-microwave
+#                               make-toast
+#                               get-apply*put-in-fridge
+#                               open-microwave-get-potato-close-microwave
+##### Disjunction
+#                               put-apple-in-fridge-or-on-counter19
+##### Disjunction and Conjunction
+#                               put-apple1-in-fridge40-or-on-counter19-turn-on-faucet37
+##### Desired decomposed into multiple desired
+#                              clean-counters
+#                               explore-receptacles
+#                               close-doors
+##### Complex Sequences
+#                               apple-microwave-then-potato-fridge-then-apple-fridge
+#apple-in-microwave-then-potato-in-fridge-then-swap-then-back-to-original
+#apple-in-fridge-then-close-then-apple-back-on-table-then-egg-on-table
+#                               serve-cooked-eggs
+#                               make-toast-cook-egg-make-coffee1
+#                               make-toast-cook-egg-make-coffee2
+#                               make-toast-cook-egg-make-coffee3
+#                               long-test
+##### Planning Required
+#                              fill-mug48-and-turn-on-faucet37
+#                              cooked-potato55-countertop20
+#                               filled-mug48-apple1-on-countertop22
+##### Temporal overlap
+#                              turn-on-faucet37-make-coffee
+#                              cook-potato55-stove-make-coffee
+#                               cook-potato55-microwave-make-coffee
+#                              cook-potato55-apple1-on-countertop22
+#                               apple1-on-countertop22-and-cook-potato55
+#                               cooked-potato55-on-countertop22-lightswitch-off
+#                               filled-mug48-cooked-potato55
+##### Planning with slice
+###                               slice-cook-potato55
+##### Planning with three desireds
+#                               filled-mug-cooked-apple*on-countertop22
+##### Planning with four desireds and temporal overlap
+#                             filled-mug48-sliced-cooked-potato55-apple1-on-countertop22
+                 #               dirty-then-dishwash
+                 #              epmem-test1
+            visited-all-objects-short
+         #   visited-all-objects-long
+                               )}

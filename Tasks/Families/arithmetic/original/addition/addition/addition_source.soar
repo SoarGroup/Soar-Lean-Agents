@@ -1,0 +1,13 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-arithmetic.soar
+source choose-operation.soar
+source generate-digit1.soar
+source generate-digit2.soar
+source process-column.soar
+pushd process-column
+source process-column_source.soar
+popd
+source finish-problem.soar

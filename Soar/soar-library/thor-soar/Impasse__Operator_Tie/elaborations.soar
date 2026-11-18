@@ -1,0 +1,31 @@
+## elaborations.soar -- thor-soar: 1 elaboration, 1 compare.
+
+## Elaborate Impasse Operator Tie state force-learn.
+sp {Impasse__Operator_Tie*elaborate*state*force-learn
+    :default
+   (state <s> ^name selection)
+-->
+   (force-learn <s>)
+}
+
+## Preference for selection prefer-lower-evaluation equal-numeric-value use-expected-distance.
+## If equal from numeric-value then rely on expected distance to make a preference. Not sure if this will work.
+## Depends on expected-value - use probabilities to avoid conflicts
+sp {selection*compare*prefer-lower-evaluation*equal-numeric-value*use-expected-distance
+   :default
+   (state <s> ^name selection
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+   (<evaluation1> ^super-operator { <> <operator2> <operator1> }
+                  ^numeric-value  { <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<operator1> ^expected-distance <expected-distance1>)
+   (<evaluation2> ^super-operator { <> <operator1> <operator2> }
+                  ^numeric-value { <v> <> no-value }
+                  ^desireds.duplicate-of <desireds>)
+   (<operator2> ^expected-distance > <expected-distance1>)
+-->
+   (<superstate> ^operator <operator2> = .1
+                 ^operator <operator1> = .9)}

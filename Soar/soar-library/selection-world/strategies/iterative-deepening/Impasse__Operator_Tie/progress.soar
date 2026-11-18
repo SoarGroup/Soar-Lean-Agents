@@ -1,0 +1,111 @@
+## progress.soar -- selection-world: 6 elaborations, 1 proposal, 1 application.
+## Progress-bounded termination (^flags.termination progress). The task supplies ^progress-score on the task state (the root score R)
+## and on the evaluate-operator state (the score C of the branch). A branch is cut off (exceed-depth) when
+##     P = (C - R + 1) / (D + 1)  <  ^flags.progress-threshold      (default 0.15)
+## where D is the number of operators applied in the branch. The fixed depth cap still applies as a backstop.
+## Higher score = closer to the goal. Without ^progress-score nothing is cut.
+## Default score: minus the number of unachieved desireds (^desireds.unachieved-desireds-count), so the option works for any task with desireds.
+## A task supplies its own score with ^flags.progress-score task.
+
+## ---- elaborations ----
+
+## Elaborate default progress-score: minus the number of unachieved desireds.
+sp {selection-world*elaborate*state*progress-score*default
+   :default
+   (state <s> ^flags.termination progress
+             -^flags.progress-score task
+              ^desireds.unachieved-desireds-count $ <count>)
+-->
+   (<s> ^progress-score (- 0 <count>))}
+
+## Elaborate top selection root-progress-score and start-depth from the task state.
+sp {selection-world*elaborate*selection*top*root-progress-score
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^flags.termination progress
+              ^superstate.progress-score <score>
+              ^current-evaluation-depth.value <depth>)
+-->
+   (<s> ^root-progress-score <score>
+        ^start-depth <depth>)}
+
+## Elaborate nested selection root-progress-score and start-depth from the superstate.
+sp {selection-world*elaborate*selection*nested*root-progress-score
+   :default
+   (state <s> ^name selection
+             -^top-selection true
+              ^flags.termination progress
+              ^superstate.root-progress-score <score>
+              ^superstate.start-depth <depth>)
+-->
+   (<s> ^root-progress-score <score>
+        ^start-depth <depth>)}
+
+## Elaborate selection evaluate-operator progress attributes onto the operator (copied to the operator's substate).
+sp {selection-world*elaborate*selection*evaluate-operator*progress
+   :default
+   (state <s> ^name selection
+              ^flags.termination progress
+              ^operator <operator> +
+              ^root-progress-score <score>
+              ^start-depth <depth>)
+   (<operator> ^name evaluate-operator)
+-->
+   (<operator> ^root-progress-score <score>
+               ^start-depth <depth>)}
+
+## Elaborate evaluate-operator progress-rate P.
+sp {selection-world*elaborate*evaluate-operator*progress-rate
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.termination progress
+              ^root-progress-score <root>
+              ^start-depth <start>
+              ^current-evaluation-depth.value <now>
+              ^progress-score <score>)
+-->
+   (<s> ^progress-rate (/ (+ (- <score> <root>) 1) (+ (- <start> <now>) 1)))}
+
+## Elaborate evaluate-operator progress-cut: the progress rate is below the threshold.
+sp {selection-world*elaborate*evaluate-operator*progress-cut
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.termination progress
+              ^flags.progress-threshold <threshold>
+              ^progress-rate { < <threshold> })
+-->
+   (<s> ^progress-cut true)}
+
+## ---- operator proposal ----
+
+## Propose exceed-depth in evaluate-operator when the progress rate is below the threshold.
+## Not when the depth or cost cap proposes it too: two exceed-depth operators would each be best and conflict.
+sp {selection-world*propose*evaluate-operator*exceed-depth*progress
+   :default
+   (state <s> ^name evaluate-operator
+              ^flags.termination progress
+              ^flags.progress-threshold <threshold>
+             -^current-evaluation-depth.value <= 0
+             -^cost-exceeded true
+              ^progress-rate { < <threshold> })
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name exceed-depth)}
+
+## ---- operator application ----
+
+## Apply evaluate-operator -> a branch cut by progress returns an unbounded cost bound: it is not worth deepening for.
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*progress-cut*numeric
+   :default
+   (state <s> ^selection-superstate <superstate>
+              ^depth-exceeded.duplicate-of <desireds>
+              ^flags.cost-metric << unit time >>
+              ^progress-cut true)
+   (<superstate> ^operator <so>
+                 ^evaluation <evaluation>)
+   (<so> ^name evaluate-operator
+         ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^estimated-total-cost 1000000)}

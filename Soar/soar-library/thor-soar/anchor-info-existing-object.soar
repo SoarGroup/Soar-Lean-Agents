@@ -1,0 +1,728 @@
+## anchor-info-existing-object.soar -- thor-soar: 1 elaboration, 16 proposals, 14 compares, 3 applications.
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^desireds.desired.info <dinfo>
+              ^external-top-state.scene.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken temperature activated liquid-contents reachable sliced >> )  # Only class
+  -(<s> ^world.<< in on controlled-by >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<s> ^world.info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)   # Bug - should allow ties
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+## Does not support it being part of a in or on relation
+sp {thor-soar*propose*anchor-info-existing-object*one-more-feature
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              # ^quiescence t
+              ^desireds.desired.info <dinfo>
+             -^external-top-state.world.info.unanchored-object <unanchored-object>
+              ^external-top-state.scene.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^class <class>
+                      ^{ <> class <attribute> } <value>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                        ^{ <attribute> << cook-state dirty open broken temperature activated liquid-contents reachable sliced >>} <value>
+                       -^{ <> <attribute>  << cook-state dirty open broken temperature activated liquid-contents reachable sliced >>})  # object that is unanchored to be replaced
+  -(<s> ^world.<< in on controlled-by >>.<< argument1 argument2 >> <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*one-more-feature*internalx
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real false
+              # ^quiescence t
+              ^desireds.desired.info <dinfo>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^class <class>
+                      ^{ <> class <attribute> } <value>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                        ^{ <attribute> << cook-state dirty open broken temperature activated liquid-contents reachable sliced >>} <value>
+                       -^{ <> <attribute>  << cook-state dirty open broken temperature activated liquid-contents reachable sliced >>})  # object that is unanchored to be replaced
+  -(<s> ^world.<< in on controlled-by >>.<< argument1 argument2 >> <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+## class and in/on relation
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument1
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              # ^quiescence t
+              ^desireds.desired.info <dinfo>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^external-top-state.scene <scene>)
+   (<scene> ^objects.object <anchored-object>  # real-object
+            ^<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument1 <unanchored-object>)
+   (<relation-anchored> ^argument1 <anchored-object>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument1*internal4
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real false
+              # ^quiescence t
+              ^desireds.desired.info <dinfo>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^world <world>)
+   (<world> ^objects.object <anchored-object>  # real-object
+            ^<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument1 <unanchored-object>)
+   (<relation-anchored> ^argument1 <anchored-object>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument2
+    :default
+   (state <s> ^problem-space.name thor-world
+          #    ^quiescence t
+              ^real true
+              ^desireds.desired.info <dinfo>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^external-top-state.scene <scene>)
+   (<scene> ^objects.object <anchored-object>  # real-object
+            ^<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument2 <unanchored-object>
+                          ^argument1.class <class1>)
+   (<relation-anchored> ^argument2 <anchored-object>
+                        ^argument1.class <class1>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument2*internal5
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real false
+          #    ^quiescence t
+              ^desireds.desired.info <dinfo>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^world <scene>)
+   (<scene> ^objects.object <anchored-object>  # real-object
+            ^<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument2 <unanchored-object>
+                          ^argument1.class <class1>)
+   (<relation-anchored> ^argument2 <anchored-object>
+                        ^argument1.class <class1>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*controlled-by*argument1
+    :default
+   (state <s> ^real true
+              ^desireds.desired.info <dinfo>
+              ^super-desired.controlled-by.argument1 <argument1>
+             -^world.info.unanchored-object <unanchored-object>
+              ^external-top-state.scene.controlled-by <controlled-by>)
+   (<argument1> ^anchored true
+                ^object-handle <object-handle>)
+   (<controlled-by> ^argument1.object-handle <object-handle>
+                    ^argument2 <anchored-object>)
+   (<anchored-object> ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^controlled-by true
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*controlled-by*argument2
+    :default
+   (state <s> ^real true
+              ^desireds.desired.info <dinfo>
+              ^super-desired.controlled-by.argument2 <argument1>
+             -^world.info.unanchored-object <unanchored-object>
+              ^external-top-state.scene.controlled-by <controlled-by>)
+   (<argument1> ^anchored true
+                ^object-handle <object-handle>)
+   (<controlled-by> ^argument2.object-handle <object-handle>
+                    ^argument1 <anchored-object>)
+   (<anchored-object> ^class <class>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^class <class>)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^controlled-by true
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Preference for anchor-info-existing-object controlled-by.
+sp {thor-soar*compare*anchor-info-existing-object*controlled-by
+    :default
+   (state <s> ^name thor-soar
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-info-existing-object
+          ^controlled-by true)
+   (<op2> ^name anchor-info-existing-object
+         -^controlled-by true)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Propose anchor-info-existing-object.
+## Origin real
+sp {thor-soar*propose*anchor-info-existing-object*internal*origin*real
+    :default
+   (state <s> ^real true
+              ^problem-space.name thor-world
+              ^desireds.desired.info.unanchored-object <unanchored-object>
+              ^world.objects.object <anchored-object>)  # real-object
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <o-object-handle>)
+   (<anchored-object> ^anchored true
+                      ^origin-object-handle <o-object-handle>
+                     )# ^object-handle <object-handle>)
+  -(<s> ^world.info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from world
+         ^task-operator false
+         ^argument1 <anchored-object>           # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+## Origina
+sp {thor-soar*propose*anchor-info-existing-object*internal*origin
+    :default
+   (state <s> ^internal-actions true
+              ^problem-space.name thor-world
+              ^desireds.desired.info.unanchored-object <unanchored-object>  # .unanchored or .anchored?
+              ^world.objects.object <anchored-object>)  # real-object
+   (<unanchored-object> ^<< origin-object-handle object-handle >> <o-object-handle>)
+   (<anchored-object> ^anchored true
+                      ^origin-object-handle <o-object-handle>)
+                   # ^object-handle <object-handle>)
+  -(<s> ^world.info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from world
+         ^task-operator false
+         ^argument1 <anchored-object>           # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Apply find-object -> sets success.
+## OK?
+sp {thor-soar*propose*anchor-info-existing-object*internal-class-only
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^superstate <superstate>
+              ^real false
+              ^operator.name << anchor-object-class anchor-relation-class anchor-info-existing-object >>)  # real-object
+   (<superstate> ^desireds <desireds>
+                 ^duplicate-look-ahead-operator <look-ahead>
+                 ^operator <look-ahead>)
+   (<look-ahead> ^name find-object)
+-->
+   (<superstate> ^success <desireds>)
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*one-more-feature*internal
+    :default
+   (state <s> ^internal-actions true
+              ^problem-space.name thor-world
+              ^desireds.desired.info.unanchored-object <unanchored-object>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^class <class>
+                      ^{ <> class <attribute> } <value>)
+   (<unanchored-object> ^class <class>
+                        ^{ <attribute> << cook-state dirty open broken activated liquid-contents reachable sliced >>} <value>)  # object that is unanchored to be replaced
+  -(<s> ^world.<< in on controlled-by >>.<< argument1 argument2 >> <unanchored-object>)
+-->
+   (<s> ^operator <op> +, =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from world
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+## class and in/on relation
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument1*internal
+    :default
+   (state <s> ^internal-actions true
+              ^problem-space.name thor-world
+              ^desireds.desired.info.unanchored-object <unanchored-object>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.objects.object <anchored-object>  # real-object
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^world.<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument1 <unanchored-object>)
+   (<relation-anchored> ^argument1 <anchored-object>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from world
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*on-in*argument2*internal
+    :default
+   (state <s> ^internal-actions true
+              ^problem-space.name thor-world
+              ^desireds.desired.info.unanchored-object <unanchored-object>
+             -^world.info.unanchored-object <unanchored-object>
+              ^world.objects.object <anchored-object>  # real-object
+              ^world.{ <relation> << in on controlled-by >> } <relation-unanchored>
+              ^world.<relation> <relation-anchored>)
+   (<relation-unanchored> ^argument2 <unanchored-object>)
+   (<relation-anchored> ^argument2 <anchored-object>)
+   (<anchored-object> ^anchored true
+                      ^class <class>)
+   (<unanchored-object> ^class <class>
+                       -^<< cook-state dirty open broken activated liquid-contents reachable sliced >> )  # Only class
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from world
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*material
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^desireds.desired.info <dinfo>
+              ^external-top-state.scene.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^material <material>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^material <material>
+                       -^class <class>)
+  -(<s> ^world.<< in on >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<s> ^world.info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)   # Bug - should allow ties
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Propose anchor-info-existing-object.
+sp {thor-soar*propose*anchor-info-existing-object*material*object
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^real true
+              ^desireds.desired.info <dinfo>
+              ^external-top-state.scene.objects.object <anchored-object>)  # real-object
+   (<anchored-object> ^anchored true
+                      ^material <material>)
+   (<dinfo> ^unanchored-object <unanchored-object>)
+   (<unanchored-object> ^material <material>
+                        ^class object)
+  -(<s> ^world.<< in on >>.<< argument1 argument2 >> <unanchored-object>)
+  -(<s> ^world.info.unanchored-object <unanchored-object>)
+-->
+   (<s> ^operator <op> + =)   # Bug - should allow ties
+   (<op> ^name anchor-info-existing-object
+         ^anchored-from scene
+         ^task-operator false
+         ^argument1 <anchored-object>  # world object that meets constraint
+         ^argument2 <unanchored-object>)        # used to create maches
+}
+
+## Elaborate anchor-info-existing-object distance-surface -> sets expected-distance.
+## Prefer closer surfaces
+sp {thor-soar*compare*anchor-info-existing-object*distance-surface
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^scene.objects.object <object>
+              ^external-top-state.io.input-link.self.pose <pos>
+              ^operator <op1> +)
+   (<pos> ^x <x> ^y <y>)
+   (<object> ^x <x1>
+             ^y <y1>
+             ^class surface
+             ^object-handle <object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <arg1>)
+   (<arg1> ^object-handle <object-handle>)
+-->
+   (<op1> ^expected-distance (+ (compute-range (* 100.0 <x>) (* 100.0 <y>) (* 100.0 <x1>) (* 100.0 <y1>)) 0))
+}
+
+## Preference for anchor-info-existing-object distance.
+sp {thor-soar*compare*anchor-info-existing-object*distance
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1.visible <visable>
+          ^argument1.reachable <reach>
+          ^expected-distance <ed>)
+   (<op2> ^name anchor-info-existing-object
+          ^argument1.visible <visable>
+          ^argument1.reachable <reach>
+          ^expected-distance > <ed>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for anchor-info-existing-object super on scene.
+## Pick the one that is desired
+## Better for chunking to have separate
+sp {thor-soar*compare*anchor-info-existing-object*super*on*scene
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.scene.on <world-relation>
+              ^superstate.desireds.desired.on <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for anchor-info-existing-object super in scene.
+sp {thor-soar*compare*anchor-info-existing-object*super*in*scene
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.scene.in <world-relation>
+              ^superstate.desireds.desired.in <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for anchor-info-existing-object super on world.
+## Pick the one that is desired
+## Better for chunking to have separate
+sp {thor-soar*compare*anchor-info-existing-object*super*on*world
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.world.on <world-relation>
+              ^superstate.desireds.desired.on <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for anchor-info-existing-object super in world.
+sp {thor-soar*compare*anchor-info-existing-object*super*in*world
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.world.in <world-relation>
+              ^superstate.desireds.desired.in <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for anchor-info-existing-object on.
+## Pick the one that is desired
+sp {thor-soar*compare*anchor-info-existing-object*on
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.scene.on <world-relation>
+              ^desireds.desired.on <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for anchor-info-existing-object in.
+sp {thor-soar*compare*anchor-info-existing-object*in
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^external-top-state.scene.in <world-relation>
+              ^desireds.desired.in <drelation>
+              ^operator <op1> +)
+   (<world-relation> ^argument1.object-handle <object-handle>
+                     ^argument2 <anchored-object>)
+   (<drelation> ^argument1.object-handle <object-handle>
+                ^argument2.object-handle <unanchored-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <anchored-object>
+          ^argument2 <dinfo>)
+   (<dinfo> ^unanchored-object.object-handle <unanchored-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for prefer anchor-info-controlled-by-to-desired controls-object-handle.
+sp {thor-soar*prefer*anchor-info-controlled-by-to-desired*controls-object-handle
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^world <world>
+              ^super-desireds.desired.in.argument2.object-handle <burner-object-handle>
+              ^operator <op1> +)
+   (<world> ^objects.object <stoveknob-object>
+            ^controlled-by <controlled-by>)
+   (<controlled-by> ^argument1.object-handle <burner-object-handle>
+                    ^argument2 <stoveknob-object>)
+   (<stoveknob-object> ^object-handle <stoveknob-object-handle>)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1.object-handle <stoveknob-object-handle>)
+-->
+   (<s> ^operator <op1> >)
+}
+
+## Preference for avoid anchor-info-existing-object not reachable.
+## avoid onces that are not close
+sp {thor-soar*avoid*anchor-info-existing-object*not*reachable
+    :default
+   (state <s> ^operator <op1> +
+                        <op2> +)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1.reachable false
+          ^anchored-from <world>)
+   (<op2> ^name anchor-info-existing-object
+          ^argument1.reachable true
+          ^anchored-from <world>)
+-->
+   (<s> ^operator <op2> > <op1>)
+}
+
+## Preference for avoid anchor-info-existing-object not reachable visible.
+sp {thor-soar*avoid*anchor-info-existing-object*not*reachable*visible
+    :default
+   (state <s> ^operator <op1> +
+                        <op2> +)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1 <argument1>
+          ^anchored-from <world>)
+   (<argument1> ^reachable <reachable>
+                ^visible false)
+   (<op2> ^name anchor-info-existing-object
+          ^argument1 <argument11>
+          ^anchored-from <world>)
+   (<argument1> ^reachable <reachable>
+                ^visible true)
+-->
+   (<s> ^operator <op2> > <op1>)
+}
+
+## Preference for avoid anchor-info-existing-object higher handle.
+## avoid higher name - breaks ties consistently - important in look-ahead
+## BUG - should get a tie and search for best
+sp {thor-soar*avoid*anchor-info-existing-object*higher*handle
+    :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> } +)
+   (<op1> ^name anchor-info-existing-object
+          ^argument1.object-handle < <object-handle>)
+   (<op2> ^name anchor-info-existing-object
+          ^argument1.object-handle <object-handle>)
+-->
+   (<s> ^operator <op2> = 1.)
+}
+
+## Preference for anchor-info-smem.
+sp {thor-soar*compare*anchor-info-smem
+    :default
+   (state <s> ^operator <op1> +
+                        {<> <op1> <op2> } +)
+   (<op1> ^name anchor-info-existing-object)
+   (<op2> ^name << finish-brewing finish-cooking search-smem >>)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Preference for anchor-world-better-scene.
+sp {thor-soar*compare*anchor-world-better-scene
+    :default
+   (state <s> ^operator <op1> +
+                        {<> <op1> <op2> } +)
+   (<op1> ^name anchor-info-existing-object
+          ^anchored-from world)
+   (<op2> ^name anchor-info-existing-object
+          ^anchored-from scene)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## Apply anchor-info-existing-object -> sets info, unanchored-object, anchored-object.
+sp {apply*anchor-info-existing-object
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^objects.object <unanchored-object>
+           -^anchored-world true)
+   #    (<world> ^anchored-world true
+   #        ^objects.object <unanchored-object>)
+   (<op> ^name anchor-info-existing-object
+         ^argument1 <anchored-object>
+         ^argument2 <unanchored-object>)
+  -{(<world> ^info <info2>)
+    (<info2> ^unanchored-object <unanchored-object>
+             ^anchored-object <anchored-object>)}
+   (<unanchored-object> ^object-handle <unanchored-object-handle>)
+   (<anchored-object> ^object-handle <anchored-object-handle>)
+-->
+   (<world> ^info <info>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+}
+
+## Apply anchor-info-existing-object -> sets info, unanchored-object, anchored-object.
+sp {apply*anchor-info-existing-object2
+    :default
+   (state <s> ^operator <op>
+              ^world <world>)
+   (<world> ^anchored-world true
+           -^objects.object <unanchored-object>)
+  -{(<s> ^world <world2>)
+    (<world2> ^objects.object <unanchored-object>
+             -^anchored-world true)}
+   (<op> ^name anchor-info-existing-object
+         ^argument1 <anchored-object>
+         ^argument2 { <> <anchored-object> <unanchored-object>})
+  -{(<s> ^world.info <info2>)
+    (<info2> ^unanchored-object <unanchored-object>
+             ^anchored-object <anchored-object>)}
+   (<unanchored-object> ^object-handle <unanchored-object-handle>)
+   (<anchored-object> ^object-handle <anchored-object-handle>)
+-->
+   (<world> ^info <info>)
+   (<info> ^unanchored-object <unanchored-object>
+           ^anchored-object <anchored-object>)
+}

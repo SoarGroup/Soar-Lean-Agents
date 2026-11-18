@@ -1,0 +1,16 @@
+Wumpus world: English input
+
+Statements, numbered (the input to formalization):
+ 1. The cave is a 4 by 4 grid of rooms. Rooms are named by column and row, from [1,1] to [4,4].
+ 2. The agent starts in [1,1], facing right. [1,1] is safe.
+ 3. One room holds the Wumpus, a monster; some rooms hold bottomless pits; one room holds gold. In this cave the Wumpus is in [1,3], the gold is in [2,3], and the pits are in [3,1], [3,3] and [4,4]. The agent does not know where they are.
+ 4. In a room next to the Wumpus (not diagonally) the agent smells a stench. In a room next to a pit it feels a breeze. In the room with the gold it sees a glitter.
+ 5. The agent can move forward one room, turn left, turn right, grab the gold, shoot its one arrow in the direction it faces, and climb out of the cave from [1,1].
+ 6. An arrow kills the Wumpus if the Wumpus is in a room straight ahead.
+ 7. If the agent enters a room with a pit or a live Wumpus, it dies and you lose.
+ 8. The goal is to grab the gold and climb out of the cave from [1,1].
+
+Source of the task in AI research: AIMA (Russell & Norvig).
+Kind of agent: Partially observable, self-simulated.
+Status: Partly observable: hidden pits and Wumpus, percepts. The world conventions have no hidden
+state. Specification gap, raised with John.

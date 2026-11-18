@@ -1,0 +1,34 @@
+
+sp {wizards*propose*guess-black
+   (state <s> ^name wizards)
+   (<s> ^world <wd>)
+   (<s> ^view <k>)
+   (<s> ^rec <r>)
+   (<r> ^view <k>)
+   (<r> ^own 1)
+   (<r> ^gblack 1)
+   (<wd> ^done 0)
+   (<k> ^depth 1)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name guess-black)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+}
+
+sp {wizards*apply*guess-black
+   (state <s> ^name wizards)
+   (<s> ^operator <o>)
+   (<o> ^name guess-black)
+   (<o> ^wd <wd>)
+   (<o> ^k <k>)
+   (<o> ^r <r>)
+   (<wd> ^done <wd-done>)
+   (<r> ^wiz <r-wiz>)
+-->
+   (<wd> ^done 1)
+   (<wd> ^done <wd-done> -)
+   (write |Wizard | <r-wiz> | guesses his spot is black.|)
+}

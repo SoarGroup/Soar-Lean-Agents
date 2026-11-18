@@ -1,0 +1,51 @@
+## Reinforcement learning (same templates and rewards as the original).
+## Templates: one Q-value per task operator and the contents of the jugs it involves.
+
+sp {water-jug*rl*fill
+   :template
+   (state <s> ^problem-space.name water-jug
+              ^operator <o> +)
+   (<o> ^name fill
+        ^argument1 <jug>)
+   (<jug> ^volume <v> ^contents <c>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {water-jug*rl*empty
+   :template
+   (state <s> ^problem-space.name water-jug
+              ^operator <o> +)
+   (<o> ^name empty
+        ^argument1 <jug>)
+   (<jug> ^volume <v> ^contents <c>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+sp {water-jug*rl*pour
+   :template
+   (state <s> ^problem-space.name water-jug
+              ^operator <o> +)
+   (<o> ^name pour
+        ^argument1 <from>
+        ^argument2 <to>)
+   (<from> ^volume <fv> ^contents <fc>)
+   (<to> ^volume <tv> ^contents <tc>)
+-->
+   (<s> ^operator <o> = 0)
+}
+
+## Reward +1 when the goal is achieved is given by agent-world
+## (agent-world*state*elaboration*reward: ^flags.rl true and ^success <desireds>).
+## Reward -1 when both jugs are empty (original water-jug*reward*1).
+sp {water-jug*reward*both-empty
+   (state <s> ^problem-space.name water-jug
+              ^reward-link <r>
+              ^world.objects.object <j3> { <> <j3> <j5> })
+   (<j3> ^volume 3 ^contents 0)
+   (<j5> ^volume 5 ^contents 0)
+-->
+   (<r> ^reward <w>)
+   (<w> ^value -1)
+}

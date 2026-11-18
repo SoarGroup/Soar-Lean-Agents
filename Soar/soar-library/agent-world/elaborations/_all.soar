@@ -1,0 +1,154 @@
+## _all.soar -- agent-world: 11 elaborations.
+
+## Elaborate substate external-top-state -> sets external-top-state.
+## Elaborate a substate with a pointer to the external-top-state
+## This is the external, really top-state, even in look-ahead searches
+sp {agent-world*elaborate*substate*external-top-state
+   "Elaborate all states with the external-top-state except evaluate-operator"
+   :default
+   (state <s> ^superstate <superstate>)
+   (<superstate> ^external-top-state <top-state>
+                -^operator.name evaluate-operator)
+-->
+   (<s> ^external-top-state <top-state>)
+}
+
+## Elaborate substate super-desireds -> sets super-desireds.
+## Elaborate a substate with a structure to keep desireds from superstate
+## Other rules will copy the desired structures
+sp {agent-world*elaborate*substate*super-desireds
+   "Elaborate all states with super-desireds in operator no-change"
+   :default
+   (state <s> ^superstate <superstate>
+              ^attribute operator)
+   (<superstate> ^desireds
+                -^operator.name evaluate-operator)
+-->
+   (<s> ^super-desireds <super-desireds>)
+}
+
+## Elaborate substate world -> sets wor.
+## Elaborate a substate with a pointer to the world and io
+## Does not apply in the evaluation substate because a hypothetical state must be created.
+sp {agent-world*elaborate*substate*world
+   "Copy world link to substates except evaluate-operator"
+   :default
+   (state <s> ^superstate <superstate>
+             -^name selection
+             -^name no-task-operator  # not sure where this is created. Not in any of the selection files
+            )
+   (<superstate> ^world <world>
+                -^operator.name evaluate-operator)
+-->
+   (<s> ^world <world>)
+}
+
+## Elaborate substate io.
+## Elaborate a substate with a pointer to io
+## Does not apply in the evaluation substate because there is
+sp {agent-world*elaborate*substate*io
+   "Copy world and io links to substates except evaluate-operator"
+   :default
+   (state <s> ^superstate <superstate>
+             -^name selection)
+   (<superstate> ^io <io>
+                -^operator.name evaluate-operator)
+-->
+   (<s> ^io <io>)
+}
+
+## Elaborate substate flags -> sets fla.
+## Elaborate a substate with pointers to flags
+## Note: the flags should not be changed in substates
+sp {agent-world*elaborate*substate*flags
+   "Copy fixed structures to substate"
+   :default
+   (state <s> ^superstate.flags <flags>)
+-->
+   (<s> ^flags <flags>)
+}
+
+## Elaborate real -> sets r.
+## Copies down ^real but not in look-ahead.
+## Let's the agent know it is dealing with the real state and not a hypothetical
+sp {agent-world*elaborate*real
+   :default
+   (state <s> ^superstate.real <true>
+             -^name evaluate-operator
+             -^name selection)
+-->
+   (<s> ^real <true>)
+}
+
+## Elaborate substate operator desireds -> sets desireds, duplicate-of, desired-cou.
+## Elaborate a substate with copy of desireds from superstate -
+## need to do this to avoid o-supported structures returned to the operator
+sp {agent-world*elaborate*substate*operator*desireds
+   :default
+   (state <s> ^superstate.operator <super-operator>)
+   (<super-operator> -^name evaluate-operator
+                     -^pre-conditions-satisfied true
+                      ^desireds <desireds>)
+   (<desireds> ^desired-count $ <count>)  # Makes any chunk specific to the desired-count which is useful for avoiding overgeneral chunks
+-->
+   (<s> ^desireds <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>
+                ^desired-count <count>)
+}
+
+## Elaborate substate operator desireds desired -> sets desired.
+## Elaborate a substate with copy of desired from superstate -
+sp {agent-world*elaborate*substate*operator*desireds*desired
+   :default
+   (state <s> ^superstate.operator <super-operator>
+              ^desireds <desireds2>)
+   (<super-operator> -^name evaluate-operator
+                      ^desireds <desireds>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^desired <desired>)
+-->
+   (<desireds2> ^desired <desired>)
+}
+
+## Elaborate substate operator desireds world-context -> sets world-context.
+sp {agent-world*elaborate*substate*operator*desireds*world-context
+   :default
+   (state <s> ^superstate.operator <super-operator>
+              ^desireds <desireds2>)
+   (<super-operator> -^name evaluate-operator
+                      ^desireds <desireds>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^world-context <world-context>)
+-->
+   (<desireds2> ^world-context <world-context>)
+}
+
+## Elaborate substate operator desireds preferred-desired -> sets preferred-desired.
+## These will get a best preference
+sp {agent-world*elaborate*substate*operator*desireds*preferred-desired
+   :default
+   (state <s> ^superstate.operator <super-operator>
+              ^flags.desired-preferences true
+              ^desireds <desireds2>)
+   (<super-operator> -^name evaluate-operator
+                      ^desireds <desireds>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^preferred-desired <desired>)
+-->
+   (<desireds2> ^preferred-desired <desired>)
+}
+
+## Elaborate substate operator desireds avoid-desired -> sets avoid-desired.
+## These will get a worst preference
+sp {agent-world*elaborate*substate*operator*desireds*avoid-desired
+   :default
+   (state <s> ^superstate.operator <super-operator>
+              ^flags.desired-preferences true
+              ^desireds <desireds2>)
+   (<super-operator> -^name evaluate-operator
+                      ^desireds <desireds>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<desireds> ^avoid-desired <desired>)
+-->
+   (<desireds2> ^avoid-desired <desired>)
+}

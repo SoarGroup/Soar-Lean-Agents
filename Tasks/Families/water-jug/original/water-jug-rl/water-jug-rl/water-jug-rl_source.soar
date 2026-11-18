@@ -1,0 +1,9 @@
+source _firstload.soar
+pushd elaborations
+source elaborations_source.soar
+popd
+source initialize-water-jug.soar
+source fill.soar
+source empty.soar
+source pour.soar
+source rl.soar

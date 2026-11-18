@@ -1,0 +1,16 @@
+
+sp {move-block*elaborate*substate
+   (state <s> ^impasse no-change)
+   (<s> ^attribute operator)
+   (<s> ^superstate <ss>)
+   (<ss> ^operator <so>)
+   (<so> ^name move-block)
+   (<so> ^block <block>)
+   (<so> ^dest <dest>)
+   (<so> ^g <g>)
+-->
+   (<s> ^name move-block)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+}

@@ -1,0 +1,20 @@
+
+sp {wizards*elaborate*goal*success
+   (state <s> ^name wizards)
+   (<s> ^desired <d>)
+   (<s> ^world <x>)
+   (<d> ^world <dx>)
+   (<dx> ^done <g-done>)
+   (<x> ^done <g-done>)
+-->
+   (<s> ^success <d>)
+}
+
+sp {wizards*halt*goal*success
+   (state <s> ^superstate nil)
+   (<s> ^desired <d>)
+   (<s> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}

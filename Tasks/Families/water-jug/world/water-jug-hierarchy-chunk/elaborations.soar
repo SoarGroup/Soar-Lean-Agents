@@ -1,0 +1,49 @@
+## Problem space of every state named water-jug (top state and look-ahead states)
+
+sp {water-jug*elaborate*problem-space
+   (state <s> ^name water-jug)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name water-jug
+        ^agent-world true)
+}
+
+## Derived information: free capacity of a jug.  Kept on the state (not on the world
+## object) so that look-ahead copies of the world do not carry a stale value.
+
+sp {water-jug*elaborate*jug-free
+   (state <s> ^problem-space.name water-jug
+              ^world.objects.object <j>)
+   (<j> ^volume <v> ^contents <c>)
+-->
+   (<s> ^jug-free <jf>)
+   (<jf> ^jug <j> ^free (- <v> <c>))
+}
+
+## Achievement of object-property desireds (task-supplied, i-supported)
+
+sp {water-jug*elaborate*desired*achieved
+   (state <s> ^desireds <ds>
+              ^world.objects.object <obj>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+   (<obj> ^object-handle $ <h> ^anchored true ^<att> <val>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {water-jug*elaborate*desired*unachieved
+   (state <s> ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h>
+         ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <att> } <val>)
+  -{(<w> ^objects.object <obj>)
+    (<obj> ^object-handle <h> ^anchored true ^<att> <val>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+

@@ -1,0 +1,477 @@
+Web tasks: 100 candidate tasks with English descriptions found on the web (16 November 2026)
+None duplicates a task already in Tasks/Families, Tasks/From-English (Rosie, UWM, zebra, artists, wizards).
+Sheet: https://claude.ai/artifact/U6oyJSN3mzvMapkjAfNiKe
+[x] = selected; folder given. 20 selected: 5 Simon Tatham, 5 CSPLib, 10 classic AI and cognitive.
+
+[ ]   1. Bridges (Hashiwokakero)  (Grid logic)
+       Connect numbered islands with horizontal/vertical bridges (at most two between a pair, no
+       crossings) so each island has as many bridges as its number and all islands are connected.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP / search.
+
+[ ]   2. Cube  (Movement puzzle)
+       Roll a cube around a grid; when a face lands on a blue square the colour swaps between face
+       and square. Get all six faces blue.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: State-space search.
+
+[ ]   3. Dominosa  (Grid logic)
+       A grid of numbers holds a full set of dominoes; draw the domino boundaries so each pair of
+       numbers appears exactly once.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]   4. Fillomino (Filling)  (Grid logic)
+       Fill the grid with numbers so each connected region of equal numbers has exactly that many
+       cells and no two equal-size regions touch.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[x]   5. Lights Out (Flip)  (Toggle puzzle)
+       Pressing a cell toggles it and its neighbours; starting from a pattern, turn all lights off
+       (or on) in the fewest presses.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); GGP single-player game. Agent: Search / linear algebra.
+       Folder: simon-tatham/lights-out
+
+[ ]   6. Flood-It (Flood)  (Movement puzzle)
+       Repeatedly recolour the top-left region to absorb neighbours of that colour; make the whole
+       grid one colour within a move limit.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: Search / optimisation.
+
+[ ]   7. Galaxies (Tentai Show)  (Grid logic)
+       Divide the grid into regions, each rotationally symmetric about exactly one given dot.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[x]   8. Mastermind (Guess)  (Deduction game)
+       Deduce a hidden colour code; each guess is scored with counts of right-colour-right-place and
+       right-colour-wrong-place pegs.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); Knuth 1977. Agent: Hidden-information search.
+       Folder: simon-tatham/mastermind
+
+[ ]   9. Inertia  (Movement puzzle)
+       A ball slides until it hits a wall, stop square or gem; collect all gems without sliding onto
+       a mine.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: State-space search. Note: Maze variant; differs from simple-maze by momentum.
+
+[ ]  10. Light Up (Akari)  (Grid logic)
+       Place bulbs in white cells so every white cell is lit, no two bulbs see each other, and
+       numbered black cells have that many adjacent bulbs.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  11. Slitherlink (Loopy)  (Loop puzzle)
+       Draw a single closed loop along grid edges so each numbered cell has exactly that many of its
+       edges on the loop.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  12. Magnets  (Grid logic)
+       Fill dominoes with magnets (+/-) or blanks so row/column counts of + and - match and like
+       poles never touch orthogonally.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[x]  13. Minesweeper (Mines)  (Deduction game)
+       Uncover all safe cells; each uncovered cell shows how many of its eight neighbours contain
+       mines.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); KORGym. Agent: Hidden-information deduction.
+       Folder: simon-tatham/minesweeper
+
+[ ]  14. Mosaic  (Grid logic)
+       Shade cells so each clue equals the number of shaded cells in its 3x3 neighbourhood.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  15. Net  (Rotation puzzle)
+       Rotate tiles carrying wire segments so all tiles form one connected tree with no loose ends.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP / search.
+
+[ ]  16. Netslide  (Sliding puzzle)
+       Slide whole rows/columns of network tiles to reconnect the network into a single tree.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: State-space search.
+
+[ ]  17. Palisade  (Grid logic)
+       Divide the grid into regions of a given size so each clue equals the number of its sides that
+       are region borders.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[x]  18. Nonogram (Pattern)  (Grid logic)
+       Shade cells so each row and column's runs of shaded cells match the given clue lengths in
+       order.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); CSPLib prob012. Agent: CSP.
+       Folder: simon-tatham/nonogram
+
+[ ]  19. Masyu (Pearl)  (Loop puzzle)
+       Draw one loop through cell centres: it turns on black pearls (going straight on both sides)
+       and goes straight through white pearls (turning on at least one side).
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  20. Kurodoko (Range)  (Grid logic)
+       Shade cells (none adjacent, white cells connected) so each number equals the count of white
+       cells visible in four directions, itself included.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  21. Shikaku (Rectangles)  (Grid logic)
+       Divide the grid into rectangles, each containing exactly one number equal to its area.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  22. SameGame  (Tile removal)
+       Remove groups of two or more same-coloured adjacent tiles; tiles fall and columns close up.
+       Clear the board or maximise score.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); single-player MCTS benchmark (Schadd et al. 2008). Agent: Search / optimisation.
+
+[ ]  23. Signpost  (Path puzzle)
+       Link all cells into one path from 1 to N where each cell's arrow points (at any distance) to
+       the next cell.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP / search.
+
+[ ]  24. Hitori (Singles)  (Grid logic)
+       Black out cells so no number repeats in a row or column, no black cells touch, and white
+       cells stay connected.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  25. Sixteen  (Sliding puzzle)
+       Shift whole rows or columns of a 4x4 grid cyclically to put the numbered tiles in order.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: State-space search. Note: Not a fifteen-puzzle: no blank, row/column rotations.
+
+[ ]  26. Gokigen Naname (Slant)  (Grid logic)
+       Draw a diagonal in every cell with no loops, so each corner number equals the number of
+       diagonals touching it.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  27. Tents  (Grid logic)
+       Place one tent orthogonally next to each tree, tents not touching even diagonally, matching
+       row and column tent counts.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  28. Skyscrapers (Towers)  (Latin square)
+       Fill a Latin square with building heights so the edge clues equal how many buildings are
+       visible from that side.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); Enigmata grid puzzles. Agent: CSP.
+
+[ ]  29. Tracks  (Path puzzle)
+       Lay a single railway from entrance to exit so each row and column contains the indicated
+       number of track pieces.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  30. Twiddle  (Rotation puzzle)
+       Rotate square blocks of tiles to restore the numbered tiles to order.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: State-space search.
+
+[ ]  31. Undead  (Grid logic)
+       Place ghosts, vampires and zombies so the number seen along each mirrored line of sight
+       matches the edge counts (ghosts seen only in mirrors, vampires only directly).
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[x]  32. Futoshiki (Unequal)  (Latin square)
+       Fill a Latin square respecting the given inequality signs between adjacent cells.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024); Reasoning Gym (Stojanovski et al., NeurIPS 2025). Agent: CSP.
+       Folder: simon-tatham/futoshiki
+
+[ ]  33. Takuzu / Binairo (Unruly)  (Grid logic)
+       Fill a grid with black and white so each row and column is balanced and no three of the same
+       colour are in a line.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: CSP.
+
+[ ]  34. Black Box  (Deduction game)
+       Fire rays into a box and observe absorption, reflection or exit point to deduce the hidden
+       ball positions.
+       Source: Tatham Portable Puzzle Collection; PUZZLES RL benchmark (Estermann et al., NeurIPS 2024). Agent: Hidden-information deduction.
+
+[ ]  35. Game of 24  (Arithmetic)
+       Combine four given numbers with + - * / and parentheses, using each exactly once, to make 24.
+       Source: Tree of Thoughts (Yao et al., NeurIPS 2023). Agent: Search.
+
+[ ]  36. 5x5 Mini Crosswords  (Word puzzle)
+       Fill a 5x5 grid with words matching ten clues (five across, five down).
+       Source: Tree of Thoughts (Yao et al., NeurIPS 2023). Agent: Search with lexicon. Note: Needs a word list.
+
+[ ]  37. Countdown numbers game  (Arithmetic)
+       Reach a target number from six given numbers using + - * / (each number at most once).
+       Source: Reasoning Gym (Stojanovski et al., NeurIPS 2025). Agent: Search.
+
+[ ]  38. Rush Hour  (Sliding puzzle)
+       Slide cars and trucks (each along its own axis) on a 6x6 grid until the red car can exit.
+       Source: Reasoning Gym (Stojanovski et al., NeurIPS 2025); heuristic-search benchmark. Agent: State-space search.
+
+[ ]  39. Rubik's Cube (2x2 or 3x3)  (Permutation puzzle)
+       Rotate cube faces to return every face to a single colour.
+       Source: Reasoning Gym (Stojanovski et al., NeurIPS 2025); DeepCubeA (Agostinelli et al. 2019); Korf 1997. Agent: Heuristic search.
+
+[ ]  40. Word Ladder  (Word puzzle)
+       Turn one word into another by changing one letter at a time, each step being a valid word.
+       Source: Reasoning Gym (Stojanovski et al., NeurIPS 2025); KORGym. Agent: Search with lexicon. Note: Needs a word list.
+
+[ ]  41. Wordle  (Deduction game)
+       Guess a hidden five-letter word in six tries; feedback marks letters correct, present
+       elsewhere, or absent.
+       Source: KORGym; LLM-agent benchmarks. Agent: Hidden-information search. Note: Needs a word list.
+
+[ ]  42. 2048  (Stochastic game)
+       Slide all tiles in a direction, merging equal tiles; a new tile appears after each move.
+       Reach the 2048 tile.
+       Source: KORGym; Szubert & Jaśkowski 2014; Matsuzaki. Agent: Stochastic single-player. Note: Environment supplies random tile.
+
+[ ]  43. Hamiltonian path / cycle  (Graph puzzle)
+       Find a path (or cycle) in a given graph that visits every vertex exactly once.
+       Source: Enigmata (graph category). Agent: Search. Note: Related to TSP and knight's tour but distinct.
+
+[ ]  44. Pancake sorting  (Permutation puzzle)
+       Sort a stack of pancakes by size using only prefix reversals (flip the top k).
+       Source: Heuristic-search benchmark (Helmert 2010 gap heuristic). Agent: Heuristic search.
+
+[ ]  45. TopSpin  (Permutation puzzle)
+       Rotate a ring of numbered tokens and reverse the tokens in a fixed turnstile to sort the
+       ring.
+       Source: Heuristic-search benchmark (pattern databases, Felner et al.). Agent: Heuristic search.
+
+[ ]  46. Klotski  (Sliding puzzle)
+       Slide rectangular blocks within a 4x5 tray to move the large 2x2 block to the exit.
+       Source: Sliding-block search benchmark. Agent: State-space search.
+
+[x]  47. Golomb ruler  (Combinatorics)
+       Place n marks on a ruler so all pairwise distances are distinct, minimising ruler length.
+       Source: CSPLib prob006. Agent: Constraint optimisation.
+       Folder: csplib/golomb-ruler
+
+[x]  48. All-interval series  (Combinatorics)
+       Order 0..n-1 so the absolute differences between neighbours are a permutation of 1..n-1.
+       Source: CSPLib prob007. Agent: CSP.
+       Folder: csplib/all-interval-series
+
+[ ]  49. Perfect square placement  (Packing)
+       Pack a given set of squares exactly into a master square without overlap.
+       Source: CSPLib prob009. Agent: CSP.
+
+[x]  50. Social golfers  (Combinatorial design)
+       Schedule golfers into groups over several weeks so no two golfers play in the same group
+       twice.
+       Source: CSPLib prob010. Agent: CSP.
+       Folder: csplib/social-golfers
+
+[ ]  51. Solitaire Battleships  (Grid logic)
+       Place a fleet of ships on a grid matching row/column counts and given hints, ships not
+       touching.
+       Source: CSPLib prob014. Agent: CSP.
+
+[ ]  52. Schur's lemma  (Combinatorics)
+       Put n balls numbered 1..n into k boxes so no box contains x, y, z with x + y = z.
+       Source: CSPLib prob015. Agent: CSP.
+
+[x]  53. Magic squares  (Arithmetic)
+       Place 1..n^2 in an n x n grid so every row, column and main diagonal has the same sum.
+       Source: CSPLib prob019. Agent: CSP.
+       Folder: csplib/magic-squares
+
+[ ]  54. Magic hexagon  (Arithmetic)
+       Place 1..19 in a hexagonal arrangement so every straight line sums to 38.
+       Source: CSPLib prob023. Agent: CSP.
+
+[x]  55. Langford's problem  (Combinatorics)
+       Arrange two copies of 1..n so the two k's have exactly k numbers between them.
+       Source: CSPLib prob024. Agent: CSP.
+       Folder: csplib/langford
+
+[ ]  56. Alien Tiles  (Toggle puzzle)
+       Clicking a cell advances the colour of every cell in its row and column; reach a target
+       colouring.
+       Source: CSPLib prob027. Agent: Search / CSP. Note: Related to Lights Out, different move rule.
+
+[ ]  57. Prime queen attacking  (Chess problem)
+       Place a queen and numbers 1..n^2 in a knight's-tour order so the queen attacks as few primes
+       as possible.
+       Source: CSPLib prob029. Agent: Constraint optimisation.
+
+[ ]  58. Maximum density still life  (Cellular automata)
+       Find the densest stable pattern of live cells in Conway's Game of Life within an n x n
+       region.
+       Source: CSPLib prob032. Agent: Constraint optimisation.
+
+[ ]  59. n-Fractions puzzle  (Arithmetic)
+       Assign distinct digits to letters so A/BC + D/EF + G/HI = 1 (generalised to n fractions).
+       Source: CSPLib prob041. Agent: CSP. Note: Arithmetic-letters like SEND+MORE but different structure.
+
+[ ]  60. Number partitioning  (Arithmetic)
+       Split 1..n into two equal-size sets with equal sums and equal sums of squares.
+       Source: CSPLib prob049. Agent: CSP.
+
+[ ]  61. Graceful graph labelling  (Graph puzzle)
+       Label vertices with distinct numbers 0..m so edge labels |u-v| are exactly 1..m.
+       Source: CSPLib prob053. Agent: CSP.
+
+[ ]  62. Quasigroup completion  (Latin square)
+       Complete a partially filled Latin square.
+       Source: CSPLib prob067; Gomes & Selman. Agent: CSP. Note: Generalises Sudoku without boxes.
+
+[ ]  63. Costas arrays  (Combinatorics)
+       Place n dots, one per row and column, so all displacement vectors between pairs are distinct.
+       Source: CSPLib prob076. Agent: CSP.
+
+[ ]  64. Black Hole solitaire  (Card solitaire)
+       Move cards one rank up or down onto a central pile from 17 fans of three until all cards are
+       played.
+       Source: CSPLib prob081. Agent: Search. Note: Distinct from golf and tri-peaks rules.
+
+[ ]  65. Peaceable armies of queens  (Chess problem)
+       Place two equal armies of queens on a board so no queen attacks a queen of the other army;
+       maximise army size.
+       Source: CSPLib prob110. Agent: Constraint optimisation. Note: Different from n-queens.
+
+[ ]  66. Steiner triple systems  (Combinatorial design)
+       Choose triples from n points so every pair of points is in exactly one triple.
+       Source: CSPLib prob044. Agent: CSP.
+
+[ ]  67. Crossfigures  (Word/number puzzle)
+       Fill a crossword-shaped grid with numbers that satisfy arithmetic across and down clues.
+       Source: CSPLib prob021. Agent: CSP.
+
+[ ]  68. Car sequencing  (Scheduling)
+       Order cars on an assembly line so option stations never exceed capacity limits (e.g., at most
+       1 sunroof in any 2 cars).
+       Source: CSPLib prob001. Agent: CSP.
+
+[ ]  69. Progressive party problem  (Scheduling)
+       Assign guest crews to host boats over several periods respecting capacities, with no crew
+       revisiting a host or meeting another crew twice.
+       Source: CSPLib prob013. Agent: CSP.
+
+[ ]  70. Gripper  (Planning)
+       A robot with two grippers carries balls from room A to room B.
+       Source: International Planning Competition (PDDL) 1998. Agent: Planning.
+
+[ ]  71. Logistics  (Planning)
+       Move packages between cities using trucks within cities and planes between airports.
+       Source: International Planning Competition (PDDL) 1998/2000. Agent: Planning.
+
+[ ]  72. Miconic (elevator)  (Planning)
+       Plan elevator moves to pick up and deliver passengers to their destination floors.
+       Source: International Planning Competition (PDDL) 2000. Agent: Planning.
+
+[ ]  73. FreeCell  (Card solitaire)
+       Move all cards to foundations by suit in order, using four free cells and eight tableau
+       columns built down in alternating colours.
+       Source: International Planning Competition (PDDL) 2000/2002. Agent: Planning / search. Note: Distinct from golf and tri-peaks.
+
+[ ]  74. Depots  (Planning)
+       Combine logistics and blocks world: trucks carry crates between depots where hoists stack
+       them.
+       Source: International Planning Competition (PDDL) 2002. Agent: Planning. Note: Contains blocks-world substructure.
+
+[ ]  75. Briefcase world  (Planning)
+       Carry objects between locations in a briefcase; objects in the case move with it.
+       Source: PDDL benchmark (Pednault ADL); PDDL generators. Agent: Planning.
+
+[ ]  76. Ferry  (Planning)
+       A ferry carries one car at a time between ports to reach goal locations.
+       Source: PDDL benchmark; PDDL generators. Agent: Planning. Note: Single-capacity transport, not river-crossing constraints.
+
+[ ]  77. Tyreworld (spare tire)  (Planning)
+       Change a flat tyre: open boot, fetch tools and spare, loosen nuts, jack up, swap wheels, tidy
+       up.
+       Source: PDDL benchmark (Russell); AIMA spare-tire problem. Agent: Planning.
+
+[ ]  78. Barman  (Planning)
+       A robot bartender with two hands uses dispensers, shot glasses and a shaker to prepare
+       cocktails.
+       Source: International Planning Competition (PDDL) 2011. Agent: Planning.
+
+[ ]  79. Childsnack  (Planning)
+       Make sandwiches (some gluten-free) and serve them on trays to children with dietary
+       constraints.
+       Source: International Planning Competition (PDDL) 2014. Agent: Planning.
+
+[ ]  80. Visitall  (Planning)
+       An agent on a grid must visit every cell.
+       Source: International Planning Competition (PDDL) 2011. Agent: Planning.
+
+[ ]  81. Floortile  (Planning)
+       Robots paint floor tiles in a pattern; they cannot stand on painted tiles.
+       Source: International Planning Competition (PDDL) 2011. Agent: Planning.
+
+[ ]  82. Grid (keys and locks)  (Planning)
+       A robot moves on a grid with locked cells, picking up keys of the right shape to open locks
+       and deliver keys.
+       Source: International Planning Competition (PDDL) 1998. Agent: Planning.
+
+[x]  83. Monkey and Bananas  (Classic AI)
+       A monkey must push a box under hanging bananas, climb it and grab them.
+       Source: STRIPS/OPS5 classic; McCarthy 1963. Agent: Planning.
+       Folder: classic-ai/monkey-and-bananas
+
+[x]  84. Vacuum world  (Classic AI)
+       A vacuum agent in two (or n) squares must clean all dirty squares by moving and sucking.
+       Source: AIMA (Russell & Norvig). Agent: Planning / search.
+       Folder: classic-ai/vacuum-world
+
+[x]  85. Wumpus world  (Classic AI)
+       Explore a cave grid using breeze/stench/glitter percepts to find gold and avoid pits and the
+       Wumpus.
+       Source: AIMA (Russell & Norvig). Agent: Partially observable, self-simulated. Note: Environment hidden state simulated internally.
+       Folder: classic-ai/wumpus-world
+
+[x]  86. Tower of London  (Cognitive task)
+       Rearrange three coloured balls on three pegs of different heights to match a goal arrangement
+       in a minimum number of moves.
+       Source: Shallice 1982; cognitive-architecture models. Agent: State-space search. Note: Related to Hanoi but distinct constraints.
+       Folder: classic-ai/tower-of-london
+
+[x]  87. Bridge and torch  (Logic puzzle)
+       Four people cross a bridge at night in groups of at most two with one torch; get everyone
+       across within 17 minutes.
+       Source: Classic puzzle; Rote 2002 analysis. Agent: State-space search. Note: Crossing puzzle, but time-cost optimisation.
+       Folder: classic-ai/bridge-and-torch
+
+[x]  88. Counterfeit coin (12 coins)  (Logic puzzle)
+       Find the one counterfeit coin among twelve and whether it is heavier or lighter using a
+       balance three times.
+       Source: Classic puzzle; used in planning under uncertainty. Agent: Conditional planning.
+       Folder: classic-ai/counterfeit-coin
+
+[x]  89. Muddy children  (Epistemic logic)
+       Children with mud on their foreheads reason about announcements to deduce whether they are
+       muddy.
+       Source: Fagin et al., Reasoning about Knowledge. Agent: Epistemic reasoning.
+       Folder: classic-ai/muddy-children
+
+[x]  90. Cheryl's birthday  (Epistemic logic)
+       Two people told the month and day reason through a dialogue to deduce Cheryl's birthday from
+       a list of dates.
+       Source: Epistemic-logic benchmarks for LLMs. Agent: Epistemic reasoning.
+       Folder: classic-ai/cheryls-birthday
+
+[x]  91. Mutilated checkerboard  (Classic AI)
+       Can 31 dominoes cover a chessboard with two opposite corners removed? Prove the answer.
+       Source: McCarthy 1964 (representation-change challenge). Agent: Reasoning / proof.
+       Folder: classic-ai/mutilated-checkerboard
+
+[x]  92. Instant Insanity  (Combinatorial puzzle)
+       Stack four coloured cubes so each of the four sides of the column shows all four colours.
+       Source: Classic CSP / graph-theory puzzle. Agent: CSP.
+       Folder: classic-ai/instant-insanity
+
+[ ]  93. Nim  (Two-player game)
+       Players alternately remove any number of objects from one heap; whoever takes the last object
+       wins.
+       Source: Combinatorial game theory; GGP. Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  94. Connect Four  (Two-player game)
+       Drop discs into a 7x6 grid; first to get four in a row wins.
+       Source: Allis 1988; GGP; OpenSpiel. Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  95. Hex  (Two-player game)
+       Place stones on a rhombic hex board; each player tries to connect their two sides.
+       Source: OpenSpiel; MoHex. Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  96. Dots and Boxes  (Two-player game)
+       Players draw lines between dots; completing a box scores and grants another move.
+       Source: Berlekamp; OpenSpiel. Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  97. Kalah (Mancala)  (Two-player game)
+       Sow seeds counter-clockwise from your pits; capture by landing in empty pits; most seeds in
+       store wins.
+       Source: Classic game-search testbed; GGP. Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  98. Checkers (draughts)  (Two-player game)
+       Move diagonally, capture by jumping, promote to kings; capture or block all opponent pieces.
+       Source: Samuel 1959; Chinook (Schaeffer 2007). Agent: Two-player: environment plays opponent (as in Rosie board games).
+
+[ ]  99. Chess endgame KRK  (Two-player game)
+       With king and rook against a lone king, deliver checkmate.
+       Source: Classic ML/search dataset (UCI KRK). Agent: Two-player: environment plays opponent (as in Rosie board games). Note: Uses chess move rules like the chess-problems set.
+
+[ ] 100. Konane  (Two-player game)
+       Hawaiian checkers: capture by jumping orthogonally; the player unable to move loses.
+       Source: GGP; AI course game-search testbed. Agent: Two-player: environment plays opponent (as in Rosie board games).
+

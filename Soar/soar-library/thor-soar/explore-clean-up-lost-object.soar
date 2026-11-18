@@ -1,0 +1,48 @@
+## explore-clean-up-lost-object.soar -- thor-soar: 1 proposal, 1 application.
+
+## Propose explore-clean-up-lost-object.
+sp {thor-soar*propose*explore-clean-up-lost-object
+    :default
+   (state <s> ^name thor-soar
+              ^io.output-link <output>
+              ^scene.objects.object <object>
+              ^explore-structure <es>)
+   (<es> ^actions.action <action>
+         ^current-class.class-handle <class-handle>)
+   (<object> -^in-view true
+              ^class <class-handle>)
+   (<action> ^action-handle <action-handle>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^argument1 <object-handle>
+         ^status success)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name explore-clean-up-lost-object
+         ^explore-operator true
+         ^argument1 <action>)
+}
+
+## Apply explore-clean-up-lost-object -> sets perform-action, tested-action, action ....
+sp {apply*explore-clean-up-lost-object
+    :default
+   (state <s> ^operator <op>
+              ^io.output-link <output>
+              ^explore-structure <es>)
+   (<output> ^perform-action <pa>)
+   (<pa> ^name <action-handle>
+         ^argument1 <object-handle>
+         ^status success)
+   (<es> ^actions.action <action>
+         ^current-class <class>)
+   (<action> ^action-handle <action-handle>)
+   (<op> ^name explore-clean-up-lost-object
+         ^argument1 <action>)
+-->
+   (log 1 (crlf) | Lost object after action (break?): | <action-handle>)
+   (<output> ^perform-action <pa> -)
+   (<class> ^tested-action <tested-action>)
+   (<tested-action> ^action <action>
+                    ^success true
+                    ^need-undo-action false)
+}

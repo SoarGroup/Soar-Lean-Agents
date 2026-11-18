@@ -1,0 +1,38 @@
+
+sp {move-block*propose*put-down
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<ss> ^object <y>)
+   (<ss> ^object <d>)
+   (<d> ^clear 1)
+   (<g> ^empty 0)
+   (<g> ^holding <y>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name put-down)
+   (<o> ^y <y>)
+   (<o> ^d <d>)
+}
+
+sp {move-block*apply*put-down
+   (state <s> ^name move-block)
+   (<s> ^superstate <ss>)
+   (<s> ^block <block>)
+   (<s> ^dest <dest>)
+   (<s> ^g <g>)
+   (<s> ^operator <o>)
+   (<o> ^name put-down)
+   (<o> ^y <y>)
+   (<o> ^d <d>)
+   (<y> ^on <y-on>)
+   (<g> ^empty <g-empty>)
+-->
+   (<y> ^on <d>)
+   (<y> ^on <y-on> -)
+   (<g> ^empty 1)
+   (<g> ^empty <g-empty> -)
+}

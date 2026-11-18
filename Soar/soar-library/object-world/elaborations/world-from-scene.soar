@@ -1,0 +1,18 @@
+## world-from-scene.soar -- object-world: 1 elaboration.
+
+## Elaborate world-from-scene attended-object -> sets object.
+sp {object-world*elaborate*world-from-scene*attended-object
+   :default
+   :o-support
+   (state <s> ^top-state <s>
+              ^attends.attend <object-handle>
+              ^scene.objects.object <object-s>
+              ^world <world>)
+   (<object-s> ^object-handle <object-handle>)
+   (<world> ^objects <world-objects>
+            ^anchored-world true)
+  -(<world-objects> ^object.object-handle <object-handle>)
+-->
+   (log 1 (crlf)  |Attend | <object-handle>)
+   (<world-objects> ^object <object-s>)
+}

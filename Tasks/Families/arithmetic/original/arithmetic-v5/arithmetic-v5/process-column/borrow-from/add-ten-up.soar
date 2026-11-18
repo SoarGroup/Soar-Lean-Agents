@@ -1,0 +1,39 @@
+
+sp {borrow-from*propose*add-ten-up
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^|d1| <_v6>)
+   (<ts> ^ten-fact <t>)
+   (<s> ^wrote 1)
+   (<t> ^n <ss-d1>)
+   (<ss> ^|d1| <ss-d1>)
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name add-ten-up)
+   (<o> ^t <t>)
+}
+
+sp {borrow-from*apply*add-ten-up
+   (state <s> ^name borrow-from)
+   (<s> ^superstate <ss>)
+   (<s> ^task-state <ts>)
+   (<s> ^p <p>)
+   (<s> ^c <c>)
+   (<s> ^m <m>)
+   (<s> ^operator <o>)
+   (<o> ^name add-ten-up)
+   (<o> ^t <t>)
+   (<ss> ^|d1| <ss-d1>)
+   (<t> ^plus10 <t-plus10>)
+   (<ss> ^ten <ss-ten>)
+-->
+   (<ss> ^|d1| <t-plus10>)
+   (<ss> ^|d1| <ss-d1> -)
+   (<ss> ^ten 1)
+   (<ss> ^ten <ss-ten> -)
+}

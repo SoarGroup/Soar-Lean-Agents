@@ -1,0 +1,37 @@
+## failure.soar -- agent-world: 2 elaborations.
+
+## Elaborate pass-back-failure-mea-subgoaling.
+sp {agent-world*elaborate*pass-back-failure-mea-subgoaling
+   :default
+   (state <s> ^attribute operator
+              ^problem-space.name <problem-space>
+              ^choices none
+              ^failure <desireds>
+              ^desireds <desireds>
+              ^superstate <ss>)
+   (<desireds> ^duplicate-of <desireds2>)
+   (<ss> ^attribute operator
+         ^choices none
+         ^desireds <desireds2>
+         ^problem-space.name <problem-space>)
+-->
+   (<ss> ^failure <desireds2>)
+}
+
+## Elaborate pass-back-failure-mea-subgoaling2.
+sp {agent-world*elaborate*pass-back-failure-mea-subgoaling2
+   :default
+   (state <s> ^attribute operator
+              ^problem-space.name <problem-space>
+              ^choices none
+              ^failure <desireds>
+              ^desireds <desireds>
+              ^superstate <ss>)
+   (<desireds> -^duplicate-of <desireds2>)
+   (<ss> ^attribute operator
+         ^choices none
+         ^desireds <desireds2>
+         ^problem-space.name <problem-space>)
+-->
+   (<ss> ^failure <desireds2>)
+}

@@ -1,0 +1,103 @@
+## achieved-max-depth.soar -- selection-world: 1 proposal, 4 compares.
+
+## ---- operator proposal ----
+
+## Propose achi.
+sp {selection-world*propose*selection*achieved-max-depth
+   :default
+   (state <s> ^name selection
+              ^state-grounded true
+              ^max-evaluation-depth <med>
+              ^current-evaluation-depth.value >= <med>)
+-->
+   (<s> ^operator <operator> + =)
+   (<operator> ^name achieved-max-depth)
+}
+
+## ---- evaluate / compare ----
+
+## Preference for selection achieved-max-depth evaluate-operator.
+sp {selection-world*compare*selection*achieved-max-depth*evaluate-operator
+   :default
+   (state <s> ^name selection
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name achieved-max-depth)
+   (<op2> ^name evaluate-operator)
+-->
+   (<s> ^operator <op1> < <op2>)
+}
+
+## Preference for achieved-max-depth worst.
+## Make exhausted operators worst
+sp {selection-world*compare*achieved-max-depth*worst
+   :default
+   (state <s> ^operator.name achieved-max-depth
+              ^state-grounded true
+              ^evaluation <evaluation>
+              ^superstate <superstate>)
+   (<evaluation> ^symbolic-value << depth-exceeded depth-exhaustion exhaustion-failure >>
+                 ^super-operator <x>
+                 ^desireds.duplicate-of <desireds>)
+   (<superstate> ^desireds <desireds>)
+-->
+   (<superstate> ^operator <x> <, =)
+}
+
+## Preference for achieved-max-depth worst2.
+sp {selection-world*compare*achieved-max-depth*worst2
+   :default
+   (state <s> ^operator.name achieved-max-depth
+              ^state-grounded true
+              ^item <x>
+              ^superstate <superstate>)
+  -{(<s> ^evaluation <evaluation>)
+    (<evaluation> ^super-operator <x>
+                  ^desireds.duplicate-of <desireds>)}
+   (<superstate> ^desireds <desireds>)
+-->
+   (<superstate> ^operator <x> <, =)
+}
+
+## Preference for achieved-max-depth best.
+## Make successful operators best
+sp {selection-world*compare*achieved-max-depth*best
+   :default
+   (state <s> ^operator.name achieved-max-depth
+              ^state-grounded true
+              ^evaluation <evaluation>
+              ^superstate <superstate>)
+   (<evaluation> ^symbolic-value success
+                 ^super-operator <x>
+                 ^desireds.duplicate-of <desireds>)
+   (<superstate> ^desireds <desireds>)
+-->
+   (<superstate> ^operator <x> >, =)
+}
+
+## Ground the state before the depth-limit results are returned (see ground-state.soar in task-operator/Impasse__State_No-Change).
+## The results are worst/best preferences for operators whose search was cut at the depth limit; their justification does not mention the world.
+## Grounding starts only when the limit is reached and every evaluate-operator has run (ground-init is worse than evaluate-operator).
+sp {selection-world*propose*selection*ground-init*max-depth
+   :default
+   (state <s> ^name selection
+              ^top-selection true
+              ^flags.failure-grounding explicit
+              ^max-evaluation-depth <med>
+              ^current-evaluation-depth.value >= <med>
+             -^grounding
+              ^superstate <ss>)
+   (<ss> ^world <w> ^desireds <d>)
+-->
+   (<s> ^operator <op> + =)
+   (<op> ^name ground-init)}
+
+sp {selection-world*compare*selection*ground-init*evaluate-operator
+   :default
+   (state <s> ^name selection
+              ^operator <op1> +
+                        { <> <op1> <op2> }  +)
+   (<op1> ^name ground-init)
+   (<op2> ^name evaluate-operator)
+-->
+   (<s> ^operator <op1> < <op2>)}
