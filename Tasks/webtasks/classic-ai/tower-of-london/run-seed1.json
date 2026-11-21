@@ -1,1 +1,1 @@
-{"outcome": "success", "decisions": 5594, "actions": [["move", "blue-ball", "c-low"], ["move", "green-ball", "b-low"], ["move", "red-ball", "b-top"], ["move", "blue-ball", "a-low"], ["move", "red-ball", "a-mid"]], "n_actions": 5, "seconds": 6.6, "cpu": "4.317"}
+{"outcome": "success", "decisions": 7348, "actions": [["move", "blue-ball", "c-low"], ["move", "green-ball", "b-low"], ["move", "red-ball", "b-top"], ["move", "blue-ball", "a-low"], ["move", "red-ball", "a-mid"]], "n_actions": 5, "seconds": 8.5, "cpu": "5.292"}

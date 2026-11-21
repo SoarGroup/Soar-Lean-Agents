@@ -1,5 +1,19 @@
 # Muddy children: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `muddy-children-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 27 rules, as before. The 47 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | success 15 / 4 | success 15 / 4 | success 15 / 4 | father-speaks talk; ask first; ask second; ask third |
+| 2 | success 15 / 4 | success 15 / 4 | success 15 / 4 | father-speaks talk; ask first; ask second; ask third |
+| 3 | success 15 / 4 | success 15 / 4 | success 15 / 4 | father-speaks talk; ask first; ask second; ask third |
+
+The earlier sections below describe the generation of 16 November.
+
 **Runnable.** Soar 9.6.6 (kernel 9.6.50), library v2.41, defaults. Each seed: the father speaks, then rounds 1, 2 and 3. The agent's world records yes from **Amy and Ben in round 2** and from **Cal in round 3**; round 1 rules out the three one-muddy worlds, round 2 the worlds with Cal muddy or all muddy. Read from the agent's real world after the run; identical to the semantics.
 
 **Checked by Lean (Lean 4.35.0).** `muddyChildren_wellFormed : muddyChildren.wellFormed = [] := by decide` is proved; `rosiegen json` gives the same JSON as the Python description; path A (Lean) and path B (spec_backend.py) give identical rules; `rosiegen check` agrees on every example state; `rosiegen replay` accepts every run (with the null second arguments removed, see the classic-ai README).

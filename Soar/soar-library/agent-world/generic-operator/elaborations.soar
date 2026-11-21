@@ -1,4 +1,4 @@
-## elaborations.soar -- agent-world: 5 elaborations.
+## elaborations.soar -- agent-world: 7 elaborations.
 
 ## Elaborate substate super-operator attributes.
 sp {agent-world*elaborate*substate*super-operator*attributes
@@ -44,8 +44,36 @@ sp {agent-world*elaborate*operator-implementation-substate*super-operator-desire
           ^effect-desireds <effect-desireds>)
 -->
    (<s> ^desireds <desireds>)
-   (<desireds> ^copied-from <effect-desireds>
-               ^better lower)          # assumes minimize time - maybe a bug
+   (<desireds> ^copied-from <effect-desireds>)
+}
+
+## Elaborate operator-implementation-substate desireds better -> the orientation of numeric values (^better) of the superstate's desireds (v2.45;
+## before, ^better lower was set unconditionally).
+sp {agent-world*elaborate*operator-implementation-substate*super-operator-desireds*better
+   :default
+   (state <s> ^superstate <ss>
+              ^impasse no-change
+              ^attribute operator
+              ^desireds <desireds>)
+   (<desireds> ^copied-from <effect-desireds>)
+   (<ss> ^desireds.better <better>)
+-->
+   (<desireds> ^better <better>)
+}
+
+## Elaborate operator-implementation-substate desireds better lower -> ^better lower when the superstate's desireds state no orientation
+## (a cost metric is minimized by default).
+sp {agent-world*elaborate*operator-implementation-substate*super-operator-desireds*better*default
+   :default
+   (state <s> ^superstate <ss>
+              ^impasse no-change
+              ^attribute operator
+              ^desireds <desireds>)
+   (<desireds> ^copied-from <effect-desireds>)
+   (<ss> ^desireds <ss-desireds>)
+  -(<ss-desireds> ^better)
+-->
+   (<desireds> ^better lower)
 }
 
 ## Elaborate operator-implementation-substate super-operator-desireds copy.

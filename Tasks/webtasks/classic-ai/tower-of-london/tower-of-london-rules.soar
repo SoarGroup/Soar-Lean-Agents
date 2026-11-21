@@ -15,6 +15,7 @@
 ##   A-TL4: "another peg": the target slot is of a different peg than the ball's slot.
 ##   A-TL5: "as few moves as possible": unit cost per move, read through the library's search settings, not through the rules.
 
+## Propose initialize-tower-of-london when its conditions below hold.
 sp {tower-of-london*propose*initialize-tower-of-london
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -110,6 +111,7 @@ sp {tower-of-london*apply*initialize-tower-of-london
    (log 1 (crlf) |Initialize tower-of-london.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {tower-of-london*elaborate*problem-space
    (state <s> ^name tower-of-london)
 -->
@@ -126,6 +128,7 @@ sp {tower-of-london*elaborate*problem-space*mea-substate
    (<p> ^name tower-of-london ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {tower-of-london*elaborate*flags
    (state <s> ^superstate nil ^name tower-of-london)
 -->
@@ -135,7 +138,7 @@ sp {tower-of-london*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {tower-of-london*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tower-of-london ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -146,7 +149,7 @@ sp {tower-of-london*elaborate*state*achieved*object-property
 }
 
 sp {tower-of-london*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tower-of-london ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -182,7 +185,7 @@ sp {tower-of-london*propose*move
    (<w> ^of <r8>)
    (<r8> ^argument1 <t> ^argument2 <p2>)
    (<objs> ^object { <> <p1> <p2> })
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <t> ^argument-count 2 ^desireds <pre>)
@@ -191,7 +194,7 @@ sp {tower-of-london*propose*move
 
 ## Effect of move (look-ahead).
 sp {tower-of-london*apply*move*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name tower-of-london ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <b-h> ^argument2.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b>)
@@ -212,7 +215,7 @@ sp {tower-of-london*apply*move*internal
 ## Effect of a completed move command on the real world (once per command).
 sp {tower-of-london*apply*move*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name tower-of-london ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <b-h> ^argument2 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b>)
@@ -234,7 +237,7 @@ sp {tower-of-london*apply*move*environment-effect
 
 ## Goal (statement 5): ^goal-met true on the task object.
 sp {tower-of-london*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name tower-of-london ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

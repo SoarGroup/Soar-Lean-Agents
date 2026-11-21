@@ -1,6 +1,9 @@
+## ^quiescence t: no chunk is built over duplicate detection. The ancestor comparison lies inside the
+## subgoal stack, so a chunk over it would drop it and reject the move in any state (to-do row 6, 21 Nov 2026).
 
 sp {mac*evaluate*state*failure*duplicate
-   (state <s> ^name mac)
+   (state <s> ^name mac
+              ^quiescence t)
    (<s> ^tried-tied-operator <_v1>)
    (<s> ^desired <d>)
    (<s> ^ancestor <a>)

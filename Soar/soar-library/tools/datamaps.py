@@ -119,7 +119,7 @@ def build_global(out):
         for e in v.get('outEdges',[]): g.prov[(v['id'],e['name'],e['toId'])]={'AW'}
     for t in ('SW','ID','T'): g.merge(t,S[t],roots[t])
     # decisions on datamap type conflicts (JEL, 13 Nov 2026): attends.attend is a constant handle (STRING); the scene-copy structure has
-    # no rules and is dropped. abstract-property stays STRING, desireds.achieved and the argument attributes stay SOAR_ID (merge default).
+    # no rules and is dropped. desireds.achieved and the argument attributes stay SOAR_ID (merge default).
     def edge_at(path):
         c=g.root; ed=None
         for p in path.split('.'):
@@ -168,7 +168,6 @@ def build_global(out):
                 ne=dict(e); ne['toId']=nilv; ne_list.append(ne); g.prov[(vid,nm,nilv)]=set(g.prov.get((vid,nm,e['toId']),{'AW'}))
         if 'outEdges' in v: v['outEdges']=ne_list
     g.decided=[
-     'world.abstract-property: STRING (its value names an attribute; rule achieved-desired*abstract-property)',
      'desireds.achieved: SOAR_ID (pointer to an achieved desired; the ^achieved true comment in _firstload is stale)',
      '^argument1 to ^argument4 (operator, desireds, world, scene, retrieved-in, io.output-link.perform-action): SOAR_ID. A few Thor operators (turn, fill, scene-update) use constant arguments; the datamap cannot show both.',
      'attends.attend: STRING (the value is an object handle); children removed',
@@ -350,7 +349,7 @@ def main(out,only_assemble=False):
         d['stats']=['edges owned (root datamap): '+', '.join(f'{k} {v}' for k,v in own.items()),'type disagreements between the old datamaps: %d resolved by rule, %d genuine (id vs symbol), see datamap-conflicts.txt'%(len(set(g.res)),len(set(g.conf)))]
         json.dump(d,open(os.path.join(out,'datamaps','library-datamap.json'),'w'),indent=0)
         rep.append(d['stats'][1])
-        DEC={'abstract-property','achieved','argument1','argument2','argument3','argument4','attend','class','disjunction','duplicate-of','future-event',
+        DEC={'achieved','argument1','argument2','argument3','argument4','attend','class','disjunction','duplicate-of','future-event',
              'holding-object','instance-of','last-operator','mobile','next','superstate','task','time','top-segment','visible'}
         import re as _re
         C=collections.Counter(c for c in g.conf if (_re.search(r'\^([\w-]+):',c) or [None,None])[1] not in DEC); R=collections.Counter(g.res)

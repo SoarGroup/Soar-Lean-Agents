@@ -32,7 +32,7 @@ sp {object-world*propose*failed-grounding
 sp {object-world*apply*failed-grounding*selection
    :default
    (state <s> ^operator <op>
-             -^real true
+              ^real false
               ^selection-superstate <selection-superstate>)
    (<selection-superstate> ^operator <operator>)
    (<operator> ^name evaluate-operator

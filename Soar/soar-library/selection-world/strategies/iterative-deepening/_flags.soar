@@ -12,14 +12,15 @@ sp {selection-world*elaborate*flags*default*iterative-step
 }
 
 ## Elaborate flags default init-evaluation-depth -> sets init-evaluation-depth.
-## one: start at depth 1; unachieved-desireds: start at the number of unachieved desireds.
+## one: start at depth 1; unachieved-desireds: start at the number of unachieved desireds (2 when there are 2 or fewer).
+## v2.45: the default is unachieved-desireds (JL, 20 Nov 2026); a task where one operator can achieve several desireds sets one.
 sp {selection-world*elaborate*flags*default*init-evaluation-depth
    :default
    (state <s> ^superstate nil
               ^flags <f>
              -^flag-override.init-evaluation-depth <any>)
 -->
-   (<f> ^init-evaluation-depth one)
+   (<f> ^init-evaluation-depth unachieved-desireds)
 }
 
 ## Elaborate flags default max-evaluation-depth -> sets max-evaluation-depth (v2.37; the value was fixed in the rules before).

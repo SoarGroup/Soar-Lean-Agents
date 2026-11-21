@@ -1,6 +1,6 @@
 ## flags-initialization.soar -- thor-soar: 5 elaborations.
 
-## Elaborate init-thor-soar flags -> sets flag-override, desired-preferences, gps-desired-ordering ....
+## Elaborate init-thor-soar flags -> sets flag-override ....
 ## additional flags in agent-world/elaborations/flag-initialization.soar
 sp {elaborate*init-thor-soar*flags
     :default
@@ -8,9 +8,7 @@ sp {elaborate*init-thor-soar*flags
               ^superstate nil)
 -->
    (<s> ^flag-override <flags>)
-   (<flags> ^desired-preferences true##### Always false for evaluation work # Uses the desired preferences in operator desireds in its actions (preconditions). If false, more look-ahead planning.
-            ^gps-desired-ordering true     # Uses preferences to rank desireds - similar to table of connections is GPS. If false, more look-ahead planning.
-            ^task-search-control true    # false:
+   (<flags> ^task-search-control true    # false:
             ^rl false                         # If true reinforement learning is used. Not recently tested.
             ^iterative-step tie-impasse       # tie-impasse/operator - if impasse, an iterative step is when there is a tie-impasse. if operator, it is when a task operator is applied.
             ^init-evaluation-depth unachieved-desireds #one - uses unacheived-desireds - 1 as initial evaluation depth
@@ -22,7 +20,6 @@ sp {elaborate*init-thor-soar*flags
             ^above-computed false             # If true, will compute above relationships automatically
             ^mea-operator-selection true      # If true use means-ends analysis to propose operators instead of pure forward search (preconditions satisfied). Not kept up to date. Always true.
             ^cost-metric time                 # none/unit/time. time recommended: the cost of a look-ahead path is the elapsed time (action times), which makes iterative-step tie-impasse meaningful.
-            ^hierarchical-properties false    # true is problematic. When true, reachable desireds are always achieved in lookahead
             ^explore false                    # Will explore room looking for objects - only needed if view-frustum true
             ^explore-receptacles false        # Will open all closed receptacles and look to see what is inside
             ^hide-in-container-objects true  # If true, then cannot see into a container to see a contained object. If false, will see inside a container.

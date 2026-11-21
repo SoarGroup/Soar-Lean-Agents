@@ -250,7 +250,7 @@ sp {{{n}*propose*{opname}
    (state <s> ^problem-space.name {n} ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
 {lhs.rstrip()}
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name {opname.split('*')[0]} ^task-operator true ^action-handle {opname.split('*')[0]} {argtxt} ^argument-count {len(args)} ^desireds <pre>{(' ' + attrs) if attrs else ''})
@@ -260,6 +260,8 @@ sp {{{n}*propose*{opname}
     def text(s):
         t = s.header() + s.init() + s.space_and_flags() + '\n' + ''.join(s.parts)
         if s.literal_handles: t = literalize_handles(t)
+        import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
+        t = convpass.apply(t)
         import check_derived
         _, bad = check_derived.check(t)
         assert not bad, f'{s.name}: derived object attributes not declared (Task(derived=[...])): {bad}'

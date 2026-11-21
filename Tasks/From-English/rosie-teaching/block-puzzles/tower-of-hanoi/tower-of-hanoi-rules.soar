@@ -14,6 +14,7 @@
 ##   - larger than is expanded in place: the destination's volume is more than the block's (A-H2).
 ##   - The goal is ^goal-met true on the task object when two different green locations are clear (A-H3).
 
+## Propose initialize-tower-of-hanoi when its conditions below hold.
 sp {tower-of-hanoi*propose*initialize-tower-of-hanoi
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -58,6 +59,7 @@ sp {tower-of-hanoi*apply*initialize-tower-of-hanoi
    (log 1 (crlf) |Initialize tower-of-hanoi.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {tower-of-hanoi*elaborate*problem-space
    (state <s> ^name tower-of-hanoi)
 -->
@@ -74,6 +76,7 @@ sp {tower-of-hanoi*elaborate*problem-space*mea-substate
    (<p> ^name tower-of-hanoi ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {tower-of-hanoi*elaborate*flags
    (state <s> ^superstate nil ^name tower-of-hanoi)
 -->
@@ -83,7 +86,7 @@ sp {tower-of-hanoi*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {tower-of-hanoi*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tower-of-hanoi ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -94,7 +97,7 @@ sp {tower-of-hanoi*elaborate*state*achieved*object-property
 }
 
 sp {tower-of-hanoi*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tower-of-hanoi ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -104,6 +107,7 @@ sp {tower-of-hanoi*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose move in problem space tower-of-hanoi when its conditions below hold.
 sp {tower-of-hanoi*propose*move
    (state <s> ^problem-space.name tower-of-hanoi ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -115,7 +119,7 @@ sp {tower-of-hanoi*propose*move
    (<cd> ^argument1 <d>)
    (<b> ^volume <bv>)
    (<d> ^volume > <bv>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
@@ -123,7 +127,7 @@ sp {tower-of-hanoi*propose*move
 }
 ## Effect of move (look-ahead).
 sp {tower-of-hanoi*apply*move*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name tower-of-hanoi ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
@@ -143,7 +147,7 @@ sp {tower-of-hanoi*apply*move*internal
 ## Effect of a completed move command on the real world (once per command).
 sp {tower-of-hanoi*apply*move*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name tower-of-hanoi ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
@@ -163,7 +167,7 @@ sp {tower-of-hanoi*apply*move*environment-effect
 }
 ## Goal: two different green locations are clear.
 sp {tower-of-hanoi*elaborate*goal*two-clear-green-locations
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name tower-of-hanoi ^world <w>)
    (<w> ^objects <objs> ^clear <c1> <c2>)
    (<objs> ^object <t> <l1> <l2>)
    (<t> ^type task)

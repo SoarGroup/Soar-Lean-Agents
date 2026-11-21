@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'rosie-teaching', 'tools'))
+import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
 import os
 import sys, itertools
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 3
@@ -344,7 +347,7 @@ sp {{artists*elaborate*top-state*done
    (halt)
 }}
 """)
-open('artists-rules.soar', 'w').write(''.join(R))
+open('artists-rules.soar', 'w').write(convpass.apply(''.join(R)))
 open('artists.soar', 'w').write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

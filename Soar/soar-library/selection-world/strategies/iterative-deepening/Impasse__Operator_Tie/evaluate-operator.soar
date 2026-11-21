@@ -5,6 +5,9 @@
 ## Elaborate selection evaluate-operator current-evaluation-depth -> sets current-evaluation-depth, remaining-operators.
 ## Modification of original
 ## Add test for current-evaluation-depth and instantiate operator with it
+## v2.45: the second negation counts only evaluations of current items. A rejected operator's evaluation stays until
+## remove-evaluation; when it held the current remaining count, the next evaluate-operator got no depth and its look-ahead
+## ran without a depth limit (water-jug-look-ahead seed 2).
 sp {selection-world*elaborate*selection*evaluate-operator*current-evaluation-depth
    :default
    (state <s> ^name selection
@@ -17,9 +20,11 @@ sp {selection-world*elaborate*selection*evaluate-operator*current-evaluation-dep
     (<evaluation> ^super-operator <item>
                   ^current-evaluation-depth.value <value>
                   ^value true)}
-  -{(state <s> ^evaluation <evaluation>)
+  -{(state <s> ^evaluation <evaluation>
+              ^item <other-item>)
     (<evaluation> ^remaining-operators <remaining-operators>
                   ^current-evaluation-depth.value <value>
+                  ^super-operator <other-item>
                   ^value true)}
 -->
    (<operator> ^current-evaluation-depth.value <value>
@@ -56,7 +61,7 @@ sp {selection-world*apply*selection*evaluate-operator*remaining-operators*curren
               ^evaluation <evaluation>)
    (<operator> ^name evaluate-operator
                ^evaluation <evaluation>
-              -^current-evaluation-depth.value <value>)
+               ^current-evaluation-depth.value <value>)
    (<evaluation> -^current-evaluation-depth.value <value>)
 -->
    (<evaluation> ^current-evaluation-depth.value <value>)}

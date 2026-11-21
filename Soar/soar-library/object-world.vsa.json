@@ -286,10 +286,6 @@
      {
       "name": "desired-orderings",
       "toId": "c784fb279f50475e94951b17fa66ec07"
-     },
-     {
-      "name": "property-abstraction-hierarchy",
-      "toId": "9828aa8188f75269948a075cf071ca37"
      }
     ]
    },
@@ -331,20 +327,6 @@
    },
    {
     "id": "26fb9e33d6e044eba36f2a89443f1be4",
-    "type": "STRING"
-   },
-   {
-    "id": "9828aa8188f75269948a075cf071ca37",
-    "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "object-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
-     }
-    ]
-   },
-   {
-    "id": "c93c821dc5c94123baa1d4c9ccb37ef9",
     "type": "STRING"
    },
    {
@@ -1526,10 +1508,6 @@
       "toId": "a20be020139c5fa8bade26420ca3ac0d"
      },
      {
-      "name": "abstract-property",
-      "toId": "8891309fd89254b6840f480e406a0363"
-     },
-     {
       "name": "anchored-world",
       "toId": "43861019cb3c54929fc400f6fe509668"
      },
@@ -1614,10 +1592,6 @@
       "toId": "090e09cef7b05142b6119876bf5db4b2"
      }
     ]
-   },
-   {
-    "id": "8891309fd89254b6840f480e406a0363",
-    "type": "STRING"
    },
    {
     "id": "43861019cb3c54929fc400f6fe509668",
@@ -1939,10 +1913,6 @@
     "type": "SOAR_ID",
     "outEdges": [
      {
-      "name": "abstract-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
-     },
-     {
       "name": "anchored-world",
       "toId": "8f001c7ec8d844fb82c815d536674ebf"
      },
@@ -2031,10 +2001,6 @@
      {
       "name": "above",
       "toId": "253eef9e5f7d5ca19a338969baaa79d3"
-     },
-     {
-      "name": "abstract-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
      },
      {
       "name": "anchored-world",
@@ -2529,10 +2495,6 @@
       "toId": "512406950a4a4c20828f24528251fdc1"
      },
      {
-      "name": "hierarchical-properties",
-      "toId": "c2308781a94d550589f78d4e0d4456f5"
-     },
-     {
       "name": "init-evaluation-depth",
       "toId": "0cf45c1c42015d44806ca7c7271d875c"
      },
@@ -2609,14 +2571,6 @@
     ],
     "id": "512406950a4a4c20828f24528251fdc1",
     "type": "ENUMERATION"
-   },
-   {
-    "id": "c2308781a94d550589f78d4e0d4456f5",
-    "type": "ENUMERATION",
-    "choices": [
-     "false",
-     "true"
-    ]
    },
    {
     "id": "0cf45c1c42015d44806ca7c7271d875c",
@@ -3680,10 +3634,6 @@
       "toId": "a20be020139c5fa8bade26420ca3ac0d"
      },
      {
-      "name": "abstract-property",
-      "toId": "8891309fd89254b6840f480e406a0363"
-     },
-     {
       "name": "anchored-world",
       "toId": "43861019cb3c54929fc400f6fe509668"
      },
@@ -4087,7 +4037,6 @@
      "evaluate-operator",
      "find-object",
      "learn-internal-apply",
-     "no-task-operator",
      "put-in",
      "selection",
      "thor-soar"
@@ -4278,10 +4227,6 @@
      {
       "name": "smem-store",
       "toId": "512406950a4a4c20828f24528251fdc1"
-     },
-     {
-      "name": "hierarchical-properties",
-      "toId": "c2308781a94d550589f78d4e0d4456f5"
      },
      {
       "name": "init-evaluation-depth",

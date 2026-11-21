@@ -219,7 +219,7 @@ sp {selection-world*apply*world*local-version*first
               ^internal-actions true
               ^world <w>)
    (<op> ^pre-conditions-satisfied true)
-   (<w> -^real true
+   (<w> ^real false
         -^local-version
         ^parent-stamp <p>)
 -->
@@ -232,7 +232,7 @@ sp {selection-world*apply*world*local-version
               ^internal-actions true
               ^world <w>)
    (<op> ^pre-conditions-satisfied true)
-   (<w> -^real true
+   (<w> ^real false
         ^local-version <v>
         ^versioned-operator { <> <op> <old> })
 -->
@@ -247,6 +247,22 @@ sp {selection-world*elaborate*failure-evaluation*state-grounded*counter
               ^attribute state
               ^flags.failure-grounding counter
               ^superstate.world.stamp $ <n>)
+-->
+   (<s> ^state-grounded true)}
+
+## counter, state no-change of a selection state (v2.45): the selection has no operator left and its evaluations give no
+## preference to a tied operator (all depth-limited, for example); the state no-change has no world of its own, so it is grounded
+## in the stamp of the world above the selection. Without it initialize-failure-evaluation was never proposed there, wait was selected, and
+## soar-base's tie rule (indifferent and worst for every tied operator of the evaluation state) let the look-ahead continue below the
+## depth limit with a random operator (Soar - To-do row 29).
+sp {selection-world*elaborate*failure-evaluation*state-grounded*counter*selection
+   :default
+   (state <s> ^impasse no-change
+              ^attribute state
+              ^flags.failure-grounding counter
+              ^superstate <ss>)
+   (<ss> ^name selection
+         ^superstate.world.stamp $ <n>)
 -->
    (<s> ^state-grounded true)}
 

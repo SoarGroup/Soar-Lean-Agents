@@ -6,7 +6,6 @@ source cost.soar
 source internal-actions.soar
 source monitor-operator.soar
 source output.soar
-source problem-space.soar
 source reward.soar
 source search-control.soar
 source super-desireds.soar

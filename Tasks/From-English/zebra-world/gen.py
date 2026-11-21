@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'rosie-teaching', 'tools'))
+import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
 import os
 """Generate zebra-rules.soar: the five-houses logic puzzle under the world conventions
 (lib/world2, no-environment mode).  The clues are data; the rules are generic."""
@@ -445,7 +448,7 @@ sp {zebra*prefer*print-matrix*over*assign
 }
 
 sp {zebra*apply*print-matrix
-   (state <s> ^operator.name print-matrix ^matrix-text <m>)
+   (state <s> ^name zebra ^operator.name print-matrix ^matrix-text <m>)
 -->
    (write (crlf) |No clue or single eliminates anything more. Elimination matrix (remaining candidates):| (crlf) <m> (crlf))
    (<s> ^matrix-printed true)
@@ -490,7 +493,7 @@ sp {zebra*apply*report-solution
    (halt)
 }
 """)
-open('zebra-rules.soar', 'w').write(''.join(R))
+open('zebra-rules.soar', 'w').write(convpass.apply(''.join(R)))
 open('zebra.soar', 'w').write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

@@ -4,7 +4,7 @@ Each agent here was written from an English task description alone, with no Lean
 Soar agent as a source. The English input for each is in `english-input.txt` in its folder.
 
 `rosie-teaching/` holds a further 54 games and puzzles: the restricted-English teaching dialogs and world
-states from the Rosie IJCAI 2019 teaching data. Twenty-seven of them have agents generated from the instructor statements (16 Nov 2026): tic-tac-toe, the nine block puzzles, the five river crossings and the twelve logic puzzles; three of them also through Lean (`rosie-teaching/LEAN-PATHS.md`). See `rosie-teaching/README.md` and `rosie-teaching/PILOT.md`.
+states from the Rosie IJCAI 2019 teaching data. Forty-nine of them have agents generated from the instructor statements: tic-tac-toe, the nine block puzzles, the five river crossings and the twelve logic puzzles (16 Nov 2026), and the side-swapping, grid, chess and solitaire puzzles (22 tasks, 18 Nov 2026); the five other board games have none yet; three of them also through Lean (`rosie-teaching/LEAN-PATHS.md`). See `rosie-teaching/README.md` and `rosie-teaching/PILOT.md`.
 
 | Folder | Task | Conventions | Library | How it runs |
 |---|---|---|---|---|
@@ -25,3 +25,12 @@ they sit at `Tasks/From-English/<package>`. To use another location, run
 
 Assembled on 16 November 2026 from `Tasks/artists-world.zip`, `Tasks/zebra-world.zip`,
 `Tasks/Three mens morris/` and `Tasks/UWM Tasks/`, all of which are removed.
+
+## Regenerated 18 November 2026 (conventions of the 18 Nov workbook review)
+
+The 31 generated agents here were regenerated with the generators of 18 Nov 2026: the four world agents (`artists-world` for 2 pairs, `mc-world`, `wizards-world`, `zebra-world`), the 27 Rosie agents (`rosie-teaching`) and the Lean path A and B agents of three of them.
+- Every rule tests its state's or problem space's name (L3-005; initialization applications are the agreed exception), and every rule group has an English comment (L3-012). Both come from `rosie-teaching/tools/convpass.py`, the final pass of worldgen v22; each world agent's `gen.py` now applies it to the rules it writes, and `rosie-teaching/tools/wg.py` is worldgen v22's.
+- `zebra-world/gen.py`: the print-matrix application now tests `^name zebra`.
+- Lean paths: rules written with `soarlean-agentgen-2026-11-18b.zip` (path A, `rosiegen compile`) and its `spec_backend.py` (path B, from the unchanged `*-worldspec.json`); the two are identical apart from the header line.
+- Checked on library v2.42, seeds 1-3 (cap 60,000 decisions; the three river crossings that do not solve, cap 5,000): old and new agents gave the same outcome, decisions and actions in every one of the 111 runs. 88 runs succeed. The 23 that reach the cap do so before and after: artists-world (2 pairs; it solved on v2.30), tower-of-hanoi-4 and -5, sujiko seeds 1-2, jealous-husbands, jealous-wives and missionaries-and-cannibals (Rosie), and tic-tac-toe, which needs its own `run.py` to play blue.
+- `three-mens-morris/` and `UWM/` are not generated and were not changed.

@@ -1,5 +1,25 @@
 # Classic AI and cognitive tasks: English to Soar through Lean (16 November 2026)
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+The seven described tasks were regenerated with `SoarLean-2026-11-21b-release.zip` and run on library v2.45. The release of 21 November lacked the WorldSpec extensions made for these tasks (they were on a separate 16 November line); revision b merges them, and path A now writes the problem-space test on `each` and derived-relation rules as path B does. For every task: `rosiegen json` equals the Python JSON, paths A and B give identical rules, the semantics and Soar agree on all 22 example states, and `rosiegen replay` accepts every new run. The rule changes are the 18 November conventions only (problem-space tests, group comments, `^unachieved-desireds true`); rule counts are unchanged.
+
+Outcome, decisions and actions for seeds 1-3 (stored: 16 November rules on v2.41; new: regenerated rules on v2.45):
+
+| Task | Stored | New | Change |
+|---|---|---|---|
+| monkey-and-bananas | 4 actions; 1078 / 1296 / 903 | 4 actions; 1386 / 742 / 1170 | same plans |
+| vacuum-world | 3 actions; 70 / 111 / 107 | 3 actions; 68 / 68 / 97 | same plans |
+| tower-of-london | 5 moves; 5594 / 8802 / 9206 | 5 / 5 / **8** moves; 7348 / 5042 / 9999 | seed 3 not shortest (v2.45 random continuation, L4-004) |
+| instant-insanity | valid column; 15748 / 14951 / 16092 | valid column; 19608 / 19588 / 20093 | different valid columns, about 25% more decisions |
+| cheryls-birthday | July 16; 21 / 22 / 22 | July 16; 15 / 15 / 15 | fewer decisions |
+| muddy-children | 15 decisions, 36 s each | 15 decisions, under 0.1 s each | same answers; the 16 Nov rules take 130-150 s on v2.45 |
+| bridge-and-torch | no move in 400,000 decisions | no move in 400,000 decisions | still unsolved |
+
+The 16 November rules on v2.45 make the same decisions as the regenerated rules on every task except Cheryl's birthday (21-22 decisions), so the decision changes elsewhere come from the library; library v2.44 reproduces the stored Tower of London runs exactly. The large speed-up on muddy children and Cheryl's birthday most likely comes from `^unachieved-desireds true` (the old proposal bound every unachieved desired); not profiled.
+
+The csplib and simon-tatham tasks have English input only (no instance chosen, no description), so they have no earlier generation to compare with.
+
 **Runnable: six of ten.** Each task was taken from numbered English statements to a WorldSpec description, then to world-convention Soar rules (paths A and B give identical rules). The six runnable agents solve on seeds 1-3; the four search tasks find the shortest plan. Soar 9.6.6 (kernel 9.6.50, build of 6 Nov 2026), library v2.41, defaults.
 
 **Checked by Lean (Lean 4.35.0).** Each description was first written once in Python (`<task>-spec.py`, using `../tools/worldspec_py.py`, a port of `WorldSpec/Sem.lean` and `Json.lean`), which prints the Lean source (`<Name>.lean`) and the path B JSON. Once Lean was installed, the four Lean files were added to `SoarLean/agentgen/WorldSpec/Tasks` (package `SoarLean/soarlean-agentgen-2026-11-16-classicai.zip`). For all four: the `wellFormed` theorems are proved by `decide`; `rosiegen json` matches the Python JSON exactly; path A (Lean writes the rules) and path B give identical rules; `rosiegen check` agrees on all 12 example states; `rosiegen replay` accepts all 12 runs.

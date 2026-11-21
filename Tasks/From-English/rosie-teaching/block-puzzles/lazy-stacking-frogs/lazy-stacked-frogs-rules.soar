@@ -23,6 +23,7 @@
 ## Search settings: ^iterative-step tie-impasse, chosen by the P6 probe (probe_settings.py, 16 Nov 2026, library
 ## v2.34, seeds 1-3): same 3-move plans as operator depth with fewer decisions (probe.json).
 
+## Propose initialize-lazy-stacked-frogs when its conditions below hold.
 sp {lazy-stacked-frogs*propose*initialize-lazy-stacked-frogs
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -105,6 +106,7 @@ sp {lazy-stacked-frogs*apply*initialize-lazy-stacked-frogs
    (log 1 (crlf) |Initialize lazy-stacked-frogs.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {lazy-stacked-frogs*elaborate*problem-space
    (state <s> ^name lazy-stacked-frogs)
 -->
@@ -121,6 +123,7 @@ sp {lazy-stacked-frogs*elaborate*problem-space*mea-substate
    (<p> ^name lazy-stacked-frogs ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^iterative-step, ^mea-operator-selection.
 sp {lazy-stacked-frogs*elaborate*flags
    (state <s> ^superstate nil ^name lazy-stacked-frogs)
 -->
@@ -130,7 +133,7 @@ sp {lazy-stacked-frogs*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {lazy-stacked-frogs*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -141,7 +144,7 @@ sp {lazy-stacked-frogs*elaborate*state*achieved*object-property
 }
 
 sp {lazy-stacked-frogs*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -151,6 +154,7 @@ sp {lazy-stacked-frogs*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose move in problem space lazy-stacked-frogs when its conditions below hold (1 blocks).
 sp {lazy-stacked-frogs*propose*move*1-blocks
    (state <s> ^problem-space.name lazy-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -161,7 +165,7 @@ sp {lazy-stacked-frogs*propose*move*1-blocks
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<w> ^accessible <ac>)
    (<ac> ^argument1 <c>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -177,7 +181,7 @@ sp {lazy-stacked-frogs*propose*move*2-blocks
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<w> ^accessible <ac>)
    (<ac> ^argument1 <c>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -193,7 +197,7 @@ sp {lazy-stacked-frogs*propose*move*3-blocks
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<w> ^accessible <ac>)
    (<ac> ^argument1 <c>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -209,7 +213,7 @@ sp {lazy-stacked-frogs*propose*move*4-blocks
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<w> ^accessible <ac>)
    (<ac> ^argument1 <c>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -217,7 +221,7 @@ sp {lazy-stacked-frogs*propose*move*4-blocks
 }
 ## Effect of move (look-ahead).
 sp {lazy-stacked-frogs*apply*move*internal*blocks
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -234,7 +238,7 @@ sp {lazy-stacked-frogs*apply*move*internal*blocks
 ## Effect of a completed move command on the real world (once per command).
 sp {lazy-stacked-frogs*apply*move*environment-effect*blocks
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -249,7 +253,7 @@ sp {lazy-stacked-frogs*apply*move*environment-effect*blocks
 }
 ## Effect of move (look-ahead).
 sp {lazy-stacked-frogs*apply*move*internal*count-onto-empty
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -270,7 +274,7 @@ sp {lazy-stacked-frogs*apply*move*internal*count-onto-empty
 ## Effect of a completed move command on the real world (once per command).
 sp {lazy-stacked-frogs*apply*move*environment-effect*count-onto-empty
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -291,7 +295,7 @@ sp {lazy-stacked-frogs*apply*move*environment-effect*count-onto-empty
 }
 ## Effect of move (look-ahead).
 sp {lazy-stacked-frogs*apply*move*internal*count-onto-pile
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -309,7 +313,7 @@ sp {lazy-stacked-frogs*apply*move*internal*count-onto-pile
 ## Effect of a completed move command on the real world (once per command).
 sp {lazy-stacked-frogs*apply*move*environment-effect*count-onto-pile
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c> <l>)
@@ -327,7 +331,7 @@ sp {lazy-stacked-frogs*apply*move*environment-effect*count-onto-pile
 }
 ## Goal: three different clear locations.
 sp {lazy-stacked-frogs*elaborate*goal*three-clear
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name lazy-stacked-frogs ^world <w>)
    (<w> ^objects <objs> ^clear <c1> <c2> <c3>)
    (<objs> ^object <t> <l1> <l2> <l3>)
    (<t> ^type task)

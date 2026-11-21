@@ -136,11 +136,6 @@
 "layer": 4
 },
 {
-"name": "hierarchical-properties",
-"toId": "c2308781a94d550589f78d4e0d4456f5",
-"layer": 1
-},
-{
 "name": "init-evaluation-depth",
 "toId": "0cf45c1c42015d44806ca7c7271d875c",
 "layer": 1
@@ -2757,11 +2752,6 @@
 "id": "38eff57613884d79a4ab341f3ee4cd12",
 "outEdges": [
 {
-"name": "abstract-property",
-"toId": "c93c821dc5c94123baa1d4c9ccb37ef9",
-"layer": 1
-},
-{
 "name": "anchored-world",
 "toId": "8f001c7ec8d844fb82c815d536674ebf",
 "layer": 1
@@ -3830,11 +3820,6 @@
 "layer": 2
 },
 {
-"name": "abstract-property",
-"toId": "8891309fd89254b6840f480e406a0363",
-"layer": 2
-},
-{
 "name": "anchored-world",
 "toId": "43861019cb3c54929fc400f6fe509668",
 "layer": 2
@@ -4856,11 +4841,6 @@
 "name": "transformations",
 "toId": "5ce347b5847a48a3877990ed1a990584",
 "layer": 4
-},
-{
-"name": "property-abstraction-hierarchy",
-"toId": "9828aa8188f75269948a075cf071ca37",
-"layer": 1
 },
 {
 "name": "action-time",
@@ -6862,11 +6842,6 @@
 "layer": 1
 },
 {
-"name": "abstract-property",
-"toId": "c93c821dc5c94123baa1d4c9ccb37ef9",
-"layer": 1
-},
-{
 "name": "anchored-world",
 "toId": "8f001c7ec8d844fb82c815d536674ebf",
 "layer": 1
@@ -7349,10 +7324,6 @@
 }
 ],
 "type": "SOAR_ID"
-},
-{
-"id": "c93c821dc5c94123baa1d4c9ccb37ef9",
-"type": "STRING"
 },
 {
 "choices": [
@@ -9154,37 +9125,8 @@
 ]
 },
 {
-"id": "c2308781a94d550589f78d4e0d4456f5",
-"type": "ENUMERATION",
-"choices": [
-"false",
-"true"
-]
-},
-{
 "id": "acb058e65de3588ea3fa91764eb82201",
 "type": "INTEGER"
-},
-{
-"id": "9828aa8188f75269948a075cf071ca37",
-"type": "SOAR_ID",
-"outEdges": [
-{
-"name": "object-property",
-"toId": "c93c821dc5c94123baa1d4c9ccb37ef9",
-"layer": 1
-},
-{
-"name": "next",
-"toId": "9828aa8188f75269948a075cf071ca37",
-"layer": 4
-},
-{
-"name": "next",
-"toId": "074e5e39711855388e0e09a83006b91b",
-"layer": 4
-}
-]
 },
 {
 "id": "357d21e765b75d598dcf4229c82b283f",
@@ -9218,7 +9160,6 @@
 "evaluate-operator",
 "find-object",
 "learn-internal-apply",
-"no-task-operator",
 "put-in",
 "selection",
 "thor-soar"
@@ -12487,11 +12428,6 @@
 "layer": 2
 },
 {
-"name": "abstract-property",
-"toId": "8891309fd89254b6840f480e406a0363",
-"layer": 2
-},
-{
 "name": "anchored-world",
 "toId": "43861019cb3c54929fc400f6fe509668",
 "layer": 2
@@ -12964,10 +12900,6 @@
 "layer": 4
 }
 ]
-},
-{
-"id": "8891309fd89254b6840f480e406a0363",
-"type": "STRING"
 },
 {
 "id": "43861019cb3c54929fc400f6fe509668",
@@ -15732,11 +15664,6 @@
 "name": "hide-in-container-objects",
 "toId": "82af3ba57c49439d90775b736ca901a7",
 "layer": 4
-},
-{
-"name": "hierarchical-properties",
-"toId": "c2308781a94d550589f78d4e0d4456f5",
-"layer": 1
 },
 {
 "name": "init-evaluation-depth",
@@ -22156,7 +22083,6 @@
 ],
 "note": "edge \"layer\" = index in layers of the project that owns the edge (null = substate-only edge, always included)",
 "conflicts": [
-"[world] ^abstract-property: STRING vs SOAR_ID (SW); kept first (the SOAR_ID side has no children in its datamap)",
 "[desireds] ^achieved: SOAR_ID in one datamap, ENUMERATION in SW; kept SOAR_ID (children win; the other use is a constant value)",
 "[<top-state>] ^superstate: SOAR_ID in one datamap, SOAR_ID in ID; kept SOAR_ID (children win; the other use is a constant value)",
 "[<top-state>] ^superstate: SOAR_ID in one datamap, ENUMERATION in T; kept SOAR_ID (children win; the other use is a constant value)",
@@ -22211,7 +22137,6 @@
 "[io.input-link.self] ^mobile: SOAR_ID in one datamap, ENUMERATION in T; kept SOAR_ID (children win; the other use is a constant value)",
 "[interaction-stack] ^top-segment: SOAR_ID in one datamap, ENUMERATION in T; kept SOAR_ID (children win; the other use is a constant value)",
 "[events.learning-event] ^task: SOAR_ID in one datamap, SOAR_ID in T; kept SOAR_ID (children win; the other use is a constant value)",
-"[constants.property-abstraction-hierarchy] ^next: SOAR_ID in one datamap, ENUMERATION in T; kept SOAR_ID (children win; the other use is a constant value)",
 "[attends] ^attend: SOAR_ID in one datamap, STRING in T; kept SOAR_ID (children win; the other use is a constant value)"
 ],
 "stats": [

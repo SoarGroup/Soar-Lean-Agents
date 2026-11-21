@@ -24,6 +24,7 @@
 ##   - file (rank): the green locations of one column (row); the sum is over those green locations, and its target is the blue (yellow) location of that column (row): "atop" ("aside") (A-L3). A column or row with no green location is no file (rank) (A-L4).
 ##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 9).
 
+## Propose initialize-kakuro when its conditions below hold.
 sp {kakuro*propose*initialize-kakuro
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -142,6 +143,7 @@ sp {kakuro*apply*initialize-kakuro
    (log 1 (crlf) |Initialize kakuro.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {kakuro*elaborate*problem-space
    (state <s> ^name kakuro)
 -->
@@ -158,6 +160,7 @@ sp {kakuro*elaborate*problem-space*mea-substate
    (<p> ^name kakuro ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {kakuro*elaborate*flags
    (state <s> ^superstate nil ^name kakuro)
 -->
@@ -167,7 +170,7 @@ sp {kakuro*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {kakuro*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -178,7 +181,7 @@ sp {kakuro*elaborate*state*achieved*object-property
 }
 
 sp {kakuro*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -188,6 +191,7 @@ sp {kakuro*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose write in problem space kakuro when its conditions below hold.
 sp {kakuro*propose*write
    (state <s> ^problem-space.name kakuro ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -196,7 +200,7 @@ sp {kakuro*propose*write
    (<n> ^type number ^number <k> ^object-handle $ <nh>)
    (<w> ^empty <e>)
    (<e> ^argument1 <l>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
@@ -204,7 +208,7 @@ sp {kakuro*propose*write
 }
 ## Effect of write (look-ahead): the location has the value; it is no longer empty.
 sp {kakuro*apply*write*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name kakuro ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <lh> ^argument2.object-handle $ <nh>)
    (<w> ^anchored-world true ^objects <objs> ^empty <e>)
    (<objs> ^object <l> <n>)
@@ -219,7 +223,7 @@ sp {kakuro*apply*write*internal
 ## Effect of a completed write command on the real world (once per command).
 sp {kakuro*apply*write*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name kakuro ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name write ^status complete ^argument1 <lh> ^argument2 <nh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs> ^empty <e>)
    (<objs> ^object <l> <n>)
@@ -234,7 +238,7 @@ sp {kakuro*apply*write*environment-effect
 }
 ## Failure (identical-green-same-row): two different green locations with the same row have the same value.
 sp {kakuro*elaborate*failure*identical-green-same-row
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1> <l2>)
    (<l1> ^type location ^color green ^row <a> ^value <v> ^object-handle $ <h1>)
@@ -244,7 +248,7 @@ sp {kakuro*elaborate*failure*identical-green-same-row
 }
 ## Failure (identical-green-same-column): two different green locations with the same column have the same value.
 sp {kakuro*elaborate*failure*identical-green-same-column
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1> <l2>)
    (<l1> ^type location ^color green ^column <a> ^value <v> ^object-handle $ <h1>)
@@ -254,7 +258,7 @@ sp {kakuro*elaborate*failure*identical-green-same-column
 }
 ## Sum of a group of 2 locations, once every member has a value (derived; not copied into look-ahead worlds).
 sp {kakuro*elaborate*group*sum*2
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2>)
    (<g> ^type group ^size 2)
    (<r1> ^argument1 <g> ^argument2 <l1>)
@@ -266,7 +270,7 @@ sp {kakuro*elaborate*group*sum*2
 }
 ## Sum of a group of 3 locations, once every member has a value (derived; not copied into look-ahead worlds).
 sp {kakuro*elaborate*group*sum*3
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3>)
    (<g> ^type group ^size 3)
    (<r1> ^argument1 <g> ^argument2 <l1>)
@@ -280,7 +284,7 @@ sp {kakuro*elaborate*group*sum*3
 }
 ## Sum of a group of 4 locations, once every member has a value (derived; not copied into look-ahead worlds).
 sp {kakuro*elaborate*group*sum*4
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3> <r4>)
    (<g> ^type group ^size 4)
    (<r1> ^argument1 <g> ^argument2 <l1>)
@@ -296,7 +300,7 @@ sp {kakuro*elaborate*group*sum*4
 }
 ## Failure: the locations of a group are filled and their sum is not the value of the group's target.
 sp {kakuro*elaborate*failure*group-sum-target
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^sum-target <st>)
    (<st> ^argument1 <g> ^argument2 <tg>)
    (<g> ^type group ^sum <sum>)
@@ -306,7 +310,7 @@ sp {kakuro*elaborate*failure*group-sum-target
 }
 ## Goal: all locations are filled (expanded over the locations of the world file; filled: value more than zero).
 sp {kakuro*elaborate*goal*all-filled
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name kakuro ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t> <l-loc-1-1> <l-loc-2-1> <l-loc-3-1> <l-loc-4-1> <l-loc-5-1> <l-loc-1-2> <l-loc-2-2> <l-loc-3-2> <l-loc-4-2> <l-loc-5-2> <l-loc-1-3> <l-loc-2-3> <l-loc-3-3> <l-loc-4-3> <l-loc-5-3> <l-loc-1-4> <l-loc-2-4> <l-loc-3-4> <l-loc-4-4> <l-loc-5-4>)
    (<t> ^type task)

@@ -1,4 +1,4 @@
-## elaborations.soar -- selection-world: 21 elaborations, 22 compares.
+## elaborations.soar -- selection-world: 22 elaborations, 22 compares.
 
 ## ---- elaborations ----
 
@@ -8,6 +8,14 @@ sp {selection-world*elaborate*selection*name*selection
    (state <s> ^choices << conflict multiple >>)
 -->
    (<s> ^name selection)}
+
+## Elaborate selection force-learn: results of a selection state are chunked also when learning is restricted to flagged states
+## (chunk only), as for evaluate-operator states (v2.45; was a Thor-Soar rule).
+sp {selection-world*elaborate*selection*force-learn
+   :default
+   (state <s> ^name selection)
+-->
+   (force-learn <s>)}
 
 ## Elaborate selection top-selection -> sets top-se.
 sp {selection-world*elaborate*selection*top-selection
@@ -114,6 +122,7 @@ sp {selection-world*elaborate*selection*evaluation*closed*bound
    (state <s> ^name selection
               ^bound-check true
               ^minimum-numeric-value <best>
+              ^superstate.desireds.better lower   # the minimum is the best value only when lower is better (v2.45)
               ^evaluation <evaluation>)
    (<evaluation> ^lower-bound >= <best>)
 -->
@@ -262,17 +271,19 @@ sp {selection-world*compare*selection*prefer-lower-evaluation
 -->
    (<superstate> ^operator <operator2> < <operator1>)}
 
-## Preference for selection prefer-lower-evaluation 0.
-sp {selection-world*compare*selection*prefer-lower-evaluation*0
+## Preference for selection best-value-evaluation-becomes-best-preference.
+## ^best <value> on the desireds states the best value a numeric evaluation can have (for example 0 remaining cost):
+## an operator evaluated at that value cannot be improved on, whichever way ^better points (v2.45; was prefer-lower-evaluation*0,
+## which required ^better lower and ^best 0).
+sp {selection-world*compare*selection*best-value-evaluation-becomes-best-preference
    :default
    (state <s> ^name selection
               ^superstate <superstate>
               ^evaluation <evaluation1>)
    (<superstate> ^desireds <desireds>)
-   (<desireds> ^better lower
-               ^best 0)
+   (<desireds> ^best <best>)
    (<evaluation1> ^super-operator <operator1>
-                  ^numeric-value 0
+                  ^numeric-value <best>
                   ^desireds.duplicate-of <desireds>)
 -->
    (<superstate> ^operator <operator1> >)}
@@ -508,6 +519,7 @@ sp {selection-world*compare*selection*worse*failure-cutoff-numeric-value2
               ^evaluation <evaluation2>
               ^evaluation <evaluation-minimum>)
    (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)      # the minimum is the best value only when lower is better (v2.45)
    (<evaluation2> ^super-operator <operator2>
                  -^numeric-value
                   ^failure-cutoff true
@@ -529,6 +541,7 @@ sp {selection-world*compare*selection*worse*failure-cutoff-numeric-value2*passed
               ^minimum-numeric-value <minimum>
               ^evaluation <evaluation2>)
    (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)      # the minimum is the best value only when lower is better (v2.45)
    (<evaluation2> ^super-operator <operator2>
                  -^numeric-value
                   ^failure-cutoff true
@@ -578,13 +591,13 @@ sp {selection-world*compare*selection*no-value-evaluation-always-worse
 -->
    (<superstate> ^operator <operator2> > <operator1>)}
 
-## Elaborate selection evaluation desireds better -> copies the orientation of numeric values (^better) to the evaluation's desireds (v2.40).
+## Elaborate selection evaluation desireds better -> copies the orientation of numeric values (^better, v2.40) and the best possible value (^best, v2.45) to the evaluation's desireds.
 sp {selection-world*elaborate*selection*evaluation*desireds*better
    :default
    (state <s> ^superstate.desireds <desireds>
               ^evaluation <e>)
    (<e> ^desireds <new-desireds>)
    (<new-desireds> ^duplicate-of <desireds>)
-   (<desireds> ^better <better>)
+   (<desireds> ^{ << better best >> <attr> } <value>)
 -->
-   (<new-desireds> ^better <better>)}
+   (<new-desireds> ^<attr> <value>)}

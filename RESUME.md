@@ -4,20 +4,20 @@
 
 - **Conventions reorganized.** Soar-Conventions.xlsx and World-Conventions-v6.xlsx were reviewed (the L3 rows: shared, moved to the world conventions, or Soar-only as L3S), checked against the manual for L0-L2 (rows added), sorted by level and then by topic in development order, and renumbered with level-based IDs numbered jointly across both workbooks (L0-001 ...; L3S Soar-only guidance; L5 Selection space (classic); L6P project conventions; L20 Thor). Old IDs map through `Conventions/id-renumbering-map-2026-11-18.csv` (and, for IDs from before 17 Nov, `id-renumbering-map.csv` first). The reference specifications are now generated from the workbooks (`gen_spec.py`: `World-Conventions-Spec-v7.md`, `Soar-Conventions-Spec.md`). Loose documents in the repository cite the new IDs; references inside zips were not updated (decided).
 - **Convention decisions of 18 Nov:** L3-005 every rule tests its state's or problem space's name (exceptions: rules that create the name or problem space); L3-007 environment-effect rules may keep `:o-support` (better as part of the operator application); L3-012 one English comment per rule group; L3-039 `+ =` is acceptable when order does not matter (to be revisited), RL variants drop it (L3-083); L3-040 one rule may propose a fixed set of operators that differ only in a constant. W-DES-017 removed; SVS out of scope.
-- **Generators updated:** worldgen v21 (`Soar-library-dev/tools/worldgen-v21.zip`), `SoarLean/soarlean-agentgen-2026-11-18.zip` and `Tasks/Families/families-v6-tools.zip` share a final pass, `convpass.py`, that applies L3-005, L3-012 and L3-083; the Lean World and WorldSpec compilers write the problem-space tests themselves, and the Agent compiler records the last operator (name and parameters) in one rule that replaces the previous record (L3-021, L4-005).
+- **Generators updated:** worldgen v22 (`Soar-library-dev/tools/worldgen-v22.zip`; v21 shipped an earlier `convpass.py`), `SoarLean/soarlean-agentgen-2026-11-18b.zip` (revision b: path A writes the same group comments as path B) and `Tasks/Families/families-v6-tools.zip` share a final pass, `convpass.py`, that applies L3-005, L3-012 and L3-083; the Lean World and WorldSpec compilers write the problem-space tests themselves, and the Agent compiler records the last operator (name and parameters) in one rule that replaces the previous record (L3-021, L4-005).
 - **Test set v1.37** (515 tests, library v2.42 unchanged): the 109 generated programs regenerated; decisions, traces and output identical in all 198 generated tests; 197 baselines re-recorded (elaboration cycles, firings, WME changes). v1.36 (17 Nov) fixed the worldgen duplicate-proposal bug.
 - **Families world-v6** regenerated: every result unchanged; decisions changed in blocks-world-hrl (431 to 1,134, RL proposals without `+ =`), hrl-3level, water-jug-hierarchy and -hierarchy-chunk. `Tasks/Families/README-v6.md`, `Families-Results-v6.xlsx`.
 
+- **English-to-Soar agents regenerated** (`Tasks/From-English`: the 4 world agents, the 27 Rosie agents and the Lean path A and B agents of 3 of them): on library v2.42, seeds 1-3, all 111 runs give the same outcome, decisions and actions as before (`Tasks/From-English/README.md`). The Lean path A Tower of Hanoi does solve on v2.42 (7 moves, 35,393 to 46,451 decisions); the earlier report that it does not came from a 20,000-decision cap. artists-world (2 pairs) does not solve within 60,000 decisions on v2.42, before or after (it solved on v2.30).
+
 ## Open (18 Nov 2026)
 
-1. Regenerate the English-to-Soar tasks (From-English agents, rosie lean-a/lean-b rule files) with the updated generators.
-2. Convention IDs in the generator sources, agentgen checker messages and generated rule comments are still the old IDs (map: `id-renumbering-map-2026-11-18.csv`).
-3. Library: halt only through an operator application (goal-completed) instead of the interrupt (to-do row 24).
-4. Test set: 36 failures among the original-soar controls and artists world tests against the v1.35 baselines (to-do row 13).
-5. Review the L6P rows of Soar-Conventions for moving to World-Conventions.
-6. blocks-world-epmem (world-v6): how a task supplies a retrieved action model in look-ahead (specification silent).
-7. The lean-a Tower of Hanoi agent does not solve on library v2.42 (before and after 18 Nov).
-8. The families soar-conv agents were not rechecked against the 18 Nov wording of L3-005.
+1. Convention IDs in the generator sources, agentgen checker messages and generated rule comments are still the old IDs (map: `id-renumbering-map-2026-11-18.csv`).
+2. Library: halt only through an operator application (goal-completed) instead of the interrupt (to-do row 24).
+3. Test set: 36 failures among the original-soar controls and artists world tests against the v1.35 baselines (to-do row 13).
+4. Review the L6P rows of Soar-Conventions for moving to World-Conventions.
+5. blocks-world-epmem (world-v6): how a task supplies a retrieved action model in look-ahead (specification silent).
+6. The families soar-conv agents were not rechecked against the 18 Nov wording of L3-005.
 
 ## Status (17 Nov 2026): library
 

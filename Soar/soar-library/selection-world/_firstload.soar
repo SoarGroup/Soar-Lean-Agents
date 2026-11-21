@@ -75,6 +75,7 @@
 ###         ^super-problem-space
 ###         ^superstate 
 
+### (19 Nov 2026, v2.45: the no-local-negations mode below is removed from selection-world; ^no-local-negations is no longer tested.)
 ### Changes May 2007 (SBW):
 ### Added a 'no local negations' mode. If the problem space has a ^no-local-negations flag, rules will be used 
 ### that avoid local negations, supporting versions of Soar that refuse to chunk over local negations.

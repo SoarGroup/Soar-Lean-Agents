@@ -14,8 +14,7 @@ sp {thor-soar*compare*task-operator-smem-query*find-object
 ## Elaborate preferred-indifferent -> sets preferred-indifferent.
 sp {elaborations*preferred-indifferent
     :default
-   (state <s> ^desireds <desireds>
-              ^flags.desired-preferences true)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired-count 2
                ^desired <desired1> { < <desired1> <desired2> })
    (<desired1> ^<< on in stored >> <in1>

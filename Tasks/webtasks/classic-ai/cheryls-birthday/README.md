@@ -1,5 +1,19 @@
 # Cheryl's birthday: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `cheryls-birthday-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 39 rules, as before. The 71 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | success 21 / 4 | success 21 / 4 | success 15 / 4 | statement-3 talk; statement-4 talk; statement-5 talk; answer july-16 |
+| 2 | success 22 / 4 | success 21 / 4 | success 15 / 4 | statement-3 talk; statement-4 talk; statement-5 talk; answer july-16 |
+| 3 | success 22 / 4 | success 22 / 4 | success 15 / 4 | statement-3 talk; statement-4 talk; statement-5 talk; answer july-16 |
+
+The earlier sections below describe the generation of 16 November.
+
 **Runnable.** Soar 9.6.6 (kernel 9.6.50), library v2.41, defaults. Each seed applies statement 3, 4 and 5 and answers **July 16** (the published answer).
 
 **Checked by Lean (Lean 4.35.0).** `cherylsBirthday_wellFormed : cherylsBirthday.wellFormed = [] := by decide` is proved; `rosiegen json` gives the same JSON as the Python description; path A (Lean) and path B (spec_backend.py) give identical rules; `rosiegen check` agrees on every example state; `rosiegen replay` accepts every run (with the null second arguments removed, see the classic-ai README).

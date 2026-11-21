@@ -3,7 +3,6 @@ Resolution rules: STRING vs ENUMERATION -> STRING (open set of symbols); INTEGER
 (an attribute that has children in one datamap is an identifier there; the other datamap used it with a constant value, e.g. ^superstate nil).
 
 Decided by JEL on 13 Nov 2026:
-  world.abstract-property: STRING (its value names an attribute; rule achieved-desired*abstract-property)
   desireds.achieved: SOAR_ID (pointer to an achieved desired; the ^achieved true comment in _firstload is stale)
   ^argument1 to ^argument4 (operator, desireds, world, scene, retrieved-in, io.output-link.perform-action): SOAR_ID. A few Thor operators (turn, fill, scene-update) use constant arguments; the datamap cannot show both.
   attends.attend: STRING (the value is an object handle); children removed

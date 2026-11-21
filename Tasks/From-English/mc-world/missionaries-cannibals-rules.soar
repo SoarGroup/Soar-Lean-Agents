@@ -19,6 +19,7 @@
 ## Loads that are impossible, leave missionaries outnumbered, or return to a
 ## situation already visited are rejected. Look-ahead (iterative deepening) chooses among the rest.
 
+## Propose initialize-missionaries-cannibals when its conditions below hold.
 sp {missionaries-cannibals*propose*initialize-missionaries-cannibals
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -51,6 +52,7 @@ sp {missionaries-cannibals*apply*initialize-missionaries-cannibals
    (log 1 (crlf) |Initialize missionaries-cannibals.|)
 }
 
+## Elaborate problem space: adds ^agent-world, ^default-desired-copy, ^default-operator-copy, ^default-state-copy.
 sp {missionaries-cannibals*elaborate*problem-space
    (state <s> ^name missionaries-cannibals)
 -->
@@ -77,7 +79,7 @@ sp {missionaries-cannibals*elaborate*flags
 
 ## World elaboration: a bank with no one on it is empty.
 sp {missionaries-cannibals*elaborate*world*empty
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name missionaries-cannibals ^world <w>)
    (<w> ^objects.object <b>)
    (<b> ^type bank ^missionaries 0 ^cannibals 0)
 -->
@@ -86,7 +88,7 @@ sp {missionaries-cannibals*elaborate*world*empty
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {missionaries-cannibals*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name missionaries-cannibals ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -97,7 +99,7 @@ sp {missionaries-cannibals*elaborate*state*achieved*object-property
 }
 
 sp {missionaries-cannibals*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name missionaries-cannibals ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -108,6 +110,7 @@ sp {missionaries-cannibals*elaborate*state*unachieved*object-property
    (<ds> ^unachieved <d>)
 }
 
+## Propose cross-1m in problem space missionaries-cannibals when its conditions below hold (mea).
 sp {missionaries-cannibals*propose*cross-1m*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -125,6 +128,7 @@ sp {missionaries-cannibals*propose*cross-1m*mea
    (<pre> ^desired-count 0)
 }
 
+## Propose cross-2m in problem space missionaries-cannibals when its conditions below hold (mea).
 sp {missionaries-cannibals*propose*cross-2m*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -142,6 +146,7 @@ sp {missionaries-cannibals*propose*cross-2m*mea
    (<pre> ^desired-count 0)
 }
 
+## Propose cross-1c in problem space missionaries-cannibals when its conditions below hold (mea).
 sp {missionaries-cannibals*propose*cross-1c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -159,6 +164,7 @@ sp {missionaries-cannibals*propose*cross-1c*mea
    (<pre> ^desired-count 0)
 }
 
+## Propose cross-2c in problem space missionaries-cannibals when its conditions below hold (mea).
 sp {missionaries-cannibals*propose*cross-2c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -176,6 +182,7 @@ sp {missionaries-cannibals*propose*cross-2c*mea
    (<pre> ^desired-count 0)
 }
 
+## Propose cross-1m1c in problem space missionaries-cannibals when its conditions below hold (mea).
 sp {missionaries-cannibals*propose*cross-1m1c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -226,7 +233,7 @@ sp {missionaries-cannibals*reject*crossing*already-visited
 
 ## Internal application (look-ahead).
 sp {missionaries-cannibals*apply*crossing*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name missionaries-cannibals ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name <n> ^pre-conditions-satisfied true ^m-load <dm> ^c-load <dc> ^result <r>
          ^argument1.object-handle <fh> ^argument2.object-handle <th>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -244,7 +251,7 @@ sp {missionaries-cannibals*apply*crossing*internal
 ## Effect of a completed external crossing on the real world (once per command).
 sp {missionaries-cannibals*apply*crossing*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^load-table.load <l> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name missionaries-cannibals ^superstate nil ^world <w> ^load-table.load <l> ^io.output-link.perform-action <pa>)
    (<pa> ^name <n> ^status complete ^argument1 <fh> ^argument2 <th> -^effect-applied true)
    (<l> ^name <n> ^missionaries <dm> ^cannibals <dc>)
    (<w> ^anchored-world true ^objects <objs>)

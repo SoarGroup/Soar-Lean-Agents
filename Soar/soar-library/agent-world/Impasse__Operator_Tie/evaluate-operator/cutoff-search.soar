@@ -17,7 +17,7 @@ sp {agent-world*propose*evaluate-operator*cutoff-search
    (<superoperator> ^super-operator.name $ <name>
                     ^evaluation <evaluation>)
   -(<evaluation> ^numeric-value <mnv>)  # waste of time if this is the one...
-  -(<superstate> ^superstate.desireds.better higher)  # the minimum is meaningful only when lower is better
+   (<superstate> ^superstate.desireds.better lower)  # the minimum is meaningful only when lower is better
 -->
    (log 1 (crlf) <s> |: | <name> | --Pass back (failure cutoff)-- world-time: | <world-time> | > minimum: | <mnv>)
    (<s> ^operator <op> + =, >)

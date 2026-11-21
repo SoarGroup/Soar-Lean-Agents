@@ -88,7 +88,7 @@ sp {thor-soar*elaborate*state*world-from-scene*controlled-by
    (<controlled-by> ^argument1.object-handle <object-handle>)
    (<world> ^objects.object.object-handle <object-handle>
             ^anchored-world true)
-  -(<world> ^duplicate-of.in <controlled-by>)
+  -(<world> ^duplicate-of.controlled-by <controlled-by>)
 -->
    (<world> ^controlled-by <controlled-by>)
 }

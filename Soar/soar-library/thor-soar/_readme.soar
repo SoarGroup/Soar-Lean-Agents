@@ -15,8 +15,8 @@
 #    140  Object manipulation operators (open/close, put in/on, cook, clean, slice, fill, break ...): break-object, clean-counters, clean-dishwasher, clean-object, close-container, cook-microwave, cook-stove, dirty-object, discard, egg-cooked-microwave-plated, empty-object, fill-object, finish-broken-egg, get-object, make-coffee, open-container, put-in, put-on, slice-object, store, toast, turn-off, turn-on-microwave, turn-on, clean-surface, clean-up-topstate
 #     46  Task and desired handling, initialization, cleanup: create-object-state-desired, find-object, initialize-thor-soar, next-desireds, remove-destroyed-object, remove-unanchored-object-visible, report-task-complete
 #      6  Thor external action application and action times: external-operator-application
-#    225  elaborations/: Thor state vocabulary (properties such as accessible, reachable, holding), achieved-desireds, search control, flags initialization, svs, world-from-scene
-#     12  Impasse__Operator_Tie/: Thor tie handling and constraint-failure detection
+#    222  elaborations/: Thor state vocabulary (properties such as accessible, reachable, holding), achieved-desireds, search control, flags initialization, svs, world-from-scene
+#     11  Impasse__Operator_Tie/: Thor tie handling and constraint-failure detection
 #     22  from-agent-world/: rules moved out of agent-world because they mention Thor vocabulary (to be reviewed)
 #      7  other: clean-dishwasher/elaborations.soar, find-object/clear-searched-hidden.soar, find-object/clear-searched.soar
 #
@@ -29,8 +29,8 @@
 #   Single source: datamaps/library-datamap.json (each edge tagged with its owning project). Regenerate the
 #   project files with: python3 tools/datamaps.py <this-directory> --assemble
 #
-# Flags read: above-computed, clean-up-on-success, desired-preferences, desireds-source, epmem-retrieve, explore, explore-receptacles, hide-in-container-objects, initialize-scene-with-smem, mea-operator-selection, profile, smem-retrieve, task-search-control, cost-metric, view-frustum
-# Flags written: above-computed, agent-mode, clean-up-on-success, desired-preferences, desired-selection, desireds-source, epmem-retrieve, explore, explore-receptacles, gps-desired-ordering, hide-in-container-objects, hierarchical-properties, init-evaluation-depth, initialize-scene-with-smem, iterative-step, mea-operator-selection, rl, scan-room, smem-retrieve, smem-store, task-search-control, cost-metric, view-frustum
+# Flags read: above-computed, clean-up-on-success, desireds-source, epmem-retrieve, explore, explore-receptacles, hide-in-container-objects, initialize-scene-with-smem, mea-operator-selection, profile, smem-retrieve, task-search-control, cost-metric, view-frustum
+# Flags written: above-computed, agent-mode, clean-up-on-success, desired-selection, desireds-source, epmem-retrieve, explore, explore-receptacles, hide-in-container-objects, init-evaluation-depth, initialize-scene-with-smem, iterative-step, mea-operator-selection, rl, scan-room, smem-retrieve, smem-store, task-search-control, cost-metric, view-frustum
 # Hooks: not yet defined (see the refactoring proposal, Section 4); this file will list them.
 # Conventions: every rule is :default; no rule name is defined twice among the sourced files; do not excise rules to override them.
 # Notes: docs/ holds comment-only notes from the old projects (not sourced).

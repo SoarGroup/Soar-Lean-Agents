@@ -1,0 +1,20 @@
+--- cmcsoar/CMC/Base.lean	2026-11-19 17:40:32.797993025 -0500
++++ cmcsoar/CMC/Base.lean	2026-11-19 17:40:38.021154929 -0500
+@@ -447,8 +447,15 @@
+ 
+   DECIDED (Laird, 2026-10-28): learning mechanisms make *bounded additions* to long-term
+   memory from a single experience. Learning never removes symbolic content; forgetting
+-  happens only through decay of numeric metadata (see `decay`, `forgettable`). Symbolic
+-  content in working memory and declarative memory can be removed as a result of decay.
++  happens only through decay of numeric metadata or interference (see `decay`, `forgettable`).
++  Symbolic content in working memory and declarative memory can be removed as a result of
++  decay or interference.
++
++  DECIDED (Laird, 2026-11-19): "or interference" added. Interference is the weakening of
++  numeric metadata by learning, as in Sigma, where normalization in every learning update
++  weakens values that are not refreshed (Rosenbloom, 2026-11-19). In this specification it is
++  declarative metadata tuning (`declTune`) that can bring an element below the `forgettable`
++  threshold; it adds no step. The 2017 paper states no commitment on forgetting or decay.
+ 
+   `learnBound` is the maximum number of new structures one learning event may add. -/
+   learnBound : Nat

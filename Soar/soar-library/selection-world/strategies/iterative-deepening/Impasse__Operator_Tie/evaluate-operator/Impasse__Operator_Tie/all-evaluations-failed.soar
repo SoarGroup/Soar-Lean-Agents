@@ -5,6 +5,8 @@
 ## Elaborate selection all-evaluations-failed too-many.
 ## The proposals below test each tie size (2 to 10) with positive conditions only: a single rule for any size would need a
 ## negation over the selection's own evaluations (local negation), which would make over-general chunks (v2.40).
+## Each failed evaluation must belong to a current ^item (v2.45): a failed operator is rejected and leaves the items, but its
+## evaluation stays until remove-evaluation, so ^item-count n with any n failed evaluations matched stale ones.
 sp {selection-world*elaborate*selection*all-evaluations-failed*too-many
    :default
    (state <s> ^name selection
@@ -21,11 +23,14 @@ sp {selection-world*propose*selection*all-evaluations-failed2
    :default
    (state <s> ^name selection
               ^item-count 2
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
+              ^evaluation <evaluation1> <evaluation2>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -36,12 +41,16 @@ sp {selection-world*propose*selection*all-evaluations-failed3
    :default
    (state <s> ^name selection
               ^item-count 3
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> } { < <evaluation1> < <evaluation2> <e3> }
+              ^evaluation <evaluation1> <evaluation2> <e3>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -52,14 +61,18 @@ sp {selection-world*propose*selection*all-evaluations-failed4
    :default
    (state <s> ^name selection
               ^item-count 4
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> } { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -70,17 +83,20 @@ sp {selection-world*propose*selection*all-evaluations-failed5
    :default
    (state <s> ^name selection
               ^item-count 5
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -91,19 +107,22 @@ sp {selection-world*propose*selection*all-evaluations-failed6
    :default
    (state <s> ^name selection
               ^item-count 6
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> <e6> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5> <e6>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
-   (<e6> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> } { > <item1> > <item2> > <item3> > <item4> > <item5> <item6> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
+   (<e6> ^symbolic-value failure
+        ^super-operator <item6>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -114,21 +133,24 @@ sp {selection-world*propose*selection*all-evaluations-failed7
    :default
    (state <s> ^name selection
               ^item-count 7
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> <e6> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> <e7> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5> <e6> <e7>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
-   (<e6> ^symbolic-value failure)
-   (<e7> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> } { > <item1> > <item2> > <item3> > <item4> > <item5> <item6> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> <item7> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
+   (<e6> ^symbolic-value failure
+        ^super-operator <item6>)
+   (<e7> ^symbolic-value failure
+        ^super-operator <item7>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -139,23 +161,26 @@ sp {selection-world*propose*selection*all-evaluations-failed8
    :default
    (state <s> ^name selection
               ^item-count 8
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> <e6> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> <e7> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> <e8> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5> <e6> <e7> <e8>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
-   (<e6> ^symbolic-value failure)
-   (<e7> ^symbolic-value failure)
-   (<e8> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> } { > <item1> > <item2> > <item3> > <item4> > <item5> <item6> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> <item7> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> <item8> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
+   (<e6> ^symbolic-value failure
+        ^super-operator <item6>)
+   (<e7> ^symbolic-value failure
+        ^super-operator <item7>)
+   (<e8> ^symbolic-value failure
+        ^super-operator <item8>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -166,25 +191,28 @@ sp {selection-world*propose*selection*all-evaluations-failed9
    :default
    (state <s> ^name selection
               ^item-count 9
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> <e6> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> <e7> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> <e8> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> < <e8> <e9> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5> <e6> <e7> <e8> <e9>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
-   (<e6> ^symbolic-value failure)
-   (<e7> ^symbolic-value failure)
-   (<e8> ^symbolic-value failure)
-   (<e9> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> } { > <item1> > <item2> > <item3> > <item4> > <item5> <item6> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> <item7> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> <item8> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> > <item8> <item9> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
+   (<e6> ^symbolic-value failure
+        ^super-operator <item6>)
+   (<e7> ^symbolic-value failure
+        ^super-operator <item7>)
+   (<e8> ^symbolic-value failure
+        ^super-operator <item8>)
+   (<e9> ^symbolic-value failure
+        ^super-operator <item9>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)
@@ -195,27 +223,30 @@ sp {selection-world*propose*selection*all-evaluations-failed10
    :default
    (state <s> ^name selection
               ^item-count 10
-              ^evaluation <evaluation1> { < <evaluation1> <evaluation2> }
-                          { < <evaluation1> < <evaluation2> <e3> }
-                          { < <evaluation1> < <evaluation2> < <e3> <e4> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> <e5> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> <e6> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> <e7> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> <e8> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> < <e8> <e9> }
-                          { < <evaluation1> < <evaluation2> < <e3> < <e4> < <e5> < <e6> < <e7> < <e8> < <e9> <e10> }
+              ^evaluation <evaluation1> <evaluation2> <e3> <e4> <e5> <e6> <e7> <e8> <e9> <e10>
              -^top-selection true
-              ^remaining-operators 0)
-   (<evaluation1> ^symbolic-value failure)
-   (<evaluation2> ^symbolic-value failure)
-   (<e3> ^symbolic-value failure)
-   (<e4> ^symbolic-value failure)
-   (<e5> ^symbolic-value failure)
-   (<e6> ^symbolic-value failure)
-   (<e7> ^symbolic-value failure)
-   (<e8> ^symbolic-value failure)
-   (<e9> ^symbolic-value failure)
-   (<e10> ^symbolic-value failure)
+              ^remaining-operators 0
+              ^item <item1> { > <item1> <item2> } { > <item1> > <item2> <item3> } { > <item1> > <item2> > <item3> <item4> } { > <item1> > <item2> > <item3> > <item4> <item5> } { > <item1> > <item2> > <item3> > <item4> > <item5> <item6> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> <item7> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> <item8> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> > <item8> <item9> } { > <item1> > <item2> > <item3> > <item4> > <item5> > <item6> > <item7> > <item8> > <item9> <item10> })
+   (<evaluation1> ^symbolic-value failure
+                 ^super-operator <item1>)
+   (<evaluation2> ^symbolic-value failure
+                 ^super-operator <item2>)
+   (<e3> ^symbolic-value failure
+        ^super-operator <item3>)
+   (<e4> ^symbolic-value failure
+        ^super-operator <item4>)
+   (<e5> ^symbolic-value failure
+        ^super-operator <item5>)
+   (<e6> ^symbolic-value failure
+        ^super-operator <item6>)
+   (<e7> ^symbolic-value failure
+        ^super-operator <item7>)
+   (<e8> ^symbolic-value failure
+        ^super-operator <item8>)
+   (<e9> ^symbolic-value failure
+        ^super-operator <item9>)
+   (<e10> ^symbolic-value failure
+         ^super-operator <item10>)
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name all-evaluations-failed)

@@ -17,6 +17,7 @@
 ##   A-MB3: "has the bananas" is a holds relation from the monkey to the bananas, added by grasp.
 ##   A-MB4: The actions are named go, push, climb-up, climb-down and grasp.
 
+## Propose initialize-monkey-and-bananas when its conditions below hold.
 sp {monkey-and-bananas*propose*initialize-monkey-and-bananas
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -52,6 +53,7 @@ sp {monkey-and-bananas*apply*initialize-monkey-and-bananas
    (log 1 (crlf) |Initialize monkey-and-bananas.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {monkey-and-bananas*elaborate*problem-space
    (state <s> ^name monkey-and-bananas)
 -->
@@ -68,6 +70,7 @@ sp {monkey-and-bananas*elaborate*problem-space*mea-substate
    (<p> ^name monkey-and-bananas ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {monkey-and-bananas*elaborate*flags
    (state <s> ^superstate nil ^name monkey-and-bananas)
 -->
@@ -77,7 +80,7 @@ sp {monkey-and-bananas*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {monkey-and-bananas*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -88,7 +91,7 @@ sp {monkey-and-bananas*elaborate*state*achieved*object-property
 }
 
 sp {monkey-and-bananas*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -114,7 +117,7 @@ sp {monkey-and-bananas*propose*go
    (<w> ^at <r2>)
    (<r2> ^argument1 <m> ^argument2 <from>)
    (<objs> ^object { <> <from> <to> })
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name go ^task-operator true ^action-handle go ^argument1 <to> ^argument-count 1 ^desireds <pre>)
@@ -123,7 +126,7 @@ sp {monkey-and-bananas*propose*go
 
 ## Effect of go (look-ahead).
 sp {monkey-and-bananas*apply*go*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name go ^pre-conditions-satisfied true ^argument1.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -139,7 +142,7 @@ sp {monkey-and-bananas*apply*go*internal
 ## Effect of a completed go command on the real world (once per command).
 sp {monkey-and-bananas*apply*go*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name monkey-and-bananas ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name go ^status complete ^argument1 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -173,7 +176,7 @@ sp {monkey-and-bananas*propose*push
    (<w> ^at <r3>)
    (<r3> ^argument1 <bx> ^argument2 <p>)
    (<objs> ^object { <> <p> <to> })
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name push ^task-operator true ^action-handle push ^argument1 <to> ^argument-count 1 ^desireds <pre>)
@@ -182,7 +185,7 @@ sp {monkey-and-bananas*propose*push
 
 ## Effect of push (look-ahead).
 sp {monkey-and-bananas*apply*push*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name push ^pre-conditions-satisfied true ^argument1.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -203,7 +206,7 @@ sp {monkey-and-bananas*apply*push*internal
 ## Effect of a completed push command on the real world (once per command).
 sp {monkey-and-bananas*apply*push*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name monkey-and-bananas ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name push ^status complete ^argument1 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -239,7 +242,7 @@ sp {monkey-and-bananas*propose*climb-up
    (<r2> ^argument1 <m> ^argument2 <p>)
    (<w> ^at <r3>)
    (<r3> ^argument1 <bx> ^argument2 <p>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name climb-up ^task-operator true ^action-handle climb-up ^argument1 <bx> ^argument-count 1 ^desireds <pre>)
@@ -248,7 +251,7 @@ sp {monkey-and-bananas*propose*climb-up
 
 ## Effect of climb-up (look-ahead).
 sp {monkey-and-bananas*apply*climb-up*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name climb-up ^pre-conditions-satisfied true ^argument1.object-handle $ <bx-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <bx>)
@@ -266,7 +269,7 @@ sp {monkey-and-bananas*apply*climb-up*internal
 ## Effect of a completed climb-up command on the real world (once per command).
 sp {monkey-and-bananas*apply*climb-up*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name monkey-and-bananas ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name climb-up ^status complete ^argument1 <bx-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <bx>)
@@ -295,7 +298,7 @@ sp {monkey-and-bananas*propose*climb-down
    (<bx> ^type box)
    (<w> ^on <r1>)
    (<r1> ^argument1 <m> ^argument2 <bx>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name climb-down ^task-operator true ^action-handle climb-down ^argument1 <f> ^argument-count 1 ^desireds <pre>)
@@ -304,7 +307,7 @@ sp {monkey-and-bananas*propose*climb-down
 
 ## Effect of climb-down (look-ahead).
 sp {monkey-and-bananas*apply*climb-down*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name climb-down ^pre-conditions-satisfied true ^argument1.object-handle $ <f-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <f>)
@@ -322,7 +325,7 @@ sp {monkey-and-bananas*apply*climb-down*internal
 ## Effect of a completed climb-down command on the real world (once per command).
 sp {monkey-and-bananas*apply*climb-down*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name monkey-and-bananas ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name climb-down ^status complete ^argument1 <f-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <f>)
@@ -355,7 +358,7 @@ sp {monkey-and-bananas*propose*grasp
    (<r2> ^argument1 <bx> ^argument2 <p>)
    (<w> ^at <r3>)
    (<r3> ^argument1 <fd> ^argument2 <p>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name grasp ^task-operator true ^action-handle grasp ^argument1 <fd> ^argument-count 1 ^desireds <pre>)
@@ -364,7 +367,7 @@ sp {monkey-and-bananas*propose*grasp
 
 ## Effect of grasp (look-ahead).
 sp {monkey-and-bananas*apply*grasp*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name grasp ^pre-conditions-satisfied true ^argument1.object-handle $ <fd-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <fd>)
@@ -379,7 +382,7 @@ sp {monkey-and-bananas*apply*grasp*internal
 ## Effect of a completed grasp command on the real world (once per command).
 sp {monkey-and-bananas*apply*grasp*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name monkey-and-bananas ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name grasp ^status complete ^argument1 <fd-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <fd>)
@@ -395,7 +398,7 @@ sp {monkey-and-bananas*apply*grasp*environment-effect
 
 ## Goal (statement 9): ^goal-met true on the task object.
 sp {monkey-and-bananas*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name monkey-and-bananas ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

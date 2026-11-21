@@ -56,10 +56,38 @@ sp {soar-base*propose*top-ps*wait
 
 ## Preference for default select indifferent-and-worst tied.
 ## Break a tie by creating indifferent preferences if get a state no-change in an impasse.
+## Real states only (v2.45): in look-ahead (^real false) selection-world resolves a selection that has no operator left
+## (initialize-failure-evaluation, the indifference rules); breaking the tie here let the look-ahead continue with a random
+## operator below the depth limit (Soar - To-do row 29).
 sp {soar-base*compare*default*select*indifferent-and-worst*tied
    "Indifferent an operator if it leads to a tie that can not be resolved."
    :default
-   (state <s1> ^operator <o> +)
+   (state <s1> ^operator <o> +
+               ^real true)
+   (state <s2> ^impasse tie
+               ^superstate <s1>
+               ^item <o>
+               ^quiescence t)
+   (state <s3> ^attribute state
+           ^choices none
+           ^superstate <s2>
+           ^quiescence t)
+   -->
+   (<s1> ^operator <o> =, < )}
+
+
+## Random continuation in look-ahead (JL, 21 Nov 2026): without a cost metric and without optimizing, an unresolvable tie in a
+## look-ahead state is broken at random as in a real state, so the look-ahead goes on past the depth limit. Any plan is acceptable
+## there, and this finds one much faster (artists-2: 82-283 instead of 4,028-4,408 decisions). With a cost metric or optimize true the
+## search stays sound (row 29 repair): the tie rule above applies only in real states.
+sp {soar-base*compare*default*select*indifferent-and-worst*tied*look-ahead*no-cost
+   "Indifferent an operator in a look-ahead state if it leads to a tie that can not be resolved (no cost metric, optimize false)."
+   :default
+   (state <s1> ^operator <o> +
+               ^real false
+               ^flags <f>)
+   (<f> ^cost-metric none
+        ^optimize false)
    (state <s2> ^impasse tie
                ^superstate <s1>
                ^item <o>

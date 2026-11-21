@@ -15,6 +15,7 @@
 ##   A-MC4: A round records which children answer yes in the actual world (said-yes(c, r)), and rules out every world where some child would answer differently than in the actual world (all answers are heard).
 ##   A-MC5: The goal is that every child has answered yes in some round; the rounds of first yes are read from said-yes. Four rounds are provided.
 
+## Propose initialize-muddy-children when its conditions below hold.
 sp {muddy-children*propose*initialize-muddy-children
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -150,6 +151,7 @@ sp {muddy-children*apply*initialize-muddy-children
    (log 1 (crlf) |Initialize muddy-children.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {muddy-children*elaborate*problem-space
    (state <s> ^name muddy-children)
 -->
@@ -166,6 +168,7 @@ sp {muddy-children*elaborate*problem-space*mea-substate
    (<p> ^name muddy-children ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {muddy-children*elaborate*flags
    (state <s> ^superstate nil ^name muddy-children)
 -->
@@ -175,7 +178,7 @@ sp {muddy-children*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {muddy-children*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -186,7 +189,7 @@ sp {muddy-children*elaborate*state*achieved*object-property
 }
 
 sp {muddy-children*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -204,7 +207,7 @@ sp {muddy-children*propose*father-speaks
    (<objs> ^object <t>)
    (<t> ^type stage)
    (<t> ^step 0)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name father-speaks ^task-operator true ^action-handle father-speaks ^argument1 <t> ^argument-count 1 ^desireds <pre>)
@@ -213,7 +216,7 @@ sp {muddy-children*propose*father-speaks
 
 ## Effect of father-speaks (look-ahead).
 sp {muddy-children*apply*father-speaks*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name father-speaks ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -226,7 +229,7 @@ sp {muddy-children*apply*father-speaks*internal
 ## Effect of a completed father-speaks command on the real world (once per command).
 sp {muddy-children*apply*father-speaks*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name father-speaks ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -240,7 +243,7 @@ sp {muddy-children*apply*father-speaks*environment-effect
 
 ## Effect of father-speaks on every match (look-ahead).
 sp {muddy-children*apply*father-speaks*internal*each1
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name father-speaks ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -257,7 +260,7 @@ sp {muddy-children*apply*father-speaks*internal*each1
 ## Effect of a completed father-speaks command on every match (real world).
 sp {muddy-children*apply*father-speaks*environment-effect*each1
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name father-speaks ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -282,7 +285,7 @@ sp {muddy-children*propose*ask
    (<r> ^n <r-n>)
    (<t> ^step <r-n>)
    (<r> ^n > 0)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name ask ^task-operator true ^action-handle ask ^argument1 <r> ^argument-count 1 ^desireds <pre>)
@@ -291,7 +294,7 @@ sp {muddy-children*propose*ask
 
 ## Effect of ask (look-ahead).
 sp {muddy-children*apply*ask*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -306,7 +309,7 @@ sp {muddy-children*apply*ask*internal
 ## Effect of a completed ask command on the real world (once per command).
 sp {muddy-children*apply*ask*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -323,7 +326,7 @@ sp {muddy-children*apply*ask*environment-effect
 
 ## Effect of ask on every match (look-ahead).
 sp {muddy-children*apply*ask*internal*each1
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -342,7 +345,7 @@ sp {muddy-children*apply*ask*internal*each1
 ## Effect of a completed ask command on every match (real world).
 sp {muddy-children*apply*ask*environment-effect*each1
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -360,7 +363,7 @@ sp {muddy-children*apply*ask*environment-effect*each1
 
 ## Effect of ask on every match (look-ahead).
 sp {muddy-children*apply*ask*internal*each2
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -377,7 +380,7 @@ sp {muddy-children*apply*ask*internal*each2
 ## Effect of a completed ask command on every match (real world).
 sp {muddy-children*apply*ask*environment-effect*each2
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -393,7 +396,7 @@ sp {muddy-children*apply*ask*environment-effect*each2
 
 ## Effect of ask on every match (look-ahead).
 sp {muddy-children*apply*ask*internal*each3
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -410,7 +413,7 @@ sp {muddy-children*apply*ask*internal*each3
 ## Effect of a completed ask command on every match (real world).
 sp {muddy-children*apply*ask*environment-effect*each3
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name muddy-children ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
@@ -426,7 +429,7 @@ sp {muddy-children*apply*ask*environment-effect*each3
 
 ## Derived relation all-clean (statement 3): recomputed in every world, never copied into look-ahead.
 sp {muddy-children*elaborate*derived*all-clean
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <pw>)
    (<pw> ^type world)
@@ -439,7 +442,7 @@ sp {muddy-children*elaborate*derived*all-clean
 
 ## Derived relation live-at (statements 3, 4, 5): recomputed in every world, never copied into look-ahead.
 sp {muddy-children*elaborate*derived*live-at
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <pw>)
    (<pw> ^type world)
@@ -456,7 +459,7 @@ sp {muddy-children*elaborate*derived*live-at
 
 ## Derived relation knows-at (statements 2, 4, 5): recomputed in every world, never copied into look-ahead.
 sp {muddy-children*elaborate*derived*knows-at
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c>)
    (<c> ^type child)
@@ -473,7 +476,7 @@ sp {muddy-children*elaborate*derived*knows-at
 
 ## Derived relation answers-differ (statements 4, 5): recomputed in every world, never copied into look-ahead.
 sp {muddy-children*elaborate*derived*answers-differ
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^live-at <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
@@ -492,7 +495,7 @@ sp {muddy-children*elaborate*derived*answers-differ
 
 ## Derived relation answers-differ-too (statements 4, 5): recomputed in every world, never copied into look-ahead.
 sp {muddy-children*elaborate*derived*answers-differ-too
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^live-at <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
@@ -511,7 +514,7 @@ sp {muddy-children*elaborate*derived*answers-differ-too
 
 ## Goal (statement 6): ^goal-met true on the task object.
 sp {muddy-children*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name muddy-children ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

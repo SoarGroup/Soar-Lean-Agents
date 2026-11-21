@@ -12,6 +12,7 @@
 ##   - The goal is ^goal-met true on the task object when some blue block is on some purple block and the same blue
 ##     block is below some yellow block.
 
+## Propose initialize-world-blocks when its conditions below hold.
 sp {world-blocks*propose*initialize-world-blocks
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -56,6 +57,7 @@ sp {world-blocks*apply*initialize-world-blocks
    (log 1 (crlf) |Initialize world-blocks.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {world-blocks*elaborate*problem-space
    (state <s> ^name world-blocks)
 -->
@@ -72,6 +74,7 @@ sp {world-blocks*elaborate*problem-space*mea-substate
    (<p> ^name world-blocks ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {world-blocks*elaborate*flags
    (state <s> ^superstate nil ^name world-blocks)
 -->
@@ -81,7 +84,7 @@ sp {world-blocks*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {world-blocks*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name world-blocks ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -92,7 +95,7 @@ sp {world-blocks*elaborate*state*achieved*object-property
 }
 
 sp {world-blocks*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name world-blocks ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -102,6 +105,7 @@ sp {world-blocks*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose move in problem space world-blocks when its conditions below hold.
 sp {world-blocks*propose*move
    (state <s> ^problem-space.name world-blocks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -111,7 +115,7 @@ sp {world-blocks*propose*move
    (<w> ^clear <cb> <cd>)
    (<cb> ^argument1 <b>)
    (<cd> ^argument1 <d>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
@@ -119,7 +123,7 @@ sp {world-blocks*propose*move
 }
 ## Effect of move (look-ahead).
 sp {world-blocks*apply*move*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name world-blocks ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
@@ -139,7 +143,7 @@ sp {world-blocks*apply*move*internal
 ## Effect of a completed move command on the real world (once per command).
 sp {world-blocks*apply*move*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name world-blocks ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
@@ -159,7 +163,7 @@ sp {world-blocks*apply*move*environment-effect
 }
 ## Goal: a blue block is on a purple block and the blue block is below a yellow block.
 sp {world-blocks*elaborate*goal*stack
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name world-blocks ^world <w>)
    (<w> ^objects <objs> ^on <r1> ^below <r2>)
    (<objs> ^object <t> <a> <b> <c>)
    (<t> ^type task)

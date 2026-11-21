@@ -212,26 +212,7 @@
    {
     "id": "73ef9013b2c14b2aa7a6e8ece0297051",
     "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "property-abstraction-hierarchy",
-      "toId": "9828aa8188f75269948a075cf071ca37"
-     }
-    ]
-   },
-   {
-    "id": "9828aa8188f75269948a075cf071ca37",
-    "type": "SOAR_ID",
-    "outEdges": [
-     {
-      "name": "object-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
-     }
-    ]
-   },
-   {
-    "id": "c93c821dc5c94123baa1d4c9ccb37ef9",
-    "type": "STRING"
+    "outEdges": []
    },
    {
     "id": "617ad6fadc334e18bed5d22196da76b0",
@@ -1087,10 +1068,6 @@
       "toId": "726547afe0d3538e845e635a8b5e6c6f"
      },
      {
-      "name": "hierarchical-properties",
-      "toId": "c2308781a94d550589f78d4e0d4456f5"
-     },
-     {
       "name": "init-evaluation-depth",
       "toId": "0cf45c1c42015d44806ca7c7271d875c"
      },
@@ -1118,14 +1095,6 @@
       "name": "termination",
       "toId": "59bca268fbce5699995c15806fd7c95a"
      }
-    ]
-   },
-   {
-    "id": "c2308781a94d550589f78d4e0d4456f5",
-    "type": "ENUMERATION",
-    "choices": [
-     "false",
-     "true"
     ]
    },
    {
@@ -1780,7 +1749,6 @@
      "evaluate-operator",
      "find-object",
      "learn-internal-apply",
-     "no-task-operator",
      "put-in",
      "selection",
      "thor-soar"
@@ -1808,10 +1776,6 @@
     "id": "38eff57613884d79a4ab341f3ee4cd12",
     "type": "SOAR_ID",
     "outEdges": [
-     {
-      "name": "abstract-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
-     },
      {
       "name": "anchored-world",
       "toId": "8f001c7ec8d844fb82c815d536674ebf"
@@ -1894,10 +1858,6 @@
      {
       "name": "above",
       "toId": "253eef9e5f7d5ca19a338969baaa79d3"
-     },
-     {
-      "name": "abstract-property",
-      "toId": "c93c821dc5c94123baa1d4c9ccb37ef9"
      },
      {
       "name": "anchored-world",
@@ -2275,10 +2235,6 @@
      {
       "name": "heuristic-weight",
       "toId": "726547afe0d3538e845e635a8b5e6c6f"
-     },
-     {
-      "name": "hierarchical-properties",
-      "toId": "c2308781a94d550589f78d4e0d4456f5"
      },
      {
       "name": "init-evaluation-depth",

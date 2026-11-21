@@ -1,1 +1,1 @@
-{"outcome": "success", "decisions": 22, "actions": [["statement-3", "talk", null], ["statement-4", "talk", null], ["statement-5", "talk", null], ["answer", "july-16", null]], "n_actions": 4, "seconds": 0.7, "cpu": "0.670"}
+{"outcome": "success", "decisions": 15, "actions": [["statement-3", "talk", null], ["statement-4", "talk", null], ["statement-5", "talk", null], ["answer", "july-16", null]], "n_actions": 4, "seconds": 0.0, "cpu": "0.001"}

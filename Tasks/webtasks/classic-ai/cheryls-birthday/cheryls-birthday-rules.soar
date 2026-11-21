@@ -17,6 +17,7 @@
 ##   A-CB5: "At first I didn't know": rules out dates with a unique day among all ten (already gone after statement 3). "I know now": rules out dates whose day is shared by another date left after statement 3.
 ##   A-CB6: "Then I also know": rules out dates whose month is shared by another date left after statement 4. The answer is the one date left; with more than one left, no answer is proposed.
 
+## Propose initialize-cheryls-birthday when its conditions below hold.
 sp {cheryls-birthday*propose*initialize-cheryls-birthday
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -49,6 +50,7 @@ sp {cheryls-birthday*apply*initialize-cheryls-birthday
    (log 1 (crlf) |Initialize cheryls-birthday.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {cheryls-birthday*elaborate*problem-space
    (state <s> ^name cheryls-birthday)
 -->
@@ -65,6 +67,7 @@ sp {cheryls-birthday*elaborate*problem-space*mea-substate
    (<p> ^name cheryls-birthday ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {cheryls-birthday*elaborate*flags
    (state <s> ^superstate nil ^name cheryls-birthday)
 -->
@@ -74,7 +77,7 @@ sp {cheryls-birthday*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {cheryls-birthday*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -85,7 +88,7 @@ sp {cheryls-birthday*elaborate*state*achieved*object-property
 }
 
 sp {cheryls-birthday*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -103,7 +106,7 @@ sp {cheryls-birthday*propose*statement-3
    (<objs> ^object <t>)
    (<t> ^type stage)
    (<t> ^step 1)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name statement-3 ^task-operator true ^action-handle statement-3 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
@@ -112,7 +115,7 @@ sp {cheryls-birthday*propose*statement-3
 
 ## Effect of statement-3 (look-ahead).
 sp {cheryls-birthday*apply*statement-3*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -125,7 +128,7 @@ sp {cheryls-birthday*apply*statement-3*internal
 ## Effect of a completed statement-3 command on the real world (once per command).
 sp {cheryls-birthday*apply*statement-3*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -139,7 +142,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect
 
 ## Effect of statement-3 on every match (look-ahead).
 sp {cheryls-birthday*apply*statement-3*internal*each1
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -154,7 +157,7 @@ sp {cheryls-birthday*apply*statement-3*internal*each1
 ## Effect of a completed statement-3 command on every match (real world).
 sp {cheryls-birthday*apply*statement-3*environment-effect*each1
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -168,7 +171,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect*each1
 
 ## Effect of statement-3 on every match (look-ahead).
 sp {cheryls-birthday*apply*statement-3*internal*each2
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -183,7 +186,7 @@ sp {cheryls-birthday*apply*statement-3*internal*each2
 ## Effect of a completed statement-3 command on every match (real world).
 sp {cheryls-birthday*apply*statement-3*environment-effect*each2
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -202,7 +205,7 @@ sp {cheryls-birthday*propose*statement-4
    (<objs> ^object <t>)
    (<t> ^type stage)
    (<t> ^step 2)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name statement-4 ^task-operator true ^action-handle statement-4 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
@@ -211,7 +214,7 @@ sp {cheryls-birthday*propose*statement-4
 
 ## Effect of statement-4 (look-ahead).
 sp {cheryls-birthday*apply*statement-4*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -224,7 +227,7 @@ sp {cheryls-birthday*apply*statement-4*internal
 ## Effect of a completed statement-4 command on the real world (once per command).
 sp {cheryls-birthday*apply*statement-4*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -238,7 +241,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect
 
 ## Effect of statement-4 on every match (look-ahead).
 sp {cheryls-birthday*apply*statement-4*internal*each1
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -255,7 +258,7 @@ sp {cheryls-birthday*apply*statement-4*internal*each1
 ## Effect of a completed statement-4 command on every match (real world).
 sp {cheryls-birthday*apply*statement-4*environment-effect*each1
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -271,7 +274,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect*each1
 
 ## Effect of statement-4 on every match (look-ahead).
 sp {cheryls-birthday*apply*statement-4*internal*each2
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -286,7 +289,7 @@ sp {cheryls-birthday*apply*statement-4*internal*each2
 ## Effect of a completed statement-4 command on every match (real world).
 sp {cheryls-birthday*apply*statement-4*environment-effect*each2
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -305,7 +308,7 @@ sp {cheryls-birthday*propose*statement-5
    (<objs> ^object <t>)
    (<t> ^type stage)
    (<t> ^step 3)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name statement-5 ^task-operator true ^action-handle statement-5 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
@@ -314,7 +317,7 @@ sp {cheryls-birthday*propose*statement-5
 
 ## Effect of statement-5 (look-ahead).
 sp {cheryls-birthday*apply*statement-5*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-5 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -327,7 +330,7 @@ sp {cheryls-birthday*apply*statement-5*internal
 ## Effect of a completed statement-5 command on the real world (once per command).
 sp {cheryls-birthday*apply*statement-5*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-5 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -341,7 +344,7 @@ sp {cheryls-birthday*apply*statement-5*environment-effect
 
 ## Effect of statement-5 on every match (look-ahead).
 sp {cheryls-birthday*apply*statement-5*internal*each1
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-5 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -356,7 +359,7 @@ sp {cheryls-birthday*apply*statement-5*internal*each1
 ## Effect of a completed statement-5 command on every match (real world).
 sp {cheryls-birthday*apply*statement-5*environment-effect*each1
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-5 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t>)
@@ -379,7 +382,7 @@ sp {cheryls-birthday*propose*answer
    (<t> ^step 4)
    (<w> ^only-date <r1>)
    (<r1> ^argument1 <d>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name answer ^task-operator true ^action-handle answer ^argument1 <d> ^argument-count 1 ^desireds <pre>)
@@ -388,7 +391,7 @@ sp {cheryls-birthday*propose*answer
 
 ## Effect of answer (look-ahead).
 sp {cheryls-birthday*apply*answer*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name answer ^pre-conditions-satisfied true ^argument1.object-handle $ <d-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
@@ -405,7 +408,7 @@ sp {cheryls-birthday*apply*answer*internal
 ## Effect of a completed answer command on the real world (once per command).
 sp {cheryls-birthday*apply*answer*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name answer ^status complete ^argument1 <d-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
@@ -425,7 +428,7 @@ sp {cheryls-birthday*apply*answer*environment-effect
 
 ## Derived relation albert-would-know (statements 2, 3): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*albert-would-know
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
    (<d> ^type date)
@@ -441,7 +444,7 @@ sp {cheryls-birthday*elaborate*derived*albert-would-know
 
 ## Derived relation bernard-would-know (statements 2, 3, 4): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*bernard-would-know
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
    (<d> ^type date)
@@ -457,7 +460,7 @@ sp {cheryls-birthday*elaborate*derived*bernard-would-know
 
 ## Derived relation bernard-might-know (statement 3): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*bernard-might-know
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
    (<d> ^type date)
@@ -474,7 +477,7 @@ sp {cheryls-birthday*elaborate*derived*bernard-might-know
 
 ## Derived relation left-after-3 (statement 3): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*left-after-3
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <d>)
    (<d> ^type date)
@@ -487,7 +490,7 @@ sp {cheryls-birthday*elaborate*derived*left-after-3
 
 ## Derived relation bernard-unsure-after-3 (statement 4): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*bernard-unsure-after-3
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^left-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -503,7 +506,7 @@ sp {cheryls-birthday*elaborate*derived*bernard-unsure-after-3
 
 ## Derived relation left-after-4 (statement 4): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*left-after-4
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^left-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -516,7 +519,7 @@ sp {cheryls-birthday*elaborate*derived*left-after-4
 
 ## Derived relation albert-unsure-after-4 (statement 5): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*albert-unsure-after-4
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^left-after-4 <r1>)
    (<r1> ^argument1 <d>)
@@ -532,7 +535,7 @@ sp {cheryls-birthday*elaborate*derived*albert-unsure-after-4
 
 ## Derived relation left-after-5 (statement 5): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*left-after-5
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^left-after-4 <r1>)
    (<r1> ^argument1 <d>)
@@ -545,7 +548,7 @@ sp {cheryls-birthday*elaborate*derived*left-after-5
 
 ## Derived relation only-date (statement 7): recomputed in every world, never copied into look-ahead.
 sp {cheryls-birthday*elaborate*derived*only-date
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<w> ^left-after-5 <r1>)
    (<r1> ^argument1 <d>)
@@ -559,7 +562,7 @@ sp {cheryls-birthday*elaborate*derived*only-date
 
 ## Goal (statement 7): ^goal-met true on the task object.
 sp {cheryls-birthday*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

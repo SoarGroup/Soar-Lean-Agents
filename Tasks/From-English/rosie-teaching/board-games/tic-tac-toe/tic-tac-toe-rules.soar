@@ -23,9 +23,10 @@
 ##   - The goal (12) is ^goal-met true on the task object; the failure (18) marks the state with ^failure.
 ##   - Opponent (decided by JL, 16 Nov 2026): the environment plays blue. Blue's moves arrive on the input-link
 ##     (^opponent-move with ^block, ^location, ^number; ^turn; ^blue-moves); input.soar-style rules copy them onto the state
-##     (IO-019) and apply them to the world. The agent proposes a move only when the environment says it is red's turn and
-##     it has applied every blue move reported (IO-021). Look-ahead covers red's own moves only.
+##     (L3-092) and apply them to the world. The agent proposes a move only when the environment says it is red's turn and
+##     it has applied every blue move reported (former IO-021, deleted 18 Nov 2026). Look-ahead covers red's own moves only.
 
+## Propose initialize-tic-tac-toe when its conditions below hold.
 sp {tic-tac-toe*propose*initialize-tic-tac-toe
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -167,6 +168,7 @@ sp {tic-tac-toe*apply*initialize-tic-tac-toe
    (log 1 (crlf) |Initialize tic-tac-toe.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {tic-tac-toe*elaborate*problem-space
    (state <s> ^name tic-tac-toe)
 -->
@@ -183,6 +185,7 @@ sp {tic-tac-toe*elaborate*problem-space*mea-substate
    (<p> ^name tic-tac-toe ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {tic-tac-toe*elaborate*flags
    (state <s> ^superstate nil ^name tic-tac-toe)
 -->
@@ -192,7 +195,7 @@ sp {tic-tac-toe*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {tic-tac-toe*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -203,7 +206,7 @@ sp {tic-tac-toe*elaborate*state*achieved*object-property
 }
 
 sp {tic-tac-toe*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -213,6 +216,7 @@ sp {tic-tac-toe*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose move in problem space tic-tac-toe when its conditions below hold.
 sp {tic-tac-toe*propose*move
    (state <s> ^problem-space.name tic-tac-toe ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -223,7 +227,7 @@ sp {tic-tac-toe*propose*move
    (<cb> ^argument1 <b>)
    (<cl> ^argument1 <l>)
    (<ab> ^argument1 <b>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -231,7 +235,7 @@ sp {tic-tac-toe*propose*move
 }
 ## Effect of red's move in look-ahead.
 sp {tic-tac-toe*apply*move*internal*from-block
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -252,7 +256,7 @@ sp {tic-tac-toe*apply*move*internal*from-block
 }
 
 sp {tic-tac-toe*apply*move*internal*from-nothing
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -272,7 +276,7 @@ sp {tic-tac-toe*apply*move*internal*from-nothing
 ## Effect of a completed red move on the real world (once per command).
 sp {tic-tac-toe*apply*move*environment-effect*from-block
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -296,7 +300,7 @@ sp {tic-tac-toe*apply*move*environment-effect*from-block
 
 sp {tic-tac-toe*apply*move*environment-effect*from-nothing
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -315,16 +319,16 @@ sp {tic-tac-toe*apply*move*environment-effect*from-nothing
    (<pa> ^effect-applied true)
    (write |Place | <bh> | on | <lh> (crlf))
 }
-## Input (IO-019): the environment's turn signal and blue's last move, copied onto the top state.
+## Input (L3-092): the environment's turn signal and blue's last move, copied onto the top state.
 sp {tic-tac-toe*elaborate*input*turn
-   (state <s> ^superstate nil ^io.input-link <il>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^io.input-link <il>)
    (<il> ^turn <c> ^blue-moves <n>)
 -->
    (<s> ^env-turn <c> ^env-blue-moves <n>)
 }
 
 sp {tic-tac-toe*elaborate*input*opponent-move
-   (state <s> ^superstate nil ^io.input-link.opponent-move <m>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^io.input-link.opponent-move <m>)
    (<m> ^block <bh> ^location <lh> ^number <n>)
 -->
    (<s> ^opponent-move <om>)
@@ -332,30 +336,31 @@ sp {tic-tac-toe*elaborate*input*opponent-move
 }
 
 sp {tic-tac-toe*elaborate*input*game-over
-   (state <s> ^superstate nil ^io.input-link.game-over <r>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^io.input-link.game-over <r>)
 -->
    (<s> ^env-game-over <r>)
 }
 
-## Red may act only when the environment says it is red's turn and every blue move reported has been applied (IO-021).
+## Red may act only when the environment says it is red's turn and every blue move reported has been applied (former IO-021, deleted 18 Nov 2026).
 sp {tic-tac-toe*elaborate*my-turn
-   (state <s> ^superstate nil ^env-turn red ^env-blue-moves <n> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^env-turn red ^env-blue-moves <n> ^world <w>)
    (<w> ^objects.object <t>)
    (<t> ^type task ^blue-moves-applied <n>)
 -->
    (<s> ^my-turn true)
 }
 
+## Reject move not my turn in problem space tic-tac-toe.
 sp {tic-tac-toe*reject*move*not-my-turn
-   (state <s> ^superstate nil ^operator <op> + -^my-turn true)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^operator <op> + -^my-turn true)
    (<op> ^task-operator true)
 -->
    (<s> ^operator <op> -)
 }
 
-## The environment's end-of-episode signal ends the run (IO-022), once every blue move reported has been applied.
+## The environment's signal that the task instance has ended ends the run (L3-093), once every blue move reported has been applied.
 sp {tic-tac-toe*propose*game-over
-   (state <s> ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w>)
    (<w> ^objects.object <t>)
    (<t> ^type task ^blue-moves-applied <n>)
 -->
@@ -373,7 +378,7 @@ sp {tic-tac-toe*apply*game-over
 ## Effect of blue's move (reported by the environment) on the real world, once per move number.
 sp {tic-tac-toe*apply*opponent-move*from-block
    :o-support
-   (state <s> ^superstate nil ^world <w> ^opponent-move <om>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^world <w> ^opponent-move <om>)
    (<om> ^block <bh> ^location <lh> ^number <n>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -399,7 +404,7 @@ sp {tic-tac-toe*apply*opponent-move*from-block
 
 sp {tic-tac-toe*apply*opponent-move*from-nothing
    :o-support
-   (state <s> ^superstate nil ^world <w> ^opponent-move <om>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^world <w> ^opponent-move <om>)
    (<om> ^block <bh> ^location <lh> ^number <n>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -422,7 +427,7 @@ sp {tic-tac-toe*apply*opponent-move*from-nothing
 }
 ## Goal (statements 12-14): three different captured locations (each below a red block) are members of one line.
 sp {tic-tac-toe*elaborate*goal*three-in-row
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^member <m1> <m2> <m3> ^below <b1> <b2> <b3>)
    (<objs> ^object <t> <line>)
    (<t> ^type task)
@@ -442,7 +447,7 @@ sp {tic-tac-toe*elaborate*goal*three-in-row
 
 ## Failure (statements 18-19): three different occupied locations (each below a blue block) are members of one line.
 sp {tic-tac-toe*elaborate*failure*opponent-three
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^member <m1> <m2> <m3> ^below <b1> <b2> <b3>)
    (<objs> ^object <line>)
    (<line> ^type line)

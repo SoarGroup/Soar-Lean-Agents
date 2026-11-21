@@ -34,9 +34,7 @@ sp {agent-world*elaborate*substate*world
    "Copy world link to substates except evaluate-operator"
    :default
    (state <s> ^superstate <superstate>
-             -^name selection
-             -^name no-task-operator  # not sure where this is created. Not in any of the selection files
-            )
+             -^name selection)
    (<superstate> ^world <world>
                 -^operator.name evaluate-operator)
 -->
@@ -128,7 +126,6 @@ sp {agent-world*elaborate*substate*operator*desireds*world-context
 sp {agent-world*elaborate*substate*operator*desireds*preferred-desired
    :default
    (state <s> ^superstate.operator <super-operator>
-              ^flags.desired-preferences true
               ^desireds <desireds2>)
    (<super-operator> -^name evaluate-operator
                       ^desireds <desireds>)
@@ -143,7 +140,6 @@ sp {agent-world*elaborate*substate*operator*desireds*preferred-desired
 sp {agent-world*elaborate*substate*operator*desireds*avoid-desired
    :default
    (state <s> ^superstate.operator <super-operator>
-              ^flags.desired-preferences true
               ^desireds <desireds2>)
    (<super-operator> -^name evaluate-operator
                       ^desireds <desireds>)
@@ -152,3 +148,4 @@ sp {agent-world*elaborate*substate*operator*desireds*avoid-desired
 -->
    (<desireds2> ^avoid-desired <desired>)
 }
+

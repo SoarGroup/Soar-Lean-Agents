@@ -18,6 +18,7 @@
 ##   A-BT7: Search control, not from the English (as decided by JL on 16 Nov 2026 for the river crossings): a look-ahead state that returns to a situation already on its path fails. A situation is where each person and the torch are; the clock is not part of it, so going back and forth is cut off even though it changes the time.
 ##   A-BT5: "within 17 minutes": more than 17 elapsed minutes is a losing state; the goal itself tests only where the people are.
 
+## Propose initialize-bridge-and-torch when its conditions below hold.
 sp {bridge-and-torch*propose*initialize-bridge-and-torch
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -60,6 +61,7 @@ sp {bridge-and-torch*apply*initialize-bridge-and-torch
    (log 1 (crlf) |Initialize bridge-and-torch.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {bridge-and-torch*elaborate*problem-space
    (state <s> ^name bridge-and-torch)
 -->
@@ -76,6 +78,7 @@ sp {bridge-and-torch*elaborate*problem-space*mea-substate
    (<p> ^name bridge-and-torch ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^iterative-step, ^mea-operator-selection.
 sp {bridge-and-torch*elaborate*flags
    (state <s> ^superstate nil ^name bridge-and-torch)
 -->
@@ -85,7 +88,7 @@ sp {bridge-and-torch*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {bridge-and-torch*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -96,7 +99,7 @@ sp {bridge-and-torch*elaborate*state*achieved*object-property
 }
 
 sp {bridge-and-torch*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -124,7 +127,7 @@ sp {bridge-and-torch*propose*cross-one
    (<w> ^other <r3>)
    (<r3> ^argument1 <from> ^argument2 <to>)
    (<a> ^minutes <a-minutes>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name cross-one ^task-operator true ^action-handle cross-one ^argument1 <a> ^argument2 <to> ^argument-count 2 ^step-cost <a-minutes> ^desireds <pre>)
@@ -133,7 +136,7 @@ sp {bridge-and-torch*propose*cross-one
 
 ## Effect of cross-one (look-ahead).
 sp {bridge-and-torch*apply*cross-one*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name cross-one ^pre-conditions-satisfied true ^argument1.object-handle $ <a-h> ^argument2.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <a>)
@@ -159,7 +162,7 @@ sp {bridge-and-torch*apply*cross-one*internal
 ## Effect of a completed cross-one command on the real world (once per command).
 sp {bridge-and-torch*apply*cross-one*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name bridge-and-torch ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name cross-one ^status complete ^argument1 <a-h> ^argument2 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <a>)
@@ -208,7 +211,7 @@ sp {bridge-and-torch*propose*cross-two
    (<w> ^other <r4>)
    (<r4> ^argument1 <from> ^argument2 <to>)
    (<b> ^minutes <b-minutes>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name cross-two ^task-operator true ^action-handle cross-two ^argument1 <a> ^argument2 <b> ^argument3 <to> ^argument-count 3 ^step-cost <b-minutes> ^desireds <pre>)
@@ -217,7 +220,7 @@ sp {bridge-and-torch*propose*cross-two
 
 ## Effect of cross-two (look-ahead).
 sp {bridge-and-torch*apply*cross-two*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name cross-two ^pre-conditions-satisfied true ^argument1.object-handle $ <a-h> ^argument2.object-handle $ <b-h> ^argument3.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <a>)
@@ -248,7 +251,7 @@ sp {bridge-and-torch*apply*cross-two*internal
 ## Effect of a completed cross-two command on the real world (once per command).
 sp {bridge-and-torch*apply*cross-two*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name bridge-and-torch ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name cross-two ^status complete ^argument1 <a-h> ^argument2 <b-h> ^argument3 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <a>)
@@ -280,7 +283,7 @@ sp {bridge-and-torch*apply*cross-two*environment-effect
 
 ## Losing condition over-17-minutes (statement 7).
 sp {bridge-and-torch*elaborate*failure*over-17-minutes
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <ck>)
    (<ck> ^type clock)
@@ -291,7 +294,7 @@ sp {bridge-and-torch*elaborate*failure*over-17-minutes
 
 ## Goal (statement 7): ^goal-met true on the task object.
 sp {bridge-and-torch*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name bridge-and-torch ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)
@@ -331,6 +334,7 @@ sp {bridge-and-torch*elaborate*ancestor-world*inherited
    (<s> ^ancestor-world <aw>)
 }
 
+## Elaborate failure repeated situation: adds ^failure.
 sp {bridge-and-torch*elaborate*failure*repeated-situation
    (state <s> ^name evaluate-operator ^look-ahead-operator <o> ^ancestor-world <aw> ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^versioned-operator <o>)

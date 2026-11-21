@@ -110,6 +110,31 @@ sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*
 -->
    (<superstate> ^operator <x> = <y>)}
 
+## Preference for selection same-symbolic-evaluations-are-indifferent success no-better nested (v2.45).
+## A nested selection never counts its ^remaining-operators down (only the top selection does), so the rule above never applies to it;
+## two closed successes there are indifferent, as in a selection without the counter (Operator_Tie/elaborations.soar). Until v2.45
+## soar-base broke such ties in look-ahead (it now breaks ties only in real states).
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*success*no-better*nested
+   :default
+   (state <s> ^name selection
+             -^top-selection true
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+   (<evaluation1> ^closed true)
+   (<evaluation2> ^closed true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
 ## Preference for selection same-symbolic-evaluations-are-indifferent no-eval.
 sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval
    :default
@@ -139,7 +164,7 @@ sp {selection-world*compare*selection*reject*high-estimated-total-cost
               ^flags.optimize true
               ^minimum-numeric-value <mnv>
               ^superstate <superstate>
-              -^superstate.desireds.better higher
+               ^superstate.desireds.better lower
               ^evaluation <evaluation>)
    (<evaluation> ^super-operator <operator>
                  ^estimated-total-cost { <cost> > <mnv> }
@@ -166,7 +191,7 @@ sp {selection-world*compare*selection*lower-estimated-total-cost-better
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>
                  ^world.estimated-remaining-cost <anyrem>)
-  -(<desireds> ^better higher)
+   (<desireds> ^better lower)
    (<e1> ^super-operator <x>
          ^symbolic-value depth-exceeded
          ^estimated-total-cost <c1>
@@ -213,13 +238,62 @@ sp {selection-world*compare*selection*success-within-cap-better-than-depth-excee
               ^evaluation <e1>
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>)
-  -(<desireds> ^better higher)
+   (<desireds> ^better lower)
    (<e1> ^super-operator <x>
          ^symbolic-value success
          ^numeric-value { <= <cap> <> no-value <c> }
          ^desireds.duplicate-of <desireds>)
    (<e2> ^super-operator { <> <x> <y> }
          ^symbolic-value depth-exceeded
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-within-cap-better-than-depth-exhaustion (iterative-step cost, optimize false; v2.45).
+## A nested selection whose look-ahead stopped at the cost cap returns depth-exhaustion (initialize-failure-evaluation); like a
+## depth-exceeded branch it holds no success within the cap, so a success inside the cap dominates it. Without this rule a nested
+## selection with a success and a depth-exhaustion sibling stayed tied, and its state no-change passed depth-exhaustion up,
+## losing the success (gen/costgraph-r4x8-unit-cap, to-do 21 Nov 2026).
+sp {selection-world*compare*selection*success-within-cap-better-than-depth-exhaustion
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize false
+              ^flags.iterative-step cost
+              ^cost-cap <cap>
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <= <cap> <> no-value <c> }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exhaustion
+         ^desireds.duplicate-of <desireds>)
+-->
+   (<superstate> ^operator <x> > <y>)}
+
+## Preference for selection success-better-than-depth-exhaustion (cost metric, optimize false, operator or tie-impasse depth; v2.45).
+## As success-better-than-depth-exceeded: the first successful depth wins over a branch that found nothing within the depth.
+sp {selection-world*compare*selection*success-better-than-depth-exhaustion*first-success
+   :default
+   (state <s> ^name selection
+              ^flags.cost-metric << unit time >>
+              ^flags.optimize false
+              ^flags.iterative-step << operator tie-impasse >>
+              ^superstate <superstate>
+              ^evaluation <e1>
+              ^evaluation { <> <e1> <e2> })
+   (<superstate> ^desireds <desireds>)
+   (<e1> ^super-operator <x>
+         ^symbolic-value success
+         ^numeric-value { <> no-value <c> }
+         ^desireds.duplicate-of <desireds>)
+   (<e2> ^super-operator { <> <x> <y> }
+         ^symbolic-value depth-exhaustion
          ^desireds.duplicate-of <desireds>)
 -->
    (<superstate> ^operator <x> > <y>)}
@@ -236,7 +310,7 @@ sp {selection-world*compare*selection*success-dominates-cost-bound
               ^evaluation <e1>
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>)
-  -(<desireds> ^better higher)
+   (<desireds> ^better lower)
    (<e1> ^super-operator <x>
          ^symbolic-value success
          ^numeric-value { <> no-value <c> }
@@ -261,6 +335,7 @@ sp {selection-world*compare*selection*lower-cost-success-better
               ^evaluation <e1>
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)      # costs: lower is better (v2.45)
    (<e1> ^super-operator <x>
          ^symbolic-value success
          ^numeric-value { <c> <> no-value }
@@ -306,6 +381,7 @@ sp {selection-world*compare*selection*success-better-than-depth-exhaustion*bound
               ^evaluation <e1>
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)      # costs: lower is better (v2.45)
    (<e1> ^super-operator <x>
          ^symbolic-value success
          ^numeric-value { <c> <> no-value }
@@ -329,6 +405,7 @@ sp {selection-world*compare*selection*bounded-depth-exhaustion-better-than-succe
               ^evaluation <e1>
               ^evaluation { <> <e1> <e2> })
    (<superstate> ^desireds <desireds>)
+   (<desireds> ^better lower)      # costs: lower is better (v2.45)
    (<e1> ^super-operator <x>
          ^symbolic-value depth-exhaustion
          ^lower-bound { <bound> <> none }

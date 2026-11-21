@@ -1,1 +1,1 @@
-{"outcome": "success", "decisions": 1078, "actions": [["go", "place-c", null], ["push", "place-b", null], ["climb-up", "box", null], ["grasp", "bananas", null]], "n_actions": 4, "seconds": 0.6, "cpu": "0.248"}
+{"outcome": "success", "decisions": 1386, "actions": [["go", "place-c", null], ["push", "place-b", null], ["climb-up", "box", null], ["grasp", "bananas", null]], "n_actions": 4, "seconds": 0.8, "cpu": "0.327"}

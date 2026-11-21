@@ -1,1 +1,1 @@
-{"outcome": "success", "decisions": 15748, "actions": [["place", "cube-a", "a-o8x"], ["place", "cube-b", "b-o6x"], ["place", "cube-c", "c-o8x"], ["place", "cube-d", "d-o6x"]], "n_actions": 4, "seconds": 124.7, "cpu": "109.493"}
+{"outcome": "success", "decisions": 19608, "actions": [["place", "cube-a", "a-o0x"], ["place", "cube-b", "b-o0x"], ["place", "cube-c", "c-o1x"], ["place", "cube-d", "d-o0x"]], "n_actions": 4, "seconds": 205.6, "cpu": "190.936"}

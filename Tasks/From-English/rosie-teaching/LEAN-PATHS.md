@@ -1,5 +1,7 @@
 # Rosie dialogs to Soar through Lean: path A, path B and the direct agents (16 November 2026)
 
+**Regenerated 18 November 2026.** All three paths were regenerated with the 18 Nov generators (agentgen `soarlean-agentgen-2026-11-18b.zip`, worldgen v22 `wg.py` and `convpass.py`): every rule now tests its state's or problem space's name (L3-005) and every rule group has an English comment (L3-012). Paths A and B still write identical rules apart from the first header line (checked on the initial worlds and on the KenKen fail and final worlds). The results below are as written on 16 November (library v2.37); the 18 Nov runs on library v2.42 are in `../README.md`.
+
 **Runnable.** Three tasks were taken through Lean both ways: Tower of Hanoi (`block-puzzles/tower-of-hanoi`), fox-goose-bean (`river-crossing-puzzles/fox-goose-bean`) and KenKen with color groups (`logic-puzzles/kenken`). Each folder has the two Lean-path agents next to the direct one. All use Soar 9.6.6 and library v2.37.
 
 | Path | How the rules are written | Files in the task folder |

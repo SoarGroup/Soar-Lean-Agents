@@ -15,4 +15,4 @@ rl --set step-size-parameter 0.01
 #rl --set eligibility-trace-decay-rate .1
 
 #  Use epsilon - not softmax!
-decide indifferent-selection -e
+decide indifferent-selection --epsilon-greedy   # v2.45: "-e" alone only printed epsilon; the policy stayed softmax

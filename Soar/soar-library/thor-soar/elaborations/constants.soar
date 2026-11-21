@@ -15,7 +15,6 @@ sp {elaborates*state*constants*thor-soar*problem-space
                 ^brew-time 200  # was  2000 - but doesn't work with overlapping actions (cook)
                 ^desired-orderings <desired-orderings>
                 ^desired-object-states <dos>
-                ^property-abstraction-hierarchy <pah>
                 ^transformations <transformations>)
    (<desired-orderings> ^desired-ordering <d1> <d2> <d3> <d4> <d5> <d6> <d7> <d8>)
    (<fct> ^potato 15000
@@ -45,10 +44,6 @@ sp {elaborates*state*constants*thor-soar*problem-space
         ^value 3)
    (<dos> ^activated false
           ^open false)
-   (<pah> ^object-property reachable
-          ^next <next1>)
-   (<next1> ^object-property accessible
-            ^next nil)
    (<transformations> ^breadsliced bread
                       ^applesliced apple
                       ^bananasliced banana

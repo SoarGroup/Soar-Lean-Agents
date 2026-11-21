@@ -1,5 +1,21 @@
 # Tower of London: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `tower-of-london-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 11 rules, as before. The 15 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | success 5594 / 5 | success 7348 / 5 | success 7348 / 5 | move blue-ball c-low; move green-ball b-low; move red-ball b-top; move blue-ball a-low; move red-ball a-mid |
+| 2 | success 8802 / 5 | success 5042 / 5 | success 5042 / 5 | move blue-ball c-low; move green-ball b-low; move red-ball b-top; move blue-ball a-low; move red-ball a-mid |
+| 3 | success 9206 / 5 | success 9999 / 8 | success 9999 / 8 | move blue-ball c-low; move green-ball b-low; move red-ball b-top; move blue-ball a-low; move red-ball c-low; move red-ball b-top; move red-ball c-low; move red-ball a-mid |
+
+Seed 3 now takes 8 moves (the red ball goes to c-low, b-top and back to c-low before a-mid): with no cost metric and `^optimize false`, look-ahead on v2.45 takes a random continuation (World-Conventions L4-004) and accepts the first success, so the shortest plan is no longer guaranteed. Library v2.44 reproduces the stored runs exactly (5594, 8802 and 9206 decisions), so the change comes from v2.45, not from the regenerated rules.
+
+The earlier sections below describe the generation of 16 November.
+
 **Runnable.** Soar 9.6.6 (SoarSuite bug-fix release, kernel 9.6.50, build of 6 Nov 2026), library v2.41. Solves on seeds 1-3 with a 5-action plan, the shortest the semantics finds.
 
 **Checked by Lean (Lean 4.35.0, 16 November 2026).** `TowerOfLondon.lean` is in `SoarLean/agentgen/WorldSpec/Tasks` (package `soarlean-agentgen-2026-11-16-classicai.zip`). `towerOfLondon_wellFormed : towerOfLondon.wellFormed = [] := by decide` is proved; `rosiegen json` gives the same JSON as `tower-of-london-worldspec.json`; `rosiegen compile` (path A) gives the same rules as path B; `rosiegen check` agrees on every example state; `rosiegen replay` accepts every run. The description was first written in Python (`../../tools/worldspec_py.py`) while Lean was unavailable; the Lean file is printed from it.

@@ -55,7 +55,7 @@ sp {selection-world*compare*selection*acceptable-success-best
               ^superstate <superstate>
               ^evaluation <evaluation>)
    (<superstate> ^desireds <desireds>)
-  -(<desireds> ^better higher)
+   (<desireds> ^better lower)
    (<evaluation> ^super-operator <x>
                  ^symbolic-value success
                  ^numeric-value { <= <level> <> no-value }

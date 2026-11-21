@@ -1,15 +1,4 @@
-## _flags.soar -- selection-world: 5 elaborations.
-
-## Elaborate flags default hierarchical-properties -> sets hierarchical-properties.
-## true is problematic: reachable desireds are always achieved in look-ahead.
-sp {selection-world*elaborate*flags*default*hierarchical-properties
-   :default
-   (state <s> ^superstate nil
-              ^flags <f>
-             -^flag-override.hierarchical-properties <any>)
--->
-   (<f> ^hierarchical-properties false)
-}
+## _flags.soar -- selection-world: 4 elaborations.
 
 ## Elaborate flags default optimize -> sets optimize.
 ## false: with a cost metric, the cheapest path at the first successful depth is selected.

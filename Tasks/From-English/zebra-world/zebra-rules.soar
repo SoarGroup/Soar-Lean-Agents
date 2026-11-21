@@ -29,6 +29,7 @@
 ##   that empties a cell or a value is a failure, one that solves the puzzle a success.
 ##   Clue 1 is the structure itself (five houses).
 
+## Propose initialize-zebra when its conditions below hold.
 sp {zebra*propose*initialize-zebra
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -45,6 +46,7 @@ sp {zebra*reject*initialize-agent-world*world-exists
    (<s> ^operator <o> -)
 }
 
+## Apply initialize-zebra.
 sp {zebra*apply*initialize-zebra
    (state <s> ^operator.name initialize-zebra ^world <w>)
    (<w> ^objects <objs>)
@@ -112,12 +114,14 @@ sp {zebra*apply*initialize-zebra
    (write |Five houses; every house starts with all 25 values as candidates.| (crlf) |Deductions:| (crlf))
 }
 
+## Elaborate top state environment none: adds ^environment.
 sp {zebra*elaborate*top-state*environment-none
    (state <s> ^superstate nil ^name zebra)
 -->
    (<s> ^environment none)
 }
 
+## Elaborate problem space: adds ^agent-world, ^default-desired-copy, ^default-operator-copy, ^default-state-copy.
 sp {zebra*elaborate*problem-space
    (state <s> ^name zebra)
 -->
@@ -125,6 +129,7 @@ sp {zebra*elaborate*problem-space
    (<p> ^name zebra ^agent-world true ^default-state-copy no ^default-operator-copy no ^default-desired-copy no ^dont-copy top-state)
 }
 
+## Elaborate flags: adds ^flag-override, ^iterative-step, ^mea-operator-selection.
 sp {zebra*elaborate*flags
    (state <s> ^superstate nil ^name zebra)
 -->
@@ -134,7 +139,7 @@ sp {zebra*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {zebra*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name zebra ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -145,7 +150,7 @@ sp {zebra*elaborate*state*achieved*object-property
 }
 
 sp {zebra*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name zebra ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -243,6 +248,7 @@ sp {zebra*elaborate*failure*value-without-house
 ## are taken before any branching, in any order)
 ########################################################################
 
+## Propose eliminate in problem space zebra when its conditions below hold (position).
 sp {zebra*propose*eliminate*position
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
@@ -421,7 +427,7 @@ sp {zebra*propose*eliminate*hidden-single
 }
 
 sp {zebra*apply*eliminate
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name zebra ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name eliminate ^pre-conditions-satisfied true ^house-handle <hh> ^value <e>)
    (<w> ^anchored-world true ^objects.object <h>)
    (<h> ^object-handle <hh> ^candidate <e>)
@@ -431,7 +437,7 @@ sp {zebra*apply*eliminate
 
 ## Real deductions are printed; look-ahead deductions are not.
 sp {zebra*apply*eliminate*report
-   (state <s> ^superstate nil ^operator <op> ^world <w>)
+   (state <s> ^problem-space.name zebra ^superstate nil ^operator <op> ^world <w>)
    (<op> ^name eliminate ^pre-conditions-satisfied true ^house-handle <hh> ^value <e> ^reason <r>)
    (<w> ^anchored-world true ^objects.object <h>)
    (<h> ^object-handle <hh> ^candidate <e>)
@@ -446,6 +452,7 @@ sp {zebra*apply*eliminate*report
 ## best preference on eliminate does not hold assign back there.
 ########################################################################
 
+## Propose assign in problem space zebra when its conditions below hold.
 sp {zebra*propose*assign
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds> ^open <o>)
    (<ds> ^desired <sd> ^unachieved <sd>)
@@ -466,7 +473,7 @@ sp {zebra*propose*assign
 }
 
 sp {zebra*apply*assign
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name zebra ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name assign ^pre-conditions-satisfied true ^house-handle <hh> ^group <c> ^value <v>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <h> <vo>)
@@ -477,7 +484,7 @@ sp {zebra*apply*assign
 }
 
 sp {zebra*apply*assign*report
-   (state <s> ^superstate nil ^operator <op> ^world <w>)
+   (state <s> ^problem-space.name zebra ^superstate nil ^operator <op> ^world <w>)
    (<op> ^name assign ^pre-conditions-satisfied true ^house-handle <hh> ^position <p> ^group <c> ^value <v>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <h> <vo>)
@@ -491,6 +498,7 @@ sp {zebra*apply*assign*report
 ## The elimination matrix as text (top state only), printed when deduction stalls and at the end
 ########################################################################
 
+## Elaborate mark red present: adds ^house-handle, ^mark, ^text, ^value.
 sp {zebra*elaborate*mark*red*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
    (<w> ^anchored-world true ^objects.object <h>)
@@ -941,6 +949,7 @@ sp {zebra*elaborate*mark*zebra*absent
    (<m> ^house-handle <hh> ^value |zebra| ^text ||)
 }
 
+## Elaborate matrix text: adds ^matrix-text.
 sp {zebra*elaborate*matrix-text
    (state <s> ^superstate nil ^name zebra)
    (<s> ^mark <m010>)
@@ -1202,6 +1211,7 @@ sp {zebra*elaborate*matrix-text
 |))
 }
 
+## Elaborate has open: adds ^has-open.
 sp {zebra*elaborate*has-open
    (state <s> ^superstate nil ^name zebra ^open <o>)
 -->
@@ -1220,7 +1230,7 @@ sp {zebra*propose*print-matrix
 }
 
 sp {zebra*prefer*print-matrix*over*assign
-   (state <s> ^operator <p> + ^operator <a> +)
+   (state <s> ^problem-space.name zebra ^operator <p> + ^operator <a> +)
    (<p> ^name print-matrix)
    (<a> ^name assign)
 -->
@@ -1228,7 +1238,7 @@ sp {zebra*prefer*print-matrix*over*assign
 }
 
 sp {zebra*apply*print-matrix
-   (state <s> ^operator.name print-matrix ^matrix-text <m>)
+   (state <s> ^name zebra ^operator.name print-matrix ^matrix-text <m>)
 -->
    (write (crlf) |No clue or single eliminates anything more. Elimination matrix (remaining candidates):| (crlf) <m> (crlf))
    (<s> ^matrix-printed true)
@@ -1249,14 +1259,14 @@ sp {zebra*propose*report-solution
 }
 
 sp {zebra*prefer*report-solution
-   (state <s> ^operator <r> + ^operator { <x> <> <r> } +)
+   (state <s> ^problem-space.name zebra ^operator <r> + ^operator { <x> <> <r> } +)
    (<r> ^name report-solution)
 -->
    (<s> ^operator <r> > <x>)
 }
 
 sp {zebra*apply*report-solution
-   (state <s> ^operator.name report-solution ^matrix-text <m> ^world <w>)
+   (state <s> ^problem-space.name zebra ^operator.name report-solution ^matrix-text <m> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <pz> <hw> <hz> <nw> <nz>)
    (<pz> ^type puzzle ^solved true)

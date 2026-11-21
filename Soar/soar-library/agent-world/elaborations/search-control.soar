@@ -7,7 +7,6 @@ sp {agent-world*elaborate*state*desired-selection-value*relation
     :default
    (state <s> ^superstate nil
               ^desireds.desired <desired>
-              ^flags.gps-desired-ordering true
               ^constants.desired-orderings.desired-ordering <do1>)
    (<desired> ^<in1>)
    (<do1> ^relation <in1>
@@ -21,7 +20,6 @@ sp {agent-world*elaborate*state*desired-selection-value*object-property
    :default
    (state <s> ^superstate nil
               ^desireds.desired <desired>
-              ^flags.gps-desired-ordering true
               ^constants.desired-orderings.desired-ordering <do1>)
    (<desired> ^object.<property>)
    (<do1> ^object-property <property>
@@ -58,7 +56,6 @@ sp {agent-world*compare*task-operator-smem-query
 sp {agent-world*compare*preferred-desired*search-control
    :default
    (state <s> ^operator <op1> +
-              ^flags.desired-preferences true
               ^desireds.<< super-preferred-desired preferred-desired >> <super-desired>)
    (<op1> ^super-desired <super-desired>)
 -->
@@ -70,7 +67,6 @@ sp {agent-world*compare*superpreferred-desired*search-control
    :default
    (state <s> ^operator <op1> +
                         { <op2> <> <op1> } +
-              ^flags.desired-preferences true
               ^desireds <desireds>)
    (<op1> ^super-desired <super-desired>)
    (<op2> ^super-desired <super-desired2>)
@@ -84,7 +80,6 @@ sp {agent-world*compare*superpreferred-desired*search-control
 sp {agent-world*compare*avoid-desired*search-control
    :default
    (state <s> ^operator <op1> +
-              ^flags.desired-preferences true
               ^desireds.avoid-desired <super-desired>)
    (<op1> ^super-desired <super-desired>)
 -->
@@ -96,7 +91,6 @@ sp {agent-world*compare*avoid-desired*search-control*failed-grounding
    :default
    (state <s> ^operator <op1> +
                         { <op2> <> <op1> } +
-              ^flags.desired-preferences true
               ^desireds.failed-grounding-desired <super-desired>)
    (<op1> ^super-desired <super-desired>
           ^name find-object)
@@ -110,7 +104,6 @@ sp {agent-world*compare*avoid-desired*search-control*failed-grounding
 sp {agent-world*compare*preferred-indifferent*search-control
    :default
    (state <s> ^operator <op1> +
-              ^flags.desired-preferences true
               ^desireds.preferred-indifferent <super-desired>)
    (<op1> ^super-desired <super-desired>)
 -->
@@ -121,8 +114,7 @@ sp {agent-world*compare*preferred-indifferent*search-control
 sp {agent-world*compare*gps-desired-ordering*ordering*relations*same
    :default
    (state <s> ^operator <op1> +
-              ^operator { < <op1> <op2> } +
-              ^flags.gps-desired-ordering true)
+              ^operator { < <op1> <op2> } +)
    (<op1> ^super-desired <sdesired1>
           ^task-operator true)
    (<sdesired1> ^selection-value <v>
@@ -140,7 +132,6 @@ sp {agent-world*compare*gps-desired-ordering*ordering*relations*better
    :default
    (state <s> ^operator <op1> +
               ^operator { <> <op1> <op2> } +
-              ^flags.gps-desired-ordering true
               ^desireds <desireds>)
    (<op1> ^super-desired.selection-value <v>
           ^task-operator true)
@@ -176,7 +167,6 @@ sp {agent-world*compare*required-desired*ordering*relations*better
 sp {agent-world*apply*desired-selection-value*relation
    :default
    (state <s> ^operator.desireds.desired <desired>
-              ^flags.gps-desired-ordering true
               ^constants.desired-orderings.desired-ordering <do1>)
    (<desired> ^<in1>)
    (<do1> ^relation <in1>
@@ -189,7 +179,6 @@ sp {agent-world*apply*desired-selection-value*relation
 sp {agent-world*apply*desired-selection-value*object-property
     :default
    (state <s> ^operator.desireds.desired <desired>
-              ^flags.gps-desired-ordering true
               ^constants.desired-orderings.desired-ordering <do1>)
    (<desired> ^object.<property>)
    (<do1> ^object-property <property>

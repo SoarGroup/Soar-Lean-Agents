@@ -7,7 +7,7 @@ sp {evaluate-operator*propose*assume-successful-grounding
               ^world <world>
               ^desireds.desired <desired>)
    (<world> ^anchored-world true
-           -^real true
+            ^real false
             ^duplicate-of)
    (<desired> ^info.unanchored-object <unanchored-object>)
    (<unanchored-object> ^class <class>)
@@ -32,7 +32,7 @@ sp {evaluate-operator*propose*assume-successful-grounding*in-on
               ^world <world>
               ^desireds.desired <desired>)
    (<world> ^anchored-world true
-           -^real true
+            ^real false
             ^duplicate-of)
    (<desired> ^info.unanchored-object <unanchored-object>)
    (<unanchored-object> ^class <class>)

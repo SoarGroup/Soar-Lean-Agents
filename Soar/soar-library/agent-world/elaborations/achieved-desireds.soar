@@ -1,8 +1,9 @@
-## achieved-desireds.soar -- agent-world: 38 elaborations, 1 application.
+## achieved-desireds.soar -- agent-world: 36 elaborations, 1 application.
 
 ## ---- elaborations ----
 
-## Elaborate state achieved-desired disjunction -> sets achieved.
+## Elaborate state achieved-desired disjunction -> sets achieved; rejects unachieved.
+## The other alternative is satisfied through its partner, so it is not unachieved (L8-012, L8-019).
 sp {agent-world*elaborate*state*achieved-desired*disjunction
    :default
    (state <s> ^desireds <desireds>)
@@ -10,26 +11,14 @@ sp {agent-world*elaborate*state*achieved-desired*disjunction
                ^achieved <desired1>)
    (<desired1> ^disjunction <desired2>)
 -->
-   (<desireds> ^achieved <desired2>)
-}
-
-## Elaborate state achieved-desired abstract-property -> sets achieved.
-sp {agent-world*elaborate*state*achieved-desired*abstract-property
-   :default
-   (state <s> ^desireds <desireds>
-              ^world.abstract-property <abstract-property>)
-   (<desireds> ^desired <desired>)
-   (<desired> ^object <object>)
-   (<object> ^<abstract-property> <desired-value>)
--->
-   (<desireds> ^achieved <desired>)
+   (<desireds> ^achieved <desired2>
+               ^unachieved <desired2> -)
 }
 
 ## Elaborate state unachieved-desired-origin -> sets unachieved.
 sp {agent-world*elaborate*state*unachieved-desired-origin
    :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <desired-attribute>} <desired-value>
@@ -39,24 +28,6 @@ sp {agent-world*elaborate*state*unachieved-desired-origin
               ^<< object-handle origin-object-handle >> <handle>
               ^anchored true)}
   -(<desireds> ^achieved <desired>)
--->
-   (<desireds> ^unachieved <desired>)
-}
-
-## Elaborate state unachieved-desired abstract-property -> sets unachieved.
-sp {agent-world*elaborate*state*unachieved-desired*abstract-property
-   :default
-   (state <s> ^desireds <desireds>
-              ^world.abstract-property <abstract-property>)
-   (<desireds> ^desired <desired>)
-   (<desired> ^object <desired-object>)
-   (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <> <abstract-property> <desired-attribute>} <desired-value>
-                     ^object-handle <handle>)
-  -{(<s> ^world.objects.object <object>)
-    (<object> ^<desired-attribute> <desired-value>
-              ^<< object-handle origin-object-handle >>  <handle>
-              ^anchored true)}
-                       -{(<desireds> ^achieved <desired>)}
 -->
    (<desireds> ^unachieved <desired>)
 }

@@ -30,6 +30,7 @@
 ##     and the look-ahead application records both on the history object (^visited). Real moves (JL, 16 Nov 2026, as in
 ##     mc-world): a real move back to a situation already visited is worst (the top state records ^real-visited).
 
+## Propose initialize-jealous-husbands when its conditions below hold.
 sp {jealous-husbands*propose*initialize-jealous-husbands
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -90,6 +91,7 @@ sp {jealous-husbands*apply*initialize-jealous-husbands
    (log 1 (crlf) |Initialize jealous-husbands.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {jealous-husbands*elaborate*problem-space
    (state <s> ^name jealous-husbands)
 -->
@@ -106,6 +108,7 @@ sp {jealous-husbands*elaborate*problem-space*mea-substate
    (<p> ^name jealous-husbands ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute situation)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {jealous-husbands*elaborate*flags
    (state <s> ^superstate nil ^name jealous-husbands)
 -->
@@ -115,7 +118,7 @@ sp {jealous-husbands*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {jealous-husbands*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -126,7 +129,7 @@ sp {jealous-husbands*elaborate*state*achieved*object-property
 }
 
 sp {jealous-husbands*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -136,6 +139,7 @@ sp {jealous-husbands*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose ferry-one in problem space jealous-husbands when its conditions below hold.
 sp {jealous-husbands*propose*ferry-one
    (state <s> ^problem-space.name jealous-husbands ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -148,7 +152,7 @@ sp {jealous-husbands*propose*ferry-one
    (<bb> ^argument1 <cur> ^argument2 <boat>)
    (<xo> ^argument1 <x> ^argument2 <cur>)
    (<op-r> ^argument1 <opp>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
@@ -156,7 +160,7 @@ sp {jealous-husbands*propose*ferry-one
 }
 ## Effect of ferry-one (look-ahead).
 sp {jealous-husbands*apply*ferry-one*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <dh> ^from.object-handle $ <oldh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat> <d>)
@@ -183,7 +187,7 @@ sp {jealous-husbands*apply*ferry-one*internal
 
 sp {jealous-husbands*apply*ferry-one*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name jealous-husbands ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-one ^status complete ^argument1 <xh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat> <d>)
@@ -209,6 +213,7 @@ sp {jealous-husbands*apply*ferry-one*environment-effect
    (<pa> ^effect-applied true)
    (write |ferry-one: | <xh> | with the boat from | <old> | to | <d> (crlf))
 }
+## Propose ferry-two in problem space jealous-husbands when its conditions below hold.
 sp {jealous-husbands*propose*ferry-two
    (state <s> ^problem-space.name jealous-husbands ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -223,7 +228,7 @@ sp {jealous-husbands*propose*ferry-two
    (<bb> ^argument1 <cur> ^argument2 <boat>)
    (<xo> ^argument1 <x> ^argument2 <cur>)
    (<yo> ^argument1 <y> ^argument2 <cur>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <x> ^argument2 <y> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
@@ -231,7 +236,7 @@ sp {jealous-husbands*propose*ferry-two
 }
 ## Effect of ferry-two (look-ahead).
 sp {jealous-husbands*apply*ferry-two*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ferry-two ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <yh> ^from.object-handle $ <oldh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat> <d>)
@@ -264,7 +269,7 @@ sp {jealous-husbands*apply*ferry-two*internal
 
 sp {jealous-husbands*apply*ferry-two*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name jealous-husbands ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-two ^status complete ^argument1 <xh> ^argument2 <yh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat> <d>)
@@ -299,7 +304,7 @@ sp {jealous-husbands*apply*ferry-two*environment-effect
 ## Failure: a woman is on a bank, her husband (the man with her last-name) is not on the bank, and a man is on the bank.
 ## "not on the bank" is read as "on the other bank" (A-R3), so the test is positive.
 sp {jealous-husbands*elaborate*failure*woman-without-husband
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^on <rw> <rh> <rm>)
    (<objs> ^object <wo> <hu> <ma> <bank>)
    (<bank> ^type location)
@@ -315,7 +320,7 @@ sp {jealous-husbands*elaborate*failure*woman-without-husband
 ## ---- Search control (added, not taught): avoid returning to a situation on the current look-ahead path. ----
 ## Where each block would be after a proposed operator: a moved block (an argument, or the boat) on the destination bank.
 sp {jealous-husbands*elaborate*operator*after*moved-block
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> + ^world <w>)
    (<op> ^task-operator true ^<< argument1 argument2 >> <b> ^to <dest>)
    (<b> ^type block ^label-key <k>)
    (<dest> ^object-handle $ <dh>)
@@ -324,7 +329,7 @@ sp {jealous-husbands*elaborate*operator*after*moved-block
 }
 
 sp {jealous-husbands*elaborate*operator*after*boat
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> + ^world <w>)
    (<w> ^objects.object <b>)
    (<op> ^task-operator true ^to <dest>)
    (<b> ^type block ^shape boat ^label-key <k>)
@@ -335,7 +340,7 @@ sp {jealous-husbands*elaborate*operator*after*boat
 
 ## A block that does not move stays on its bank.
 sp {jealous-husbands*elaborate*operator*after*unmoved-block
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> + ^world <w>)
    (<op> ^task-operator true ^argument1 <a1> ^argument2 <a2> ^to <dest>)
    (<w> ^objects <objs> ^on <r>)
    (<objs> ^object { <> <a1> <> <a2> <b> })
@@ -348,7 +353,7 @@ sp {jealous-husbands*elaborate*operator*after*unmoved-block
 
 ## The label of the situation the operator produces.
 sp {jealous-husbands*elaborate*operator*result
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> + ^world <w>)
    (<op> ^task-operator true ^pos-3 <pos-3> ^pos-4 <pos-4> ^pos-5 <pos-5> ^pos-6 <pos-6> ^pos-7 <pos-7> ^pos-8 <pos-8> ^pos-9 <pos-9>)
 -->
    (<op> ^result (concat <pos-3> |,| <pos-4> |,| <pos-5> |,| <pos-6> |,| <pos-7> |,| <pos-8> |,| <pos-9>))
@@ -356,7 +361,7 @@ sp {jealous-husbands*elaborate*operator*result
 
 ## The label of the current situation (derived; not copied into look-ahead worlds).
 sp {jealous-husbands*elaborate*situation
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^on <r3> <r4> <r5> <r6> <r7> <r8> <r9>)
    (<objs> ^object <t> <b3> <b4> <b5> <b6> <b7> <b8> <b9>)
    (<t> ^type task)
@@ -387,7 +392,7 @@ sp {jealous-husbands*elaborate*situation
 
 ## In look-ahead, reject an operator whose result is a situation already on the path.
 sp {jealous-husbands*reject*operator*repeated-situation
-   (state <s> ^internal-actions true ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^internal-actions true ^operator <op> + ^world <w>)
    (<w> ^objects.object <hist>)
    (<hist> ^type history ^visited <l>)
    (<op> ^task-operator true ^result <l>)
@@ -402,7 +407,7 @@ sp {jealous-husbands*reject*operator*repeated-situation
 ## The real application records the situation it leaves (not the one it produces: recording that would make the selected
 ## operator itself worst, and Soar would replace it before its command completes).
 sp {jealous-husbands*apply*operator*record-real-move
-   (state <s> ^superstate nil ^operator <op> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^superstate nil ^operator <op> ^world <w>)
    (<op> ^task-operator true)
    (<w> ^objects.object <t>)
    (<t> ^type task ^situation <sit>)
@@ -411,7 +416,7 @@ sp {jealous-husbands*apply*operator*record-real-move
 }
 
 sp {jealous-husbands*compare*operator*real-repeated-situation
-   (state <s> ^superstate nil ^operator <op> + ^real-visited <l>)
+   (state <s> ^problem-space.name jealous-husbands ^superstate nil ^operator <op> + ^real-visited <l>)
    (<op> ^task-operator true ^result <l>)
 -->
    (<s> ^operator <op> <)
@@ -419,7 +424,7 @@ sp {jealous-husbands*compare*operator*real-repeated-situation
 
 ## The look-ahead application records the situation it leaves and the one it produces.
 sp {jealous-husbands*apply*operator*record-path
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^result <r>)
    (<w> ^objects <objs>)
    (<objs> ^object <hist> <t>)
@@ -430,7 +435,7 @@ sp {jealous-husbands*apply*operator*record-path
 }
 ## Goal: all the blocks are on a destination bank (expanded over the blocks of the world file).
 sp {jealous-husbands*elaborate*goal*all-crossed
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name jealous-husbands ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <t> <dest> <b-woman-smith-3> <b-woman-bale-4> <b-woman-rogers-5> <b-man-smith-6> <b-man-bale-7> <b-man-rogers-8> <b-boat-9>)
    (<t> ^type task)

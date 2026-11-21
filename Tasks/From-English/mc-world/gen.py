@@ -1,3 +1,6 @@
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'rosie-teaching', 'tools'))
+import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
 import os
 LOADS=[("cross-1m",1,0),("cross-2m",2,0),("cross-1c",0,1),("cross-2c",0,2),("cross-1m1c",1,1)]
 DESC="""## Missionaries and cannibals, written to the world conventions (agent-world,
@@ -188,7 +191,7 @@ sp {missionaries-cannibals*apply*crossing*environment-effect
    (write |Crossing: | <n> | from | <fh> | to | <th> |.   | <fh> | bank now | (- <fm> <dm>) |M | (- <fc> <dc>) |C, | <th> | bank now | (+ <tm> <dm>) |M | (+ <tc> <dc>) |C| (crlf))
 }
 """)
-open("missionaries-cannibals-rules.soar","w").write("".join(R))
+open("missionaries-cannibals-rules.soar","w").write(convpass.apply("".join(R)))
 open("missionaries-cannibals.soar","w").write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

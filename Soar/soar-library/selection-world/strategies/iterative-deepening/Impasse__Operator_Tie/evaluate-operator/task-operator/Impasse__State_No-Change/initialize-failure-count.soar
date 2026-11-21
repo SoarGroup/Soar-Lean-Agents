@@ -42,7 +42,8 @@ sp {selection-world*apply*initialize-failure-evaluation
               ^quiescence t
               ^selection-superstate <sss>)
    (<sss> ^operator.evaluation <evaluation>
-         -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>)
+         -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+         -^evaluation.failure-cutoff true)
    (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
 -->
    (log 1 (crlf) |Exhaustion Failure operator: | <evaluation>)
@@ -75,6 +76,7 @@ sp {selection-world*apply*initialize-failure-evaluation2
               ^quiescence t
               ^selection-superstate <sss>)
    (<sss> -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+         -^evaluation.failure-cutoff true
            ^operator.evaluation <current>
            ^selection-superstate <ssss>)
    (<current> ^super-operator <current-item>)
@@ -105,3 +107,34 @@ sp {selection-world*apply*initialize-failure-evaluation3
    (log 1 (crlf) |Exhaustion Failure operator3: | <evaluation>)
    (<evaluation> ^symbolic-value depth-exhaustion)
 }
+
+## A branch cut off by the cost bound (^failure-cutoff true, cutoff-search) is depth-limited like depth-exceeded (v2.45):
+## a higher cost cap may change its outcome, so a selection whose evaluations include one gives depth-exhaustion, not failure.
+sp {selection-world*apply*initialize-failure-evaluation1*cutoff
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+              ^selection-superstate <sss>)
+   (<sss> ^operator.evaluation <evaluation>
+          ^evaluation.failure-cutoff true)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure (cost cut-off) operator1: | <evaluation>)
+   (<evaluation> ^symbolic-value depth-exhaustion)
+}
+
+sp {selection-world*apply*initialize-failure-evaluation3*cutoff
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+             -^selection-superstate.operator.evaluation <evaluation>
+              ^selection-superstate <sss>)
+   (<sss> ^evaluation.failure-cutoff true
+          ^selection-superstate <ssss>)
+   (<ssss> ^operator.evaluation <evaluation>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (log 1 (crlf) |Exhaustion Failure (cost cut-off) operator3: | <evaluation>)
+   (<evaluation> ^symbolic-value depth-exhaustion)
+}
+

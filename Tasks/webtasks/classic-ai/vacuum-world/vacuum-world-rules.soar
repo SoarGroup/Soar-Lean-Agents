@@ -14,6 +14,7 @@
 ##   A-V3: Suck is proposed only in a dirty square: sucking a clean square changes nothing, so it is never part of a shortest plan.
 ##   A-V4: "as few steps as possible": unit cost per action, read through the library's search settings, not through the rules.
 
+## Propose initialize-vacuum-world when its conditions below hold.
 sp {vacuum-world*propose*initialize-vacuum-world
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -47,6 +48,7 @@ sp {vacuum-world*apply*initialize-vacuum-world
    (log 1 (crlf) |Initialize vacuum-world.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {vacuum-world*elaborate*problem-space
    (state <s> ^name vacuum-world)
 -->
@@ -63,6 +65,7 @@ sp {vacuum-world*elaborate*problem-space*mea-substate
    (<p> ^name vacuum-world ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {vacuum-world*elaborate*flags
    (state <s> ^superstate nil ^name vacuum-world)
 -->
@@ -72,7 +75,7 @@ sp {vacuum-world*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {vacuum-world*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name vacuum-world ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -83,7 +86,7 @@ sp {vacuum-world*elaborate*state*achieved*object-property
 }
 
 sp {vacuum-world*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name vacuum-world ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -106,7 +109,7 @@ sp {vacuum-world*propose*move
    (<r1> ^argument1 <v> ^argument2 <cur>)
    (<w> ^next <r2>)
    (<r2> ^argument1 <cur> ^argument2 <to>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <to> ^argument-count 1 ^desireds <pre>)
@@ -115,7 +118,7 @@ sp {vacuum-world*propose*move
 
 ## Effect of move (look-ahead).
 sp {vacuum-world*apply*move*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name vacuum-world ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -131,7 +134,7 @@ sp {vacuum-world*apply*move*internal
 ## Effect of a completed move command on the real world (once per command).
 sp {vacuum-world*apply*move*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name vacuum-world ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <to>)
@@ -158,7 +161,7 @@ sp {vacuum-world*propose*suck
    (<r1> ^argument1 <v> ^argument2 <sq>)
    (<w> ^dirty <r2>)
    (<r2> ^argument1 <sq>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name suck ^task-operator true ^action-handle suck ^argument1 <sq> ^argument-count 1 ^desireds <pre>)
@@ -167,7 +170,7 @@ sp {vacuum-world*propose*suck
 
 ## Effect of suck (look-ahead).
 sp {vacuum-world*apply*suck*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name vacuum-world ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name suck ^pre-conditions-satisfied true ^argument1.object-handle $ <sq-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <sq>)
@@ -183,7 +186,7 @@ sp {vacuum-world*apply*suck*internal
 ## Effect of a completed suck command on the real world (once per command).
 sp {vacuum-world*apply*suck*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name vacuum-world ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name suck ^status complete ^argument1 <sq-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <sq>)
@@ -200,7 +203,7 @@ sp {vacuum-world*apply*suck*environment-effect
 
 ## Goal (statement 6): ^goal-met true on the task object.
 sp {vacuum-world*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name vacuum-world ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

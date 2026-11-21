@@ -31,6 +31,7 @@
 ## No external environment: the top state has ^environment none and crossings update ^world
 ## as they are applied.
 
+## Propose initialize-artists when its conditions below hold.
 sp {artists*propose*initialize-artists
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -48,6 +49,7 @@ sp {artists*reject*initialize-agent-world*world-exists
    (<s> ^operator <o> -)
 }
 
+## Apply initialize-artists.
 sp {artists*apply*initialize-artists
    (state <s> ^operator.name initialize-artists ^world <w>)
    (<w> ^objects <objs>)
@@ -67,12 +69,14 @@ sp {artists*apply*initialize-artists
    (write |2 artists and 2 managers on the left bank; the boat holds two.| (crlf))
 }
 
+## Elaborate top state environment none: adds ^environment.
 sp {artists*elaborate*top-state*environment-none
    (state <s> ^superstate nil ^name artists)
 -->
    (<s> ^environment none)
 }
 
+## Elaborate problem space: adds ^agent-world, ^default-desired-copy, ^default-operator-copy, ^default-state-copy.
 sp {artists*elaborate*problem-space
    (state <s> ^name artists)
 -->
@@ -81,6 +85,7 @@ sp {artists*elaborate*problem-space
         ^dont-copy-object-attribute empty ^ground-object-attribute side)
 }
 
+## Elaborate flags: adds ^flag-override, ^iterative-step, ^mea-operator-selection.
 sp {artists*elaborate*flags
    (state <s> ^superstate nil ^name artists)
 -->
@@ -90,7 +95,7 @@ sp {artists*elaborate*flags
 
 ## A bank with nobody on it is empty.
 sp {artists*elaborate*world*bank*empty
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name artists ^world <w>)
    (<w> ^objects <objs>)
    (<objs> ^object <b>)
    (<b> ^type bank ^object-handle <h>)
@@ -102,7 +107,7 @@ sp {artists*elaborate*world*bank*empty
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {artists*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name artists ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -113,7 +118,7 @@ sp {artists*elaborate*state*achieved*object-property
 }
 
 sp {artists*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name artists ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -126,6 +131,7 @@ sp {artists*elaborate*state*unachieved*object-property
 
 ### cross: one or two people on the boat's side row to the other bank
 
+## Propose cross in problem space artists when its conditions below hold (one mea).
 sp {artists*propose*cross*one*mea
    (state <s> ^problem-space.name artists ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -162,7 +168,7 @@ sp {artists*propose*cross*two*mea
 ## evaluation copy, whose worlds differ, and structure built on a superstate's operator from a
 ## substate becomes a result of the substate.
 sp {artists*elaborate*operator*prediction
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name artists ^operator <op> + ^world <w>)
    (<op> ^name cross)
 -->
    (<s> ^prediction <pr>)
@@ -170,7 +176,7 @@ sp {artists*elaborate*operator*prediction
 }
 
 sp {artists*elaborate*operator*result*moved
-   (state <s> ^operator <op> + ^prediction <pr>)
+   (state <s> ^problem-space.name artists ^operator <op> + ^prediction <pr>)
    (<pr> ^operator <op>)
    (<op> ^name cross ^to <th> ^moves.object-handle <h>)
 -->
@@ -179,7 +185,7 @@ sp {artists*elaborate*operator*result*moved
 }
 
 sp {artists*elaborate*operator*result*stays
-   (state <s> ^operator <op> + ^prediction <pr> ^world <w>)
+   (state <s> ^problem-space.name artists ^operator <op> + ^prediction <pr> ^world <w>)
    (<pr> ^operator <op>)
    (<op> ^name cross)
    (<w> ^anchored-world true ^objects.object <p>)
@@ -191,7 +197,7 @@ sp {artists*elaborate*operator*result*stays
 }
 
 sp {artists*elaborate*operator*result-label
-   (state <s> ^operator <op> + ^prediction <pr>)
+   (state <s> ^problem-space.name artists ^operator <op> + ^prediction <pr>)
    (<op> ^name cross ^to <th>)
    (<pr> ^operator <op>
          ^result <r0>
@@ -208,7 +214,7 @@ sp {artists*elaborate*operator*result-label
 
 ## Reject a crossing that leaves an artist with another manager and without their own.
 sp {artists*reject*cross*artist-unprotected
-   (state <s> ^operator <op> + ^world <w>)
+   (state <s> ^problem-space.name artists ^operator <op> + ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <a>)
    (<a> ^role artist ^object-handle <ah> ^manager-handle <own>)
@@ -227,7 +233,7 @@ sp {artists*reject*cross*artist-unprotected
 ## In look-ahead, reject a crossing that returns to a situation already visited on the simulated
 ## path.
 sp {artists*reject*cross*visited
-   (state <s> ^operator <op> + ^world <w> -^superstate nil)
+   (state <s> ^problem-space.name artists ^operator <op> + ^world <w> -^superstate nil)
    (<w> ^anchored-world true ^objects.object <boat>)
    (<boat> ^type boat ^visited <l>)
    (<op> ^name cross)
@@ -239,7 +245,7 @@ sp {artists*reject*cross*visited
 
 ## Application (internal; with ^environment none it also applies at the top state).
 sp {artists*apply*cross*person
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name artists ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh> ^to <th> ^moves.object-handle <h>)
    (<w> ^anchored-world true ^objects.object <p>)
    (<p> ^object-handle <h> ^side <fh>)
@@ -249,7 +255,7 @@ sp {artists*apply*cross*person
 
 ## The label of the situation as it stands; recorded as visited when it is left.
 sp {artists*elaborate*state*situation-label
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name artists ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat>)
    (<boat> ^type boat ^side <b>)
@@ -265,8 +271,9 @@ sp {artists*elaborate*state*situation-label
    (<s> ^situation-label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |-| <b>))
 }
 
+## Apply cross in problem space artists (boat): changes ^side.
 sp {artists*apply*cross*boat
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name artists ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh> ^to <th>)
    (<w> ^anchored-world true ^objects.object <boat>)
    (<boat> ^type boat ^side <fh>)
@@ -275,7 +282,7 @@ sp {artists*apply*cross*boat
 }
 
 sp {artists*apply*cross*record-visited*look-ahead
-   (state <s> ^operator <op> ^internal-actions true ^world <w> ^situation-label <l> -^superstate nil)
+   (state <s> ^problem-space.name artists ^operator <op> ^internal-actions true ^world <w> ^situation-label <l> -^superstate nil)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh>)
    (<w> ^anchored-world true ^objects.object <boat>)
    (<boat> ^type boat ^side <fh>)
@@ -284,7 +291,7 @@ sp {artists*apply*cross*record-visited*look-ahead
 }
 
 sp {artists*apply*cross*record-visited*real
-   (state <s> ^operator <op> ^world <w> ^situation-label <l> ^superstate nil)
+   (state <s> ^problem-space.name artists ^operator <op> ^world <w> ^situation-label <l> ^superstate nil)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh>)
    (<w> ^anchored-world true ^objects.object <boat>)
    (<boat> ^type boat ^side <fh>)
@@ -294,7 +301,7 @@ sp {artists*apply*cross*record-visited*real
 
 ## For real crossings, returning to a situation already visited is a last resort.
 sp {artists*prefer*cross*real-visited*worst
-   (state <s> ^superstate nil ^operator <op> + ^real-visited <l> ^prediction <pr>)
+   (state <s> ^problem-space.name artists ^superstate nil ^operator <op> + ^real-visited <l> ^prediction <pr>)
    (<op> ^name cross)
    (<pr> ^operator <op> ^label <l>)
 -->
@@ -303,7 +310,7 @@ sp {artists*prefer*cross*real-visited*worst
 
 ## Report real crossings only (the top state); look-ahead crossings are not printed.
 sp {artists*apply*cross*report
-   (state <s> ^superstate nil ^operator <op> ^world <w>)
+   (state <s> ^problem-space.name artists ^superstate nil ^operator <op> ^world <w>)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh> ^to <th> ^text <t>)
    (<w> ^anchored-world true ^objects.object <boat>)
    (<boat> ^type boat ^side <fh>)

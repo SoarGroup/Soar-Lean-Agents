@@ -1,5 +1,19 @@
 # Instant Insanity: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `instant-insanity-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 15 rules, as before. The 23 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | success 15748 / 4 | success 19608 / 4 | success 19608 / 4 | place cube-a a-o0x; place cube-b b-o0x; place cube-c c-o1x; place cube-d d-o0x |
+| 2 | success 14951 / 4 | success 19588 / 4 | success 19588 / 4 | place cube-a a-o2x; place cube-b b-o2x; place cube-c c-o1x; place cube-d d-o2x |
+| 3 | success 16092 / 4 | success 20093 / 4 | success 20093 / 4 | place cube-a a-o11x; place cube-b b-o9x; place cube-c c-o6x; place cube-d d-o9x |
+
+The earlier sections below describe the generation of 16 November.
+
 **Runnable.** Soar 9.6.6 (SoarSuite bug-fix release, kernel 9.6.50, build of 6 Nov 2026), library v2.41. Solves on seeds 1-3 with a 4-action plan, the shortest the semantics finds.
 
 **Checked by Lean (Lean 4.35.0, 16 November 2026).** `InstantInsanity.lean` is in `SoarLean/agentgen/WorldSpec/Tasks` (package `soarlean-agentgen-2026-11-16-classicai.zip`). `instantInsanity_wellFormed : instantInsanity.wellFormed = [] := by decide` is proved; `rosiegen json` gives the same JSON as `instant-insanity-worldspec.json`; `rosiegen compile` (path A) gives the same rules as path B; `rosiegen check` agrees on every example state; `rosiegen replay` accepts every run. The description was first written in Python (`../../tools/worldspec_py.py`) while Lean was unavailable; the Lean file is printed from it.

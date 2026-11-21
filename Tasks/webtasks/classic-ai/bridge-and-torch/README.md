@@ -1,5 +1,17 @@
 # Bridge and torch: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `bridge-and-torch-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 18 rules, as before. The 24 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | cap 400000 / 0 | not run | cap 400000 / 0 | - |
+
+The earlier sections below describe the generation of 16 November.
+
 **Not runnable yet.** The description is complete and checked by Lean, and the rules are generated and agree with it on every example state. The Soar agent does not solve the task: seed 1 makes no move within 400,000 decisions. The cause is in the library's cost search, not in the description (below).
 
 ## What it needed from WorldSpec (extensions made for this task)

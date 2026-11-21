@@ -8,4 +8,5 @@ sp {mac*elaborate*problem-space
    (<p> ^default-operator-copy yes)
    (<p> ^two-level-attributes bank)
    (<p> ^dont-copy ancestor)
+   (<p> ^dont-copy visited)
 }

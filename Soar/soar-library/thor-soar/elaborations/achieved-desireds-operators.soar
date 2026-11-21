@@ -1,4 +1,4 @@
-## achieved-desireds-operators.soar -- thor-soar: 22 applications.
+## achieved-desireds-operators.soar -- thor-soar: 19 applications.
 
 ## Apply operator acheived-desired handle2 -> sets achieved, unachieved.
 sp {thor-soar*elaborate*operator*acheived-desired*handle2
@@ -17,7 +17,8 @@ sp {thor-soar*elaborate*operator*acheived-desired*handle2
                ^unachieved <desired> -)
 }
 
-## Apply operator achieved-desired disjunction -> sets achieved.
+## Apply operator achieved-desired disjunction -> sets achieved; rejects unachieved.
+## The other alternative is satisfied through its partner, so it is not unachieved (L8-012, L8-019).
 sp {thor-soar*elaborate*operator*achieved-desired*disjunction
     :default
    (state <s> ^operator.desireds <desireds>)
@@ -25,27 +26,14 @@ sp {thor-soar*elaborate*operator*achieved-desired*disjunction
                ^achieved <desired1>)
    (<desired1> ^disjunction <desired2>)
 -->
-   (<desireds> ^achieved <desired2>)
-}
-
-## Apply operator acheived-desired abstract-property -> sets achieved.
-## Abstract Property
-sp {thor-soar*elaborate*operator*acheived-desired*abstract-property
-    :default
-   (state <s> ^operator.desireds <desireds>
-              ^world.abstract-property <abstract-property>)
-   (<desireds> ^desired <desired>)
-   (<desired> ^object <object>)
-   (<object> ^<abstract-property> <desired-value>)
--->
-   (<desireds> ^achieved <desired>)
+   (<desireds> ^achieved <desired2>
+               ^unachieved <desired2> -)
 }
 
 ## Apply operator unacheived-desired -> sets unachieved, achieved.
 sp {thor-soar*elaborate*operator*unacheived-desired
     :default
-   (state <s> ^operator.desireds <desireds>
-             -^world.abstract-property)
+   (state <s> ^operator.desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <desired-attribute>} <desired-value>
@@ -65,8 +53,7 @@ sp {thor-soar*elaborate*operator*unacheived-desired
 ## Apply operator unacheived-desired-origin -> sets unachieved, achieved.
 sp {thor-soar*elaborate*operator*unacheived-desired-origin
     :default
-   (state <s> ^operator.desireds <desireds>
-             -^world.abstract-property)
+   (state <s> ^operator.desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <desired-attribute>} <desired-value>
@@ -78,49 +65,6 @@ sp {thor-soar*elaborate*operator*unacheived-desired-origin
    -{(<desireds> ^desired <desired>
                  ^achieved <desired2>)
      (<desired> ^disjunction <desired2>)}
--->
-   (<desireds> ^unachieved <desired>
-               ^achieved <desired> -)
-}
-
-## Apply operator unacheived-desired abstract-property -> sets unachieved, achieved.
-## abstract-property
-sp {thor-soar*elaborate*operator*unacheived-desired*abstract-property
-    :default
-   (state <s> ^operator.desireds <desireds>
-              ^world.abstract-property <abstract-property>)
-   (<desireds> ^desired <desired>)
-   (<desired> ^object <desired-object>)
-   (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle  <> <abstract-property> <desired-attribute>} <desired-value>
-                     ^object-handle <handle>)
-  -{(<s> ^world.objects.object <object>)
-    (<object> ^<desired-attribute> <desired-value>
-              ^<< object-handle origin-object-handle >> <handle>
-              ^anchored true)}
-  -{(<desireds> ^desired <desired>
-                ^achieved <desired2>)
-    (<desired> ^disjunction <desired2>)}
--->
-   (<desireds> ^unachieved <desired>
-               ^achieved <desired> -)
-}
-
-## Apply operator unacheived-desired-origin abstract-property -> sets unachieved, achieved.
-sp {thor-soar*elaborate*operator*unacheived-desired-origin*abstract-property
-    :default
-   (state <s> ^operator.desireds <desireds>
-              ^world.abstract-property <abstract-property>)
-   (<desireds> ^desired <desired>)
-   (<desired> ^object <desired-object>)
-   (<desired-object> ^{ <> object-handle <> duplicate-of <> anchored <> origin-object-handle <> <abstract-property> <desired-attribute>} <desired-value>
-                     ^origin-object-handle <handle>)
-  -{(<s> ^world.objects.object <object>)
-    (<object> ^<desired-attribute> <desired-value>
-              ^object-handle <handle>
-              ^anchored true)}
-  -{(<desireds> ^desired <desired>
-                ^achieved <desired2>)
-    (<desired> ^disjunction <desired2>)}
 -->
    (<desireds> ^unachieved <desired>
                ^achieved <desired> -)

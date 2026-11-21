@@ -1,4 +1,4 @@
-## break-object.soar -- thor-soar: 3 proposals, 9 applications.
+## break-object.soar -- thor-soar: 4 proposals, 8 applications.
 
 ## Propose break-object.
 ## Nothing that is cut can be broken...
@@ -11,7 +11,45 @@ sp {thor-soar*propose*break-object*mea
               ^desireds <desireds>)
    (<world1> ^anchored-world true
              ^objects.object <object>)
-   (<object> ^object-handle <break-object-handle>)
+   (<object> ^object-handle <break-object-handle>
+             ^class { <> egg })
+   (<desireds> ^desired <desired>
+               ^unachieved <desired>)
+   (<desired> ^object <desired-object>)
+   (<desired-object> ^broken true
+                     ^object-handle <break-object-handle>)
+-->
+   (<s> ^operator <operator> +)
+   (<operator> ^name break-object
+               ^task-operator true
+               ^action-handle break
+               ^super-desired <desired>
+               ^argument1 <object>
+               ^argument-count 1
+               ^desireds <desireds2>)
+   (<desireds2> ^desired-count 2
+                ^preferred-desired <desired3>
+                ^desired.object <desired-object2>
+                ^desired <desired3>)
+   (<desired3> ^object <desired-object3>)
+   (<desired-object2> ^reachable true
+                      ^object-handle <break-object-handle>)
+   (<desired-object3> ^accessible true
+                      ^object-handle <break-object-handle>)
+}
+
+## Propose break-object.
+## MEA Selection Egg - breaking an egg replaces it with a new eggcracked object (argument2)
+sp {thor-soar*propose*break-object*egg*mea
+    :default
+   (state <s> ^problem-space.name thor-world
+              ^flags.mea-operator-selection true
+              ^world <world1>
+              ^desireds <desireds>)
+   (<world1> ^anchored-world true
+             ^objects.object <object>)
+   (<object> ^object-handle <break-object-handle>
+             ^class egg)
    (<desireds> ^desired <desired>
                ^unachieved <desired>)
    (<desired> ^object <desired-object>)
@@ -76,45 +114,6 @@ sp {thor-soar*propose*break-object*to-cook-egg*mea
                       ^object-handle <break-object-handle>)
    (<desired-object3> ^accessible true
                       ^object-handle <break-object-handle>)
-}
-
-## Apply break-object -> sets argument1, argument2, object ....
-## Apply break non-egg external -
-sp {apply*break-object*external*on-in
-    :default
-   (state <s> ^operator <operator>
-              ^world <world>
-             -^internal-actions true)
-   (<world> ^{ << in on >> <in>} <in-relation>
-            ^objects <objects>)
-   (<objects> ^object <object-orig>)
-   (<object-orig> -^class egg   # ???
-                   ^object-handle <orig-object-handle>)
-   (<in-relation> ^argument1 <object-orig>
-                  ^argument2 <object-surface1>)
-   (<operator> ^name break-object
-               ^argument1 <object>
-               ^argument2 <new-object>
-               ^pre-conditions-satisfied true)
-   (<object> ^broken false
-             ^class { <class> <> egg }
-             ^object-handle <orig-object-handle>)
--->
-   (<world>  ^<in> <in-relation> -
-             ^<in> <in-relation2>)
-   (<in-relation2> ^argument1 <new-object>
-                   ^argument2 <object-surface1>)
-   (<objects> ^object <object-orig> -
-                      <new-object>)
-   (log 1 (crlf) |Apply Break: | <orig-object-handle> | external. Fake its existence so can know it is completed.|)
-   (<new-object>  ^anchored true
-                  ^class <class>
-                  ^object-handle <orig-object-handle>
-                  ^cookable false
-                  ^broken true
-                  ^graspable false
-                  ^reachable false
-                  ^confirmed true)
 }
 
 ## Apply break-object -> sets in, on, object.
@@ -284,35 +283,23 @@ sp {apply*break-object*internal
                   ^temperature cold)
 }
 
-## Apply break-object -> sets object, anchored, class ....
+## Apply break-object -> sets broken.
+## Breaking an object other than an egg changes only its broken state; the object is not replaced.
+## In the real world, broken is updated from input like other state properties.
 sp {apply*break-object*internal*not-egg
     :default
    (state <s> ^operator <operator>
-              ^world <world>
               ^internal-actions true)
-   (<world> ^objects <objects>)
-   (<objects> ^object <object-orig>)
-   (<object-orig> ^class <class>
-                  ^object-handle <orig-object-handle>)
    (<operator> ^name break-object
                ^argument1 <object>
-               ^argument2 <new-object>
                ^pre-conditions-satisfied true)
    (<object> ^broken false
-            -^class egg
-             ^class <class>
-             ^object-handle <orig-object-handle>)
+             ^class { <> egg }
+             ^object-handle <object-handle>)
 -->
-   (log 1 (crlf) |Apply Break: | <orig-object-handle> | internal|)
-   (<objects> ^object <object-orig> -
-                      <new-object>)
-   (<new-object>  ^anchored true
-                  ^class <class>
-                  ^origin-object-handle <orig-object-handle>
-                  ^broken true
-                  ^graspable true
-                  ^reachable true
-                  ^confirmed true)
+   (log 1 (crlf) |Apply Break: | <object-handle> | internal|)
+   (<object> ^broken false -
+                     true)
 }
 
 ## Apply break-object -> sets in, argument1, argument2.

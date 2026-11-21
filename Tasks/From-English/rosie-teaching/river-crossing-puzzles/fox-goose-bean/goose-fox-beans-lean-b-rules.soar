@@ -18,6 +18,7 @@
 ##   A-F5: The second action has no name in the dialog; it is called cross.
 ##   A-F6: "on an opposite bank ... on the opposite bank": both blocks on the same bank.
 
+## Propose initialize-goose-fox-beans when its conditions below hold.
 sp {goose-fox-beans*propose*initialize-goose-fox-beans
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -62,6 +63,7 @@ sp {goose-fox-beans*apply*initialize-goose-fox-beans
    (log 1 (crlf) |Initialize goose-fox-beans.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {goose-fox-beans*elaborate*problem-space
    (state <s> ^name goose-fox-beans)
 -->
@@ -78,6 +80,7 @@ sp {goose-fox-beans*elaborate*problem-space*mea-substate
    (<p> ^name goose-fox-beans ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {goose-fox-beans*elaborate*flags
    (state <s> ^superstate nil ^name goose-fox-beans)
 -->
@@ -87,7 +90,7 @@ sp {goose-fox-beans*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {goose-fox-beans*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -98,7 +101,7 @@ sp {goose-fox-beans*elaborate*state*achieved*object-property
 }
 
 sp {goose-fox-beans*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -127,7 +130,7 @@ sp {goose-fox-beans*propose*ferry-one
    (<r2> ^argument1 <x> ^argument2 <cur>)
    (<w> ^opposite <r3>)
    (<r3> ^argument1 <opp>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre>)
@@ -136,7 +139,7 @@ sp {goose-fox-beans*propose*ferry-one
 
 ## Effect of ferry-one (look-ahead).
 sp {goose-fox-beans*apply*ferry-one*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^argument1.object-handle $ <x-h> ^argument2.object-handle $ <opp-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <x>)
@@ -169,7 +172,7 @@ sp {goose-fox-beans*apply*ferry-one*internal
 ## Effect of a completed ferry-one command on the real world (once per command).
 sp {goose-fox-beans*apply*ferry-one*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name goose-fox-beans ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-one ^status complete ^argument1 <x-h> ^argument2 <opp-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <x>)
@@ -212,7 +215,7 @@ sp {goose-fox-beans*propose*cross
    (<boat> ^shape boat)
    (<w> ^opposite <r1>)
    (<r1> ^argument1 <opp>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name cross ^task-operator true ^action-handle cross ^argument1 <boat> ^argument2 <opp> ^argument-count 2 ^desireds <pre>)
@@ -221,7 +224,7 @@ sp {goose-fox-beans*propose*cross
 
 ## Effect of cross (look-ahead).
 sp {goose-fox-beans*apply*cross*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name cross ^pre-conditions-satisfied true ^argument1.object-handle $ <boat-h> ^argument2.object-handle $ <opp-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat>)
@@ -245,7 +248,7 @@ sp {goose-fox-beans*apply*cross*internal
 ## Effect of a completed cross command on the real world (once per command).
 sp {goose-fox-beans*apply*cross*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name goose-fox-beans ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name cross ^status complete ^argument1 <boat-h> ^argument2 <opp-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat>)
@@ -270,7 +273,7 @@ sp {goose-fox-beans*apply*cross*environment-effect
 
 ## Losing condition red-and-yellow-on-opposite-bank (statement 10).
 sp {goose-fox-beans*elaborate*failure*red-and-yellow-on-opposite-bank
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <r>)
    (<r> ^type block)
@@ -292,7 +295,7 @@ sp {goose-fox-beans*elaborate*failure*red-and-yellow-on-opposite-bank
 
 ## Losing condition green-and-yellow-on-opposite-bank (statement 13).
 sp {goose-fox-beans*elaborate*failure*green-and-yellow-on-opposite-bank
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <g>)
    (<g> ^type block)
@@ -314,7 +317,7 @@ sp {goose-fox-beans*elaborate*failure*green-and-yellow-on-opposite-bank
 
 ## Goal (statement 18): ^goal-met true on the task object.
 sp {goose-fox-beans*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name goose-fox-beans ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

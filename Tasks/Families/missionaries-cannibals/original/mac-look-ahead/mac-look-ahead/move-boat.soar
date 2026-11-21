@@ -112,3 +112,42 @@ sp {mac*apply*move-boat
    (<to> ^boat 1)
    (<to> ^boat <to-boat> -)
 }
+
+## Real history (to-do row 6, 21 Nov 2026): the top state records each state it leaves and rejects a move
+## that would return to one. Without a path cost, success chunks for a move and its inverse otherwise
+## move the boat back and forth indefinitely.
+sp {mac*apply*move-boat*record-visited
+   (state <s> ^superstate nil ^name mac ^operator <o> ^bank <b>)
+   (<o> ^name move-boat)
+   (<b> ^name left ^missionaries <m> ^cannibals <c> ^boat <bt>)
+-->
+   (<s> ^visited <v>)
+   (<v> ^missionaries <m> ^cannibals <c> ^boat <bt>)
+}
+
+sp {mac*elaborate*move-boat*result-left*from-left
+   (state <s> ^superstate nil ^name mac ^operator <o> +)
+   (<o> ^name move-boat ^from <from> ^missionaries <om> ^cannibals <oc>)
+   (<from> ^name left ^missionaries <m> ^cannibals <c>)
+-->
+   (<o> ^result-left <r>)
+   (<r> ^missionaries (- <m> <om>) ^cannibals (- <c> <oc>) ^boat 0)
+}
+
+sp {mac*elaborate*move-boat*result-left*to-left
+   (state <s> ^superstate nil ^name mac ^operator <o> +)
+   (<o> ^name move-boat ^to <to> ^missionaries <om> ^cannibals <oc>)
+   (<to> ^name left ^missionaries <m> ^cannibals <c>)
+-->
+   (<o> ^result-left <r>)
+   (<r> ^missionaries (+ <m> <om>) ^cannibals (+ <c> <oc>) ^boat 1)
+}
+
+sp {mac*reject*move-boat*revisit
+   (state <s> ^superstate nil ^name mac ^operator <o> + ^visited <v>)
+   (<o> ^name move-boat ^result-left <r>)
+   (<r> ^missionaries <m> ^cannibals <c> ^boat <bt>)
+   (<v> ^missionaries <m> ^cannibals <c> ^boat <bt>)
+-->
+   (<s> ^operator <o> -)
+}

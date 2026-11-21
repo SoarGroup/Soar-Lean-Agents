@@ -32,7 +32,7 @@ sp {selection-world*compare*evaluate-operator*select*duplicate-look-ahead*tie-im
 sp {selection-world*compare*operator*maintain-operator*preconditions-satisfied
    :default
    (state <s> ^flags.iterative-step tie-impasse
-             -^world.real true
+              ^real false
               ^operator <o> +)
    (<o> ^pre-conditions-satisfied true)
 -->
@@ -59,7 +59,7 @@ sp {selection-world*apply*operator*internal*iterative-deepening
 sp {selection-world*apply*operator*internal*iterative-deepening*tie-impasse-step
    :default
    (state <s> ^flags.iterative-step tie-impasse
-             -^world.real true
+              ^real false
               ^operator.pre-conditions-satisfied true)
 -->
    (<s> ^applied-lookahead true)

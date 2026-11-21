@@ -4,6 +4,7 @@
 sp {apply*operator*external*turn-on*stove
     :default
    (state <s> ^operator <operator>
+              ^internal-actions false
             #  ^quiescence t
               ^io.output-link <output>)
    (<operator> ^name <operator-name>
@@ -24,6 +25,7 @@ sp {apply*operator*external*turn-on*stove
 sp {apply*operator*external*argument1*look-at
     :default
    (state <s> ^operator <operator>
+              ^internal-actions false
               ^quiescence t
               ^io.output-link <output>)
    (<operator> ^name <operator-name>

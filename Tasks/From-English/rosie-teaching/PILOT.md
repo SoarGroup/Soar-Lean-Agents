@@ -105,6 +105,72 @@ Every plan was replayed independently with `tools/check_plan.py`: every crossing
 
 **A bug in the first version of the real-move control.** The first version recorded the result of the operator just selected as visited. That made the selected operator worst, so Soar replaced it before its command completed, and a second command went out on the old state: an illegal move, caught by the plan checker. The rule now records only the situation being left.
 
+## The other categories (18 November 2026)
+
+**Runnable: 22 more agents.** Agents were generated for every remaining dialog except the five board games other than
+tic-tac-toe: the four side-swapping puzzles, the eight grid puzzles, the five chess problems and the five solitaires.
+Each has its own folder README. Shared code per category: `tools/rosie_swap.py`, `tools/rosie_grid.py`,
+`tools/rosie_chess.py`, `tools/rosie_solitaire.py`; plans are replayed by `tools/check_moves.py`. All rules follow the
+18 Nov conventions (state or problem-space test on every rule but initialization; a comment per rule group).
+
+Results on library v2.42 (seeds 1-3, cap 60,000 decisions). Every example state gives the instructor's intended goal and
+failure answer, and every solved plan replays as legal with the goal holding.
+
+| Task | Folder | Solved | Mean decisions (solved) | Actions |
+|---|---|---|---|---|
+| Knight's tour | `chess-problems/knights-tour` | 3/3 | 1,916 | 11 |
+| N kings | `chess-problems/n-kings` | 3/3 | 11,833 | 4 |
+| N knights | `chess-problems/n-knights` | 0/3 | – | – |
+| N queens | `chess-problems/n-queens` | 3/3 | 7,913 | 4 |
+| N rooks | `chess-problems/n-rooks` | 3/3 | 10,889 | 4 |
+| Eight puzzle | `grid-puzzles/eight-puzzle` | 3/3 | 297 | 3 |
+| Eight puzzle, numbered | `grid-puzzles/eight-puzzle2` | 3/3 | 297 | 3 |
+| Fifteen puzzle | `grid-puzzles/fifteen-puzzle` | 3/3 | 13 | 1 |
+| Five puzzle | `grid-puzzles/five-puzzle` | 3/3 | 205 | 3 |
+| Pushing maze | `grid-puzzles/pushing-maze` | 3/3 | 587 | 4 |
+| Simple maze | `grid-puzzles/simple-maze` | 3/3 | 154 | 3 |
+| Sokoban | `grid-puzzles/sokoban` | 0/3 | – | – |
+| Traveling salesman | `grid-puzzles/traveling-salesman` | 3/3 | 19,597 | 11 |
+| Knight corner swapping | `side-swapping-puzzles/4-corner-knights` | 0/3 | – | – |
+| Eight men on a raft | `side-swapping-puzzles/8-men-on-a-raft` | 2/3 | 13,344 | 24 |
+| Frogs and toads | `side-swapping-puzzles/frogs-and-toads` | 3/3 | 765 | 8 |
+| Knight side swapping | `side-swapping-puzzles/knight-swapping` | 0/3 | – | – |
+| Golf solitaire | `solitaires/golf-solitaire` | 3/3 | 406 | 9 |
+| Mahjong | `solitaires/mahjong` | 3/3 | 1,173 | 4 |
+| Peg solitaire | `solitaires/peg-solitaire` | 2/3 | 7,975 | 8 |
+| Peg solitaire | `solitaires/peg-solitaire2` | 2/3 | 7,975 | 8 |
+| Tri-peaks solitaire | `solitaires/tri-peaks-solitaire` | 3/3 | 663 | 9 |
+
+Not solved within the cap: the two knight swaps (no move found: the shortest swap is much longer than the look-ahead
+reaches), sokoban (eight steps), n-knights (eight blocks to place), and one seed each of eight men on a raft and the two
+peg solitaires. As before, plan quality and depth are library matters.
+
+**Assumptions (in each rules file's header):**
+- A-S1: a block is to the left/right of, next to, alongside or diagonal with something when the location it is on is.
+- A-S2: "all the red blocks are on the red locations ..." is expanded over the blocks of the world file.
+- A-S3: "jumpable" (alongside, then diagonal, not next to) is a static relation between locations: the knight's move.
+- A-G1: adjacent (next to but not diagonal with) is a static relation between locations, from near and diagonal-with.
+- A-G2: "between" (pushing, peg jumps) needs the three locations in a line: static step relations per direction from the
+  locations' coordinates, one proposal per direction.
+- A-G3: "there are eight matched locations" is read as every block on the location with its colour or value.
+- A-G4: in the tours, "a clear available blue block" is the top of the stack of blue blocks; the applications find it.
+- A-C1: the relations between placed blocks (same row, next to, cross-diagonal, jumpable) are those of their locations.
+- A-C2: the unplaced blocks start in a stack on nothing; moving the bottom one tests that it is on nothing (a negated
+  condition in a look-ahead application, L11-003, Should).
+- A-C3: "the difference of the rows ... is equal to the difference of the columns" is read in size (absolute values).
+- A-P1: a removed peg loses its on relation; with a garbage object it is on the garbage.
+- A-P2: "the number of covered locations is one": a covered location and no other.
+- A-P3: a block's position is that of its pile: 1 on the garbage pile (on the garbage or on a block that is), else 0 for
+  "absent"; a block moved onto the pile gets 1.
+- A-P4: tri-peaks: the block left becomes clear only when no other block is on it (negated condition).
+- A-P5: "one less/more than" is tested with each block's value plus and minus one, set at initialization.
+- A-P6: a peg jumps in any of the eight directions (the triangle's diagonal is one of them).
+- Names: peg-solitaireR became peg-solitaire-r (lower-case constants, L3-010).
+
+**Board games not done:** Three Men's Morris, Nine Holes, Picaria, Breakthrough and Small Othello need the opponent
+played by the environment, as tic-tac-toe does (its `run.py`). Small Othello's move statement does not say that the
+captured pieces change colour.
+
 ## Files
 
 - `tools/`: `rosie_gen.py` (shared generator), `rosie_blocks.py` and `rosie_tasks.py` (block-puzzle operators and tasks), `rosie_logic.py` and `rosie_river.py` (logic puzzles and river crossings), `experiments/` (library overlays tried, not adopted), `rosie-language.md` (the shared reading of the language), `run_agent.py` (run or check an example state), `check_plan.py` (independent replay), `probe_settings.py` (copy of the P6 probe), `wg.py` and `check_derived.py` (worldgen v19).

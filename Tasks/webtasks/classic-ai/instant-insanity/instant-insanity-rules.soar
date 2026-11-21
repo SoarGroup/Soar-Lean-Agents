@@ -12,6 +12,7 @@
 ##   A-II2: "stack in a column": cubes are placed one at a time in the order 1, 2, 3, 4, each on the one before; cube 1 goes on the ground, which counts as placed from the start.
 ##   A-II3: "four different colours" on a side: two placed cubes showing the same colour on the same side is a losing state, so a partial column that cannot be completed is cut off at once.
 
+## Propose initialize-instant-insanity when its conditions below hold.
 sp {instant-insanity*propose*initialize-instant-insanity
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -272,6 +273,7 @@ sp {instant-insanity*apply*initialize-instant-insanity
    (log 1 (crlf) |Initialize instant-insanity.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {instant-insanity*elaborate*problem-space
    (state <s> ^name instant-insanity)
 -->
@@ -288,6 +290,7 @@ sp {instant-insanity*elaborate*problem-space*mea-substate
    (<p> ^name instant-insanity ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {instant-insanity*elaborate*flags
    (state <s> ^superstate nil ^name instant-insanity)
 -->
@@ -297,7 +300,7 @@ sp {instant-insanity*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {instant-insanity*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -308,7 +311,7 @@ sp {instant-insanity*elaborate*state*achieved*object-property
 }
 
 sp {instant-insanity*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -335,7 +338,7 @@ sp {instant-insanity*propose*place
    (<r3> ^argument1 <c> ^argument2 <q>)
    (<w> ^placed <r4>)
    (<r4> ^argument1 <q> ^argument2 <r>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name place ^task-operator true ^action-handle place ^argument1 <c> ^argument2 <o> ^argument-count 2 ^desireds <pre>)
@@ -344,7 +347,7 @@ sp {instant-insanity*propose*place
 
 ## Effect of place (look-ahead).
 sp {instant-insanity*apply*place*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name place ^pre-conditions-satisfied true ^argument1.object-handle $ <c-h> ^argument2.object-handle $ <o-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c>)
@@ -362,7 +365,7 @@ sp {instant-insanity*apply*place*internal
 ## Effect of a completed place command on the real world (once per command).
 sp {instant-insanity*apply*place*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name instant-insanity ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name place ^status complete ^argument1 <c-h> ^argument2 <o-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c>)
@@ -381,7 +384,7 @@ sp {instant-insanity*apply*place*environment-effect
 
 ## Losing condition same-colour-front (statement 5).
 sp {instant-insanity*elaborate*failure*same-colour-front
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c1>)
    (<c1> ^type cube)
@@ -400,7 +403,7 @@ sp {instant-insanity*elaborate*failure*same-colour-front
 
 ## Losing condition same-colour-back (statement 5).
 sp {instant-insanity*elaborate*failure*same-colour-back
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c1>)
    (<c1> ^type cube)
@@ -419,7 +422,7 @@ sp {instant-insanity*elaborate*failure*same-colour-back
 
 ## Losing condition same-colour-left (statement 5).
 sp {instant-insanity*elaborate*failure*same-colour-left
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c1>)
    (<c1> ^type cube)
@@ -438,7 +441,7 @@ sp {instant-insanity*elaborate*failure*same-colour-left
 
 ## Losing condition same-colour-right (statement 5).
 sp {instant-insanity*elaborate*failure*same-colour-right
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <c1>)
    (<c1> ^type cube)
@@ -457,7 +460,7 @@ sp {instant-insanity*elaborate*failure*same-colour-right
 
 ## Goal (statements 3, 5): ^goal-met true on the task object.
 sp {instant-insanity*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name instant-insanity ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

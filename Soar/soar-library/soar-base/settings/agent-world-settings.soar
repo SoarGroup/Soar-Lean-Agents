@@ -58,7 +58,7 @@ srand 1
 #decide indifferent-selection -e 0
 #decide indifferent-selection -x
 #  Use epsilon - not softmax!
-decide indifferent-selection -e
+decide indifferent-selection --epsilon-greedy   # v2.45: "-e" alone only printed epsilon; the policy stayed softmax
 
 wma -s activation off # on
 #wma -s decay-rate .001

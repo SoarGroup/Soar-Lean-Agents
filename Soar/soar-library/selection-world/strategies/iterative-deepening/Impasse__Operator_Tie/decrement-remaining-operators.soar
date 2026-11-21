@@ -3,14 +3,18 @@
 ## ---- operator proposal ----
 
 ## Propose decrement-remai.
+## Both proposals count only evaluations of current ^item operators (v2.45): a rejected operator's evaluation stays until
+## remove-evaluation, and a stale success evaluation counted down every new depth without evaluating the remaining items.
 sp {selection-world*propose*selection*decrement-remaining-operators
    :default
    (state <s> ^name selection
               ^current-evaluation-depth.value <value>
               ^remaining-operators { <remaining-operators> > 0 }
-              ^evaluation <evaluation>)
+              ^evaluation <evaluation>
+              ^item <item>)
    (<evaluation> ^current-evaluation-depth.value <value>
                  ^remaining-operators <remaining-operators>
+                 ^super-operator <item>
                  ^value true)
 -->
    (<s> ^operator <operator> + =, >)
@@ -23,9 +27,11 @@ sp {selection-world*propose*selection*decrement-remaining-operators*symbolic
    (state <s> ^name selection
               ^current-evaluation-depth.value <value>
               ^remaining-operators <remaining-operators>
-              ^evaluation <evaluation>)
+              ^evaluation <evaluation>
+              ^item <item>)
    (<evaluation> ^current-evaluation-depth.value <= <value>
                  ^remaining-operators <remaining-operators>
+                 ^super-operator <item>
                  ^value true
                  ^symbolic-value success)
 -->

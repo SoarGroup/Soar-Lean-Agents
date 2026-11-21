@@ -15,6 +15,7 @@
 ##   A-K1: group: the locations with the same color; each must sum to ten when filled.
 ##   A-K2: The action write takes the location and a number object number-1 .. number-4 (operator arguments are objects).
 
+## Propose initialize-color-ken-ken when its conditions below hold.
 sp {color-ken-ken*propose*initialize-color-ken-ken
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -99,6 +100,7 @@ sp {color-ken-ken*apply*initialize-color-ken-ken
    (log 1 (crlf) |Initialize color-ken-ken.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {color-ken-ken*elaborate*problem-space
    (state <s> ^name color-ken-ken)
 -->
@@ -115,6 +117,7 @@ sp {color-ken-ken*elaborate*problem-space*mea-substate
    (<p> ^name color-ken-ken ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {color-ken-ken*elaborate*flags
    (state <s> ^superstate nil ^name color-ken-ken)
 -->
@@ -124,7 +127,7 @@ sp {color-ken-ken*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {color-ken-ken*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -135,7 +138,7 @@ sp {color-ken-ken*elaborate*state*achieved*object-property
 }
 
 sp {color-ken-ken*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle <h> ^{ <> object-handle <a> } <v>)
@@ -156,7 +159,7 @@ sp {color-ken-ken*propose*write
    (<n> ^type number)
    (<w> ^empty <r1>)
    (<r1> ^argument1 <l>)
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
@@ -165,7 +168,7 @@ sp {color-ken-ken*propose*write
 
 ## Effect of write (look-ahead).
 sp {color-ken-ken*apply*write*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <l-h> ^argument2.object-handle $ <n-h>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l>)
@@ -183,7 +186,7 @@ sp {color-ken-ken*apply*write*internal
 ## Effect of a completed write command on the real world (once per command).
 sp {color-ken-ken*apply*write*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name color-ken-ken ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name write ^status complete ^argument1 <l-h> ^argument2 <n-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l>)
@@ -202,7 +205,7 @@ sp {color-ken-ken*apply*write*environment-effect
 
 ## sum of a group of 3, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*3
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3>)
    (<g> ^type group ^size 3)
    (<r1> ^argument1 <g> ^argument2 <m1>)
@@ -217,7 +220,7 @@ sp {color-ken-ken*elaborate*group*sum*3
 
 ## sum of a group of 4, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*4
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3> <r4>)
    (<g> ^type group ^size 4)
    (<r1> ^argument1 <g> ^argument2 <m1>)
@@ -234,7 +237,7 @@ sp {color-ken-ken*elaborate*group*sum*4
 
 ## sum of a group of 5, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*5
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^world <w>)
    (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3> <r4> <r5>)
    (<g> ^type group ^size 5)
    (<r1> ^argument1 <g> ^argument2 <m1>)
@@ -253,7 +256,7 @@ sp {color-ken-ken*elaborate*group*sum*5
 
 ## Losing condition same-row-value (statement 11).
 sp {color-ken-ken*elaborate*failure*same-row-value
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1>)
    (<l1> ^type location)
@@ -270,7 +273,7 @@ sp {color-ken-ken*elaborate*failure*same-row-value
 
 ## Losing condition same-column-value (statement 14).
 sp {color-ken-ken*elaborate*failure*same-column-value
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1>)
    (<l1> ^type location)
@@ -287,7 +290,7 @@ sp {color-ken-ken*elaborate*failure*same-column-value
 
 ## Losing condition group-sum-constant (statement 23).
 sp {color-ken-ken*elaborate*failure*group-sum-constant
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <g>)
    (<g> ^type group)
@@ -299,7 +302,7 @@ sp {color-ken-ken*elaborate*failure*group-sum-constant
 
 ## Goal (statements 18, 19): ^goal-met true on the task object.
 sp {color-ken-ken*elaborate*goal
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name color-ken-ken ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <task>)
    (<task> ^type task)

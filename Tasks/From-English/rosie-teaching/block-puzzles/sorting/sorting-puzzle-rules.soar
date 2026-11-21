@@ -11,6 +11,7 @@
 ##   - The goal ("all the red blocks are on a red location and ...") is expanded over the blocks of the world file: each block
 ##     is on a location of its own color (A-S2). The test is positive.
 
+## Propose initialize-sorting-puzzle when its conditions below hold.
 sp {sorting-puzzle*propose*initialize-sorting-puzzle
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -64,6 +65,7 @@ sp {sorting-puzzle*apply*initialize-sorting-puzzle
    (log 1 (crlf) |Initialize sorting-puzzle.|)
 }
 
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
 sp {sorting-puzzle*elaborate*problem-space
    (state <s> ^name sorting-puzzle)
 -->
@@ -80,6 +82,7 @@ sp {sorting-puzzle*elaborate*problem-space*mea-substate
    (<p> ^name sorting-puzzle ^dont-copy-object-attribute goal-met)
 }
 
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
 sp {sorting-puzzle*elaborate*flags
    (state <s> ^superstate nil ^name sorting-puzzle)
 -->
@@ -89,7 +92,7 @@ sp {sorting-puzzle*elaborate*flags
 
 ## Achievement of object-property desireds (supplied by the task).
 sp {sorting-puzzle*elaborate*state*achieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name sorting-puzzle ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -100,7 +103,7 @@ sp {sorting-puzzle*elaborate*state*achieved*object-property
 }
 
 sp {sorting-puzzle*elaborate*state*unachieved*object-property
-   (state <s> ^desireds <ds> ^world <w>)
+   (state <s> ^problem-space.name sorting-puzzle ^desireds <ds> ^world <w>)
    (<ds> ^desired <d>)
    (<d> ^object <do>)
    (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
@@ -110,6 +113,7 @@ sp {sorting-puzzle*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
+## Propose move in problem space sorting-puzzle when its conditions below hold.
 sp {sorting-puzzle*propose*move
    (state <s> ^problem-space.name sorting-puzzle ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
@@ -118,7 +122,7 @@ sp {sorting-puzzle*propose*move
    (<l> ^type location ^object-handle $ <lh>)
    (<w> ^on <r>)
    (<r> ^argument1 <b> ^argument2 { <> <l> <old> })
-   (<ds> ^unachieved <any-unachieved>)
+   (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
    (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
@@ -126,7 +130,7 @@ sp {sorting-puzzle*propose*move
 }
 ## Effect of move (look-ahead).
 sp {sorting-puzzle*apply*move*internal
-   (state <s> ^operator <op> ^internal-actions true ^world <w>)
+   (state <s> ^problem-space.name sorting-puzzle ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -143,7 +147,7 @@ sp {sorting-puzzle*apply*move*internal
 ## Effect of a completed move command on the real world (once per command).
 sp {sorting-puzzle*apply*move*environment-effect
    :o-support
-   (state <s> ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (state <s> ^problem-space.name sorting-puzzle ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <l>)
@@ -160,7 +164,7 @@ sp {sorting-puzzle*apply*move*environment-effect
 }
 ## Goal: every block is on a location of its own color.
 sp {sorting-puzzle*elaborate*goal*sorted
-   (state <s> ^world <w>)
+   (state <s> ^problem-space.name sorting-puzzle ^world <w>)
    (<w> ^objects <objs>)
    (<objs> ^object <t> <b-red-block-4> <l-red-block-4> <b-green-block-5> <l-green-block-5> <b-blue-block-6> <l-blue-block-6> <b-red-block-7> <l-red-block-7> <b-green-block-8> <l-green-block-8> <b-blue-block-9> <l-blue-block-9>)
    (<t> ^type task)

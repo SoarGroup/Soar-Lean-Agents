@@ -9,6 +9,13 @@ The spec lists every convention, one section per level (in level order) and one
 subsection per topic (in the development order below), then by ID. Rebuild it
 whenever the workbook changes; do not edit the generated file by hand.
 Requires openpyxl.
+
+Revision of 21 November 2026 (release with library v2.45): every level of the Levels sheet is listed, including
+levels with no rows yet (e.g. L21 Strategy selection); each row shows its Type (Requirement, Choice, Reserved,
+Library definition, ...) and, where it is not Proposed, its Status; rows show their former ID ("formerly"),
+so IDs cited in older sources can be found; Soar-Conventions rows shared with the World workbook are marked;
+the topics added since 18 November (Flags, Impasses, Evaluation values, Look-ahead settings) have their place
+in the development order instead of sorting last.
 """
 import re
 import sys
@@ -17,15 +24,15 @@ from datetime import datetime
 import openpyxl
 
 TOPIC_ORDER = [
-    'Project/file organization', 'Naming and files', 'Flags and constants', 'Rule syntax/naming',
+    'Project/file organization', 'Naming and files', 'Flags', 'Flags and constants', 'Rule syntax/naming',
     'State representation', 'World/state', 'Objects', 'Relations',
     'Goal/desired representation', 'Desireds', 'Desireds bookkeeping',
     'Operator WM representation', 'Task operators', 'Composite operators', 'Non-task operators',
     'Rule: state elaboration', 'Rule: operator proposal', 'Rule: operator elaboration',
     'Rule: operator evaluation/selection', 'Search control', 'Rule: operator application',
     'Operator application (internal/external)', 'Output and events', 'Rule: monitoring/output',
-    'Rule: impasse/substate handling', 'Substate representation', 'Substates (general)', 'Rule: results',
-    'Selection space', 'Look-ahead / evaluation', 'Cost', 'Iterative deepening',
+    'Impasses', 'Rule: impasse/substate handling', 'Substate representation', 'Substates (general)', 'Rule: results',
+    'Selection space', 'Look-ahead / evaluation', 'Evaluation values', 'Look-ahead settings', 'Cost', 'Iterative deepening',
     'MEA operator subgoaling', 'Grounding', 'Time and future events',
     'Semantic memory', 'Episodic memory', 'Learning: chunking', 'Learning: RL',
     'Input/output link', 'Settings/commands', 'Other',
@@ -70,7 +77,7 @@ def main(src, dst, title=None):
     meanings = {}
     if 'Levels' in wb.sheetnames:
         for r in wb['Levels'].iter_rows(min_row=2, values_only=True):
-            if r[0] and r[0] != 'Total':
+            if r[0] and r[0] != 'Total' and re.match(r'L\d+', str(r[0])):
                 meanings[r[0]] = clean(r[1])
     sheets = [n for n in ('Conventions', 'Thor-specific') if n in wb.sheetnames]
     rows = [d for n in sheets for d in rows_of(wb[n])]
@@ -81,7 +88,12 @@ def main(src, dst, title=None):
     for d in rows:
         if not levels or levels[-1] != d['Level']:
             levels.append(d['Level'])
+    for lv in meanings:                      # levels defined but still empty
+        if lv not in levels:
+            levels.append(lv)
+    levels.sort(key=level_key)
     count = {lv: sum(1 for d in rows if d['Level'] == lv) for lv in levels}
+    count.update({lv: 0 for lv in meanings if lv not in count})
 
     now = datetime.now().strftime('%d %B %Y, %H:%M')
     out = [f'# {title}', '',
@@ -95,6 +107,7 @@ def main(src, dst, title=None):
     out.append('')
 
     cur_lv = cur_topic = None
+    empty = [lv for lv in levels if count[lv] == 0]
     for d in rows:
         if d['Level'] != cur_lv:
             cur_lv, cur_topic = d['Level'], None
@@ -104,9 +117,16 @@ def main(src, dst, title=None):
         if d[topic_col] != cur_topic:
             cur_topic = d[topic_col]
             out += [f'### {cur_topic}', '']
-        tags = [t for t in (d.get('Strength'), d.get('Kind')) if t]
+        tags = [t for t in (d.get('Type'), d.get('Strength'), d.get('Kind')) if t]
         if d.get('Capacity'):
             tags.append(f'capacity: {clean(d["Capacity"])}')
+        if d.get('Status') and clean(d['Status']) != 'Proposed':
+            tags.append(f'status: {clean(d["Status"])}')
+        if clean(d.get('World-Conventions')) == 'Shared':
+            tags.append('shared with World-Conventions')
+        old = clean(d.get('Old ID'))
+        if old and old != 'None' and old != d['ID']:
+            tags.append(f'formerly {old}')
         out += [f'**{d["ID"]}**' + (f' ({", ".join(tags)})' if tags else '') + f' — {clean(d["Convention"])}', '']
         out += block('Rationale', d.get('Rationale'))
         out += block('If violated', d.get('If violated'))
@@ -120,6 +140,11 @@ def main(src, dst, title=None):
             out += [f'*See:* {"; ".join(refs)}', '']
         if d.get('Source'):
             out += [f'*Source:* {clean(d["Source"])}', '']
+    for lv in empty:
+        out += [f'## {lv}', '']
+        if meanings.get(lv):
+            out += [meanings[lv], '']
+        out += ['No conventions at this level yet.', '']
     open(dst, 'w', encoding='utf-8', newline='\n').write('\n'.join(out).rstrip() + '\n')
     print(f'{dst}: {len(rows)} rows, {len(levels)} levels')
 

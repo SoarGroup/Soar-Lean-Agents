@@ -1,4 +1,33 @@
-# SoarLean: agentgen, the World library and worldcheck (16 November 2026, revision b; updated 18 November 2026)
+# SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 21 November 2026)
+
+## Release of 21 November 2026 (`SoarLean-2026-11-21-release.zip`)
+
+One package for every Lean and Python generator of the English-to-Soar pipeline, for library v2.45 and the conventions of
+21 November 2026 (World-Conventions-v6.xlsx, World-Conventions-Spec-v8.md; Soar-Conventions.xlsx, Soar-Conventions-Spec.md).
+It joins `soarlean-agentgen-2026-11-18b.zip` (Agent, World, WorldSpec, worldgen) and `SoarLean-family-2026-11-21.zip`
+(Family, familygen), which had separate lakefiles: the agentgen lakefile now declares all four libraries and all four
+executables (`agentgen`, `worldcheck`, `rosiegen`, `familygen`).
+
+- `agentgen/Family/` (new here): the 14 task families as typed Lean descriptions; `lake build familygen`, then
+  `familygen OUT` writes `OUT/<family>/world-lean/<variant>/` (67 variants). README: `agentgen/Family/README.md`.
+  Since 19 November: blocks-world state evaluation tests where every block is (`allOnConds`, World-Conventions L3-103).
+- `agentgen/tools/`: `vsproject.py`, `convpass.py` as before; `soar2lean.py`, `v6tolean.py`, `compare.py` (family migration tools).
+- Unchanged since 18 November: Agent, World, WorldSpec, worldgen (`wg.py`, `convpass.py`, `world_backend.py`,
+  `spec_backend.py`, `check_derived.py`).
+
+Checked 21 November 2026 (Lean 4.35.0, library v2.45, Soar 9.6.6 / PyPI bindings):
+- `familygen` reproduces the 67 world-lean family agents in `Tasks/Families/*/world-lean` byte for byte.
+- `rosiegen compile` (path A) and `spec_backend.py` (path B) reproduce the Lean-path agents of Tower of Hanoi,
+  fox-goose-bean and KenKen in `Tasks/From-English/rosie-teaching` (apart from the header line).
+- The shared Rosie generators (`tools/wg.py` = `worldgen/wg.py`, `convpass.py`) and the four English world agents'
+  `gen.py` reproduce every checked agent file unchanged.
+- Not checked here: building `agentgen` and `worldcheck`, which need the cmcsoar release beside `agentgen`
+  (their sources are unchanged from 18 November, when they built).
+- Known: convention IDs cited in the Lean sources and in checker messages are partly pre-renumbering IDs;
+  `Conventions/id-renumbering-map-2026-11-18.csv` maps them. The ID history has two renumberings, so an automatic
+  rewrite is ambiguous for a few IDs and was not done.
+
+## Earlier history
 
 One Lean package that holds the Lean tools of the English-to-Soar pipeline, plus the Python
 back end that writes world-convention rules. It replaces `agentgen-bundle.zip` and
@@ -130,10 +159,14 @@ which lacks `$`).
 
 ## Updated 18 November 2026: conventions of the 18 Nov workbook review
 
-Package: `soarlean-agentgen-2026-11-18.zip`. The generators follow the conventions decided on 18 Nov 2026 (World-Conventions-v6 / Soar-Conventions, level-based IDs):
+Package: `soarlean-agentgen-2026-11-18.zip` (superseded by revision b, below). The generators follow the conventions decided on 18 Nov 2026 (World-Conventions-v6 / Soar-Conventions, level-based IDs):
 - `worldgen/convpass.py` (also in worldgen v21): a final pass over generated rules. L3-005: every rule tests, in its first condition, the name of its state or of its problem space (world and desired elaborations, internal applications and environment-effect rules now test `^problem-space.name`); exceptions are initialization, the problem-space elaborations and rules that only pass superstate structure into substates. L3-012: a rule group without an English comment gets one. `wg.py` (worldgen v21) and `spec_backend.py` (path B) call it.
 - `agentgen/World/Compile.lean` and `agentgen/WorldSpec/Compile.lean` (rosiegen path A) write the same `^problem-space.name` tests; `World/Compile.lean` puts a comment line before every rule.
 - `agentgen/Agent/Compile.lean` (tie-heuristic agents): ^last-operator is now a structure with the operator's name and parameters, written by one application rule per operator that also removes the previous record (L3-021, L4-005); initialization creates `(^last-operator.name none)`; the heuristics test `^last-operator.name`.
 - `agentgen/tools/vsproject.py` passes every written file through `tools/convpass.py`, which adds a comment per rule group (agentgen rules already test the state name).
 Checked: `lake build agentgen worldcheck rosiegen` succeeds; the nine Water Jug agentgen variants run with the same decision counts as before (srand 1); rosiegen path A for tower-of-hanoi differs only in the five `^problem-space.name` tests (it reaches the 20,000-decision cap without a move on library v2.42 before and after the change).
 - Convention IDs cited in the Lean sources and in checker messages are still the IDs from before the 18 Nov renumbering; `Conventions/id-renumbering-map-2026-11-18.csv` maps them.
+
+## Revision b, 18 November 2026 (evening): `soarlean-agentgen-2026-11-18b.zip`
+
+`agentgen/WorldSpec/Compile.lean` (rosiegen path A) now writes the three rule-group comments that `convpass.py` adds on path B (the initialization proposal, the problem-space elaborations and the flags elaboration), worded as `convpass.describe` words them. Paths A and B again write identical rules apart from the first header line; checked on Tower of Hanoi, fox-goose-bean and KenKen (initial worlds, and the fail and final KenKen worlds). Nothing else changed from the 18 November package.

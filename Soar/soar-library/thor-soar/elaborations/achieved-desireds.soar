@@ -595,8 +595,7 @@ sp {thor-soar*elaborate*state*achieved-desired*handle*cleaned-by
 ## Elaborate state unachieved-desired accessible -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*accessible
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property accessible)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^accessible true
@@ -615,8 +614,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*accessible
 sp {thor-soar*elaborate*state*unachieved-desired-activated
     :default
    (state <s> ^desireds <desireds>
-              ^quiescence t  #new
-             -^world.abstract-property activated)
+              ^quiescence t)  #new
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^activated <desired-value>
@@ -633,8 +631,7 @@ sp {thor-soar*elaborate*state*unachieved-desired-activated
 ## Elaborate state unachieved-desired cookable -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*cookable
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property cookable)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^cookable <desired-value>
@@ -651,8 +648,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*cookable
 ## Elaborate state unachieved-desired broken -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*broken
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property broken)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^broken <desired-value>
@@ -669,8 +665,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*broken
 ## Elaborate state unachieved-desired class -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*class
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property class)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^class <desired-value>
@@ -687,8 +682,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*class
 ## Elaborate state unachieved-desired confirmed -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*confirmed
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property confirmed)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^confirmed <desired-value>
@@ -722,8 +716,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*anchored
 ## Elaborate state unachieved-desired cook-state -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*cook-state
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property cook-state)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^cook-state <desired-value>
@@ -740,8 +733,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*cook-state
 ## Elaborate state unachieved-desired dirty -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*dirty
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property dirty)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^dirty <desired-value>
@@ -758,8 +750,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*dirty
 ## Elaborate state unachieved-desired discarded -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*discarded
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property dirty)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^discarded <desired-value>
@@ -776,8 +767,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*discarded
 ## Elaborate state unachieved-desired fill-amount -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*fill-amount
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property fill-amount)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^fill-amount <desired-value>
@@ -805,8 +795,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*handle*object*dishes-clean
 ## Elaborate state unachieved-desired liquid-contents -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*liquid-contents
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property liquid-contents)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^liquid-contents <desired-value>
@@ -823,8 +812,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*liquid-contents
 ## Elaborate state unachieved-desired looked-at -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*looked-at
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property looked-at)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^looked-at <desired-value>
@@ -841,8 +829,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*looked-at
 ## Elaborate state unachieved-desired open -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*open
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property open)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^open <desired-value>
@@ -858,8 +845,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*open
 ## Elaborate state unachieved-desired reachable -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*reachable
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property reachable)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^reachable <desired-value>
@@ -876,8 +862,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*reachable
 ## Elaborate state unachieved-desired sliced -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*sliced
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property sliced)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^sliced <desired-value>
@@ -894,8 +879,7 @@ sp {thor-soar*elaborate*state*unachieved-desired*sliced
 ## Elaborate state unachieved-desired visible -> sets unachieved.
 sp {thor-soar*elaborate*state*unachieved-desired*visible
     :default
-   (state <s> ^desireds <desireds>
-             -^world.abstract-property visible)
+   (state <s> ^desireds <desireds>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
    (<desired-object> ^visible <desired-value>
@@ -913,7 +897,6 @@ sp {thor-soar*elaborate*state*unachieved-desired*visible
 sp {thor-soar*elaborate*state*unachieved-desired*in-view
     :default
    (state <s> ^desireds <desireds>
-             -^world.abstract-property visible
               ^world.objects <objects>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
@@ -932,7 +915,6 @@ sp {thor-soar*elaborate*state*unachieved-desired*in-view
 sp {thor-soar*elaborate*state*unachieved-desired*cooked-by
     :default
    (state <s> ^desireds <desireds>
-             -^world.abstract-property visible
               ^world.objects <objects>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)
@@ -951,7 +933,6 @@ sp {thor-soar*elaborate*state*unachieved-desired*cooked-by
 sp {thor-soar*elaborate*state*unachieved-desired*cleaned-by
     :default
    (state <s> ^desireds <desireds>
-             -^world.abstract-property visible
               ^world.objects <objects>)
    (<desireds> ^desired <desired>)
    (<desired> ^object <desired-object>)

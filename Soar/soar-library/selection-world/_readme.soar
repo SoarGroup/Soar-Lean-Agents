@@ -9,11 +9,11 @@
 # Loaded by: soar-library.soar
 #
 # Contents (rules per file)
-#      5  _flags.soar: Defaults for the flags the selection rules read (hierarchical-properties, optimize, aspiration-step, progress-threshold, failure-grounding).
-#     43  Operator_Tie/elaborations.soar: Selection problem space: creating evaluation operators for tied operators, comparing evaluations (success > partial success > ...), turning evaluations into preferences.
+#      4  _flags.soar: Defaults for the flags the selection rules read (optimize, aspiration-step, progress-threshold, failure-grounding).
+#     44  Operator_Tie/elaborations.soar: Selection problem space: creating evaluation operators for tied operators, comparing evaluations (success > partial success > ...), turning evaluations into preferences.
 #      7  Operator_Tie/evaluate-operator.soar: The evaluate-operator operator: proposed per tied operator, creates the evaluation when selected.
 #      1  Operator_Tie/Impasse__State_No-Change/elaborations.soar: Conflict rejection in the selection space (default*select*reject*conflict).
-#     40  Operator_Tie/evaluate-operator/elaborations.soar: Evaluation substate: copies the state, desireds and world into the substate, applies the evaluated operator, detects success/failure and reports it.
+#     38  Operator_Tie/evaluate-operator/elaborations.soar: Evaluation substate: copies the state, desireds and world into the substate, applies the evaluated operator, detects success/failure and reports it.
 #      1  Operator_Tie/evaluate-operator/task-operator.soar: Applying the task operator being evaluated inside the evaluation substate.
 #      1  Operator_Tie/evaluate-operator/Operator_Constraint-Failure/elaborations.soar
 #      2  Operator_Tie/evaluate-operator/Operator_Tie/elaborations.soar
@@ -31,7 +31,7 @@
 #   Single source: datamaps/library-datamap.json (each edge tagged with its owning project). Regenerate the
 #   project files with: python3 tools/datamaps.py <this-directory> --assemble
 #
-# Flags read: aspiration, aspiration-step, progress-score, progress-threshold, termination, cost-quantum, failure-grounding, hierarchical-properties, init-evaluation-depth, iterative-step (operator | tie-impasse | cost), max-evaluation-depth, optimize
+# Flags read: aspiration, aspiration-step, progress-score, progress-threshold, termination, cost-quantum, failure-grounding, init-evaluation-depth, iterative-step (operator | tie-impasse | cost), max-evaluation-depth, optimize
 # Flags written: (none recorded)
 # Hooks: not yet defined (see the refactoring proposal, Section 4); this file will list them.
 # Conventions: every rule is :default; no rule name is defined twice among the sourced files; do not excise rules to override them.

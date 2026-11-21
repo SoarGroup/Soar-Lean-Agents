@@ -18,28 +18,6 @@ sp {agent-world*elaborate*flags*override
    (<f> ^<flag> <value>)
 }
 
-## Elaborate flags default desired-preferences -> sets desired-preferences.
-## true: uses the desired preferences in operator desireds (search control).
-sp {agent-world*elaborate*flags*default*desired-preferences
-   :default
-   (state <s> ^superstate nil
-              ^flags <f>
-             -^flag-override.desired-preferences <any>)
--->
-   (<f> ^desired-preferences false)
-}
-
-## Elaborate flags default gps-desired-ordering -> sets gps-desired-ordering.
-## true: preferences rank desireds, like the table of connections in GPS.
-sp {agent-world*elaborate*flags*default*gps-desired-ordering
-   :default
-   (state <s> ^superstate nil
-              ^flags <f>
-             -^flag-override.gps-desired-ordering <any>)
--->
-   (<f> ^gps-desired-ordering false)
-}
-
 ## Elaborate flags default rl -> sets rl.
 ## true: reinforcement learning (reward elaboration).
 sp {agent-world*elaborate*flags*default*rl

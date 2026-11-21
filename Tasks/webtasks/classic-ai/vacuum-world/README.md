@@ -1,5 +1,19 @@
 # Vacuum world: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
+
+Rules regenerated from `vacuum-world-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 14 rules, as before. The 21 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.
+
+Runs on library v2.45 (Soar 9.6.6, defaults; outcome, decisions / actions):
+
+| Seed | Stored run (rules of 16 Nov, library v2.41) | Rules of 16 Nov, library v2.45 | New rules, library v2.45 | Plan (new rules) |
+|---|---|---|---|---|
+| 1 | success 70 / 3 | success 68 / 3 | success 68 / 3 | suck left; move right; suck right |
+| 2 | success 111 / 3 | success 68 / 3 | success 68 / 3 | suck left; move right; suck right |
+| 3 | success 107 / 3 | success 97 / 3 | success 97 / 3 | suck left; move right; suck right |
+
+The earlier sections below describe the generation of 16 November.
+
 **Runnable.** Soar 9.6.6 (SoarSuite bug-fix release, kernel 9.6.50, build of 6 Nov 2026), library v2.41. Solves on seeds 1-3 with a 3-action plan, the shortest the semantics finds.
 
 **Checked by Lean (Lean 4.35.0, 16 November 2026).** `VacuumWorld.lean` is in `SoarLean/agentgen/WorldSpec/Tasks` (package `soarlean-agentgen-2026-11-16-classicai.zip`). `vacuumWorld_wellFormed : vacuumWorld.wellFormed = [] := by decide` is proved; `rosiegen json` gives the same JSON as `vacuum-world-worldspec.json`; `rosiegen compile` (path A) gives the same rules as path B; `rosiegen check` agrees on every example state; `rosiegen replay` accepts every run. The description was first written in Python (`../../tools/worldspec_py.py`) while Lean was unavailable; the Lean file is printed from it.
