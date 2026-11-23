@@ -1,4 +1,4 @@
-## towers-of-hanoi (5 disks, the alternating small-disk strategy) under the world conventions
+## towers-of-hanoi (3 disks, the alternating small-disk strategy) under the world conventions
 ## (the shared library, no external environment: ^environment none).
 
 ## Shared Soar library (Soar/soar-library, v2.32); the path assumes this folder is in Tasks/Families/<family>/world/<variant>
@@ -7,9 +7,9 @@ source soar-library.soar
 popd
 
 chunk never
-multi-attributes object 12
-multi-attributes on 8
-multi-attributes above 8
+multi-attributes object 10
+multi-attributes on 6
+multi-attributes above 6
 
 source towers-of-hanoi-world.soar
 source move-disk.soar

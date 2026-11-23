@@ -1,6 +1,6 @@
 ##############################################################################
 ## towers-of-hanoi: world, goal, problem space, end of episode
-## World objects: pegs A, B, C (^type peg); disks 1..5 (^type disk, ^size 1..5), one base
+## World objects: pegs A, B, C (^type peg); disks 1..3 (^type disk, ^size 1..3), one base
 ##   disk per peg (base-A/B/C, ^size 6) and ground (^size 7), as in the original.
 ## World relations (replacing the original's ^holds structures): ^on (argument1 disk,
 ##   argument2 peg) and ^above (argument1 disk, argument2 the disk directly below it).
@@ -43,43 +43,35 @@ sp {towers-of-hanoi*apply*initialize-towers-of-hanoi
         ^control <control>)
    (<f> ^look-ahead-planning false)
    (<control> ^lastsize 2 ^lastpeg B)
-   (<objs> ^object <A> <B> <C> <d1> <d2> <d3> <d4> <d5> <bA> <bB> <bC> <ground>)
+   (<objs> ^object <A> <B> <C> <d1> <d2> <d3> <bA> <bB> <bC> <ground>)
    (<A> ^object-handle A ^anchored true ^type peg ^name A)
    (<B> ^object-handle B ^anchored true ^type peg ^name B)
    (<C> ^object-handle C ^anchored true ^type peg ^name C)
    (<d1> ^object-handle |1| ^anchored true ^type disk ^size 1)
    (<d2> ^object-handle |2| ^anchored true ^type disk ^size 2)
    (<d3> ^object-handle |3| ^anchored true ^type disk ^size 3)
-   (<d4> ^object-handle |4| ^anchored true ^type disk ^size 4)
-   (<d5> ^object-handle |5| ^anchored true ^type disk ^size 5)
    (<bA> ^object-handle base-A ^anchored true ^type disk ^size 6)
    (<bB> ^object-handle base-B ^anchored true ^type disk ^size 6)
    (<bC> ^object-handle base-C ^anchored true ^type disk ^size 6)
    (<ground> ^object-handle ground ^anchored true ^type disk ^size 7)
-   (<w> ^on <o1> <o2> <o3> <o4> <o5> <oA> <oB> <oC>
-        ^above <a1> <a2> <a3> <a4> <a5> <aA> <aB> <aC>)
+   (<w> ^on <o1> <o2> <o3> <oA> <oB> <oC>
+        ^above <a1> <a2> <a3> <aA> <aB> <aC>)
    (<o1> ^argument-count 2 ^argument1 <d1> ^argument2 <A>)
    (<o2> ^argument-count 2 ^argument1 <d2> ^argument2 <A>)
    (<o3> ^argument-count 2 ^argument1 <d3> ^argument2 <A>)
-   (<o4> ^argument-count 2 ^argument1 <d4> ^argument2 <A>)
-   (<o5> ^argument-count 2 ^argument1 <d5> ^argument2 <A>)
    (<oA> ^argument-count 2 ^argument1 <bA> ^argument2 <A>)
    (<oB> ^argument-count 2 ^argument1 <bB> ^argument2 <B>)
    (<oC> ^argument-count 2 ^argument1 <bC> ^argument2 <C>)
    (<a1> ^argument-count 2 ^argument1 <d1> ^argument2 <d2>)
    (<a2> ^argument-count 2 ^argument1 <d2> ^argument2 <d3>)
-   (<a3> ^argument-count 2 ^argument1 <d3> ^argument2 <d4>)
-   (<a4> ^argument-count 2 ^argument1 <d4> ^argument2 <d5>)
-   (<a5> ^argument-count 2 ^argument1 <d5> ^argument2 <bA>)
+   (<a3> ^argument-count 2 ^argument1 <d3> ^argument2 <bA>)
    (<aA> ^argument-count 2 ^argument1 <bA> ^argument2 <ground>)
    (<aB> ^argument-count 2 ^argument1 <bB> ^argument2 <ground>)
    (<aC> ^argument-count 2 ^argument1 <bC> ^argument2 <ground>)
-   (<ds> ^desired <g1> <g2> <g3> <g4> <g5> ^desired-count 5)
+   (<ds> ^desired <g1> <g2> <g3> ^desired-count 3)
    (<g1> ^on <r1>) (<r1> ^argument1.object-handle |1| ^argument2.object-handle C)
    (<g2> ^on <r2>) (<r2> ^argument1.object-handle |2| ^argument2.object-handle C)
    (<g3> ^on <r3>) (<r3> ^argument1.object-handle |3| ^argument2.object-handle C)
-   (<g4> ^on <r4>) (<r4> ^argument1.object-handle |4| ^argument2.object-handle C)
-   (<g5> ^on <r5>) (<r5> ^argument1.object-handle |5| ^argument2.object-handle C)
 }
 
 sp {towers-of-hanoi*elaborate*problem-space

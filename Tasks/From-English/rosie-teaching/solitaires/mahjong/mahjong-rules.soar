@@ -1,0 +1,437 @@
+## Mahjong (mahjong), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. If the color of a clear available block is the color of another clear available block then you can move the blocks onto a garbage.
+##   5. If a block is not on a location then it is available.
+##   6. If a location is not below an object then it is clear.
+##   8. The goal is that all blocks are on a garbage.
+## World: init-mahjong.world (seven coloured blocks in stacks; a garbage location)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator move-pair (argument1, argument2 = the two blocks), statement 4: two different clear available blocks of the same
+##     colour go onto the garbage location. available (not on a location, statement 5) and clear (statement 6) are maintained
+##     one-argument relations; a block that a moved block was on becomes clear.
+##   - The goal (statement 8) is expanded over the blocks of the world file: every block is on the garbage.
+
+## Propose initialize-mahjong when its conditions below hold.
+sp {mahjong*propose*initialize-mahjong
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-mahjong ^task-operator false)
+}
+
+sp {mahjong*apply*initialize-mahjong
+   (state <s> ^operator.name initialize-mahjong ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name mahjong ^desireds <ds>)
+   (<objs> ^object <o-block-1> <o-block-2> <o-block-3> <o-location-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-task>)
+   (<o-block-1> ^object-handle block-1 ^anchored true ^type block ^color green)
+   (<o-block-2> ^object-handle block-2 ^anchored true ^type block ^color red)
+   (<o-block-3> ^object-handle block-3 ^anchored true ^type block ^color yellow)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^name garbage)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color green)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color red)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^color yellow)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^color green)
+   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^color green)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-block-3> ^argument2 <o-block-2>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-block-5> ^argument2 <o-block-6>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-block-8> ^argument2 <o-block-9>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-block-9> ^argument2 <o-block-8>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-block-6> ^argument2 <o-block-5>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-block-2> ^argument2 <o-block-3>)
+   (<w> ^clear <clear-block-1>)
+   (<clear-block-1> ^argument1 <o-block-1>)
+   (<w> ^clear <clear-block-3>)
+   (<clear-block-3> ^argument1 <o-block-3>)
+   (<w> ^clear <clear-location-4>)
+   (<clear-location-4> ^argument1 <o-location-4>)
+   (<w> ^clear <clear-block-5>)
+   (<clear-block-5> ^argument1 <o-block-5>)
+   (<w> ^clear <clear-block-7>)
+   (<clear-block-7> ^argument1 <o-block-7>)
+   (<w> ^clear <clear-block-8>)
+   (<clear-block-8> ^argument1 <o-block-8>)
+   (<w> ^available <available-block-1>)
+   (<available-block-1> ^argument1 <o-block-1>)
+   (<w> ^available <available-block-2>)
+   (<available-block-2> ^argument1 <o-block-2>)
+   (<w> ^available <available-block-3>)
+   (<available-block-3> ^argument1 <o-block-3>)
+   (<w> ^available <available-block-5>)
+   (<available-block-5> ^argument1 <o-block-5>)
+   (<w> ^available <available-block-6>)
+   (<available-block-6> ^argument1 <o-block-6>)
+   (<w> ^available <available-block-7>)
+   (<available-block-7> ^argument1 <o-block-7>)
+   (<w> ^available <available-block-8>)
+   (<available-block-8> ^argument1 <o-block-8>)
+   (<w> ^available <available-block-9>)
+   (<available-block-9> ^argument1 <o-block-9>)
+   (log 1 (crlf) |Initialize mahjong.|)
+}
+
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+sp {mahjong*elaborate*problem-space
+   (state <s> ^name mahjong)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name mahjong ^copy-relation below ^copy-relation clear ^copy-relation available ^dont-copy-object-attribute goal-met)
+}
+
+sp {mahjong*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name mahjong ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name mahjong ^dont-copy-object-attribute goal-met)
+}
+
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
+sp {mahjong*elaborate*flags
+   (state <s> ^superstate nil ^name mahjong)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {mahjong*elaborate*state*achieved*object-property
+   (state <s> ^problem-space.name mahjong ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {mahjong*elaborate*state*unachieved*object-property
+   (state <s> ^problem-space.name mahjong ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+## Propose move-pair in problem space mahjong when its conditions below hold.
+sp {mahjong*propose*move-pair
+   (state <s> ^problem-space.name mahjong ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2>)
+   (<b1> ^type block ^color <c> ^object-handle $ <h1>)
+   (<b2> ^type block ^color <c> ^object-handle { <> <h1> <h2> })
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move-pair ^task-operator true ^action-handle move-pair ^argument1 <b1> ^argument2 <b2> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of move-pair (look-ahead; bb).
+sp {mahjong*apply*move-pair*internal*bb
+   (state <s> ^problem-space.name mahjong ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move-pair ^pre-conditions-satisfied true ^argument1.object-handle $ <h1> ^argument2.object-handle $ <h2>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <x1>)
+   (<bl1> ^argument1 <x1> ^argument2 <b1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <x2>)
+   (<bl2> ^argument1 <x2> ^argument2 <b2>)
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<r1> ^argument2 <x1> - <g>)
+   (<bl1> ^argument1 <x1> - <g>)
+   (<w> ^clear <n1>)
+   (<n1> ^argument1 <x1>)
+   (<r2> ^argument2 <x2> - <g>)
+   (<bl2> ^argument1 <x2> - <g>)
+   (<w> ^clear <n2>)
+   (<n2> ^argument1 <x2>)
+}
+
+## Effect of a completed move-pair command on the real world (once per command; bb).
+sp {mahjong*apply*move-pair*environment-effect*bb
+   :o-support
+   (state <s> ^problem-space.name mahjong ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move-pair ^status complete ^argument1 <h1> ^argument2 <h2> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <x1>)
+   (<bl1> ^argument1 <x1> ^argument2 <b1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <x2>)
+   (<bl2> ^argument1 <x2> ^argument2 <b2>)
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<r1> ^argument2 <x1> - <g>)
+   (<bl1> ^argument1 <x1> - <g>)
+   (<w> ^clear <n1>)
+   (<n1> ^argument1 <x1>)
+   (<r2> ^argument2 <x2> - <g>)
+   (<bl2> ^argument1 <x2> - <g>)
+   (<w> ^clear <n2>)
+   (<n2> ^argument1 <x2>)
+   (<pa> ^effect-applied true)
+   (write |Move | <h1> | and | <h2> | onto the garbage| (crlf))
+}
+## Effect of move-pair (look-ahead; bn).
+sp {mahjong*apply*move-pair*internal*bn
+   (state <s> ^problem-space.name mahjong ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move-pair ^pre-conditions-satisfied true ^argument1.object-handle $ <h1> ^argument2.object-handle $ <h2>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <x1>)
+   (<bl1> ^argument1 <x1> ^argument2 <b1>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 <b2>)}
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<r1> ^argument2 <x1> - <g>)
+   (<bl1> ^argument1 <x1> - <g>)
+   (<w> ^clear <n1>)
+   (<n1> ^argument1 <x1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <g>)
+   (<bl2> ^argument1 <g> ^argument2 <b2>)
+}
+
+## Effect of a completed move-pair command on the real world (once per command; bn).
+sp {mahjong*apply*move-pair*environment-effect*bn
+   :o-support
+   (state <s> ^problem-space.name mahjong ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move-pair ^status complete ^argument1 <h1> ^argument2 <h2> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <x1>)
+   (<bl1> ^argument1 <x1> ^argument2 <b1>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 <b2>)}
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<r1> ^argument2 <x1> - <g>)
+   (<bl1> ^argument1 <x1> - <g>)
+   (<w> ^clear <n1>)
+   (<n1> ^argument1 <x1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <g>)
+   (<bl2> ^argument1 <g> ^argument2 <b2>)
+   (<pa> ^effect-applied true)
+   (write |Move | <h1> | and | <h2> | onto the garbage| (crlf))
+}
+## Effect of move-pair (look-ahead; nb).
+sp {mahjong*apply*move-pair*internal*nb
+   (state <s> ^problem-space.name mahjong ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move-pair ^pre-conditions-satisfied true ^argument1.object-handle $ <h1> ^argument2.object-handle $ <h2>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+  -{(<w> ^on <r1>)
+    (<r1> ^argument1 <b1>)}
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <x2>)
+   (<bl2> ^argument1 <x2> ^argument2 <b2>)
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <g>)
+   (<bl1> ^argument1 <g> ^argument2 <b1>)
+   (<r2> ^argument2 <x2> - <g>)
+   (<bl2> ^argument1 <x2> - <g>)
+   (<w> ^clear <n2>)
+   (<n2> ^argument1 <x2>)
+}
+
+## Effect of a completed move-pair command on the real world (once per command; nb).
+sp {mahjong*apply*move-pair*environment-effect*nb
+   :o-support
+   (state <s> ^problem-space.name mahjong ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move-pair ^status complete ^argument1 <h1> ^argument2 <h2> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+  -{(<w> ^on <r1>)
+    (<r1> ^argument1 <b1>)}
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <x2>)
+   (<bl2> ^argument1 <x2> ^argument2 <b2>)
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <g>)
+   (<bl1> ^argument1 <g> ^argument2 <b1>)
+   (<r2> ^argument2 <x2> - <g>)
+   (<bl2> ^argument1 <x2> - <g>)
+   (<w> ^clear <n2>)
+   (<n2> ^argument1 <x2>)
+   (<pa> ^effect-applied true)
+   (write |Move | <h1> | and | <h2> | onto the garbage| (crlf))
+}
+## Effect of move-pair (look-ahead; nn).
+sp {mahjong*apply*move-pair*internal*nn
+   (state <s> ^problem-space.name mahjong ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move-pair ^pre-conditions-satisfied true ^argument1.object-handle $ <h1> ^argument2.object-handle $ <h2>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+  -{(<w> ^on <r1>)
+    (<r1> ^argument1 <b1>)}
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 <b2>)}
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <g>)
+   (<bl1> ^argument1 <g> ^argument2 <b1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <g>)
+   (<bl2> ^argument1 <g> ^argument2 <b2>)
+}
+
+## Effect of a completed move-pair command on the real world (once per command; nn).
+sp {mahjong*apply*move-pair*environment-effect*nn
+   :o-support
+   (state <s> ^problem-space.name mahjong ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move-pair ^status complete ^argument1 <h1> ^argument2 <h2> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <g>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle $ <h2>)
+   (<g> ^type location ^name garbage)
+   (<w> ^available <a1> <a2> ^clear <c1> <c2>)
+   (<a1> ^argument1 <b1>)
+   (<a2> ^argument1 <b2>)
+   (<c1> ^argument1 <b1>)
+   (<c2> ^argument1 <b2>)
+  -{(<w> ^on <r1>)
+    (<r1> ^argument1 <b1>)}
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 <b2>)}
+-->
+   (<w> ^available <a1> - <a2> -)
+   (<w> ^on <r1> ^below <bl1>)
+   (<r1> ^argument1 <b1> ^argument2 <g>)
+   (<bl1> ^argument1 <g> ^argument2 <b1>)
+   (<w> ^on <r2> ^below <bl2>)
+   (<r2> ^argument1 <b2> ^argument2 <g>)
+   (<bl2> ^argument1 <g> ^argument2 <b2>)
+   (<pa> ^effect-applied true)
+   (write |Move | <h1> | and | <h2> | onto the garbage| (crlf))
+}
+## Goal: all blocks are on a garbage.
+sp {mahjong*elaborate*goal*all-on-garbage
+   (state <s> ^problem-space.name mahjong ^world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <t> <g> <b-block-1> <b-block-2> <b-block-3> <b-block-5> <b-block-6> <b-block-7> <b-block-8> <b-block-9>)
+   (<t> ^type task)
+   (<g> ^type location ^name garbage)
+   (<b-block-1> ^object-handle block-1)
+   (<w> ^on <on-block-1>)
+   (<on-block-1> ^argument1 <b-block-1> ^argument2 <g>)
+   (<b-block-2> ^object-handle block-2)
+   (<w> ^on <on-block-2>)
+   (<on-block-2> ^argument1 <b-block-2> ^argument2 <g>)
+   (<b-block-3> ^object-handle block-3)
+   (<w> ^on <on-block-3>)
+   (<on-block-3> ^argument1 <b-block-3> ^argument2 <g>)
+   (<b-block-5> ^object-handle block-5)
+   (<w> ^on <on-block-5>)
+   (<on-block-5> ^argument1 <b-block-5> ^argument2 <g>)
+   (<b-block-6> ^object-handle block-6)
+   (<w> ^on <on-block-6>)
+   (<on-block-6> ^argument1 <b-block-6> ^argument2 <g>)
+   (<b-block-7> ^object-handle block-7)
+   (<w> ^on <on-block-7>)
+   (<on-block-7> ^argument1 <b-block-7> ^argument2 <g>)
+   (<b-block-8> ^object-handle block-8)
+   (<w> ^on <on-block-8>)
+   (<on-block-8> ^argument1 <b-block-8> ^argument2 <g>)
+   (<b-block-9> ^object-handle block-9)
+   (<w> ^on <on-block-9>)
+   (<on-block-9> ^argument1 <b-block-9> ^argument2 <g>)
+-->
+   (<t> ^goal-met true)
+}
+
+## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead" (World-Conventions L5-021).
+## Reason given: With learning on the agent crashes on every seed; without it it solves in 1,259-1,333 decisions. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not part of the Rosie teaching data; library v2.46 runs, seeds 1-3.)
+chunk never

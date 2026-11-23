@@ -1,6 +1,6 @@
 # Soar program conventions — initial list (draft for review)
 
-Generated 21 November 2026, 14:18 by `gen_spec.py` from `Soar-Conventions.xlsx` (302 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 23 November 2026, 15:52 by `gen_spec.py` from `Soar-Conventions.xlsx` (303 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -12,7 +12,7 @@ Generated 21 November 2026, 14:18 by `gen_spec.py` from `Soar-Conventions.xlsx` 
 | [L3 Guidance](#l3-guidance) | 103 | Guidance from the Soar manual and tutorial that the library material supports. |
 | [L3S Guidance (Soar only)](#l3s-guidance-soar-only) | 4 | L3 guidance for Soar programs in general that World-Conventions-v6 does not include, because a more specific world convention replaces it. The World-Conventions column gives the reason. |
 | [L4 Default rules](#l4-default-rules) | 9 | Provided or assumed by Soar's general default rules (e.g. an operator no-change substate gets ^name of the operator; ^top-state). |
-| [L5 Selection space (classic)](#l5-selection-space-classic) | 21 | Conventions of the default selection / look-ahead library (^desired, ^success, ^problem-space copy controls, evaluation values). |
+| [L5 Selection space (classic)](#l5-selection-space-classic) | 22 | Conventions of the default selection / look-ahead library (^desired, ^success, ^problem-space copy controls, evaluation values). |
 | [L6P Project (constrained)](#l6p-project-constrained) | 14 | This project's stricter conventions for generated agents (plan of 5 Nov 2026; Water Jug DSL v0). |
 
 ## L0 Definitional
@@ -2237,17 +2237,17 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 3, 4.2 Chase Operator Application; Tutorial Part 3, 5.1 Record-sound Operator
 
-**L3-021** (Requirement, Should, convention, formerly STA-025) — To remember the previous operator, an application rule copies what later rules need (its name and the parameters that identify it, e.g. ^name pour ^fill-jug <fj> ^empty-jug <ej>) into a state structure ^last-operator, rather than keeping a pointer to the operator identifier. Maintenance is L4-005; uses are L3-047.
+**L3-021** (Requirement, Should, convention, formerly STA-025) — To remember the previous operator, an application rule records what later rules need (its name and the parameters that identify it, as constants, e.g. ^name pour ^fill-jug jug3 ^empty-jug jug5) as ^last-operator on the structure that look-ahead copies (in programs that follow the World-Conventions, an anchored memory object in the world, World-Conventions L3-021), rather than keeping a pointer to the operator identifier. No rule of the problem itself reads it, and duplicate-state tests (L5-011) ignore it. Maintenance is L4-005; uses are L3-047 and L3-048.
 
-*Rationale:* The selected operator and its substructure go away once its proposal retracts, so a pointer to it ends up empty. The parameters are needed to tell what the operator did, not just its name.
+*Rationale:* The selected operator and its substructure go away once its proposal retracts, so a pointer to it ends up empty. The parameters are needed to tell what the operator did, not just its name. A record that look-ahead does not copy is not seen by the first operator of each look-ahead.
 
-*If violated:* Record vanishes or becomes empty; an undo cannot be identified from the name alone
+*If violated:* Record vanishes or becomes empty; an undo cannot be identified from the name alone; look-ahead does not see the operator applied just before it
 
 *Example:*
 
 ```
-(<s> ^last-operator <lo>)
-(<lo> ^name pour ^fill-jug <fj> ^empty-jug <ej>)
+(<m> ^type memory ^last-operator <lo>)
+(<lo> ^name pour ^fill-jug jug3 ^empty-jug jug5)
 ```
 
 *See:* parent L2-012
@@ -2379,7 +2379,7 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 2, 2.3.1 Operator Selection: Multiple Instances
 
-**L3-030** (Requirement, Should, convention, shared with World-Conventions, formerly OPR-016) — A parameter that ranges over a small set of constants (for example move 1 or 2 missionaries) gets one proposal rule per value, with the value as a constant on the operator; application rules read it from the operator.
+**L3-030** (Requirement, Should, convention, shared with World-Conventions, formerly OPR-016) — A parameter that ranges over a small set of constants (for example move 1 or 2 missionaries) gets one proposal rule per value, with the value as a constant on the operator; application rules read it from the operator. Related: L3-075: the application rules then test every parameter, zero values included.
 
 *Rationale:* Operator instances are distinguishable for preferences, chunking and RL.
 
@@ -2502,7 +2502,7 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 1, 1.4.1. Water Jug; Tutorial Part 1, 1.4.7 Water Jug Operator Proposals
 
-**L3-039** (Requirement, Should, convention, formerly PRO-019) — Add an indifferent preference (+ =) to proposals only when the order in which the competing operators are chosen does not matter, for example when the operators are monotonic (each only adds to the state and none blocks or undoes another, so every order reaches the same result); not as a default way to avoid ties. Agents converted to RL leave it out (L3-083).
+**L3-039** (Requirement, Should, convention, formerly PRO-019) — Add an indifferent preference (+ =) to proposals only when the order in which the competing operators are chosen does not matter, for example when the operators are monotonic (each only adds to the state and none blocks or undoes another, so every order reaches the same result); not as a default way to avoid ties. Agents converted to RL leave it out (L3-083). Monotonic operators, whose effects follow from the current state, are such a case (World-Conventions L15-027).
 
 *Rationale:* Indifference asserts knowledge that the options are equivalent; ties are the signal that more problem solving (e.g. look-ahead) is needed.
 
@@ -2606,7 +2606,7 @@ sp {elaborate*shields-on (state <s> ^operator.actions <a> ^io.input-link <il>) (
 
 *Source:* Tutorial Part 2, 2.7.4 Advanced Move Operator Selection; Tutorial Part 2, 2.6.4 Summary of Preferences
 
-**L3-047** (Requirement, May, convention, formerly EVA-019) — Use a worst preference to avoid immediately undoing the previous operator (matching the proposed operator against ^last-operator, L3-021).
+**L3-047** (Requirement, May, convention, formerly EVA-019) — Use a worst preference to avoid immediately undoing the previous operator (matching the proposed operator against the ^last-operator record, L3-021).
 
 *Rationale:* A cheap heuristic that shortens undirected search.
 
@@ -2624,7 +2624,7 @@ sp {elaborate*shields-on (state <s> ^operator.actions <a> ^io.input-link <il>) (
 
 *Source:* Tutorial Part 1, 1.4.11 Search Control; Tutorial Part 4, 9. Search Control: Undoing the Last Operator
 
-**L3-048** (Requirement, Should, convention, formerly EVA-021) — In look-ahead, reject an operator that undoes the previous operator (matching the proposed operator against ^last-operator, L3-021).
+**L3-048** (Requirement, Should, convention, formerly EVA-021) — In look-ahead, reject an operator that undoes the previous operator (matching the proposed operator against the ^last-operator record, L3-021).
 
 *Rationale:* An operator that undoes the previous one returns to the previous state, so evaluating it adds nothing; a reject removes it from the look-ahead search.
 
@@ -2796,7 +2796,7 @@ sp {water-jug*monitor*operator-application*fill (state <s> ^name water-jug ^oper
 
 ### Rule: results
 
-**L3-062** (Requirement, Should, convention, shared with World-Conventions, formerly RES-011) — A rule on the path to a result should not test the absence of local substate structure: the negation is dropped from the chunk or justification, which is then over-general (L0-091). Remedies: hold the tested data in the superstate, make it a result, or set chunk allow-local-negations off to reject such chunks.
+**L3-062** (Requirement, Should, convention, shared with World-Conventions, formerly RES-011) — A rule on the path to a result should not test the absence of local substate structure: the negation is dropped from the chunk or justification, which is then over-general (L0-091). Remedies: hold the tested data in the superstate, make it a result, or set chunk allow-local-negations off to reject such chunks. A result that depends on a rule not firing is the same case: an effect skipped for a zero parameter, or a depth-exceeded evaluation that rests on there being no failure or success. Remedies: a rule that tests the value (L3-075), or a ^quiescence t test on the rule that reports the result, so that no chunk is built (L0-094). A result that depends on a selection having been the only option is another such absence; the task makes the forced choice explicit with a count (World-Conventions L9-028).
 
 *Rationale:* Only negated conditions on superstate WMEs are carried into justifications.
 
@@ -2976,21 +2976,21 @@ sp {water-jug*monitor*operator-application*fill (state <s> ^name water-jug ^oper
 
 *Source:* Tutorial Part 5, 1.4.5 Chunking
 
-**L3-075** (Requirement, Should, convention, shared with World-Conventions, formerly CHK-021) — Application rules test every operator attribute that distinguishes one operator instance from another, so that chunks learned from evaluations include those distinctions.
+**L3-075** (Requirement, Should, convention, shared with World-Conventions, formerly CHK-021) — Application rules test every operator attribute that distinguishes one operator instance from another, including attributes whose value leaves the world unchanged (0, none, false). Apply a multi-part effect with one rule that tests all the parts and applies each, even when a part changes nothing (adding 0), not with one rule per part guarded by a test that the part is nonzero ({<n> > 0}): a part that fires no rule is tested by nothing, so chunks learned from evaluations omit it.
 
-*Rationale:* Chunking picks up only what the rules tested; untested distinguishing features yield overgeneral rejections.
+*Rationale:* Chunking picks up only what the rules tested; untested distinguishing features yield overgeneral rejections. An effect that comes from a rule not firing is an absence, which chunking drops as it drops local negations (L3-062). gen3 missionaries-cannibals, 22 Nov 2026: the failure chunk for 'row 1 cannibal' carried no test of the missionary load and rejected 'row 1 missionary and 1 cannibal', which had never been evaluated; with one rule applying both loads the agent solves with chunk always in 418-443 decisions (11 moves).
 
 *If violated:* Overgeneral chunk rejects an operator on the solution path
 
 *Example:*
 
 ```
-(<o> ^name move-mac-boat ^{ << missionaries cannibals boat >> <type> } <num> ^bank <bank> ^types <types>)
+sp {missionaries-cannibals*apply*move-boat*people (state <s> ^operator <o> ^world.objects.object <from> <to>) (<o> ^name move-boat ^argument1.object-handle <fh> ^argument2.object-handle <th> ^missionaries <nm> ^cannibals <nc>) (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>) (<to> ^object-handle <th> ^missionaries <tm> ^cannibals <tc>) --> (<from> ^missionaries <fm> - (- <fm> <nm>) ^cannibals <fc> - (- <fc> <nc>)) (<to> ^missionaries <tm> - (+ <tm> <nm>) ^cannibals <tc> - (+ <tc> <nc>))}. Not: one rule matching ^{<< missionaries cannibals >> <type>} {<n> > 0}, which tests nothing when a load is 0.
 ```
 
 *See:* parent L3-074
 
-*Source:* Tutorial Part 5, 2.2 Subtle chunking problem
+*Source:* Tutorial Part 5, 2.2 Subtle chunking problem; gen3 experiment (22 Nov 2026)
 
 **L3-076** (Requirement, Should, convention, shared with World-Conventions, formerly CHK-022) — With chunking, exact evaluations (success, failure) are preferred to heuristic numeric evaluations that are only partly correct: a chunk captures the heuristic's errors too.
 
@@ -3458,9 +3458,9 @@ sp {selection*... :default ...}
 
 *Source:* Default: simple.soar default*select*indifferent-and-worst*tied, default*select*reject*conflict (world library: soar-base*compare*default*select*indifferent-and-worst*tied, selection-world*compare*default*select*reject*conflict)
 
-**L4-005** (Choice, Should, convention, formerly EVA-012) — ^last-operator is not always maintained; this applies if an agent uses it. It is used most often to avoid undoing the last operator in look-ahead (L3-047, L3-048). When it is used, it is maintained by one application rule that, whenever an operator is applied, adds the new record and removes the previous one (L2-010), and is initialized (for example by the init-<task-name> operator) with an empty ^last-operator so that rules testing it match from the first decision.
+**L4-005** (Choice, Should, convention, formerly EVA-012) — ^last-operator is not always maintained; this applies if an agent uses it. It is used most often to avoid undoing the last operator (L3-047, L3-048). When it is used, the record of L3-021 is created with the structure that holds it and has ^name none, so that rules testing it match from the first decision (L3-035). It is replaced by an application rule whenever an operator is applied (L2-010), including actions applied by the environment.
 
-*Rationale:* Without removal the state accumulates several records and comparisons match stale ones; without initialization rules that test it cannot match on the first decision.
+*Rationale:* Without removal the record accumulates several values and comparisons match stale ones; without initialization rules that test it cannot match on the first decision.
 
 *If violated:* Several ^last-operator values at once; rules that test it do not fire at the start
 
@@ -3636,9 +3636,9 @@ popd
 
 *Source:* Default selection: selection*elaborate*evaluation*desired and all compare rules
 
-**L5-008** (Requirement, Must, convention, shared with World-Conventions, formerly GOL-002) — A state signals achievement of its goal with an elaboration (<s> ^success <ds>), or ^required-success or ^partial-success, where <ds> is the state's ^desireds. It signals failure with ^failure, ^partial-failure or ^prohibit-failure <ds>. In look-ahead these replace halting. L14-027 lists every evaluation value.
+**L5-008** (Requirement, Must, convention, shared with World-Conventions, formerly GOL-002) — A state signals achievement of its goal with an elaboration (<s> ^success <ds>), or ^required-success or ^partial-success, where <ds> is the state's ^desireds. It signals failure with ^failure, ^partial-failure or ^prohibit-failure <ds>. In look-ahead these replace halting. L14-027 lists every evaluation value. The rules that recognize success, failure or a repeated state in look-ahead lie on the path to every evaluation chunk, so they test only positive structure (L3-100). A goal or dead end stated as 'every X is Y' or 'no X has Y' (all tiles in place, a cell with no candidate) is a maintained count, updated by the operator applications that change it and tested as a value (^tiles-in-place 8, ^cand-count 0), not a negated condition or negated conjunction.
 
-*Rationale:* The library turns these state attributes into evaluations and preferences.
+*Rationale:* The library turns these state attributes into evaluations and preferences. gen3 experiment, 22-23 Nov 2026: three writers broke this (kenken failure as ^value 0 -^cand; eight-puzzle 'tray solved' as a negated conjunction; Tower of Hanoi repeated state as a negated conjunction); under chunk only each learned an over-general chunk and reached the decision cap (kenken: the failure chunk tested only 'some cell has value 0' and rejected every assign).
 
 *If violated:* Look-ahead never sees success
 
@@ -3678,7 +3678,7 @@ popd
 
 *Source:* Default selection: selection*compare*higher-evaluation-better, prefer-lower-evaluation; Tutorial Part 5, 2.3 Numeric Evaluations
 
-**L5-011** (Choice, Should, convention, formerly GOL-005) — In look-ahead, evaluate a state as failure if it duplicates a state higher in the state stack, using an elaborated ^superstate-set (each state's superstate plus that superstate's superstate-set).
+**L5-011** (Choice, Should, convention, formerly GOL-005) — In look-ahead, evaluate a state as failure if it duplicates a state higher in the state stack, using an elaborated ^superstate-set (each state's superstate plus that superstate's superstate-set). The comparison leaves out the record of the previous operator (L3-021).
 
 *Rationale:* Avoids loops and, as a side effect, undoing the last operator.
 
@@ -3844,11 +3844,11 @@ sp {...elaborate*superstate-set (state <s> ^superstate <ss>) --> (<s> ^superstat
 
 ### Learning: chunking
 
-**L5-021** (Choice, Should, convention, shared with World-Conventions, formerly SET-016) — When look-ahead results are to be learned, chunking is enabled explicitly: chunk always, chunk only with force-learn on the selection states, or chunk all-except with dont-learn on the states that must not learn.
+**L5-021** (Choice, Should, convention, shared with World-Conventions, formerly SET-016) — Learning from look-ahead is the default: the library sets chunk only (soar-base/settings/agent-world-settings.soar, library v2.46), so selection and evaluation results are chunked (force-learn, L14-046) and other substates (operator no-change subgoals, means-ends subgoaling) are not. A task turns learning off only for a stated reason, with chunk never in its own files and a comment giving the reason; a task that should also learn in other substates sets chunk always, or chunk all-except with dont-learn on the states that must not learn. add-osk stays on (L5-022). Rules on the path to look-ahead chunks follow the chunk-safety rows (L3-062, L3-075, L3-100, L5-008, L14-068); the library keeps depth-exceeded results out of chunks (L16-043). An agent generated from English gets the setting from its English statement: a line 'Learning: do not learn from look-ahead. <reason>' (before any Search control section) is turned into chunk never and the reason by the generators (Rosie: tools/learning.py; WorldSpec: Task.learning, both paths A and B; English world agents: gen.py), so the setting reaches the Soar agent through the same path as the task.
 
-*Rationale:* Without chunking each result is used only locally and forgotten.
+*Rationale:* Learning what look-ahead found avoids repeating the search, within the episode and in later ones. gen3 agents written without chunking, after the chunk-safety fixes, chunk only vs none (decisions in episode 1, seeds 1-3; 22-23 Nov 2026): missionaries-cannibals 418-443 vs 4,999-6,476; eight-puzzle 603-727 vs 911-1,213; Tower of Hanoi 213-224 vs 333-374; blocks-world 29-120 vs 76-283; water-jug 183-338 vs 420-528; episode 2 7-130. chunk only gave the same results as chunk always for these agents (their only substates are selection and evaluation) and keeps learning out of task substates where results may rest on local reasoning. Before the chunk-safety fixes, chunking broke five of nine of these agents, so the default depends on those rows. (JL, 23 Nov 2026: the default lives in the library.)
 
-*If violated:* Excessive decisions; repeated search
+*If violated:* Without the default, generated agents repeat every look-ahead search (several times more decisions) and nothing carries over to later episodes; with learning on but rules that are not chunk-safe, over-general chunks reject correct moves (gen3 missionaries-cannibals, kenken, eight-puzzle, Tower of Hanoi before their fixes).
 
 *Example:*
 
@@ -3861,6 +3861,23 @@ chunk always
 *See:* parent L0-113
 
 *Source:* Tutorial Part 5, 1.4.5 Chunking
+
+**L5-022** (Requirement, Must, convention, status: Accepted, shared with World-Conventions) — Whenever chunking is enabled (chunk always, chunk only or chunk all-except), chunk add-osk is on. The library sets it in its settings (soar-base/settings/agent-world-settings.soar), so tasks need not; a task never turns it off. The library also sets chunk only as the default mode (L5-021).
+
+*Rationale:* With add-osk off, a chunk learned from a substate leaves out the operator selection knowledge (the search-control preferences) that chose the substate operators leading to the result (L0-097). The chunk then fires where those preferences do not hold and is over-general. The setting has no effect while chunking is off, so the library can set it for every agent.
+
+*If violated:* Over-general chunks from look-ahead and from means-ends subgoals.
+
+*Example:*
+
+```
+# set by the library (soar-base/settings/agent-world-settings.soar):
+chunk add-osk on
+```
+
+*See:* parent L5-021
+
+*Source:* JL decision, 22 Nov 2026 (gen3 experiment: agents written from English task statements); library v2.46 candidate
 
 ## L6P Project (constrained)
 

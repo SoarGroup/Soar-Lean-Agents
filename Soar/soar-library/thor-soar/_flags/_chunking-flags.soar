@@ -4,7 +4,7 @@
 #########################################
 # two steps
 chunk allow-local-negations on
-chunk add-osk on
+# chunk add-osk on   (v2.46: set by the library, soar-base/settings/agent-world-settings.soar)
 #chunk always
 chunk flagged # (force-learn <s>) unflagged (dont-learn <s>)
 soar max-goal-depth 100

@@ -84,5 +84,7 @@ def cherylsBirthday : Task where
     { id := "A-CB4", kind := .intent, stmts := [3], text := "\"I know that Bernard doesn't know\": rules out every date in a month that has a date whose day is unique among all ten (Bernard might know). \"I don't know\": rules out dates in a month with one date (none here)." },
     { id := "A-CB5", kind := .intent, stmts := [4], text := "\"At first I didn't know\": rules out dates with a unique day among all ten (already gone after statement 3). \"I know now\": rules out dates whose day is shared by another date left after statement 3." },
     { id := "A-CB6", kind := .intent, stmts := [5, 7], text := "\"Then I also know\": rules out dates whose month is shared by another date left after statement 4. The answer is the one date left; with more than one left, no answer is proposed." }]
+  learning := false
+  learningReason := "With learning on (the library default) no seed finishes within 300 s; without it the agent finds July 16 in 15 decisions on every seed. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46 runs, seeds 1-3.)"
 
 end WorldSpec.Tasks

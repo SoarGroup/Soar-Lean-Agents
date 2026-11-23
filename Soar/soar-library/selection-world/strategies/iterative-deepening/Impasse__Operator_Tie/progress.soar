@@ -98,7 +98,8 @@ sp {selection-world*propose*evaluate-operator*exceed-depth*progress
 ## Apply evaluate-operator -> a branch cut by progress returns an unbounded cost bound: it is not worth deepening for.
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*progress-cut*numeric
    :default
-   (state <s> ^selection-superstate <superstate>
+   (state <s> ^quiescence t   # v2.46: no chunk (depth-exceeded rests on the absence of failure and success)
+              ^selection-superstate <superstate>
               ^depth-exceeded.duplicate-of <desireds>
               ^flags.cost-metric << unit time >>
               ^progress-cut true)

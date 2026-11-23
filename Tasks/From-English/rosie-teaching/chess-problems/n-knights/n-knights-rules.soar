@@ -1,0 +1,452 @@
+## N knights (n-knights), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   5. You can move a clear available block onto a clear location.
+##   6. If a block is not on a location then it is available.
+##   7. If a location is not below an object then it is clear.
+##  10. If a block is jumpable by another block then you lose.
+##  12. If an object that is alongside a block is diagonal with a location that is not next to the block then the location is jumpable by the block.
+##  16. The goal is that all blocks are placed.
+##  17. If a block is on a location then the block is placed.
+## World: init-nknights2.world (a grid; eight blocks in a stack)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator place-block (argument1 = the block, argument2 = the location), statement 5. available (statement 6) and clear
+##     (statement 7) are maintained one-argument relations; the blocks start in a stack (A-C2).
+##   - A placed block has the row and column of the location it is on; the relations between blocks are static relations
+##     between their locations (A-C1).
+##   - Failure: a block is jumpable by another block: the knight's move, a static relation computed as in knight
+##     swapping (alongside, diagonal-with, near; A-S3).
+##   - The goal (all blocks are placed) is expanded over the blocks of the world file.
+
+## Propose initialize-n-knights when its conditions below hold.
+sp {n-knights*propose*initialize-n-knights
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-n-knights ^task-operator false)
+}
+
+sp {n-knights*apply*initialize-n-knights
+   (state <s> ^operator.name initialize-n-knights ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name n-knights ^desireds <ds>)
+   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-location-13> <o-location-14> <o-location-15> <o-location-16> <o-block-17> <o-block-18> <o-block-19> <o-block-20> <o-block-21> <o-block-22> <o-block-23> <o-block-24> <o-task>)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 2 ^column 1)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 3 ^column 1)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 4 ^column 1)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 1 ^column 2)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 2)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^row 3 ^column 2)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 4 ^column 2)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^row 1 ^column 3)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^row 2 ^column 3)
+   (<o-location-11> ^object-handle location-11 ^anchored true ^type location ^row 3 ^column 3)
+   (<o-location-12> ^object-handle location-12 ^anchored true ^type location ^row 4 ^column 3)
+   (<o-location-13> ^object-handle location-13 ^anchored true ^type location ^row 1 ^column 4)
+   (<o-location-14> ^object-handle location-14 ^anchored true ^type location ^row 2 ^column 4)
+   (<o-location-15> ^object-handle location-15 ^anchored true ^type location ^row 3 ^column 4)
+   (<o-location-16> ^object-handle location-16 ^anchored true ^type location ^row 4 ^column 4)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color blue)
+   (<o-block-18> ^object-handle block-18 ^anchored true ^type block ^color blue)
+   (<o-block-19> ^object-handle block-19 ^anchored true ^type block ^color blue)
+   (<o-block-20> ^object-handle block-20 ^anchored true ^type block ^color blue)
+   (<o-block-21> ^object-handle block-21 ^anchored true ^type block ^color blue)
+   (<o-block-22> ^object-handle block-22 ^anchored true ^type block ^color blue)
+   (<o-block-23> ^object-handle block-23 ^anchored true ^type block ^color blue)
+   (<o-block-24> ^object-handle block-24 ^anchored true ^type block ^color blue)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-block-17> ^argument2 <o-block-18>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-block-18> ^argument2 <o-block-19>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-block-19> ^argument2 <o-block-20>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-block-20> ^argument2 <o-block-21>)
+   (<w> ^on <on-4>)
+   (<on-4> ^argument1 <o-block-21> ^argument2 <o-block-22>)
+   (<w> ^on <on-5>)
+   (<on-5> ^argument1 <o-block-22> ^argument2 <o-block-23>)
+   (<w> ^on <on-6>)
+   (<on-6> ^argument1 <o-block-23> ^argument2 <o-block-24>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-block-18> ^argument2 <o-block-17>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-block-19> ^argument2 <o-block-18>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-block-20> ^argument2 <o-block-19>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-block-21> ^argument2 <o-block-20>)
+   (<w> ^below <below-4>)
+   (<below-4> ^argument1 <o-block-22> ^argument2 <o-block-21>)
+   (<w> ^below <below-5>)
+   (<below-5> ^argument1 <o-block-23> ^argument2 <o-block-22>)
+   (<w> ^below <below-6>)
+   (<below-6> ^argument1 <o-block-24> ^argument2 <o-block-23>)
+   (<w> ^clear <clear-location-1>)
+   (<clear-location-1> ^argument1 <o-location-1>)
+   (<w> ^clear <clear-location-2>)
+   (<clear-location-2> ^argument1 <o-location-2>)
+   (<w> ^clear <clear-location-3>)
+   (<clear-location-3> ^argument1 <o-location-3>)
+   (<w> ^clear <clear-location-4>)
+   (<clear-location-4> ^argument1 <o-location-4>)
+   (<w> ^clear <clear-location-5>)
+   (<clear-location-5> ^argument1 <o-location-5>)
+   (<w> ^clear <clear-location-6>)
+   (<clear-location-6> ^argument1 <o-location-6>)
+   (<w> ^clear <clear-location-7>)
+   (<clear-location-7> ^argument1 <o-location-7>)
+   (<w> ^clear <clear-location-8>)
+   (<clear-location-8> ^argument1 <o-location-8>)
+   (<w> ^clear <clear-location-9>)
+   (<clear-location-9> ^argument1 <o-location-9>)
+   (<w> ^clear <clear-location-10>)
+   (<clear-location-10> ^argument1 <o-location-10>)
+   (<w> ^clear <clear-location-11>)
+   (<clear-location-11> ^argument1 <o-location-11>)
+   (<w> ^clear <clear-location-12>)
+   (<clear-location-12> ^argument1 <o-location-12>)
+   (<w> ^clear <clear-location-13>)
+   (<clear-location-13> ^argument1 <o-location-13>)
+   (<w> ^clear <clear-location-14>)
+   (<clear-location-14> ^argument1 <o-location-14>)
+   (<w> ^clear <clear-location-15>)
+   (<clear-location-15> ^argument1 <o-location-15>)
+   (<w> ^clear <clear-location-16>)
+   (<clear-location-16> ^argument1 <o-location-16>)
+   (<w> ^clear <clear-block-17>)
+   (<clear-block-17> ^argument1 <o-block-17>)
+   (<w> ^available <available-block-17>)
+   (<available-block-17> ^argument1 <o-block-17>)
+   (<w> ^available <available-block-18>)
+   (<available-block-18> ^argument1 <o-block-18>)
+   (<w> ^available <available-block-19>)
+   (<available-block-19> ^argument1 <o-block-19>)
+   (<w> ^available <available-block-20>)
+   (<available-block-20> ^argument1 <o-block-20>)
+   (<w> ^available <available-block-21>)
+   (<available-block-21> ^argument1 <o-block-21>)
+   (<w> ^available <available-block-22>)
+   (<available-block-22> ^argument1 <o-block-22>)
+   (<w> ^available <available-block-23>)
+   (<available-block-23> ^argument1 <o-block-23>)
+   (<w> ^available <available-block-24>)
+   (<available-block-24> ^argument1 <o-block-24>)
+   (<w> ^jumpable <jumpable-0>)
+   (<jumpable-0> ^argument1 <o-location-7> ^argument2 <o-location-1>)
+   (<w> ^jumpable <jumpable-1>)
+   (<jumpable-1> ^argument1 <o-location-10> ^argument2 <o-location-1>)
+   (<w> ^jumpable <jumpable-2>)
+   (<jumpable-2> ^argument1 <o-location-8> ^argument2 <o-location-2>)
+   (<w> ^jumpable <jumpable-3>)
+   (<jumpable-3> ^argument1 <o-location-9> ^argument2 <o-location-2>)
+   (<w> ^jumpable <jumpable-4>)
+   (<jumpable-4> ^argument1 <o-location-11> ^argument2 <o-location-2>)
+   (<w> ^jumpable <jumpable-5>)
+   (<jumpable-5> ^argument1 <o-location-5> ^argument2 <o-location-3>)
+   (<w> ^jumpable <jumpable-6>)
+   (<jumpable-6> ^argument1 <o-location-10> ^argument2 <o-location-3>)
+   (<w> ^jumpable <jumpable-7>)
+   (<jumpable-7> ^argument1 <o-location-12> ^argument2 <o-location-3>)
+   (<w> ^jumpable <jumpable-8>)
+   (<jumpable-8> ^argument1 <o-location-6> ^argument2 <o-location-4>)
+   (<w> ^jumpable <jumpable-9>)
+   (<jumpable-9> ^argument1 <o-location-11> ^argument2 <o-location-4>)
+   (<w> ^jumpable <jumpable-10>)
+   (<jumpable-10> ^argument1 <o-location-3> ^argument2 <o-location-5>)
+   (<w> ^jumpable <jumpable-11>)
+   (<jumpable-11> ^argument1 <o-location-11> ^argument2 <o-location-5>)
+   (<w> ^jumpable <jumpable-12>)
+   (<jumpable-12> ^argument1 <o-location-14> ^argument2 <o-location-5>)
+   (<w> ^jumpable <jumpable-13>)
+   (<jumpable-13> ^argument1 <o-location-4> ^argument2 <o-location-6>)
+   (<w> ^jumpable <jumpable-14>)
+   (<jumpable-14> ^argument1 <o-location-12> ^argument2 <o-location-6>)
+   (<w> ^jumpable <jumpable-15>)
+   (<jumpable-15> ^argument1 <o-location-13> ^argument2 <o-location-6>)
+   (<w> ^jumpable <jumpable-16>)
+   (<jumpable-16> ^argument1 <o-location-15> ^argument2 <o-location-6>)
+   (<w> ^jumpable <jumpable-17>)
+   (<jumpable-17> ^argument1 <o-location-1> ^argument2 <o-location-7>)
+   (<w> ^jumpable <jumpable-18>)
+   (<jumpable-18> ^argument1 <o-location-9> ^argument2 <o-location-7>)
+   (<w> ^jumpable <jumpable-19>)
+   (<jumpable-19> ^argument1 <o-location-14> ^argument2 <o-location-7>)
+   (<w> ^jumpable <jumpable-20>)
+   (<jumpable-20> ^argument1 <o-location-16> ^argument2 <o-location-7>)
+   (<w> ^jumpable <jumpable-21>)
+   (<jumpable-21> ^argument1 <o-location-2> ^argument2 <o-location-8>)
+   (<w> ^jumpable <jumpable-22>)
+   (<jumpable-22> ^argument1 <o-location-10> ^argument2 <o-location-8>)
+   (<w> ^jumpable <jumpable-23>)
+   (<jumpable-23> ^argument1 <o-location-15> ^argument2 <o-location-8>)
+   (<w> ^jumpable <jumpable-24>)
+   (<jumpable-24> ^argument1 <o-location-2> ^argument2 <o-location-9>)
+   (<w> ^jumpable <jumpable-25>)
+   (<jumpable-25> ^argument1 <o-location-7> ^argument2 <o-location-9>)
+   (<w> ^jumpable <jumpable-26>)
+   (<jumpable-26> ^argument1 <o-location-15> ^argument2 <o-location-9>)
+   (<w> ^jumpable <jumpable-27>)
+   (<jumpable-27> ^argument1 <o-location-1> ^argument2 <o-location-10>)
+   (<w> ^jumpable <jumpable-28>)
+   (<jumpable-28> ^argument1 <o-location-3> ^argument2 <o-location-10>)
+   (<w> ^jumpable <jumpable-29>)
+   (<jumpable-29> ^argument1 <o-location-8> ^argument2 <o-location-10>)
+   (<w> ^jumpable <jumpable-30>)
+   (<jumpable-30> ^argument1 <o-location-16> ^argument2 <o-location-10>)
+   (<w> ^jumpable <jumpable-31>)
+   (<jumpable-31> ^argument1 <o-location-2> ^argument2 <o-location-11>)
+   (<w> ^jumpable <jumpable-32>)
+   (<jumpable-32> ^argument1 <o-location-4> ^argument2 <o-location-11>)
+   (<w> ^jumpable <jumpable-33>)
+   (<jumpable-33> ^argument1 <o-location-5> ^argument2 <o-location-11>)
+   (<w> ^jumpable <jumpable-34>)
+   (<jumpable-34> ^argument1 <o-location-13> ^argument2 <o-location-11>)
+   (<w> ^jumpable <jumpable-35>)
+   (<jumpable-35> ^argument1 <o-location-3> ^argument2 <o-location-12>)
+   (<w> ^jumpable <jumpable-36>)
+   (<jumpable-36> ^argument1 <o-location-6> ^argument2 <o-location-12>)
+   (<w> ^jumpable <jumpable-37>)
+   (<jumpable-37> ^argument1 <o-location-14> ^argument2 <o-location-12>)
+   (<w> ^jumpable <jumpable-38>)
+   (<jumpable-38> ^argument1 <o-location-6> ^argument2 <o-location-13>)
+   (<w> ^jumpable <jumpable-39>)
+   (<jumpable-39> ^argument1 <o-location-11> ^argument2 <o-location-13>)
+   (<w> ^jumpable <jumpable-40>)
+   (<jumpable-40> ^argument1 <o-location-5> ^argument2 <o-location-14>)
+   (<w> ^jumpable <jumpable-41>)
+   (<jumpable-41> ^argument1 <o-location-7> ^argument2 <o-location-14>)
+   (<w> ^jumpable <jumpable-42>)
+   (<jumpable-42> ^argument1 <o-location-12> ^argument2 <o-location-14>)
+   (<w> ^jumpable <jumpable-43>)
+   (<jumpable-43> ^argument1 <o-location-6> ^argument2 <o-location-15>)
+   (<w> ^jumpable <jumpable-44>)
+   (<jumpable-44> ^argument1 <o-location-8> ^argument2 <o-location-15>)
+   (<w> ^jumpable <jumpable-45>)
+   (<jumpable-45> ^argument1 <o-location-9> ^argument2 <o-location-15>)
+   (<w> ^jumpable <jumpable-46>)
+   (<jumpable-46> ^argument1 <o-location-7> ^argument2 <o-location-16>)
+   (<w> ^jumpable <jumpable-47>)
+   (<jumpable-47> ^argument1 <o-location-10> ^argument2 <o-location-16>)
+   (log 1 (crlf) |Initialize n-knights.|)
+}
+
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+sp {n-knights*elaborate*problem-space
+   (state <s> ^name n-knights)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name n-knights ^copy-relation below ^copy-relation jumpable ^copy-relation clear ^copy-relation available ^dont-copy-object-attribute goal-met)
+}
+
+sp {n-knights*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name n-knights ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name n-knights ^dont-copy-object-attribute goal-met)
+}
+
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
+sp {n-knights*elaborate*flags
+   (state <s> ^superstate nil ^name n-knights)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {n-knights*elaborate*state*achieved*object-property
+   (state <s> ^problem-space.name n-knights ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {n-knights*elaborate*state*unachieved*object-property
+   (state <s> ^problem-space.name n-knights ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+## Propose place-block in problem space n-knights when its conditions below hold.
+sp {n-knights*propose*place-block
+   (state <s> ^problem-space.name n-knights ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^object-handle $ <bh>)
+   (<d> ^type location ^object-handle $ <dh>)
+   (<w> ^available <av>)
+   (<av> ^argument1 <b>)
+   (<w> ^clear <clear-b>)
+   (<clear-b> ^argument1 <b>)
+   (<w> ^clear <clear-d>)
+   (<clear-d> ^argument1 <d>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name place-block ^task-operator true ^action-handle place-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of place-block (look-ahead).
+sp {n-knights*apply*place-block*internal*from-block
+   (state <s> ^problem-space.name n-knights ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name place-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd> ^available <av>)
+   (<cd> ^argument1 <d>)
+   (<av> ^argument1 <b>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc> ^available <av> -)
+   (<nc> ^argument1 <old>)
+}
+
+## Effect of a completed place-block command on the real world (once per command).
+sp {n-knights*apply*place-block*environment-effect*from-block
+   :o-support
+   (state <s> ^problem-space.name n-knights ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name place-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd> ^available <av>)
+   (<cd> ^argument1 <d>)
+   (<av> ^argument1 <b>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc> ^available <av> -)
+   (<nc> ^argument1 <old>)
+   (<pa> ^effect-applied true)
+   (write |Place | <bh> | onto | <dh> (crlf))
+}
+## Effect of place-block (look-ahead).
+sp {n-knights*apply*place-block*internal*from-nothing
+   (state <s> ^problem-space.name n-knights ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name place-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd> ^available <av>)
+   (<cd> ^argument1 <d>)
+   (<av> ^argument1 <b>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^on <nr> ^below <nb> ^clear <cd> - ^available <av> -)
+   (<nr> ^argument1 <b> ^argument2 <d>)
+   (<nb> ^argument1 <d> ^argument2 <b>)
+}
+
+## Effect of a completed place-block command on the real world (once per command).
+sp {n-knights*apply*place-block*environment-effect*from-nothing
+   :o-support
+   (state <s> ^problem-space.name n-knights ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name place-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd> ^available <av>)
+   (<cd> ^argument1 <d>)
+   (<av> ^argument1 <b>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^on <nr> ^below <nb> ^clear <cd> - ^available <av> -)
+   (<nr> ^argument1 <b> ^argument2 <d>)
+   (<nb> ^argument1 <d> ^argument2 <b>)
+   (<pa> ^effect-applied true)
+   (write |Place | <bh> | onto | <dh> (crlf))
+}
+## Failure (jumpable): a block is jumpable by another block.
+sp {n-knights*elaborate*failure*jumpable
+   (state <s> ^problem-space.name n-knights ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b1> <b2> <l1> <l2>)
+   (<b1> ^type block ^object-handle $ <h1>)
+   (<b2> ^type block ^object-handle { <> <h1> })
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <b1> ^argument2 <l1>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <b2> ^argument2 <l2>)
+   (<w> ^jumpable <jumpable-x>)
+   (<jumpable-x> ^argument1 <l1> ^argument2 <l2>)
+-->
+   (<s> ^failure <ds>)
+}
+## Goal: all blocks are placed (on a location).
+sp {n-knights*elaborate*goal*all-placed
+   (state <s> ^problem-space.name n-knights ^world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <t> <b-block-17> <l-block-17> <b-block-18> <l-block-18> <b-block-19> <l-block-19> <b-block-20> <l-block-20> <b-block-21> <l-block-21> <b-block-22> <l-block-22> <b-block-23> <l-block-23> <b-block-24> <l-block-24>)
+   (<t> ^type task)
+   (<b-block-17> ^object-handle block-17)
+   (<l-block-17> ^type location)
+   (<w> ^on <on-block-17>)
+   (<on-block-17> ^argument1 <b-block-17> ^argument2 <l-block-17>)
+   (<b-block-18> ^object-handle block-18)
+   (<l-block-18> ^type location)
+   (<w> ^on <on-block-18>)
+   (<on-block-18> ^argument1 <b-block-18> ^argument2 <l-block-18>)
+   (<b-block-19> ^object-handle block-19)
+   (<l-block-19> ^type location)
+   (<w> ^on <on-block-19>)
+   (<on-block-19> ^argument1 <b-block-19> ^argument2 <l-block-19>)
+   (<b-block-20> ^object-handle block-20)
+   (<l-block-20> ^type location)
+   (<w> ^on <on-block-20>)
+   (<on-block-20> ^argument1 <b-block-20> ^argument2 <l-block-20>)
+   (<b-block-21> ^object-handle block-21)
+   (<l-block-21> ^type location)
+   (<w> ^on <on-block-21>)
+   (<on-block-21> ^argument1 <b-block-21> ^argument2 <l-block-21>)
+   (<b-block-22> ^object-handle block-22)
+   (<l-block-22> ^type location)
+   (<w> ^on <on-block-22>)
+   (<on-block-22> ^argument1 <b-block-22> ^argument2 <l-block-22>)
+   (<b-block-23> ^object-handle block-23)
+   (<l-block-23> ^type location)
+   (<w> ^on <on-block-23>)
+   (<on-block-23> ^argument1 <b-block-23> ^argument2 <l-block-23>)
+   (<b-block-24> ^object-handle block-24)
+   (<l-block-24> ^type location)
+   (<w> ^on <on-block-24>)
+   (<on-block-24> ^argument1 <b-block-24> ^argument2 <l-block-24>)
+-->
+   (<t> ^goal-met true)
+}
+
+## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead" (World-Conventions L5-021).
+## Reason given: With learning on the agent crashes on seeds 1-2 and runs past the time limit on seed 3; without it it reaches the decision cap (unsolved either way). (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not part of the Rosie teaching data; library v2.46 runs, seeds 1-3.)
+chunk never

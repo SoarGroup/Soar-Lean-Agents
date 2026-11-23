@@ -1,6 +1,6 @@
 # World conventions for Soar programs, version 6
 
-Generated 21 November 2026, 14:18 by `gen_spec.py` from `World-Conventions-v6.xlsx` (589 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 23 November 2026, 15:52 by `gen_spec.py` from `World-Conventions-v6.xlsx` (593 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -11,17 +11,17 @@ Generated 21 November 2026, 14:18 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L2 Universal practice](#l2-universal-practice) | 14 | Adopted in essentially every Soar program. |
 | [L3 Guidance](#l3-guidance) | 103 | Guidance from the Soar manual and tutorial that the library material supports. |
 | [L4 Default rules](#l4-default-rules) | 9 | Conventions set by the default rules of soar-base (loaded with the shared library). |
-| [L5 Selection space (classic)](#l5-selection-space-classic) | 9 | Conventions of the classic selection space that selection-world keeps. |
+| [L5 Selection space (classic)](#l5-selection-space-classic) | 10 | Conventions of the classic selection space that selection-world keeps. |
 | [L6 Program organization](#l6-program-organization) | 10 | Library conventions for naming, files, flags and constants. |
 | [L7 World state](#l7-world-state) | 25 | The world representation every agent-world program shares: ^world, objects and relations. |
 | [L8 Desireds](#l8-desireds) | 24 | How goals are represented as desireds, and the library's bookkeeping for them. |
-| [L9 Operators](#l9-operators) | 26 | Task, composite and non-task operators. |
+| [L9 Operators](#l9-operators) | 27 | Task, composite and non-task operators. |
 | [L10 Application and output](#l10-application-and-output) | 11 | Internal and external operator application, output commands and events. |
 | [L11 Learning](#l11-learning) | 6 | Chunking conventions for agent-world programs. |
 | [L12 Scene and attention](#l12-scene-and-attention) | 4 | Holds when attention (attend/remove) over the scene is in use. |
 | [L13 Grounding](#l13-grounding) | 14 | Holds when grounding (object-world) is in use. |
 | [L14 Selection space](#l14-selection-space) | 67 | Holds when the selection-world selection space is in use. |
-| [L15 Substates, search and look-ahead](#l15-substates-search-and-look-ahead) | 24 | Substates and search control in general, and look-ahead with its cost when in use. |
+| [L15 Substates, search and look-ahead](#l15-substates-search-and-look-ahead) | 26 | Substates and search control in general, and look-ahead with its cost when in use. |
 | [L16 Iterative deepening](#l16-iterative-deepening) | 43 | Holds when the iterative-deepening strategy is in use. |
 | [L17 MEA operator subgoaling](#l17-mea-operator-subgoaling) | 4 | Holds when means-ends (MEA) operator subgoaling is in use. |
 | [L18 Time and future events](#l18-time-and-future-events) | 13 | Holds when time, future events or idle waiting are in use. |
@@ -2029,17 +2029,18 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 3, 4.2 Chase Operator Application; Tutorial Part 3, 5.1 Record-sound Operator
 
-**L3-021** (Requirement, formerly STA-025) — To remember the previous operator, an application rule copies what later rules need (its name and the parameters that identify it, e.g. ^name pour ^fill-jug <fj> ^empty-jug <ej>) into a state structure ^last-operator, rather than keeping a pointer to the operator identifier. Maintenance is L4-005; uses are L3-047.
+**L3-021** (Requirement, formerly STA-025) — To remember the previous operator, an application rule records what later rules need (its name and the handles of its arguments, e.g. ^name pour ^argument1 jug3 ^argument2 jug5) on an anchored memory object in the world, rather than on the state or as a pointer to the operator identifier. Look-ahead copies it with the world, so every look-ahead state sees the operator applied just before it on its own path. No rule of the problem itself (achievement, legality, the goal) reads it, and repeated-state tests (L14-068) ignore it. Maintenance is L4-005; uses are L3-047 and L3-048.
 
-*Rationale:* The selected operator and its substructure go away once its proposal retracts, so a pointer to it ends up empty. The parameters are needed to tell what the operator did, not just its name.
+*Rationale:* The selected operator and its substructure go away once its proposal retracts, so a pointer to it ends up empty. The parameters are needed to tell what the operator did, not just its name; handles, because each look-ahead copy gives the objects new identifiers. Look-ahead copies the world, not the state: a record on the state is not seen by the first operator of each look-ahead, nor in nested look-ahead.
 
-*If violated:* Record vanishes or becomes empty; an undo cannot be identified from the name alone
+*If violated:* Record vanishes or becomes empty; an undo cannot be identified from the name alone; on the state, look-ahead does not see the operator applied just before it
 
 *Example:*
 
 ```
-(<s> ^last-operator <lo>)
-(<lo> ^name pour ^fill-jug <fj> ^empty-jug <ej>)
+(<objs> ^object <m>)
+(<m> ^object-handle memory ^anchored true ^type memory ^last-operator <lo>)
+(<lo> ^name pour ^argument1 jug3 ^argument2 jug5)
 ```
 
 *Source:* Tutorial Part 1, 1.4.11 Search Control
@@ -2149,11 +2150,13 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 2, 2.3.1 Operator Selection: Multiple Instances
 
-**L3-030** (Requirement, formerly OPR-016) — A parameter that ranges over a small set of constants (for example move 1 or 2 missionaries) gets one proposal rule per value, with the value as a constant on the operator; application rules read it from the operator.
+**L3-030** (Requirement, formerly OPR-016) — A parameter that ranges over a small set of constants (for example move 1 or 2 missionaries) gets one proposal rule per value, with the value as a constant on the operator; application rules read it from the operator. Related: L3-075: the application rules then test every parameter, zero values included.
 
 *Rationale:* Operator instances are distinguishable for preferences, chunking and RL.
 
 *If violated:* Instances indistinguishable
+
+*See:* related L3-075
 
 *Source:* Missionaries & Cannibals family (agentgen, 6 Nov 2026)
 
@@ -2256,7 +2259,7 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Tutorial Part 1, 1.4.1. Water Jug; Tutorial Part 1, 1.4.7 Water Jug Operator Proposals
 
-**L3-039** (Requirement, formerly PRO-019) — Add an indifferent preference (+ =) to proposals only when the order in which the competing operators are chosen does not matter, for example when the operators are monotonic (each only adds to the state and none blocks or undoes another, so every order reaches the same result); not as a default way to avoid ties. Agents converted to RL leave it out (L3-083).
+**L3-039** (Requirement, formerly PRO-019) — Add an indifferent preference (+ =) to proposals only when the order in which the competing operators are chosen does not matter, for example when the operators are monotonic (each only adds to the state and none blocks or undoes another, so every order reaches the same result); not as a default way to avoid ties. Agents converted to RL leave it out (L3-083). Monotonic operators (L15-027) are such a case; the library makes them indifferent.
 
 *Rationale:* Indifference asserts knowledge that the options are equivalent; ties are the signal that more problem solving (e.g. look-ahead) is needed.
 
@@ -2267,6 +2270,8 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 ```
 (<s> ^operator <o> + =)
 ```
+
+*See:* related L15-027
 
 *Source:* Tutorial Part 5, 1. The Water Jug Problem; Tutorial Part 1, 1.4.7 Water Jug Operator Proposals; Tutorial Part 2, 2.4 Move-To-Food Operator
 
@@ -2342,7 +2347,7 @@ sp {elaborate*shields-on (state <s> ^operator.actions <a> ^io.input-link <il>) (
 
 *Source:* Tutorial Part 2, 2.7.4 Advanced Move Operator Selection; Tutorial Part 2, 2.6.4 Summary of Preferences
 
-**L3-047** (Requirement, formerly EVA-019) — Use a worst preference to avoid immediately undoing the previous operator (matching the proposed operator against ^last-operator, L3-021).
+**L3-047** (Requirement, formerly EVA-019) — Use a worst preference to avoid immediately undoing the previous operator (matching the proposed operator against the ^last-operator record on the world's memory object, L3-021).
 
 *Rationale:* A cheap heuristic that shortens undirected search.
 
@@ -2356,7 +2361,7 @@ sp {elaborate*shields-on (state <s> ^operator.actions <a> ^io.input-link <il>) (
 
 *Source:* Tutorial Part 1, 1.4.11 Search Control; Tutorial Part 4, 9. Search Control: Undoing the Last Operator
 
-**L3-048** (Requirement, formerly EVA-021) — In look-ahead, reject an operator that undoes the previous operator (matching the proposed operator against ^last-operator, L3-021).
+**L3-048** (Requirement, formerly EVA-021) — In look-ahead, reject an operator that undoes the previous operator (matching the proposed operator against the ^last-operator record on the world's memory object, L3-021).
 
 *Rationale:* An operator that undoes the previous one returns to the previous state, so evaluating it adds nothing; a reject removes it from the look-ahead search.
 
@@ -2508,13 +2513,15 @@ sp {water-jug*monitor*operator-application*fill (state <s> ^name water-jug ^oper
 
 ### Rule: results
 
-**L3-062** (Requirement, formerly RES-011) — A rule on the path to a result should not test the absence of local substate structure: the negation is dropped from the chunk or justification, which is then over-general (L0-091). Remedies: hold the tested data in the superstate, make it a result, or set chunk allow-local-negations off to reject such chunks.
+**L3-062** (Requirement, formerly RES-011) — A rule on the path to a result should not test the absence of local substate structure: the negation is dropped from the chunk or justification, which is then over-general (L0-091). Remedies: hold the tested data in the superstate, make it a result, or set chunk allow-local-negations off to reject such chunks. A result that depends on a rule not firing is the same case: an effect skipped for a zero parameter, or a depth-exceeded evaluation that rests on there being no failure or success. Remedies: a rule that tests the value (L3-075), or a ^quiescence t test on the rule that reports the result, so that no chunk is built (L0-094). A result that depends on a selection having been the only option is another such absence; the task makes the forced choice explicit with a count (L9-028).
 
 *Rationale:* Only negated conditions on superstate WMEs are carried into justifications.
 
 *If violated:* Over-general justification or chunk.
 
 *Example:* -(<s> ^tried <x>) # local negation, dropped
+
+*See:* related L3-075; L0-094; L16-043
 
 *Source:* Manual §2.7.4, p.32; §4.5.2.1, p.104; §4.6.10, p.112; Manual §4 (EBC: local negations)
 
@@ -2666,19 +2673,21 @@ sp {water-jug*monitor*operator-application*fill (state <s> ^name water-jug ^oper
 
 *Source:* Tutorial Part 5, 1.4.5 Chunking
 
-**L3-075** (Requirement, formerly CHK-021) — Application rules test every operator attribute that distinguishes one operator instance from another, so that chunks learned from evaluations include those distinctions.
+**L3-075** (Requirement, formerly CHK-021) — Application rules test every operator attribute that distinguishes one operator instance from another, including attributes whose value leaves the world unchanged (0, none, false). Apply a multi-part effect with one rule that tests all the parts and applies each, even when a part changes nothing (adding 0), not with one rule per part guarded by a test that the part is nonzero ({<n> > 0}): a part that fires no rule is tested by nothing, so chunks learned from evaluations omit it.
 
-*Rationale:* Chunking picks up only what the rules tested; untested distinguishing features yield overgeneral rejections.
+*Rationale:* Chunking picks up only what the rules tested; untested distinguishing features yield overgeneral rejections. An effect that comes from a rule not firing is an absence, which chunking drops as it drops local negations (L3-062). gen3 missionaries-cannibals, 22 Nov 2026: the failure chunk for 'row 1 cannibal' carried no test of the missionary load and rejected 'row 1 missionary and 1 cannibal', which had never been evaluated; with one rule applying both loads the agent solves with chunk always in 418-443 decisions (11 moves).
 
 *If violated:* Overgeneral chunk rejects an operator on the solution path
 
 *Example:*
 
 ```
-(<o> ^name move-mac-boat ^{ << missionaries cannibals boat >> <type> } <num> ^bank <bank> ^types <types>)
+sp {missionaries-cannibals*apply*move-boat*people (state <s> ^operator <o> ^world.objects.object <from> <to>) (<o> ^name move-boat ^argument1.object-handle <fh> ^argument2.object-handle <th> ^missionaries <nm> ^cannibals <nc>) (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>) (<to> ^object-handle <th> ^missionaries <tm> ^cannibals <tc>) --> (<from> ^missionaries <fm> - (- <fm> <nm>) ^cannibals <fc> - (- <fc> <nc>)) (<to> ^missionaries <tm> - (+ <tm> <nm>) ^cannibals <tc> - (+ <tc> <nc>))}. Not: one rule matching ^{<< missionaries cannibals >> <type>} {<n> > 0}, which tests nothing when a load is 0.
 ```
 
-*Source:* Tutorial Part 5, 2.2 Subtle chunking problem
+*See:* related L3-062; L3-030
+
+*Source:* Tutorial Part 5, 2.2 Subtle chunking problem; gen3 experiment (22 Nov 2026)
 
 **L3-076** (Requirement, formerly CHK-022) — With chunking, exact evaluations (success, failure) are preferred to heuristic numeric evaluations that are only partly correct: a chunk captures the heuristic's errors too.
 
@@ -3030,11 +3039,11 @@ Conventions set by the default rules of soar-base (loaded with the shared librar
 
 ### Rule: operator evaluation/selection
 
-**L4-005** (Choice, formerly EVA-012) — ^last-operator is not always maintained; this applies if an agent uses it. It is used most often to avoid undoing the last operator in look-ahead (L3-047, L3-048). When it is used, it is maintained by one application rule that, whenever an operator is applied, adds the new record and removes the previous one (L2-010), and is initialized (for example by the init-<task-name> operator) with an empty ^last-operator so that rules testing it match from the first decision.
+**L4-005** (Choice, formerly EVA-012) — ^last-operator is not always maintained; this applies if an agent uses it. It is used most often to avoid undoing the last operator (L3-047, L3-048). When it is used, the memory object of L3-021 is created with the world and holds a record with ^name none, so that rules testing it match from the first decision (L3-035). One application rule per way an operator is applied replaces the record whenever an operator is applied (L2-010): the internal application (look-ahead, or a task with ^environment none) and the external one (when the environment reports the action complete).
 
-*Rationale:* Without removal the state accumulates several records and comparisons match stale ones; without initialization rules that test it cannot match on the first decision.
+*Rationale:* Without removal the memory object accumulates several records and comparisons match stale ones; without initialization rules that test it cannot match on the first decision. Each copied look-ahead world updates its own copy of the record.
 
-*If violated:* Several ^last-operator values at once; rules that test it do not fire at the start
+*If violated:* Several ^last-operator values at once; rules that test it do not fire at the start; the real world's record is not updated when an action is applied by the environment
 
 *See:* related L3-021; L3-047; L3-048
 
@@ -3132,9 +3141,9 @@ Conventions of the classic selection space that selection-world keeps.
 
 ### Goal/desired representation
 
-**L5-008** (Requirement, formerly GOL-002) — A state signals achievement of its goal with an elaboration (<s> ^success <ds>), or ^required-success or ^partial-success, where <ds> is the state's ^desireds. It signals failure with ^failure, ^partial-failure or ^prohibit-failure <ds>. In look-ahead these replace halting. L14-027 lists every evaluation value.
+**L5-008** (Requirement, formerly GOL-002) — A state signals achievement of its goal with an elaboration (<s> ^success <ds>), or ^required-success or ^partial-success, where <ds> is the state's ^desireds. It signals failure with ^failure, ^partial-failure or ^prohibit-failure <ds>. In look-ahead these replace halting. L14-027 lists every evaluation value. The rules that recognize success, failure or a repeated state in look-ahead lie on the path to every evaluation chunk, so they test only positive structure (L3-100). A goal or dead end stated as 'every X is Y' or 'no X has Y' (all tiles in place, a cell with no candidate) is a maintained count, updated by the operator applications that change it and tested as a value (^tiles-in-place 8, ^cand-count 0), not a negated condition or negated conjunction.
 
-*Rationale:* The library turns these state attributes into evaluations and preferences.
+*Rationale:* The library turns these state attributes into evaluations and preferences. gen3 experiment, 22-23 Nov 2026: three writers broke this (kenken failure as ^value 0 -^cand; eight-puzzle 'tray solved' as a negated conjunction; Tower of Hanoi repeated state as a negated conjunction); under chunk only each learned an over-general chunk and reached the decision cap (kenken: the failure chunk tested only 'some cell has value 0' and rejected every assign).
 
 *If violated:* Look-ahead never sees success
 
@@ -3143,6 +3152,8 @@ Conventions of the classic selection space that selection-world keeps.
 ```
 (state <s> ^desired <d> ...) --> (<s> ^success <d>)
 ```
+
+*See:* related L3-100; L3-062; L14-068; L9-028
 
 *Source:* Default selection: selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal; Tutorial Part 5, 1.4.4 Evaluating the result; Tutorial Part 5, 2.1.3 Modify goal detection; Tutorial Part 5, 2.1.4 Modify failure detection
 
@@ -3232,11 +3243,11 @@ Conventions of the classic selection space that selection-world keeps.
 
 ### Learning: chunking
 
-**L5-021** (Choice, formerly SET-016) — When look-ahead results are to be learned, chunking is enabled explicitly: chunk always, chunk only with force-learn on the selection states, or chunk all-except with dont-learn on the states that must not learn.
+**L5-021** (Choice, formerly SET-016) — Learning from look-ahead is the default: the library sets chunk only (soar-base/settings/agent-world-settings.soar, library v2.46), so selection and evaluation results are chunked (force-learn, L14-046) and other substates (operator no-change subgoals, means-ends subgoaling) are not. A task turns learning off only for a stated reason, with chunk never in its own files and a comment giving the reason; a task that should also learn in other substates sets chunk always, or chunk all-except with dont-learn on the states that must not learn. add-osk stays on (L5-022). Rules on the path to look-ahead chunks follow the chunk-safety rows (L3-062, L3-075, L3-100, L5-008, L14-068); the library keeps depth-exceeded results out of chunks (L16-043). An agent generated from English gets the setting from its English statement: a line 'Learning: do not learn from look-ahead. <reason>' (before any Search control section) is turned into chunk never and the reason by the generators (Rosie: tools/learning.py; WorldSpec: Task.learning, both paths A and B; English world agents: gen.py), so the setting reaches the Soar agent through the same path as the task.
 
-*Rationale:* Without chunking each result is used only locally and forgotten.
+*Rationale:* Learning what look-ahead found avoids repeating the search, within the episode and in later ones. gen3 agents written without chunking, after the chunk-safety fixes, chunk only vs none (decisions in episode 1, seeds 1-3; 22-23 Nov 2026): missionaries-cannibals 418-443 vs 4,999-6,476; eight-puzzle 603-727 vs 911-1,213; Tower of Hanoi 213-224 vs 333-374; blocks-world 29-120 vs 76-283; water-jug 183-338 vs 420-528; episode 2 7-130. chunk only gave the same results as chunk always for these agents (their only substates are selection and evaluation) and keeps learning out of task substates where results may rest on local reasoning. Before the chunk-safety fixes, chunking broke five of nine of these agents, so the default depends on those rows. (JL, 23 Nov 2026: the default lives in the library.)
 
-*If violated:* Excessive decisions; repeated search
+*If violated:* Without the default, generated agents repeat every look-ahead search (several times more decisions) and nothing carries over to later episodes; with learning on but rules that are not chunk-safe, over-general chunks reject correct moves (gen3 missionaries-cannibals, kenken, eight-puzzle, Tower of Hanoi before their fixes).
 
 *Example:*
 
@@ -3246,7 +3257,30 @@ chunk always
 # or: chunk all-except, with dont-learn on the other states
 ```
 
+*See:* related L5-022; L14-046; L3-062; L3-075; L3-100; L5-008; L14-068; L16-043
+
 *Source:* Tutorial Part 5, 1.4.5 Chunking
+
+**L5-022** (Requirement, status: Accepted) — Whenever chunking is enabled (chunk always, chunk only or chunk all-except), chunk add-osk is on. The library sets it in its settings (soar-base/settings/agent-world-settings.soar), so tasks need not; a task never turns it off. The library also sets chunk only as the default mode (L5-021).
+
+*Rationale:* With add-osk off, a chunk learned from a substate leaves out the operator selection knowledge (the search-control preferences) that chose the substate operators leading to the result (L0-097). The chunk then fires where those preferences do not hold and is over-general. The setting has no effect while chunking is off, so the library can set it for every agent.
+
+*If violated:* Over-general chunks from look-ahead and from means-ends subgoals.
+
+*Example:*
+
+```
+# set by the library (soar-base/settings/agent-world-settings.soar):
+chunk add-osk on
+```
+
+*Task supplies:* nothing (the library sets it)
+
+*Library rules:* soar-base/settings/agent-world-settings.soar: chunk add-osk on
+
+*See:* related L0-097; L5-021
+
+*Source:* JL decision, 22 Nov 2026 (gen3 experiment: agents written from English task statements); library v2.46 candidate
 
 ## L6 Program organization
 
@@ -3963,7 +3997,7 @@ Task, composite and non-task operators.
 
 ### Task operators
 
-**L9-001** (Requirement, formerly W-TOP-001) — Every operator has ^task-operator true or ^task-operator false. Task operators (those that change the task situation and that look-ahead compares) have true; initialization and other internal operators have false. A few library operators carry neither (L13-002).
+**L9-001** (Requirement, formerly W-TOP-001) — Every operator has ^task-operator true or ^task-operator false. Task operators (those that change the task situation and that look-ahead compares) have true; initialization and other internal operators have false. A few library operators carry neither (L13-002). Operators whose effect follows from the current state are task operators marked ^monotonic true (L15-027), not non-task operators.
 
 *Rationale:* Library search control prefers non-task operators over task operators and look-ahead treats task operators specially.
 
@@ -3973,7 +4007,7 @@ Task, composite and non-task operators.
 
 *Library rules:* agent-world*compare*task-operator-non-task-operator
 
-*See:* related L9-023 (overlap)
+*See:* related L9-023 (overlap); L15-027
 
 *Source:* agent-world/elaborations/search-control.soar:agent-world*compare*task-operator-non-task-operator; initialize-agent-world.soar
 
@@ -4167,6 +4201,18 @@ sp {apply*clean-object*internal (state <s> ^operator <o> ^internal-actions true)
 
 *Source:* KenKen world version, 20 Nov 2026 (Soar – To-do row 5)
 
+**L9-028** (Requirement, status: Adopted) — When a task maintains the number of options for a choice (a cell's candidates, a unit's places for a digit), the proposal for the case where exactly one option remains tests that count (^cand-count 1), and the proposal for the general case tests the count above one (^cand-count > 1). A result reached through a forced selection, such as a failure in look-ahead, then carries the test in its chunk.
+
+*Rationale:* Soar selects the only acceptable operator without an impasse. A chunk built through that selection includes the proposal and application rules of the forced operator but not that no other operator was proposed: that is an absence in the look-ahead state, which no rule tests and chunking cannot capture (L3-062), and it cannot be fixed in the architecture for the same reason. Results that summarize all alternatives (failure, best or lowest-cost values) are then over-general; success and depth-exceeded are not affected. gen3 KenKen, 23 Nov 2026: a failure chunk for assigning C13 tested that the next cell C14 had candidate c1, not that c1 was its only candidate, and rejected C13 where C14 had others.
+
+*If violated:* Failure chunks learned through a forced choice reject operators in states where the choice is not forced; the agent can reject every option and stall.
+
+*Example:* KenKen: kenken*propose*assign*forced tests (<c> ^value 0 ^cand-count 1 ^cand <v>), marked ^monotonic true; kenken*propose*assign*guess tests (<c> ^value 0 ^cand-count > 1 ^cand <v>).
+
+*See:* related L5-008; L3-062; L3-100; L9-027; L15-027
+
+*Source:* gen3 chunking review, 23 Nov 2026 (JL: task convention; a library or architecture fix would itself test a local negation)
+
 ### Composite operators
 
 **L9-016** (Requirement, formerly W-COP-001) — A simple composite task operator (sCTO) is a proposal only: its ^desireds preconditions are achieved by other operators through means-ends subgoaling. It has no output action and no internal application rule.
@@ -4249,7 +4295,7 @@ sp {apply*clean-object*internal (state <s> ^operator <o> ^internal-actions true)
 
 ### Non-task operators
 
-**L9-023** (Requirement, formerly W-NOP-001) — An internal (non-task) operator performs internal reasoning only, issues no output command, and has ^task-operator false. Examples: initialize-<task>, next-desireds, attend-object.
+**L9-023** (Requirement, formerly W-NOP-001) — An internal (non-task) operator performs internal reasoning only, issues no output command, and has ^task-operator false. Examples: initialize-<task>, next-desireds, attend-object. Monotonic inference operators that change the world (e.g. candidate elimination) are not internal operators: they are task operators marked ^monotonic true (L15-027).
 
 *Rationale:* Internal bookkeeping operators are preferred over task operators.
 
@@ -4257,7 +4303,7 @@ sp {apply*clean-object*internal (state <s> ^operator <o> ^internal-actions true)
 
 *Library rules:* agent-world*compare*task-operator-non-task-operator
 
-*See:* related L9-001; L15-001
+*See:* related L9-001; L15-001; L15-027
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Non-Task Operators"; agent-world/search-control.soar
 
@@ -5199,7 +5245,7 @@ Holds when the selection-world selection space is in use.
 
 *Task supplies:* Flag overrides (^flag-override) when a reason applies
 
-*See:* related L16-033; L14-049 to L14-056
+*See:* related L16-033; L14-049 to L14-056; L15-026
 
 *Source:* selection-world/_flags.soar; selection-world/strategies/iterative-deepening/_flags.soar; agent-world/_flags.soar
 
@@ -5223,13 +5269,15 @@ Holds when the selection-world selection space is in use.
 
 *Source:* selection-world/_flags.soar; selection-world/strategies/iterative-deepening/_flags.soar; agent-world/_flags.soar
 
-**L14-051** (Choice, capacity: selection-world) — Set ^iterative-step tie-impasse for means-ends tasks (^flags.mea-operator-selection true), especially when few operators achieve each desired: most steps are forced and the depth bound should count only choices. Keep operator (the default) for forward search, where most steps are choices. Use cost when step costs vary widely: it deepens by a cost cap and sets cost-metric unit when no metric is given.
+**L14-051** (Choice, capacity: selection-world) — Keep ^iterative-step operator (the default), for means-ends tasks (^flags.mea-operator-selection true) as well as forward search. Use tie-impasse only for an agent whose look-ahead passes through long chains of forced steps (one candidate operator) between choices, and only after running both settings. Use cost when step costs vary widely: it deepens by a cost cap and sets cost-metric unit when no metric is given.
 
-*Rationale:* Counting forced steps makes iterative deepening spend iterations on long forced chains; counting ties keeps the bound small. tie-impasse is also the setting under which chunking gave optimal solutions.
+*Rationale:* Counting only ties keeps the depth bound small, but a branch can then run a long string of forced steps before it reaches the bound, which usually costs more than the shallower iterations save. In runs on 22 Nov 2026 (24 agents, seeds 1-3, cap 20,000, library v2.45) tie-impasse helped one agent (kenken-4-5, written for it: 148/149/139 decisions, against fail/fail/341 with operator) and made five worse: two means-ends agents (gen3 conventions and examples-SC-1 Towers of Hanoi, from about 350 and 1,400 decisions to failure on 3 and 2 of 3 seeds) and three forward-search agents (mac-look-ahead, water-jug-look-ahead, water-jug-look-ahead-failure-states); the other 17 were unchanged. The chunking results of L11-004 (optimal solutions) were measured under tie-impasse.
+
+*If violated:* Tie-impasse where most steps are choices or the forced chains are short: deeper branches per iteration and failures at the decision cap (gen3 Towers of Hanoi, water-jug-look-ahead).
 
 *Task supplies:* Flag overrides (^flag-override) when a reason applies
 
-*See:* related L16-003; L16-038; L11-004; to-do: conventions for choosing MEA or forward search
+*See:* related L16-003; L16-038; L11-004; L15-025; to-do: conventions for choosing MEA or forward search; to-do: family conversion sets ^mea-operator-selection on every agent
 
 *Source:* selection-world/_flags.soar; selection-world/strategies/iterative-deepening/_flags.soar; agent-world/_flags.soar
 
@@ -5313,9 +5361,9 @@ Holds when the selection-world selection space is in use.
 
 *Source:* selection-world/_firstload.soar
 
-**L14-068** (Requirement, capacity: selection-world) — A task rule that detects a repeated state compares the look-ahead world with ^ancestor-world and does not test ^quiescence t. The library elaborates ^ancestor-world on every state below the task state, including selection states, so a chunk built over the comparison keeps the test on the ancestor world.
+**L14-068** (Requirement, capacity: selection-world) — A task rule that detects a repeated state compares the look-ahead world with ^ancestor-world and does not test ^quiescence t. The library elaborates ^ancestor-world on every state below the task state, including selection states, so a chunk built over the comparison keeps the test on the ancestor world. The comparison leaves out the memory object of L3-021 (the record of the previous operator), so the same position reached by different last moves is recognized as a repeat. The comparison is positive: each object's position in the look-ahead world is matched to the same position in the ancestor world, one condition per object (generated from the object list). It is never a negated conjunction ('no relation here is missing from the ancestor'), which chunking drops (L0-091).
 
-*Rationale:* Testing ^quiescence t would block every chunk whose backtrace reaches the duplicate test (with add-osk on, also chunks whose selection depended on a rejected duplicate). In mac-look-ahead this made the first episode about ten times slower (726 to 7,000-9,900 decisions) and slowed transfer, with no over-general chunk to prevent.
+*Rationale:* Testing ^quiescence t would block every chunk whose backtrace reaches the duplicate test (with add-osk on, also chunks whose selection depended on a rejected duplicate). In mac-look-ahead this made the first episode about ten times slower (726 to 7,000-9,900 decisions) and slowed transfer, with no over-general chunk to prevent. gen3 Tower of Hanoi (3 disks), 23 Nov 2026: the negated-conjunction comparison reached the cap under chunk only; with one positive condition per disk it solves in 213-224 decisions (333-374 without chunking), 105-119 in episode 2.
 
 *If violated:* chunks that keep the ancestor test are lost; look-ahead repeats search
 
@@ -5329,7 +5377,7 @@ Holds when the selection-world selection space is in use.
 
 *Library rules:* None
 
-*See:* related L14-040; L14-045
+*See:* related L14-040; L14-045; L3-100; L5-008
 
 *Source:* JEL, 21 Nov 2026 (to-do row 6); agentgen Family/Task.lean ancestorProds; mac-look-ahead and water-jug look-ahead variants
 
@@ -5339,13 +5387,13 @@ Substates and search control in general, and look-ahead with its cost when in us
 
 ### Search control
 
-**L15-001** (Library definition, formerly W-SCT-004) — When an operator with ^task-operator false and one with ^task-operator true are both proposed, the library makes the first better than the second.
+**L15-001** (Library definition, formerly W-SCT-004) — When an operator with ^task-operator false and one with ^task-operator true are both proposed, the library makes the first better than the second. Among task operators, the library also prefers those marked ^monotonic true over the others (L15-027).
 
 *Rationale:* Internal bookkeeping (grounding, init, desireds management) runs before world actions.
 
 *Library rules:* agent-world*compare*task-operator-non-task-operator
 
-*See:* related L9-023 (overlap)
+*See:* related L9-023 (overlap); L15-027
 
 *Source:* agent-world/elaborations/search-control.soar:agent-world*compare*task-operator-non-task-operator
 
@@ -5377,7 +5425,7 @@ Substates and search control in general, and look-ahead with its cost when in us
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Constants" desired-ordering; agent-world/elaborations/search-control.soar (selection-value and gps rules)
 
-**L15-024** (Choice) — When the task description gives knowledge of the order in which desireds should be achieved, the task supplies it: a fixed order by relation or property as ^constants.desired-orderings (L15-004; GPS's table of connections), and situation-dependent preferences as ^preferred-desired, ^avoid-desired, ^preferred-indifferent or ^super-preferred-desired on the desireds structure (L15-002). Without such knowledge the task supplies none and look-ahead decides.
+**L15-024** (Choice) — When the task description gives knowledge of the order in which desireds should be achieved, the task supplies it (the order comes from the task statement or from its search-control section, kind desired-order; the generator does not invent it): a fixed order by relation or property as ^constants.desired-orderings (L15-004; GPS's table of connections), and situation-dependent preferences as ^preferred-desired, ^avoid-desired, ^preferred-indifferent or ^super-preferred-desired on the desireds structure (L15-002). Without such knowledge the task supplies none and look-ahead decides. The desired preferences act on operators with ^super-desired, so they take effect only with means-ends selection (L15-025, L9-003).
 
 *Rationale:* Ordering knowledge removes search; the library uses it whenever it is present. Typical cases: some desireds must hold before others can be achieved, or achieving one undoes another (blocks world bottom-up, Towers of Hanoi largest disk first).
 
@@ -5387,15 +5435,62 @@ Substates and search control in general, and look-ahead with its cost when in us
 
 *See:* related L15-002; L15-004; L9-003 (needs ^super-desired, so in practice MEA proposals)
 
-**L15-025** (Choice) — Set ^mea-operator-selection true (through ^flag-override) when the task's operators can be indexed by the desireds they achieve: each operator's effects name the relation or property a desired asks for, so only operators relevant to an unachieved desired are proposed (L9-009) and unmet preconditions become subgoals (L3-041). Leave it false (forward search) when effects cannot be tied to desireds (every move changes many features, as in the eight puzzle) or when desireds interact so strongly that working on one undoes another. With it true, set ^iterative-step tie-impasse (L14-051). The library gives the flag no default; absent means false.
+**L15-025** (Choice) — Set ^mea-operator-selection true (through ^flag-override) when the task's operators can be indexed by the desireds they achieve: each operator's effects name the relation or property a desired asks for, so only operators relevant to an unachieved desired are proposed (L9-009) and unmet preconditions become subgoals (L3-041). Leave it false (forward search) when effects cannot be tied to desireds (every move changes many features, as in the eight puzzle), or when desireds interact (achieving one undoes another) and no order for them is known. When desireds interact but an order is known (L15-024, e.g. blocks world bottom-up, Towers of Hanoi largest disk first), set it true and supply the order: the order removes the interaction, and look-ahead remains only for the ties the order leaves. The depth step stays at its default (L14-051). The library gives the flag no default; absent means false.
 
 *Rationale:* Means-ends proposals cut the operators considered to those that reduce a difference; forward search is needed when differences do not identify operators.
 
-*If violated:* Too many proposals and deep look-ahead (MEA off when it fits), or no relevant operator proposed (MEA on when effects do not match desireds).
+*If violated:* Too many proposals and deep look-ahead (MEA off when it fits), or no relevant operator proposed (MEA on when effects do not match desireds).; or forward search where a known order would remove the interaction (gen3 blocks world: 196 decisions instead of 5)
 
 *Task supplies:* ^flag-override.mea-operator-selection
 
 *See:* related L3-041; L9-003; L9-009; L14-051; L16-038; to-do: conventions for choosing MEA or forward search
+
+**L15-026** (Choice, status: Accepted) — When the task's search control gives a measure of progress for one step, its default use is to order which tied operators the selection space evaluates first. The task marks a proposed operator ^evaluate-first true (promising) or ^evaluate-last true (unpromising); the library turns the marks into best and worst preferences among the evaluate-operator choices. This changes only how soon a solution is found, so it applies whether or not the task asks for the shortest or cheapest solution. Using the measure to choose the real operator, or as a ^numeric-value that ends a look-ahead, is allowed only when the task does not ask for the shortest or cheapest solution. The measure comes from the task's search-control section, not from the generator.
+
+*Rationale:* Iterative deepening completes every tied operator at one depth before going deeper, so evaluation order changes when a solution is found, not how long it is. Evaluating promising operators first finds it sooner. Choosing the real operator by the measure, or ending look-ahead with it, can give a longer plan.
+
+*If violated:* Search in arbitrary order (eight-puzzle 1,100 decisions instead of 470; missionaries-cannibals 5,532 instead of 1,468); or, when the measure picks the real operator, a longer plan than required (eight-puzzle 9 moves instead of 5)
+
+*Example:*
+
+```
+sp {eight-puzzle*elaborate*move-tile*evaluate-first
+   (state <s> ^name eight-puzzle ^operator <o> + ^external-top-state.desireds.arrangement <a>)
+   (<o> ^name move-tile ^argument1.object-handle <th> ^argument2.object-handle <ch>)
+   (<a> ^place <p>)
+   (<p> ^tile <th> ^cell <ch>)
+-->
+   (<o> ^evaluate-first true)}
+```
+
+*Task supplies:* ^evaluate-first / ^evaluate-last marks on proposed operators, from its search-control items
+
+*Library rules:* selection-world*compare*selection*evaluate-operator*evaluate-first, *evaluate-last (v2.46)
+
+*See:* related L15-023; L15-024; L14-048; L5-013
+
+*Source:* JL decision, 22 Nov 2026; gen3 experiments (eight-puzzle, missionaries-cannibals)
+
+**L15-027** (Requirement, status: Accepted) — An operator is monotonic when its effect follows from the current state, so it adds information and never needs to be undone or compared with alternatives: removing a candidate a constraint rules out, or making the assignment when only one value remains. All other task operators are non-monotonic: they make a choice (such as guessing a value) or an irreversible change. The task marks monotonic operators ^monotonic true (they remain task operators, ^task-operator true, L9-001); the library prefers them over non-monotonic operators and makes them indifferent among themselves, because their order does not change the result. So a guess, and the look-ahead it brings, comes only when no monotonic operator applies. For constraint satisfaction problems (KenKen, sudoku variants, logic grids), the task supplies a monotonic operator for every kind of constraint it can propagate.
+
+*Rationale:* Inference is cheaper than search; every inference applied before a guess shrinks the ties look-ahead has to resolve. Marking (rather than ^task-operator false) keeps such operators task operators: they change the world, and look-ahead copies their effects.
+
+*If violated:* Look-ahead resolves choices that inference would settle (gen3 KenKen: eliminate as an unmarked task operator, cap 20,000 / 1,077 / 1,662 decisions; marked monotonic, 281 / 285 / 279); with too few kinds of monotonic operator, more guessing (282 decisions and 18 look-aheads against 50 and none)
+
+*Example:*
+
+```
+(<s> ^operator <o> +)
+(<o> ^name eliminate ^task-operator true ^monotonic true ^argument1 <cell> ^argument2 3)
+```
+
+*Task supplies:* ^monotonic true on its monotonic operators, and one such operator for each kind of constraint it can propagate
+
+*Library rules:* agent-world*compare*monotonic-non-monotonic, agent-world*compare*monotonic*indifferent (v2.46)
+
+*See:* related L9-001; L9-023; L15-001; L3-039; L15-026
+
+*Source:* JL decision, 22 Nov 2026; gen3 KenKen agents
 
 ### Substates (general)
 
@@ -5574,6 +5669,8 @@ Substates and search control in general, and look-ahead with its cost when in us
 *Task supplies:* yes
 
 *Library rules:* agent-world/elaborations/cost.soar:agent-world*elaborate*desireds*better*lower*cost-metric
+
+*See:* related L15-026
 
 *Source:* agent-world/elaborations/cost.soar; soar-library CHANGES.md (cost metric, v2.2x); World-Conventions-Spec-v6 section 6
 
@@ -5839,13 +5936,13 @@ Holds when the iterative-deepening strategy is in use.
 
 ### Evaluation values
 
-**L16-043** (Library definition, capacity: iterative deepening) — Evaluation value depth-exceeded: Under iterative deepening an evaluation is depth-exceeded when its look-ahead used up the current depth (remaining depth 0: the exceed-depth operator) without reaching success or failure; under bounds it carries a lower bound or ^numeric-value for the cost so far. It is provisional: it creates no preference by itself and is left out of the indifference rules (L16-015, L16-040); success is better than it; a deeper iteration re-evaluates it; at the maximum depth achieved-max-depth makes it worst (L16-031).
+**L16-043** (Library definition, capacity: iterative deepening) — Evaluation value depth-exceeded: Under iterative deepening an evaluation is depth-exceeded when its look-ahead used up the current depth (remaining depth 0: the exceed-depth operator) without reaching success or failure; under bounds it carries a lower bound or ^numeric-value for the cost so far. It is provisional: it creates no preference by itself and is left out of the indifference rules (L16-015, L16-040); success is better than it; a deeper iteration re-evaluates it; at the maximum depth achieved-max-depth makes it worst (L16-031). Its result rules test ^quiescence t, so no chunk is learned from it (library v2.46): it holds only because the state reached is neither a failure nor a success, an absence no rule tests, and a chunk built from it fired where the same move fails (gen3 missionaries-cannibals, 22 Nov 2026; L3-062).
 
 *Rationale:* Defines when the value is produced and what it means for selection.
 
 *Library rules:* selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal*depth-exceeded and *numeric, *numeric*remaining; selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*depth-exceeded*
 
-*See:* related L14-013; L16-040; L16-031
+*See:* related L14-013; L16-040; L16-031; L3-062
 
 **L16-044** (Library definition, capacity: iterative deepening) — Evaluation value depth-exhaustion: Under iterative deepening an evaluation is depth-exhaustion when the look-ahead reaches a dead end but a sibling evaluation of the nearest tie is depth-limited (depth-exceeded or depth-exhaustion), so a deeper search may still change the outcome (initialize-failure-evaluation1, 3). (count-name-finish also sets it, but it is inactive: L16-022.) Provisional like depth-exceeded: no preference by itself, success better, worst at the maximum depth.
 

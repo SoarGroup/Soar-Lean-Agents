@@ -1,0 +1,341 @@
+## Tri-peaks solitaire (tri-peaks), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. You can move a free block onto a clear garbage.
+##   5. If a location is not below an object then it is clear.
+##   6. If a block is clear and the position of the block is absent then it is free.
+##   8. If the value of a free block is one less than the value of a top block then you can move the free block onto the top block.
+##   9. If a block is clear and the position of the block is one then it is top.
+##  10. If the value of a free block is one more than the value of a top block then you can move the free block onto the top block.
+##  15. The goal is that all blocks are trashed.
+##  16. If the position of a block is one then it is trashed.
+## World: init-tri-peaks.world (nine numbered blocks in three piles; a garbage location)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator move (argument1 = the block, argument2 = the garbage or the top block): statement 4 (a free block onto the
+##     clear garbage) and statements 8 and 10 (a free block onto the top block when its value is one less or one more).
+##   - free (statement 6: clear and no position) and top (statement 9: clear and position one) are expanded in place. The
+##     blocks start with ^position 0, read as "absent" (A-P3); a block moved onto the garbage pile gets ^position 1, so it is
+##     top while clear and trashed (statement 16). A block's position is read as that of the pile it is in: 1 when it is on the
+##     garbage or on a block that is (so the example states, which give no position to the blocks, come out as intended).
+##   - clear is a maintained one-argument relation (statement 5). A block can lie on two blocks (tri-peaks), so the block it
+##     leaves becomes clear only when no other block is on it (a negated condition in the applications; A-P4).
+##   - The goal (statement 15) is expanded over the blocks of the world file. "The solution has nine steps" (statement 11)
+##     is checked against the plans, not used.
+
+## Propose initialize-tri-peaks when its conditions below hold.
+sp {tri-peaks*propose*initialize-tri-peaks
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-tri-peaks ^task-operator false)
+}
+
+sp {tri-peaks*apply*initialize-tri-peaks
+   (state <s> ^operator.name initialize-tri-peaks ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name tri-peaks ^desireds <ds>)
+   (<objs> ^object <o-block-1> <o-block-2> <o-block-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-location-10> <o-task>)
+   (<o-block-1> ^object-handle block-1 ^anchored true ^type block ^value 2 ^position 0 ^value-plus-1 3 ^value-minus-1 1)
+   (<o-block-2> ^object-handle block-2 ^anchored true ^type block ^value 1 ^position 0 ^value-plus-1 2 ^value-minus-1 0)
+   (<o-block-3> ^object-handle block-3 ^anchored true ^type block ^value 3 ^position 0 ^value-plus-1 4 ^value-minus-1 2)
+   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^value 6 ^position 0 ^value-plus-1 7 ^value-minus-1 5)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^value 5 ^position 0 ^value-plus-1 6 ^value-minus-1 4)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^value 4 ^position 0 ^value-plus-1 5 ^value-minus-1 3)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^value 2 ^position 0 ^value-plus-1 3 ^value-minus-1 1)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^value 4 ^position 0 ^value-plus-1 5 ^value-minus-1 3)
+   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^value 5 ^position 0 ^value-plus-1 6 ^value-minus-1 4)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^name garbage ^position 1)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-block-1> ^argument2 <o-block-3>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-block-2> ^argument2 <o-block-3>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-block-4> ^argument2 <o-block-6>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-block-5> ^argument2 <o-block-6>)
+   (<w> ^on <on-4>)
+   (<on-4> ^argument1 <o-block-7> ^argument2 <o-block-9>)
+   (<w> ^on <on-5>)
+   (<on-5> ^argument1 <o-block-8> ^argument2 <o-block-9>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-block-3> ^argument2 <o-block-1>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-block-3> ^argument2 <o-block-2>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-block-6> ^argument2 <o-block-4>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-block-6> ^argument2 <o-block-5>)
+   (<w> ^below <below-4>)
+   (<below-4> ^argument1 <o-block-9> ^argument2 <o-block-7>)
+   (<w> ^below <below-5>)
+   (<below-5> ^argument1 <o-block-9> ^argument2 <o-block-8>)
+   (<w> ^clear <clear-block-1>)
+   (<clear-block-1> ^argument1 <o-block-1>)
+   (<w> ^clear <clear-block-2>)
+   (<clear-block-2> ^argument1 <o-block-2>)
+   (<w> ^clear <clear-block-4>)
+   (<clear-block-4> ^argument1 <o-block-4>)
+   (<w> ^clear <clear-block-5>)
+   (<clear-block-5> ^argument1 <o-block-5>)
+   (<w> ^clear <clear-block-7>)
+   (<clear-block-7> ^argument1 <o-block-7>)
+   (<w> ^clear <clear-block-8>)
+   (<clear-block-8> ^argument1 <o-block-8>)
+   (<w> ^clear <clear-location-10>)
+   (<clear-location-10> ^argument1 <o-location-10>)
+   (log 1 (crlf) |Initialize tri-peaks.|)
+}
+
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+sp {tri-peaks*elaborate*problem-space
+   (state <s> ^name tri-peaks)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name tri-peaks ^copy-relation below ^copy-relation clear ^dont-copy-object-attribute goal-met)
+}
+
+sp {tri-peaks*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name tri-peaks ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name tri-peaks ^dont-copy-object-attribute goal-met)
+}
+
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
+sp {tri-peaks*elaborate*flags
+   (state <s> ^superstate nil ^name tri-peaks)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {tri-peaks*elaborate*state*achieved*object-property
+   (state <s> ^problem-space.name tri-peaks ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {tri-peaks*elaborate*state*unachieved*object-property
+   (state <s> ^problem-space.name tri-peaks ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+## Propose move in problem space tri-peaks when its conditions below hold (onto garbage).
+sp {tri-peaks*propose*move*onto-garbage
+   (state <s> ^problem-space.name tri-peaks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^position 0 ^value <v> ^object-handle $ <bh>)
+   (<w> ^clear <clear-b>)
+   (<clear-b> ^argument1 <b>)
+   (<d> ^type location ^name garbage ^object-handle $ <dh>)
+   (<w> ^clear <clear-d>)
+   (<clear-d> ^argument1 <d>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+sp {tri-peaks*propose*move*onto-top*one-less
+   (state <s> ^problem-space.name tri-peaks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^position 0 ^value-plus-1 <tv> ^object-handle $ <bh>)
+   (<w> ^clear <clear-b>)
+   (<clear-b> ^argument1 <b>)
+   (<d> ^type block ^position 1 ^value <tv> ^object-handle $ <dh>)
+   (<w> ^clear <clear-d>)
+   (<clear-d> ^argument1 <d>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+sp {tri-peaks*propose*move*onto-top*one-more
+   (state <s> ^problem-space.name tri-peaks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^position 0 ^value-minus-1 <tv> ^object-handle $ <bh>)
+   (<w> ^clear <clear-b>)
+   (<clear-b> ^argument1 <b>)
+   (<d> ^type block ^position 1 ^value <tv> ^object-handle $ <dh>)
+   (<w> ^clear <clear-d>)
+   (<clear-d> ^argument1 <d>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of move (look-ahead).
+sp {tri-peaks*apply*move*internal*from-block-freed
+   (state <s> ^problem-space.name tri-peaks ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <x>)
+   (<bl> ^argument1 <x> ^argument2 <b>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 { <> <b> } ^argument2 <x>)}
+-->
+   (<r> ^argument2 <x> - <d>)
+   (<bl> ^argument1 <x> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <x>)
+   (<b> ^position 0 - 1)
+}
+
+## Effect of a completed move command on the real world (once per command).
+sp {tri-peaks*apply*move*environment-effect*from-block-freed
+   :o-support
+   (state <s> ^problem-space.name tri-peaks ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+   (<w> ^on <r> ^below <bl>)
+   (<r> ^argument1 <b> ^argument2 <x>)
+   (<bl> ^argument1 <x> ^argument2 <b>)
+  -{(<w> ^on <r2>)
+    (<r2> ^argument1 { <> <b> } ^argument2 <x>)}
+-->
+   (<r> ^argument2 <x> - <d>)
+   (<bl> ^argument1 <x> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <x>)
+   (<b> ^position 0 - 1)
+   (<pa> ^effect-applied true)
+   (write |Move | <bh> | onto | <dh> (crlf))
+}
+## Effect of move (look-ahead).
+sp {tri-peaks*apply*move*internal*from-block-still-covered
+   (state <s> ^problem-space.name tri-peaks ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+   (<w> ^on <r> ^below <bl> ^on <r2>)
+   (<r> ^argument1 <b> ^argument2 <x>)
+   (<bl> ^argument1 <x> ^argument2 <b>)
+   (<r2> ^argument1 { <> <b> } ^argument2 <x>)
+-->
+   (<r> ^argument2 <x> - <d>)
+   (<bl> ^argument1 <x> - <d>)
+   (<w> ^clear <cd> -)
+   (<b> ^position 0 - 1)
+}
+
+## Effect of a completed move command on the real world (once per command).
+sp {tri-peaks*apply*move*environment-effect*from-block-still-covered
+   :o-support
+   (state <s> ^problem-space.name tri-peaks ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+   (<w> ^on <r> ^below <bl> ^on <r2>)
+   (<r> ^argument1 <b> ^argument2 <x>)
+   (<bl> ^argument1 <x> ^argument2 <b>)
+   (<r2> ^argument1 { <> <b> } ^argument2 <x>)
+-->
+   (<r> ^argument2 <x> - <d>)
+   (<bl> ^argument1 <x> - <d>)
+   (<w> ^clear <cd> -)
+   (<b> ^position 0 - 1)
+   (<pa> ^effect-applied true)
+   (write |Move | <bh> | onto | <dh> (crlf))
+}
+## Effect of move (look-ahead).
+sp {tri-peaks*apply*move*internal*from-nothing
+   (state <s> ^problem-space.name tri-peaks ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^on <nr> ^below <nb> ^clear <cd> -)
+   (<nr> ^argument1 <b> ^argument2 <d>)
+   (<nb> ^argument1 <d> ^argument2 <b>)
+   (<b> ^position 0 - 1)
+}
+
+## Effect of a completed move command on the real world (once per command).
+sp {tri-peaks*apply*move*environment-effect*from-nothing
+   :o-support
+   (state <s> ^problem-space.name tri-peaks ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh> ^position 0)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^clear <cd>)
+   (<cd> ^argument1 <d>)
+  -{(<w> ^on <r>)
+    (<r> ^argument1 <b>)}
+-->
+   (<w> ^on <nr> ^below <nb> ^clear <cd> -)
+   (<nr> ^argument1 <b> ^argument2 <d>)
+   (<nb> ^argument1 <d> ^argument2 <b>)
+   (<b> ^position 0 - 1)
+   (<pa> ^effect-applied true)
+   (write |Move | <bh> | onto | <dh> (crlf))
+}
+## Goal: all blocks are trashed (position one).
+sp {tri-peaks*elaborate*goal*all-trashed
+   (state <s> ^problem-space.name tri-peaks ^world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <t> <b-block-1> <b-block-2> <b-block-3> <b-block-4> <b-block-5> <b-block-6> <b-block-7> <b-block-8> <b-block-9>)
+   (<t> ^type task)
+   (<b-block-1> ^object-handle block-1 ^position 1)
+   (<b-block-2> ^object-handle block-2 ^position 1)
+   (<b-block-3> ^object-handle block-3 ^position 1)
+   (<b-block-4> ^object-handle block-4 ^position 1)
+   (<b-block-5> ^object-handle block-5 ^position 1)
+   (<b-block-6> ^object-handle block-6 ^position 1)
+   (<b-block-7> ^object-handle block-7 ^position 1)
+   (<b-block-8> ^object-handle block-8 ^position 1)
+   (<b-block-9> ^object-handle block-9 ^position 1)
+-->
+   (<t> ^goal-met true)
+}

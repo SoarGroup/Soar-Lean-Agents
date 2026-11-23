@@ -347,7 +347,19 @@ sp {{artists*elaborate*top-state*done
    (halt)
 }}
 """)
-open('artists-rules.soar', 'w').write(convpass.apply(''.join(R)))
+# Learning setting from the English statement (World-Conventions L5-021): a line
+# 'Learning: do not learn from look-ahead. <reason>' in english-input.txt turns learning off for this agent.
+def learning_block():
+    import os, re as _re
+    if not os.path.exists('english-input.txt'):
+        return ''
+    for l in open('english-input.txt', encoding='utf-8').read().splitlines():
+        m = _re.match(r'^\s*Learning\s*:\s*do not learn from look-ahead\.?\s*(.*?)\s*$', l, _re.I)
+        if m:
+            return ('\n## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead"'
+                    ' (World-Conventions L5-021).\n' + (f'## Reason given: {m.group(1)}\n' if m.group(1) else '') + 'chunk never\n')
+    return ''
+open('artists-rules.soar', 'w').write(convpass.apply(''.join(R)) + learning_block())
 open('artists.soar', 'w').write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

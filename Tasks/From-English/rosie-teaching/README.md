@@ -97,3 +97,15 @@ Three Men's Morris and Missionaries and Cannibals also appear in `From-English` 
   - `logic-puzzles/killer-sudoku`: fail-mini-sudoku.png, fail-mini-sudoku.world
   - `solitaires/peg-solitaire`: fail-tictactoerc.png, fail-tictactoerc.world, final-tictactoe2rc.png, final-tictactoe2rc.world, init-tictactoerc.png, init-tictactoerc.world
 - **Editor backups** (`dialog.html~`), an older copy of the whole set (`data/teaching-data.zip`, which has earlier `dialog.html` files), and the draft files at the top of `data/` (frog and tic-tac-toe drafts, figures, `test.html`, `testCopy.html`).
+
+## Learning setting (library v2.46, 23 November 2026)
+
+From library v2.46 the library learns by default (`chunk only`, with learning forced in selection and look-ahead states). For each task the setting was chosen from runs with learning on and off (results: `../../Results on library v2.46 (23 Nov 2026).xlsx`, sheet "Learning on vs off").
+
+A task that should not learn says so in its English statement, on a line before any search-control section:
+
+    Learning: do not learn from look-ahead. <reason>
+
+`tools/learning.py` reads that line, and `tools/rosie_gen.py` appends a comment and `chunk never` to the end of the generated rules file, so it overrides the library default (World-Conventions L5-021). Tasks with no such line keep learning on.
+
+Learning is off for 16 tasks: knights-tour, n-kings, n-knights, n-queens, n-rooks, kakuro, survo, sujiko, suko, traveling-salesman, mahjong, jealous-husbands, jealous-wives, missionaries-and-cannibals and tic-tac-toe. For these, learned rules either slowed the agent or carried over-general results from look-ahead into later decisions. The regenerated rules files of these tasks differ from the previous ones only in the four added lines.

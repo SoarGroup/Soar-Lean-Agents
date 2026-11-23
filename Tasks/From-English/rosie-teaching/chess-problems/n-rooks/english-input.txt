@@ -33,3 +33,5 @@ World vocabulary (extracted from the world files loaded above; not part of the d
   Names are as written in the world files, including their trailing 1 (red1, on1).
 
 Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/chess-problems/n-rooks/.
+
+Learning: do not learn from look-ahead. With learning on no seed finishes within 300 s; without it it solves in about 13,700 decisions. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not part of the Rosie teaching data; library v2.46 runs, seeds 1-3.)

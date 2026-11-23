@@ -12,3 +12,5 @@ Statements, numbered (the input to formalization):
 Source of the task in AI research: Epistemic-logic benchmarks for LLMs.
 Kind of agent: Epistemic reasoning.
 Status: Epistemic, like muddy children. Specification gap, raised with John.
+
+Learning: do not learn from look-ahead. With learning on (the library default) no seed finishes within 300 s; without it the agent finds July 16 in 15 decisions on every seed. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46 runs, seeds 1-3.)

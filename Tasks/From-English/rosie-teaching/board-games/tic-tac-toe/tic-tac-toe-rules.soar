@@ -463,3 +463,7 @@ sp {tic-tac-toe*elaborate*failure*opponent-three
 -->
    (<s> ^failure <ds>)
 }
+
+## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead" (World-Conventions L5-021).
+## Reason given: With learning on (the library default) the agent (red) wins 6 of 10 games (seeds 1-10), loses 1 and draws 3; without it it wins 10 of 10 (library v2.45). (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not part of the Rosie teaching data; library v2.46.)
+chunk never

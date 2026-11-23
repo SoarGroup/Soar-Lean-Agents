@@ -571,3 +571,7 @@ sp {cheryls-birthday*elaborate*goal
 -->
    (<task> ^goal-met true)
 }
+
+## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead" (World-Conventions L5-021).
+## Reason given: With learning on (the library default) no seed finishes within 300 s; without it the agent finds July 16 in 15 decisions on every seed. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46 runs, seeds 1-3.)
+chunk never

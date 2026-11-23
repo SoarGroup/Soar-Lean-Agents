@@ -1,0 +1,185 @@
+# Stacking frogs (lazy-stacked-frogs): standard Soar conventions (Soar-Conventions.xlsx), generated from the Rosie teaching
+# script (english-input.txt) by tools/rosie_plain.py.
+#
+# Instructor statements used (numbers as in english-input.txt):
+#   4. If the number of the locations between a location and an accessible covered location is the number of the blocks that are on the covered location then you can move it onto the former location.
+#   5. A location that is not below a red block is accessible.
+#   6. If a location is below an object then it is covered.
+#   7. There is five.
+#  11. The goal is that there are three clear locations.
+#  12. If a location is not below an object then it is clear.
+# World: init-lzstacked-frogs.world (four locations in a row, one block on each)
+#
+# Translation:
+#   - Operator move (^from = the covered location C, ^to = the location L): all the blocks on C move together onto L (A-F1).
+#   - "the number of the locations between L and C" counts adjacent locations as 1 (A-F2); it is a static attribute
+#     (<l> ^apart-k <c>) set at initialization from the locations' x and y.
+#   - "the number of the blocks that are on C" is the attribute ^block-count of each location, set at initialization and
+#     changed by move (Soar cannot count matches in a condition). C is covered exactly when its count is at least 1.
+#   - accessible ("a location that is not below a red block") is the object attribute ^accessible true, set at
+#     initialization. No move changes it: a moving pile never lands on an inaccessible location, and the red block's pile
+#     never moves.
+#   - clear is the maintained object attribute ^clear true (L3-031). Desired: (<d> ^clear-locations 3).
+
+# Propose initialize-lazy-stacked-frogs in the top state before it has a name.
+sp {lazy-stacked-frogs*propose*initialize-lazy-stacked-frogs
+   (state <s> ^superstate nil)
+  -(<s> ^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-lazy-stacked-frogs)
+}
+
+# Apply initialize-lazy-stacked-frogs: the objects and relations of the world file, and the desired state.
+sp {lazy-stacked-frogs*apply*initialize-lazy-stacked-frogs
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-lazy-stacked-frogs)
+-->
+   (<s> ^name lazy-stacked-frogs ^desired <d>)
+   (<s> ^object <x1>)
+   (<x1> ^name location-1 ^type location ^x 1 ^y 1 ^block-count 1)
+   (<s> ^object <x2>)
+   (<x2> ^name location-2 ^type location ^x 2 ^y 1 ^block-count 1 ^accessible true)
+   (<s> ^object <x3>)
+   (<x3> ^name location-3 ^type location ^x 3 ^y 1 ^block-count 1 ^accessible true)
+   (<s> ^object <x4>)
+   (<x4> ^name location-4 ^type location ^x 4 ^y 1 ^block-count 1 ^accessible true)
+   (<s> ^object <x5>)
+   (<x5> ^name block-5 ^type block ^color red)
+   (<s> ^object <x6>)
+   (<x6> ^name block-6 ^type block)
+   (<s> ^object <x7>)
+   (<x7> ^name block-7 ^type block)
+   (<s> ^object <x8>)
+   (<x8> ^name block-8 ^type block)
+   (<x5> ^on <x1>)
+   (<x6> ^on <x2>)
+   (<x7> ^on <x3>)
+   (<x8> ^on <x4>)
+   (<x1> ^apart-1 <x2>)
+   (<x1> ^apart-2 <x3>)
+   (<x1> ^apart-3 <x4>)
+   (<x2> ^apart-1 <x1>)
+   (<x2> ^apart-1 <x3>)
+   (<x2> ^apart-2 <x4>)
+   (<x3> ^apart-2 <x1>)
+   (<x3> ^apart-1 <x2>)
+   (<x3> ^apart-1 <x4>)
+   (<x4> ^apart-3 <x1>)
+   (<x4> ^apart-2 <x2>)
+   (<x4> ^apart-1 <x3>)
+   (<d> ^clear-locations 3)
+}
+
+# Elaborate the problem space: the look-ahead copies the objects (two levels) and the operators.
+sp {lazy-stacked-frogs*elaborate*problem-space
+   (state <s> ^name lazy-stacked-frogs)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name lazy-stacked-frogs ^default-state-copy yes ^default-operator-copy yes ^two-level-attributes object)
+}
+
+# Halt when the top state reaches the desired state.
+sp {lazy-stacked-frogs*halt*success
+   (state <s> ^superstate nil ^name lazy-stacked-frogs ^desired <d> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}
+
+# Halt when the top state is a losing state.
+sp {lazy-stacked-frogs*halt*failure
+   (state <s> ^superstate nil ^name lazy-stacked-frogs ^desired <d> ^failure <d>)
+-->
+   (write (crlf) |The task has failed.|)
+   (halt)
+}
+
+# Propose move with 1 block(s) on the covered location: the destination is 1 location(s) away.
+sp {lazy-stacked-frogs*propose*move*1
+   (state <s> ^name lazy-stacked-frogs ^object <c> <l>)
+   (<c> ^type location ^block-count 1 ^accessible true)
+   (<l> ^type location ^apart-1 <c>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^from <c> ^to <l>)
+}
+
+# Propose move with 2 block(s) on the covered location: the destination is 2 location(s) away.
+sp {lazy-stacked-frogs*propose*move*2
+   (state <s> ^name lazy-stacked-frogs ^object <c> <l>)
+   (<c> ^type location ^block-count 2 ^accessible true)
+   (<l> ^type location ^apart-2 <c>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^from <c> ^to <l>)
+}
+
+# Propose move with 3 block(s) on the covered location: the destination is 3 location(s) away.
+sp {lazy-stacked-frogs*propose*move*3
+   (state <s> ^name lazy-stacked-frogs ^object <c> <l>)
+   (<c> ^type location ^block-count 3 ^accessible true)
+   (<l> ^type location ^apart-3 <c>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^from <c> ^to <l>)
+}
+
+# Propose move with 4 block(s) on the covered location: the destination is 4 location(s) away.
+sp {lazy-stacked-frogs*propose*move*4
+   (state <s> ^name lazy-stacked-frogs ^object <c> <l>)
+   (<c> ^type location ^block-count 4 ^accessible true)
+   (<l> ^type location ^apart-4 <c>)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^from <c> ^to <l>)
+}
+
+# Apply move: every block on the covered location is now on the destination.
+sp {lazy-stacked-frogs*apply*move*blocks
+   (state <s> ^name lazy-stacked-frogs ^operator <o> ^object <b>)
+   (<o> ^name move ^from <c> ^to <l>)
+   (<b> ^type block ^on <c>)
+-->
+   (<b> ^on <c> - <l>)
+}
+
+# Apply move: the destination's count grows by the covered location's count, which becomes 0.
+sp {lazy-stacked-frogs*apply*move*counts
+   (state <s> ^name lazy-stacked-frogs ^operator <o>)
+   (<o> ^name move ^from <c> ^to <l>)
+   (<c> ^block-count { <k> > 0 })
+   (<l> ^block-count <m>)
+-->
+   (<c> ^block-count <k> - 0)
+   (<c> ^clear true)
+   (<l> ^block-count <m> - (+ <m> <k>))
+}
+
+# Apply move: a clear destination is no longer clear.
+sp {lazy-stacked-frogs*apply*move*destination-not-clear
+   (state <s> ^name lazy-stacked-frogs ^operator <o>)
+   (<o> ^name move ^to <l>)
+   (<l> ^clear true)
+-->
+   (<l> ^clear true -)
+}
+
+# Monitor: print the task operator selected in the top state (the plan).
+sp {lazy-stacked-frogs*monitor*move
+   (state <s> ^superstate nil ^name lazy-stacked-frogs ^operator <o>)
+   (<o> ^name move ^from.name <h1> ^to.name <h2>)
+-->
+   (write (crlf) |ACTION: move | <h1> | | <h2>)
+}
+
+# Desired state: three different clear locations.
+sp {lazy-stacked-frogs*elaborate*goal*three-clear
+   (state <s> ^name lazy-stacked-frogs ^desired <d> ^object <l1> { <l2> <> <l1> } { <l3> <> <l1> <> <l2> })
+   (<d> ^clear-locations 3)
+   (<l1> ^type location ^clear true)
+   (<l2> ^type location ^clear true)
+   (<l3> ^type location ^clear true)
+-->
+   (<s> ^success <d>)
+}

@@ -1,0 +1,130 @@
+# Sorting (sorting-puzzle): standard Soar conventions (Soar-Conventions.xlsx), generated from the Rosie teaching
+# script (english-input.txt) by tools/rosie_plain.py.
+#
+# Instructor statements used (numbers as in english-input.txt):
+#   4. You can move a block onto a location.
+#   6. The goal is that all the red blocks are on a red location and all the blue blocks are on a blue location and all the green blocks are on a green location.
+# World: init-sorting.world (a red, a green and a blue location; two blocks of each color)
+#
+# Translation:
+#   - Operator move (^block, ^destination): any block onto any location other than the one it is on (A-S1).
+#   - Desired: "all the red blocks are on a red location and ..." is expanded over the blocks of the world file (A-S2): one
+#     ^block-on entry (^block-name, ^location-color) per block. The goal holds when no entry lacks a matching block and
+#     location; a half-built look-ahead copy can only fail this test, never pass it.
+
+# Propose initialize-sorting-puzzle in the top state before it has a name.
+sp {sorting-puzzle*propose*initialize-sorting-puzzle
+   (state <s> ^superstate nil)
+  -(<s> ^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-sorting-puzzle)
+}
+
+# Apply initialize-sorting-puzzle: the objects and relations of the world file, and the desired state.
+sp {sorting-puzzle*apply*initialize-sorting-puzzle
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-sorting-puzzle)
+-->
+   (<s> ^name sorting-puzzle ^desired <d>)
+   (<s> ^object <x1>)
+   (<x1> ^name red-location-1 ^type location ^color red)
+   (<s> ^object <x2>)
+   (<x2> ^name green-location-2 ^type location ^color green)
+   (<s> ^object <x3>)
+   (<x3> ^name blue-location-3 ^type location ^color blue)
+   (<s> ^object <x4>)
+   (<x4> ^name red-block-4 ^type block ^color red)
+   (<s> ^object <x5>)
+   (<x5> ^name green-block-5 ^type block ^color green)
+   (<s> ^object <x6>)
+   (<x6> ^name blue-block-6 ^type block ^color blue)
+   (<s> ^object <x7>)
+   (<x7> ^name red-block-7 ^type block ^color red)
+   (<s> ^object <x8>)
+   (<x8> ^name green-block-8 ^type block ^color green)
+   (<s> ^object <x9>)
+   (<x9> ^name blue-block-9 ^type block ^color blue)
+   (<x4> ^on <x1>)
+   (<x5> ^on <x2>)
+   (<x6> ^on <x3>)
+   (<x7> ^on <x2>)
+   (<x8> ^on <x3>)
+   (<x9> ^on <x1>)
+   (<d> ^block-on <e4>)
+   (<e4> ^block-name red-block-4 ^location-color red)
+   (<d> ^block-on <e5>)
+   (<e5> ^block-name green-block-5 ^location-color green)
+   (<d> ^block-on <e6>)
+   (<e6> ^block-name blue-block-6 ^location-color blue)
+   (<d> ^block-on <e7>)
+   (<e7> ^block-name red-block-7 ^location-color red)
+   (<d> ^block-on <e8>)
+   (<e8> ^block-name green-block-8 ^location-color green)
+   (<d> ^block-on <e9>)
+   (<e9> ^block-name blue-block-9 ^location-color blue)
+}
+
+# Elaborate the problem space: the look-ahead copies the objects (two levels) and the operators.
+sp {sorting-puzzle*elaborate*problem-space
+   (state <s> ^name sorting-puzzle)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name sorting-puzzle ^default-state-copy yes ^default-operator-copy yes ^two-level-attributes object)
+}
+
+# Halt when the top state reaches the desired state.
+sp {sorting-puzzle*halt*success
+   (state <s> ^superstate nil ^name sorting-puzzle ^desired <d> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}
+
+# Halt when the top state is a losing state.
+sp {sorting-puzzle*halt*failure
+   (state <s> ^superstate nil ^name sorting-puzzle ^desired <d> ^failure <d>)
+-->
+   (write (crlf) |The task has failed.|)
+   (halt)
+}
+
+# Propose move: a block onto a location other than the one it is on.
+sp {sorting-puzzle*propose*move
+   (state <s> ^name sorting-puzzle ^object <b> <l>)
+   (<b> ^type block ^on <> <l>)
+   (<l> ^type location)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^block <b> ^destination <l>)
+}
+
+# Apply move: the block is on the destination instead of what it was on.
+sp {sorting-puzzle*apply*move
+   (state <s> ^name sorting-puzzle ^operator <o>)
+   (<o> ^name move ^block <b> ^destination <dest>)
+   (<b> ^on <old>)
+-->
+   (<b> ^on <old> - <dest>)
+}
+
+# Monitor: print the task operator selected in the top state (the plan).
+sp {sorting-puzzle*monitor*move
+   (state <s> ^superstate nil ^name sorting-puzzle ^operator <o>)
+   (<o> ^name move ^block.name <h1> ^destination.name <h2>)
+-->
+   (write (crlf) |ACTION: move | <h1> | | <h2>)
+}
+
+# Desired state: every ^block-on entry holds (the named block is on a location of the named color).
+sp {sorting-puzzle*elaborate*goal*blocks-on
+   (state <s> ^name sorting-puzzle ^desired <d>)
+   (<d> ^block-on <any>)
+  -{(<d> ^block-on <e>)
+    (<e> ^block-name <bn> ^location-color <lc>)
+   -{(<s> ^object <b> <l>)
+     (<b> ^name <bn> ^on <l>)
+     (<l> ^type location ^color <lc>)}}
+-->
+   (<s> ^success <d>)
+}

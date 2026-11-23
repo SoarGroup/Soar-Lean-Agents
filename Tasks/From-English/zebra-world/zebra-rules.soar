@@ -1282,3 +1282,7 @@ sp {zebra*apply*report-solution
           |TASK-RESULT: success| (crlf))
    (halt)
 }
+
+## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead" (World-Conventions L5-021).
+## Reason given: With learning on (the library default) seeds 1 and 2 reach the 20,000-decision cap (an over-general chunk from the deduction rules, not yet diagnosed); without it every seed halts in 131-151 decisions. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46, test set v1.39.)
+chunk never

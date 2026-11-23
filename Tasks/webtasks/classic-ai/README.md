@@ -59,6 +59,10 @@ The first Tower of London description used a variable `s`. The back end compiled
 
 Details and the remaining options: `../WORLDSPEC-EXTENSIONS.md`.
 
+## Learning setting (library v2.46, 23 November 2026)
+
+cheryls-birthday and muddy-children turn learning off: their `english-input.txt` has the line `Learning: do not learn from look-ahead. <reason>`. `../tools/worldspec_py.py` reads it into the description (`learning := false` and `learningReason` in the `.lean` file, `"learning": {"off": true, ...}` in the JSON), and both back ends append a comment and `chunk never` to the rules file. The other tasks keep the library default, `chunk only`. Paths A (Python) and B (Lean) give rules files that differ only in the header.
+
 ## Files
 
 Each task folder: `english-input.txt`, `<task>-spec.py`, `<Name>.lean`, the `.world` files, `<task>-worldspec.json`, `<task>-rules.soar`, the loader `<task>.soar`, `run-seed1..3.json` and `README.md` (results, assumption ledger, how to reproduce and how to check with Lean). Tools: `../tools/worldspec_py.py`.

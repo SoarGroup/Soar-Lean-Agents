@@ -30,7 +30,8 @@ sp {selection-world*apply*exceed-depth*tie-impasse
 ## Apply evaluate-operator -> sets symbolic-value.
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal*depth-exceeded
    :default
-   (state <s> ^selection-superstate <supersuperstate>
+   (state <s> ^quiescence t   # v2.46: no chunk (depth-exceeded rests on the absence of failure and success)
+              ^selection-superstate <supersuperstate>
               ^depth-exceeded <desireds>)
    (<supersuperstate> ^operator <so>
                       ^evaluation <evaluation>)
@@ -45,7 +46,8 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal
 ## task supplies no ^estimated-remaining-cost, otherwise path-cost + the admissible estimate).
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal*depth-exceeded*numeric
    :default
-   (state <s> ^selection-superstate <supersuperstate>
+   (state <s> ^quiescence t   # v2.46: no chunk (depth-exceeded rests on the absence of failure and success)
+              ^selection-superstate <supersuperstate>
               ^superstate.world <world>
               ^flags.cost-metric << unit time >>
               ^depth-exceeded <desireds>)
@@ -64,7 +66,8 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal
 ## As above, with a task-supplied admissible estimate of the remaining cost.
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-tie-subgoal*depth-exceeded*numeric*remaining
    :default
-   (state <s> ^selection-superstate <supersuperstate>
+   (state <s> ^quiescence t   # v2.46: no chunk (depth-exceeded rests on the absence of failure and success)
+              ^selection-superstate <supersuperstate>
               ^superstate.world <world>
               ^flags.cost-metric << unit time >>
               ^flags.heuristic-weight <weight>

@@ -1,4 +1,5 @@
-## Task operator finish-run (tour): after 1,000,000 moves the run is over; the tour is done.
+## Task operator finish-run (tour): after 30,000 moves (knight moves and backups) or 100 closed tours the run is over; the tour is done
+## (changed 22 Nov 2026, JL; was 1,000,000 moves).
 sp {knights*propose*finish-run
    (state <s> ^problem-space.name knights
               ^flags.mea-operator-selection true
@@ -12,7 +13,33 @@ sp {knights*propose*finish-run
    (<objs> ^object <t>)
    (<t> ^object-handle $ <th>
         ^done 0
-        ^moves >= 1000000)
+        ^moves >= 30000)
+-->
+   (<s> ^operator <o> + =)
+   (<o> ^name finish-run
+        ^task-operator true
+        ^action-handle finish-run
+        ^super-desired <d>
+        ^argument1 <t>
+        ^argument-count 1
+        ^desireds <pd>)
+   (<pd> ^desired-count 0)
+}
+
+sp {knights*propose*finish-run*tours
+   (state <s> ^problem-space.name knights
+              ^flags.mea-operator-selection true
+              ^desireds <ds>
+              ^world <w>)
+   (<ds> ^desired <d>
+         ^unachieved <d>)
+   (<d> ^object.object-handle $ <th>)
+   (<w> ^anchored-world true
+        ^objects <objs>)
+   (<objs> ^object <t>)
+   (<t> ^object-handle $ <th>
+        ^done 0
+        ^solutions >= 100)
 -->
    (<s> ^operator <o> + =)
    (<o> ^name finish-run

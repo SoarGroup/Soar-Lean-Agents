@@ -22,3 +22,8 @@ World vocabulary (extracted from the world files loaded above; not part of the d
   Names are as written in the world files, including their trailing 1 (red1, on1).
 
 Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/block-puzzles/tower-of-hanoi-5/.
+
+Search control (added 22 November 2026 by Claude, supervised by John E. Laird; not part of the Rosie teaching data; it augments the puzzle and does not change it. Select items with tools/control.py, e.g. python3 gen.py --control SC-1):
+  SC-1 [operator-preference]: During look-ahead, do not move the smallest block twice in a row.
+  SC-2 [operator-preference]: Work first on the largest block that is not yet in place: never move a block that is in place, and move the largest block that is not in place onto its place whenever it can. A block is in place when it is the largest block and is on the blue location, or when it is on the next larger block and that block is in place.
+  SC-3 [operator-preference]: In look-ahead, do not move the smallest block back to the location it was on before (its peg: the location it is on directly or through the blocks below it).

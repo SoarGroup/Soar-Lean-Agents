@@ -1,9 +1,22 @@
+## finish-run: stop after 30,000 moves (knight moves and backups) or after 100 closed tours (changed 22 Nov 2026, JL; was 1,000,000 moves).
 
 sp {knights*propose*finish-run
    (state <s> ^name knights)
    (<s> ^tour <t>)
    (<t> ^done 0)
-   (<t> ^moves { <t-moves> >= 1000000 })
+   (<t> ^moves { <t-moves> >= 30000 })
+-->
+   (<s> ^operator <o> +)
+   (<s> ^operator <o> =)
+   (<o> ^name finish-run)
+   (<o> ^t <t>)
+}
+
+sp {knights*propose*finish-run*tours
+   (state <s> ^name knights)
+   (<s> ^tour <t>)
+   (<t> ^done 0)
+   (<t> ^solutions { <t-solutions> >= 100 })
 -->
    (<s> ^operator <o> +)
    (<s> ^operator <o> =)

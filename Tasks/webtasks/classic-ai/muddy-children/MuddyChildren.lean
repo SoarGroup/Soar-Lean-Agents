@@ -62,5 +62,7 @@ def muddyChildren : Task where
     { id := "A-MC3", kind := .intent, stmts := [3, 4, 5], text := "The father's statement and each round are operators that rule out worlds (out-at(w, round)), on every world at once. A world is live at round r if it was not ruled out in an earlier round, so each round is judged on the worlds left before it. A stage number keeps the order; round objects carry their number." },
     { id := "A-MC4", kind := .intent, stmts := [4], text := "A round records which children answer yes in the actual world (said-yes(c, r)), and rules out every world where some child would answer differently than in the actual world (all answers are heard)." },
     { id := "A-MC5", kind := .intent, stmts := [6], text := "The goal is that every child has answered yes in some round; the rounds of first yes are read from said-yes. Four rounds are provided." }]
+  learning := false
+  learningReason := "With learning on seeds 1 and 2 do not finish within 300 s; without it every seed solves in 15 decisions. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46 runs, seeds 1-3.)"
 
 end WorldSpec.Tasks

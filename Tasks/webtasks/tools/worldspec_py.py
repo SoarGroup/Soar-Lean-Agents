@@ -19,7 +19,7 @@ usage:
   python3 worldspec_py.py TASKS.py replay WORLD RUN.json
 TASKS.py defines TASK (a dict built with the constructors here).
 """
-import itertools, json, re, sys
+import itertools, json, os, re, sys
 
 # ---------------------------------------------------------------- constructors (JSON shapes of Json.lean)
 def sym(s): return {'sym': s}
@@ -372,7 +372,8 @@ def to_json(t, st):
         'sums': t['sums'], 'ops': [{k: (x if k != 'params' else [[p, ty] for p, ty in x]) for k, x in o.items() if not (k == 'stepCost' and x is None)} for o in t['ops']],
         'goal': t['goal'], 'goalStmts': t['goalStmts'], 'failures': t['failures'],
         **({'derived': [{'name': d['name'], 'vars': d['vars'], 'defn': d['defn'], 'stmts': d['stmts']} for d in t['derived']]} if t.get('derived') else {}),
-        **({'repeatControl': t['repeatControl']} if t.get('repeatControl') else {})}
+        **({'repeatControl': t['repeatControl']} if t.get('repeatControl') else {}),
+        **({'learning': {'off': True, 'reason': t.get('learning_reason', '')}} if t.get('learning') is False else {})}
 
 def compare_json(a, b):
     """Compare a rosiegen json export with ours (key order and number formatting aside)."""
@@ -451,6 +452,9 @@ def to_lean(t):
     if t.get('repeatControl'):
         rc = t['repeatControl']
         L.append(f'  repeatControl := some {{ rel := {ls(rc["rel"])}, types := [' + ', '.join(ls(x) for x in rc['types']) + '] }')
+    if t.get('learning') is False:
+        L.append('  learning := false')
+        if t.get('learning_reason'): L.append(f'  learningReason := {ls(t["learning_reason"])}')
     L += ['', 'end WorldSpec.Tasks', '']
     return '\n'.join(L)
 
@@ -458,6 +462,13 @@ def to_lean(t):
 def task(**kw):
     t = dict(maintained=[], derived=[], sums=[], failures=[], flags=[], assumptions=[], handle_attr='name')
     t.update(kw)
+    # Learning setting from the task's English statement (World-Conventions L5-021): a line
+    # 'Learning: do not learn from look-ahead. <reason>' in english-input.txt beside the spec script.
+    if 'learning' not in t and os.path.exists('english-input.txt'):
+        for l in open('english-input.txt', encoding='utf-8').read().splitlines():
+            m = re.match(r'^\s*Learning\s*:\s*do not learn from look-ahead\.?\s*(.*?)\s*$', l, re.I)
+            if m:
+                t['learning'], t['learning_reason'] = False, m.group(1)
     ha = t['handle_attr']
     t['handle'] = lambda o, ha=ha: wsym(o, ha)
     return t

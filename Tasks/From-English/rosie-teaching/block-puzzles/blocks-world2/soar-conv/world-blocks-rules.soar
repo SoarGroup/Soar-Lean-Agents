@@ -1,0 +1,112 @@
+# Blocks world (world-blocks): standard Soar conventions (Soar-Conventions.xlsx), generated from the Rosie teaching
+# script (english-input.txt) by tools/rosie_plain.py.
+#
+# Instructor statements used (numbers as in english-input.txt):
+#   4. You can move a clear block onto a clear object.
+#   5. If a location is not below an object then it is clear.
+#   7. The goal is that a blue block is on a purple block and the blue block is below a yellow block.
+# World: init-blocksworld2.world (three locations; three colored blocks in one stack)
+#
+# Translation:
+#   - Operator move (^block, ^destination). clear is an i-supported state attribute, for blocks and locations (A-H1).
+#   - "X is below Y" is read as Y is on X (the world files' below relation is the inverse of on).
+#   - Desired: (<d> ^top-color blue ^bottom-color purple ^cover-color yellow): a blue block is on a purple block and
+#     a yellow block is on that blue block.
+
+# Propose initialize-world-blocks in the top state before it has a name.
+sp {world-blocks*propose*initialize-world-blocks
+   (state <s> ^superstate nil)
+  -(<s> ^name)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-world-blocks)
+}
+
+# Apply initialize-world-blocks: the objects and relations of the world file, and the desired state.
+sp {world-blocks*apply*initialize-world-blocks
+   (state <s> ^operator <o>)
+   (<o> ^name initialize-world-blocks)
+-->
+   (<s> ^name world-blocks ^desired <d>)
+   (<s> ^object <x1>)
+   (<x1> ^name location-1 ^type location)
+   (<s> ^object <x2>)
+   (<x2> ^name location-2 ^type location ^clear true)
+   (<s> ^object <x3>)
+   (<x3> ^name location-3 ^type location ^clear true)
+   (<s> ^object <x4>)
+   (<x4> ^name block-4 ^type block ^color blue ^clear true)
+   (<s> ^object <x5>)
+   (<x5> ^name block-5 ^type block ^color purple)
+   (<s> ^object <x6>)
+   (<x6> ^name block-6 ^type block ^color yellow)
+   (<x4> ^on <x5>)
+   (<x5> ^on <x6>)
+   (<x6> ^on <x1>)
+   (<d> ^top-color blue ^bottom-color purple ^cover-color yellow)
+}
+
+# Elaborate the problem space: the look-ahead copies the objects (two levels) and the operators.
+sp {world-blocks*elaborate*problem-space
+   (state <s> ^name world-blocks)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name world-blocks ^default-state-copy yes ^default-operator-copy yes ^two-level-attributes object)
+}
+
+# Halt when the top state reaches the desired state.
+sp {world-blocks*halt*success
+   (state <s> ^superstate nil ^name world-blocks ^desired <d> ^success <d>)
+-->
+   (write (crlf) |The problem has been solved.|)
+   (halt)
+}
+
+# Halt when the top state is a losing state.
+sp {world-blocks*halt*failure
+   (state <s> ^superstate nil ^name world-blocks ^desired <d> ^failure <d>)
+-->
+   (write (crlf) |The task has failed.|)
+   (halt)
+}
+
+# Propose move: a clear block onto a clear object.
+sp {world-blocks*propose*move
+   (state <s> ^name world-blocks ^object <b> { <dest> <> <b> })
+   (<b> ^type block ^clear true)
+   (<dest> ^clear true)
+-->
+   (<s> ^operator <o> +)
+   (<o> ^name move ^block <b> ^destination <dest>)
+}
+
+# Apply move: the block is on the destination instead of what it was on; what it was on is clear, the destination is not.
+sp {world-blocks*apply*move
+   (state <s> ^name world-blocks ^operator <o>)
+   (<o> ^name move ^block <b> ^destination <dest>)
+   (<b> ^on <old>)
+   (<dest> ^clear true)
+-->
+   (<b> ^on <old> - <dest>)
+   (<old> ^clear true)
+   (<dest> ^clear true -)
+}
+
+# Monitor: print the task operator selected in the top state (the plan).
+sp {world-blocks*monitor*move
+   (state <s> ^superstate nil ^name world-blocks ^operator <o>)
+   (<o> ^name move ^block.name <h1> ^destination.name <h2>)
+-->
+   (write (crlf) |ACTION: move | <h1> | | <h2>)
+}
+
+# Desired state: a block of the top color on a block of the bottom color, with a block of the cover color on it.
+sp {world-blocks*elaborate*goal*stack
+   (state <s> ^name world-blocks ^desired <d> ^object <a> <b> <c>)
+   (<d> ^top-color <tc> ^bottom-color <bc> ^cover-color <cc>)
+   (<a> ^type block ^color <tc> ^on <b>)
+   (<b> ^type block ^color <bc>)
+   (<c> ^type block ^color <cc> ^on <a>)
+-->
+   (<s> ^success <d>)
+}

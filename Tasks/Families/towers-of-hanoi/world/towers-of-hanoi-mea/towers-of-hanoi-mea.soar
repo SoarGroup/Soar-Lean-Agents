@@ -1,4 +1,4 @@
-## towers-of-hanoi-mea (5 disks, means-ends analysis with operator subgoaling) under the world
+## towers-of-hanoi-mea (3 disks, means-ends analysis with operator subgoaling) under the world
 ## conventions (the shared library, no external environment: ^environment none; MEA operator
 ## subgoaling through agent-world, ^flags.mea-operator-selection true).
 
@@ -8,9 +8,9 @@ source soar-library.soar
 popd
 
 chunk never
-multi-attributes object 12
-multi-attributes on 8
-multi-attributes above 8
+multi-attributes object 10
+multi-attributes on 6
+multi-attributes above 6
 
 source towers-of-hanoi-world.soar
 source move-disk.soar

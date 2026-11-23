@@ -67,3 +67,13 @@ wma -s activation off # on
 #output agent-logs 1 off
 
 #input_link_version = 2
+
+# v2.46 (JL, 22 Nov 2026; World-Conventions L5-022): add-osk is on whenever chunking is used. It has no effect while chunking is off,
+# so it is set here for every agent; tasks never turn add-osk off. The chunking mode itself defaults to chunk only (below).
+chunk add-osk on
+
+# v2.46 (JL, 23 Nov 2026; World-Conventions L5-021): learning from look-ahead is the default. chunk only learns in the states
+# that call force-learn: the selection states and evaluate-operator substates (L14-046), so look-ahead results are chunked
+# and other substates (operator no-change subgoals, means-ends subgoaling) are not. A task that must not learn sets
+# chunk never in its own files (sourced after the library), and says why.
+chunk only

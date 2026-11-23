@@ -1,0 +1,5 @@
+# Loads the classic default selection rules (rosie-teaching/default), then the task rules.
+pushd ../../../default
+source selection.soar
+popd
+source world-blocks-rules.soar

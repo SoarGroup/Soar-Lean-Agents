@@ -11,3 +11,5 @@ Statements, numbered (the input to formalization):
 Source of the task in AI research: Fagin et al., Reasoning about Knowledge.
 Kind of agent: Epistemic reasoning.
 Status: Knowledge of other agents' knowledge (epistemic). Specification gap, raised with John.
+
+Learning: do not learn from look-ahead. With learning on seeds 1 and 2 do not finish within 300 s; without it every seed solves in 15 decisions. (Added 23 November 2026 by Claude, supervised by John E. Laird; an agent setting, not a statement of the puzzle; library v2.46 runs, seeds 1-3.)

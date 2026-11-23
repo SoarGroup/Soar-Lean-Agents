@@ -80,7 +80,10 @@ class RosieTask:
     def text(s): return s.t.text()
 
     def write(s, out):
-        open(out, 'w').write(s.text())
+        # Learning setting from the task's English statement (tools/learning.py, World-Conventions L5-021).
+        import learning
+        extra = learning.block('english-input.txt') if os.path.exists('english-input.txt') else ''
+        open(out, 'w').write(s.text() + extra)
 
 def loader(task_file, rules_file, depth_to_repo):
     """The task's .soar loader: the shared library from the repository, then the task rules."""

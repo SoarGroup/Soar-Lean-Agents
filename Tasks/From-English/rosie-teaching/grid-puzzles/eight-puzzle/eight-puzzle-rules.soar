@@ -1,0 +1,300 @@
+## Eight puzzle (eight-puzzle), generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   5. If a block is adjacent to a clear location then you can move the block onto the clear location.
+##   6. If a location is not below an object then it is clear.
+##   7. If a location is next to an object but it is not diagonal with the object then it is adjacent to the object.
+##   9. The goal is that there are eight matched locations.
+##  11. If the color of a location is the color of the block that is on the location then the location is matched.
+## World: init-8puzzlerc.world (a 3 by 3 grid; eight coloured blocks)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operator slide-block (argument1 = the block, argument2 = the clear location), statement 5; adjacent (statement 7) is a
+##     static relation between locations, a block being adjacent to what its location is adjacent to (A-G1); clear is a
+##     maintained one-argument relation (statement 6).
+##   - The goal is expanded over the blocks of the world file: every block is on the location with its color (A-G3).
+
+## Propose initialize-eight-puzzle when its conditions below hold.
+sp {eight-puzzle*propose*initialize-eight-puzzle
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-eight-puzzle ^task-operator false)
+}
+
+sp {eight-puzzle*apply*initialize-eight-puzzle
+   (state <s> ^operator.name initialize-eight-puzzle ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name eight-puzzle ^desireds <ds>)
+   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-block-10> <o-block-11> <o-block-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-task>)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color orange ^row 1 ^column 2)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^color yellow ^row 2 ^column 1)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^color green ^row 2 ^column 2)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^color blue ^row 2 ^column 3)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^color purple ^row 3 ^column 1)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^color gray ^row 3 ^column 2)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^color brown ^row 3 ^column 3)
+   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^color red)
+   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^color orange)
+   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^color yellow)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color green)
+   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^color blue)
+   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^color purple)
+   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^color gray)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color brown)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-0>)
+   (<on-0> ^argument1 <o-block-10> ^argument2 <o-location-2>)
+   (<w> ^on <on-1>)
+   (<on-1> ^argument1 <o-block-11> ^argument2 <o-location-3>)
+   (<w> ^on <on-2>)
+   (<on-2> ^argument1 <o-block-12> ^argument2 <o-location-1>)
+   (<w> ^on <on-3>)
+   (<on-3> ^argument1 <o-block-13> ^argument2 <o-location-5>)
+   (<w> ^on <on-4>)
+   (<on-4> ^argument1 <o-block-14> ^argument2 <o-location-6>)
+   (<w> ^on <on-5>)
+   (<on-5> ^argument1 <o-block-15> ^argument2 <o-location-7>)
+   (<w> ^on <on-6>)
+   (<on-6> ^argument1 <o-block-16> ^argument2 <o-location-8>)
+   (<w> ^on <on-7>)
+   (<on-7> ^argument1 <o-block-17> ^argument2 <o-location-9>)
+   (<w> ^below <below-0>)
+   (<below-0> ^argument1 <o-location-2> ^argument2 <o-block-10>)
+   (<w> ^below <below-1>)
+   (<below-1> ^argument1 <o-location-3> ^argument2 <o-block-11>)
+   (<w> ^below <below-2>)
+   (<below-2> ^argument1 <o-location-1> ^argument2 <o-block-12>)
+   (<w> ^below <below-3>)
+   (<below-3> ^argument1 <o-location-5> ^argument2 <o-block-13>)
+   (<w> ^below <below-4>)
+   (<below-4> ^argument1 <o-location-6> ^argument2 <o-block-14>)
+   (<w> ^below <below-5>)
+   (<below-5> ^argument1 <o-location-7> ^argument2 <o-block-15>)
+   (<w> ^below <below-6>)
+   (<below-6> ^argument1 <o-location-8> ^argument2 <o-block-16>)
+   (<w> ^below <below-7>)
+   (<below-7> ^argument1 <o-location-9> ^argument2 <o-block-17>)
+   (<w> ^clear <clear-location-4>)
+   (<clear-location-4> ^argument1 <o-location-4>)
+   (<w> ^clear <clear-block-10>)
+   (<clear-block-10> ^argument1 <o-block-10>)
+   (<w> ^clear <clear-block-11>)
+   (<clear-block-11> ^argument1 <o-block-11>)
+   (<w> ^clear <clear-block-12>)
+   (<clear-block-12> ^argument1 <o-block-12>)
+   (<w> ^clear <clear-block-13>)
+   (<clear-block-13> ^argument1 <o-block-13>)
+   (<w> ^clear <clear-block-14>)
+   (<clear-block-14> ^argument1 <o-block-14>)
+   (<w> ^clear <clear-block-15>)
+   (<clear-block-15> ^argument1 <o-block-15>)
+   (<w> ^clear <clear-block-16>)
+   (<clear-block-16> ^argument1 <o-block-16>)
+   (<w> ^clear <clear-block-17>)
+   (<clear-block-17> ^argument1 <o-block-17>)
+   (<w> ^adjacent <adjacent-0>)
+   (<adjacent-0> ^argument1 <o-location-1> ^argument2 <o-location-2>)
+   (<w> ^adjacent <adjacent-1>)
+   (<adjacent-1> ^argument1 <o-location-1> ^argument2 <o-location-4>)
+   (<w> ^adjacent <adjacent-2>)
+   (<adjacent-2> ^argument1 <o-location-2> ^argument2 <o-location-1>)
+   (<w> ^adjacent <adjacent-3>)
+   (<adjacent-3> ^argument1 <o-location-2> ^argument2 <o-location-3>)
+   (<w> ^adjacent <adjacent-4>)
+   (<adjacent-4> ^argument1 <o-location-2> ^argument2 <o-location-5>)
+   (<w> ^adjacent <adjacent-5>)
+   (<adjacent-5> ^argument1 <o-location-3> ^argument2 <o-location-2>)
+   (<w> ^adjacent <adjacent-6>)
+   (<adjacent-6> ^argument1 <o-location-3> ^argument2 <o-location-6>)
+   (<w> ^adjacent <adjacent-7>)
+   (<adjacent-7> ^argument1 <o-location-4> ^argument2 <o-location-1>)
+   (<w> ^adjacent <adjacent-8>)
+   (<adjacent-8> ^argument1 <o-location-4> ^argument2 <o-location-5>)
+   (<w> ^adjacent <adjacent-9>)
+   (<adjacent-9> ^argument1 <o-location-4> ^argument2 <o-location-7>)
+   (<w> ^adjacent <adjacent-10>)
+   (<adjacent-10> ^argument1 <o-location-5> ^argument2 <o-location-2>)
+   (<w> ^adjacent <adjacent-11>)
+   (<adjacent-11> ^argument1 <o-location-5> ^argument2 <o-location-4>)
+   (<w> ^adjacent <adjacent-12>)
+   (<adjacent-12> ^argument1 <o-location-5> ^argument2 <o-location-6>)
+   (<w> ^adjacent <adjacent-13>)
+   (<adjacent-13> ^argument1 <o-location-5> ^argument2 <o-location-8>)
+   (<w> ^adjacent <adjacent-14>)
+   (<adjacent-14> ^argument1 <o-location-6> ^argument2 <o-location-3>)
+   (<w> ^adjacent <adjacent-15>)
+   (<adjacent-15> ^argument1 <o-location-6> ^argument2 <o-location-5>)
+   (<w> ^adjacent <adjacent-16>)
+   (<adjacent-16> ^argument1 <o-location-6> ^argument2 <o-location-9>)
+   (<w> ^adjacent <adjacent-17>)
+   (<adjacent-17> ^argument1 <o-location-7> ^argument2 <o-location-4>)
+   (<w> ^adjacent <adjacent-18>)
+   (<adjacent-18> ^argument1 <o-location-7> ^argument2 <o-location-8>)
+   (<w> ^adjacent <adjacent-19>)
+   (<adjacent-19> ^argument1 <o-location-8> ^argument2 <o-location-5>)
+   (<w> ^adjacent <adjacent-20>)
+   (<adjacent-20> ^argument1 <o-location-8> ^argument2 <o-location-7>)
+   (<w> ^adjacent <adjacent-21>)
+   (<adjacent-21> ^argument1 <o-location-8> ^argument2 <o-location-9>)
+   (<w> ^adjacent <adjacent-22>)
+   (<adjacent-22> ^argument1 <o-location-9> ^argument2 <o-location-6>)
+   (<w> ^adjacent <adjacent-23>)
+   (<adjacent-23> ^argument1 <o-location-9> ^argument2 <o-location-8>)
+   (log 1 (crlf) |Initialize eight-puzzle.|)
+}
+
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+sp {eight-puzzle*elaborate*problem-space
+   (state <s> ^name eight-puzzle)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name eight-puzzle ^copy-relation below ^copy-relation adjacent ^copy-relation clear ^dont-copy-object-attribute goal-met)
+}
+
+sp {eight-puzzle*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name eight-puzzle ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name eight-puzzle ^dont-copy-object-attribute goal-met)
+}
+
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
+sp {eight-puzzle*elaborate*flags
+   (state <s> ^superstate nil ^name eight-puzzle)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {eight-puzzle*elaborate*state*achieved*object-property
+   (state <s> ^problem-space.name eight-puzzle ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {eight-puzzle*elaborate*state*unachieved*object-property
+   (state <s> ^problem-space.name eight-puzzle ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+## Propose slide-block in problem space eight-puzzle when its conditions below hold (adjacent clear).
+sp {eight-puzzle*propose*slide-block*adjacent-clear
+   (state <s> ^problem-space.name eight-puzzle ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^type block ^object-handle $ <bh>)
+   (<d> ^type location ^object-handle $ <dh>)
+   (<w> ^on <on-b>)
+   (<on-b> ^argument1 <b> ^argument2 <l1>)
+   (<w> ^adjacent <adjacent-d>)
+   (<adjacent-d> ^argument1 <d> ^argument2 <l1>)
+   (<w> ^clear <clear-d>)
+   (<clear-d> ^argument1 <d>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name slide-block ^task-operator true ^action-handle slide-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
+   (<pre> ^desired-count 0)
+}
+## Effect of slide-block (look-ahead).
+sp {eight-puzzle*apply*slide-block*internal
+   (state <s> ^problem-space.name eight-puzzle ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name slide-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <r> ^below <bl> ^clear <cd>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+   (<cd> ^argument1 <d>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <old>)
+}
+
+## Effect of a completed slide-block command on the real world (once per command).
+sp {eight-puzzle*apply*slide-block*environment-effect
+   :o-support
+   (state <s> ^problem-space.name eight-puzzle ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name slide-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
+   (<w> ^on <r> ^below <bl> ^clear <cd>)
+   (<r> ^argument1 <b> ^argument2 <old>)
+   (<bl> ^argument1 <old> ^argument2 <b>)
+   (<cd> ^argument1 <d>)
+-->
+   (<r> ^argument2 <old> - <d>)
+   (<bl> ^argument1 <old> - <d>)
+   (<w> ^clear <cd> - <nc>)
+   (<nc> ^argument1 <old>)
+   (<pa> ^effect-applied true)
+   (write |Slide | <bh> | onto | <dh> (crlf))
+}
+## Goal: every location is matched (its color is the color of the block on it).
+sp {eight-puzzle*elaborate*goal*all-matched
+   (state <s> ^problem-space.name eight-puzzle ^world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <t> <b-block-10> <l-block-10> <b-block-11> <l-block-11> <b-block-12> <l-block-12> <b-block-13> <l-block-13> <b-block-14> <l-block-14> <b-block-15> <l-block-15> <b-block-16> <l-block-16> <b-block-17> <l-block-17>)
+   (<t> ^type task)
+   (<b-block-10> ^object-handle block-10)
+   (<l-block-10> ^type location ^color red)
+   (<w> ^on <on-block-10>)
+   (<on-block-10> ^argument1 <b-block-10> ^argument2 <l-block-10>)
+   (<b-block-11> ^object-handle block-11)
+   (<l-block-11> ^type location ^color orange)
+   (<w> ^on <on-block-11>)
+   (<on-block-11> ^argument1 <b-block-11> ^argument2 <l-block-11>)
+   (<b-block-12> ^object-handle block-12)
+   (<l-block-12> ^type location ^color yellow)
+   (<w> ^on <on-block-12>)
+   (<on-block-12> ^argument1 <b-block-12> ^argument2 <l-block-12>)
+   (<b-block-13> ^object-handle block-13)
+   (<l-block-13> ^type location ^color green)
+   (<w> ^on <on-block-13>)
+   (<on-block-13> ^argument1 <b-block-13> ^argument2 <l-block-13>)
+   (<b-block-14> ^object-handle block-14)
+   (<l-block-14> ^type location ^color blue)
+   (<w> ^on <on-block-14>)
+   (<on-block-14> ^argument1 <b-block-14> ^argument2 <l-block-14>)
+   (<b-block-15> ^object-handle block-15)
+   (<l-block-15> ^type location ^color purple)
+   (<w> ^on <on-block-15>)
+   (<on-block-15> ^argument1 <b-block-15> ^argument2 <l-block-15>)
+   (<b-block-16> ^object-handle block-16)
+   (<l-block-16> ^type location ^color gray)
+   (<w> ^on <on-block-16>)
+   (<on-block-16> ^argument1 <b-block-16> ^argument2 <l-block-16>)
+   (<b-block-17> ^object-handle block-17)
+   (<l-block-17> ^type location ^color brown)
+   (<w> ^on <on-block-17>)
+   (<on-block-17> ^argument1 <b-block-17> ^argument2 <l-block-17>)
+-->
+   (<t> ^goal-met true)
+}
