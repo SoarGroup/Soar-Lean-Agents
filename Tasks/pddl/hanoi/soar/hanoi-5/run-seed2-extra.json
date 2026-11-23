@@ -1,0 +1,22 @@
+{
+ "seed": 2,
+ "outcome": "cap",
+ "decisions": 60000,
+ "n_actions": 0,
+ "actions": [],
+ "seconds": 48.8,
+ "cpu": 25.262,
+ "chunks_learned": 0,
+ "chunk_setting": [
+  "===================================================",
+  "           Chunk Commands and Settings",
+  "==================================================="
+ ],
+ "extra": [
+  "/home/claude/build/exp-argN.soar"
+ ],
+ "valid": "-",
+ "problem": "hanoi-5.pddl",
+ "rules": 11,
+ "chunk": "never"
+}

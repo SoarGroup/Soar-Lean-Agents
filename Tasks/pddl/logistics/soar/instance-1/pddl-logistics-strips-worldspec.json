@@ -1,0 +1,1614 @@
+{
+  "format": "worldspec-1",
+  "name": "pddl-logistics-strips",
+  "title": "logistics-strips / strips-log-x-1 (PDDL)",
+  "statements": [
+    [
+      1,
+      "PDDL action load-truck"
+    ],
+    [
+      2,
+      "PDDL action load-airplane"
+    ],
+    [
+      3,
+      "PDDL action unload-truck"
+    ],
+    [
+      4,
+      "PDDL action unload-airplane"
+    ],
+    [
+      5,
+      "PDDL action drive-truck"
+    ],
+    [
+      6,
+      "PDDL action fly-airplane"
+    ],
+    [
+      7,
+      "PDDL goal of problem strips-log-x-1"
+    ]
+  ],
+  "assumptions": [],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "package6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "package5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "package4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "package3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "package2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "package1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "package1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "truck1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "truck1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "plane2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "plane2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "plane1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "plane1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city6-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city6-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city5-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city5-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city4-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city4-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city3-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city3-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city2-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city2-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city1-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city1-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city6-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city6-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city5-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city5-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city4-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city4-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city3-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city3-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city2-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city2-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "city1-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "city1-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "airplane",
+      [
+        "plane2"
+      ]
+    ],
+    [
+      "airplane",
+      [
+        "plane1"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city6-2"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city5-2"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city4-2"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city3-2"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city2-2"
+      ]
+    ],
+    [
+      "airport",
+      [
+        "city1-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "plane2",
+        "city4-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "plane1",
+        "city4-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck6",
+        "city6-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck5",
+        "city5-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck4",
+        "city4-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck3",
+        "city3-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck2",
+        "city2-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "truck1",
+        "city1-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package6",
+        "city3-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package5",
+        "city4-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package4",
+        "city1-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package3",
+        "city1-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package2",
+        "city1-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "package1",
+        "city2-1"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city6"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city5"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city4"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city3"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city2"
+      ]
+    ],
+    [
+      "city",
+      [
+        "city1"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city6-2",
+        "city6"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city6-1",
+        "city6"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city5-2",
+        "city5"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city5-1",
+        "city5"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city4-2",
+        "city4"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city4-1",
+        "city4"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city3-2",
+        "city3"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city3-1",
+        "city3"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city2-2",
+        "city2"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city2-1",
+        "city2"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city1-2",
+        "city1"
+      ]
+    ],
+    [
+      "in-city",
+      [
+        "city1-1",
+        "city1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city6-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city5-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city4-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city3-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city2-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city1-1"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city6-2"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city5-2"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city4-2"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city3-2"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city2-2"
+      ]
+    ],
+    [
+      "location",
+      [
+        "city1-2"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package6"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package5"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package4"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package3"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package2"
+      ]
+    ],
+    [
+      "obj",
+      [
+        "package1"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck6"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck5"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck4"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck3"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck2"
+      ]
+    ],
+    [
+      "truck",
+      [
+        "truck1"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "load-truck",
+      "params": [
+        [
+          "obj",
+          "object"
+        ],
+        [
+          "truck",
+          "object"
+        ],
+        [
+          "loc",
+          "object"
+        ]
+      ],
+      "stmts": [
+        1
+      ],
+      "pre": [
+        {
+          "rel": "obj",
+          "args": [
+            {
+              "var": "obj"
+            }
+          ]
+        },
+        {
+          "rel": "truck",
+          "args": [
+            {
+              "var": "truck"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "truck"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "add": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "truck"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "load-truck "
+        },
+        {
+          "handle": "obj"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "truck"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "loc"
+        }
+      ]
+    },
+    {
+      "name": "load-airplane",
+      "params": [
+        [
+          "obj",
+          "object"
+        ],
+        [
+          "airplane",
+          "object"
+        ],
+        [
+          "loc",
+          "object"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "rel": "obj",
+          "args": [
+            {
+              "var": "obj"
+            }
+          ]
+        },
+        {
+          "rel": "airplane",
+          "args": [
+            {
+              "var": "airplane"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "airplane"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "add": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "airplane"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "load-airplane "
+        },
+        {
+          "handle": "obj"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "airplane"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "loc"
+        }
+      ]
+    },
+    {
+      "name": "unload-truck",
+      "params": [
+        [
+          "obj",
+          "object"
+        ],
+        [
+          "truck",
+          "object"
+        ],
+        [
+          "loc",
+          "object"
+        ]
+      ],
+      "stmts": [
+        3
+      ],
+      "pre": [
+        {
+          "rel": "obj",
+          "args": [
+            {
+              "var": "obj"
+            }
+          ]
+        },
+        {
+          "rel": "truck",
+          "args": [
+            {
+              "var": "truck"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "truck"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "truck"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "truck"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "unload-truck "
+        },
+        {
+          "handle": "obj"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "truck"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "loc"
+        }
+      ]
+    },
+    {
+      "name": "unload-airplane",
+      "params": [
+        [
+          "obj",
+          "object"
+        ],
+        [
+          "airplane",
+          "object"
+        ],
+        [
+          "loc",
+          "object"
+        ]
+      ],
+      "stmts": [
+        4
+      ],
+      "pre": [
+        {
+          "rel": "obj",
+          "args": [
+            {
+              "var": "obj"
+            }
+          ]
+        },
+        {
+          "rel": "airplane",
+          "args": [
+            {
+              "var": "airplane"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "loc"
+            }
+          ]
+        },
+        {
+          "rel": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "airplane"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "airplane"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "in",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "airplane"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "obj"
+            },
+            {
+              "var": "loc"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "unload-airplane "
+        },
+        {
+          "handle": "obj"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "airplane"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "loc"
+        }
+      ]
+    },
+    {
+      "name": "drive-truck",
+      "params": [
+        [
+          "truck",
+          "object"
+        ],
+        [
+          "locfrom",
+          "object"
+        ],
+        [
+          "locto",
+          "object"
+        ],
+        [
+          "city",
+          "object"
+        ]
+      ],
+      "stmts": [
+        5
+      ],
+      "pre": [
+        {
+          "rel": "truck",
+          "args": [
+            {
+              "var": "truck"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "locfrom"
+            }
+          ]
+        },
+        {
+          "rel": "location",
+          "args": [
+            {
+              "var": "locto"
+            }
+          ]
+        },
+        {
+          "rel": "city",
+          "args": [
+            {
+              "var": "city"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "truck"
+            },
+            {
+              "var": "locfrom"
+            }
+          ]
+        },
+        {
+          "rel": "in-city",
+          "args": [
+            {
+              "var": "locfrom"
+            },
+            {
+              "var": "city"
+            }
+          ]
+        },
+        {
+          "rel": "in-city",
+          "args": [
+            {
+              "var": "locto"
+            },
+            {
+              "var": "city"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "truck"
+            },
+            {
+              "var": "locfrom"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "truck"
+            },
+            {
+              "var": "locto"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "drive-truck "
+        },
+        {
+          "handle": "truck"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "locfrom"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "locto"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "city"
+        }
+      ]
+    },
+    {
+      "name": "fly-airplane",
+      "params": [
+        [
+          "airplane",
+          "object"
+        ],
+        [
+          "locfrom",
+          "object"
+        ],
+        [
+          "locto",
+          "object"
+        ]
+      ],
+      "stmts": [
+        6
+      ],
+      "pre": [
+        {
+          "rel": "airplane",
+          "args": [
+            {
+              "var": "airplane"
+            }
+          ]
+        },
+        {
+          "rel": "airport",
+          "args": [
+            {
+              "var": "locfrom"
+            }
+          ]
+        },
+        {
+          "rel": "airport",
+          "args": [
+            {
+              "var": "locto"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "airplane"
+            },
+            {
+              "var": "locfrom"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "airplane"
+            },
+            {
+              "var": "locfrom"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "airplane"
+            },
+            {
+              "var": "locto"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "fly-airplane "
+        },
+        {
+          "handle": "airplane"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "locfrom"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "locto"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package6"
+          },
+          {
+            "h": "city1-2"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package5"
+          },
+          {
+            "h": "city6-2"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package4"
+          },
+          {
+            "h": "city3-2"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package3"
+          },
+          {
+            "h": "city6-1"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package2"
+          },
+          {
+            "h": "city6-2"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "package1"
+          },
+          {
+            "h": "city2-1"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    7
+  ],
+  "failures": []
+}

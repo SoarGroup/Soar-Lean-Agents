@@ -1,0 +1,1146 @@
+{
+  "format": "worldspec-1",
+  "name": "pddl-movie-strips",
+  "title": "movie-strips / strips-movie-x-2 (PDDL)",
+  "statements": [
+    [
+      1,
+      "PDDL action rewind-movie-2"
+    ],
+    [
+      2,
+      "PDDL action rewind-movie"
+    ],
+    [
+      3,
+      "PDDL action reset-counter"
+    ],
+    [
+      4,
+      "PDDL action get-chips"
+    ],
+    [
+      5,
+      "PDDL action get-dip"
+    ],
+    [
+      6,
+      "PDDL action get-pop"
+    ],
+    [
+      7,
+      "PDDL action get-cheese"
+    ],
+    [
+      8,
+      "PDDL action get-crackers"
+    ],
+    [
+      9,
+      "PDDL goal of problem strips-movie-x-2"
+    ]
+  ],
+  "assumptions": [],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "c-6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "d-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "d-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "p-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "p-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "z-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "z-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "k-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "k-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "movie",
+      "type": "movie",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "movie"
+          }
+        ],
+        [
+          "rewound",
+          {
+            "sym": "false"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "counter",
+      "type": "counter",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "counter"
+          }
+        ],
+        [
+          "at-two-hours",
+          {
+            "sym": "false"
+          }
+        ],
+        [
+          "at-other-than-two-hours",
+          {
+            "sym": "true"
+          }
+        ],
+        [
+          "at-zero",
+          {
+            "sym": "false"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "viewer",
+      "type": "viewer",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "viewer"
+          }
+        ],
+        [
+          "have-chips",
+          {
+            "sym": "false"
+          }
+        ],
+        [
+          "have-dip",
+          {
+            "sym": "false"
+          }
+        ],
+        [
+          "have-pop",
+          {
+            "sym": "false"
+          }
+        ],
+        [
+          "have-cheese",
+          {
+            "sym": "false"
+          }
+        ],
+        [
+          "have-crackers",
+          {
+            "sym": "false"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "cheese",
+      [
+        "z-6"
+      ]
+    ],
+    [
+      "cheese",
+      [
+        "z-5"
+      ]
+    ],
+    [
+      "cheese",
+      [
+        "z-4"
+      ]
+    ],
+    [
+      "cheese",
+      [
+        "z-3"
+      ]
+    ],
+    [
+      "cheese",
+      [
+        "z-2"
+      ]
+    ],
+    [
+      "cheese",
+      [
+        "z-1"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-6"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-5"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-4"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-3"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-2"
+      ]
+    ],
+    [
+      "chips",
+      [
+        "c-1"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-6"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-5"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-4"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-3"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-2"
+      ]
+    ],
+    [
+      "crackers",
+      [
+        "k-1"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-6"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-5"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-4"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-3"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-2"
+      ]
+    ],
+    [
+      "dip",
+      [
+        "d-1"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-6"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-5"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-4"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-3"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-2"
+      ]
+    ],
+    [
+      "pop",
+      [
+        "p-1"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "rewind-movie-2",
+      "params": [],
+      "stmts": [
+        1
+      ],
+      "pre": [
+        {
+          "obj": "ncounter",
+          "type": "counter"
+        },
+        {
+          "has": "ncounter",
+          "prop": "at-two-hours",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nmovie",
+          "type": "movie"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nmovie",
+          "prop": "rewound",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "rewind-movie-2 "
+        }
+      ]
+    },
+    {
+      "name": "rewind-movie",
+      "params": [],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "ncounter",
+          "type": "counter"
+        },
+        {
+          "has": "ncounter",
+          "prop": "at-other-than-two-hours",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nmovie",
+          "type": "movie"
+        },
+        {
+          "obj": "ncounter",
+          "type": "counter"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nmovie",
+          "prop": "rewound",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        },
+        {
+          "update": "ncounter",
+          "prop": "at-zero",
+          "rhs": {
+            "val": {
+              "sym": "false"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "rewind-movie "
+        }
+      ]
+    },
+    {
+      "name": "reset-counter",
+      "params": [],
+      "stmts": [
+        3
+      ],
+      "pre": [],
+      "bind": [
+        {
+          "obj": "ncounter",
+          "type": "counter"
+        }
+      ],
+      "effects": [
+        {
+          "update": "ncounter",
+          "prop": "at-zero",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "reset-counter "
+        }
+      ]
+    },
+    {
+      "name": "get-chips",
+      "params": [
+        [
+          "x",
+          "object"
+        ]
+      ],
+      "stmts": [
+        4
+      ],
+      "pre": [
+        {
+          "rel": "chips",
+          "args": [
+            {
+              "var": "x"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nviewer",
+          "type": "viewer"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nviewer",
+          "prop": "have-chips",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "get-chips "
+        },
+        {
+          "handle": "x"
+        }
+      ]
+    },
+    {
+      "name": "get-dip",
+      "params": [
+        [
+          "x",
+          "object"
+        ]
+      ],
+      "stmts": [
+        5
+      ],
+      "pre": [
+        {
+          "rel": "dip",
+          "args": [
+            {
+              "var": "x"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nviewer",
+          "type": "viewer"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nviewer",
+          "prop": "have-dip",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "get-dip "
+        },
+        {
+          "handle": "x"
+        }
+      ]
+    },
+    {
+      "name": "get-pop",
+      "params": [
+        [
+          "x",
+          "object"
+        ]
+      ],
+      "stmts": [
+        6
+      ],
+      "pre": [
+        {
+          "rel": "pop",
+          "args": [
+            {
+              "var": "x"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nviewer",
+          "type": "viewer"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nviewer",
+          "prop": "have-pop",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "get-pop "
+        },
+        {
+          "handle": "x"
+        }
+      ]
+    },
+    {
+      "name": "get-cheese",
+      "params": [
+        [
+          "x",
+          "object"
+        ]
+      ],
+      "stmts": [
+        7
+      ],
+      "pre": [
+        {
+          "rel": "cheese",
+          "args": [
+            {
+              "var": "x"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nviewer",
+          "type": "viewer"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nviewer",
+          "prop": "have-cheese",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "get-cheese "
+        },
+        {
+          "handle": "x"
+        }
+      ]
+    },
+    {
+      "name": "get-crackers",
+      "params": [
+        [
+          "x",
+          "object"
+        ]
+      ],
+      "stmts": [
+        8
+      ],
+      "pre": [
+        {
+          "rel": "crackers",
+          "args": [
+            {
+              "var": "x"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "nviewer",
+          "type": "viewer"
+        }
+      ],
+      "effects": [
+        {
+          "update": "nviewer",
+          "prop": "have-crackers",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "get-crackers "
+        },
+        {
+          "handle": "x"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "nmovie",
+        "type": "movie"
+      },
+      {
+        "has": "nmovie",
+        "prop": "rewound",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "obj": "ncounter",
+        "type": "counter"
+      },
+      {
+        "has": "ncounter",
+        "prop": "at-zero",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "obj": "nviewer",
+        "type": "viewer"
+      },
+      {
+        "has": "nviewer",
+        "prop": "have-chips",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "has": "nviewer",
+        "prop": "have-dip",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "has": "nviewer",
+        "prop": "have-pop",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "has": "nviewer",
+        "prop": "have-cheese",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      },
+      {
+        "has": "nviewer",
+        "prop": "have-crackers",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "true"
+          }
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    9
+  ],
+  "failures": []
+}

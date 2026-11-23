@@ -1,0 +1,159 @@
+objid 1
+category object1
+name rice1
+
+objid 2
+category object1
+name pear1
+
+objid 3
+category object1
+name flounder1
+
+objid 4
+category object1
+name okra1
+
+objid 5
+category object1
+name pork1
+
+objid 6
+category object1
+name lamb1
+
+objid 7
+category object1
+name rest1
+
+objid 8
+category object1
+name hangover1
+
+objid 9
+category object1
+name depression1
+
+objid 10
+category object1
+name abrasion1
+
+objid 11
+category object1
+name kentucky1
+
+objid 12
+category object1
+name bosnia1
+
+objid 13
+category object1
+name surrey1
+
+objid 14
+category object1
+name pennsylvania1
+
+objid 15
+category object1
+name alsace1
+
+objid 16
+category object1
+name quebec1
+
+objid 17
+category object1
+name guanabara1
+
+objid 18
+category object1
+name mars1
+
+objid 19
+category object1
+name earth1
+
+objid 20
+category object1
+name uranus1
+
+objid 21
+category object1
+name venus1
+
+predicate attacks1
+11 12
+14 15
+15 16
+12 13
+13 14
+16 17
+
+predicate craves1
+9 3
+10 5
+7 5
+8 1
+
+predicate eats1
+6 5
+5 4
+5 6
+6 3
+4 2
+1 1
+1 3
+3 6
+3 1
+1 2
+2 4
+2 1
+4 5
+
+predicate food1
+1
+2
+3
+4
+5
+6
+
+predicate harmony1
+7 21
+
+predicate locale1
+4 17
+5 16
+1 12
+2 13
+6 14
+3 15
+
+predicate orbits1
+18 19
+19 20
+20 21
+
+predicate pain1
+8
+9
+10
+
+predicate planet1
+18
+19
+20
+21
+
+predicate pleasure1
+7
+
+predicate province1
+11
+12
+13
+14
+15
+16
+17

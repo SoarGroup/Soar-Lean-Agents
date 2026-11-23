@@ -1,6 +1,6 @@
 # Soar program conventions — initial list (draft for review)
 
-Generated 23 November 2026, 15:52 by `gen_spec.py` from `Soar-Conventions.xlsx` (303 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 23 November 2026, 18:06 by `gen_spec.py` from `Soar-Conventions.xlsx` (304 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -9,7 +9,7 @@ Generated 23 November 2026, 15:52 by `gen_spec.py` from `Soar-Conventions.xlsx` 
 | [L0 Definitional](#l0-definitional) | 113 | Describes what Soar is or does: definitions, syntax and architectural mechanisms. A program cannot violate it. |
 | [L1 Architectural](#l1-architectural) | 24 | Tells the programmer what to do or avoid, where the architecture makes a violation fail. |
 | [L2 Universal practice](#l2-universal-practice) | 14 | Adopted in essentially every Soar program. |
-| [L3 Guidance](#l3-guidance) | 103 | Guidance from the Soar manual and tutorial that the library material supports. |
+| [L3 Guidance](#l3-guidance) | 104 | Guidance from the Soar manual and tutorial that the library material supports. |
 | [L3S Guidance (Soar only)](#l3s-guidance-soar-only) | 4 | L3 guidance for Soar programs in general that World-Conventions-v6 does not include, because a more specific world convention replaces it. The World-Conventions column gives the reason. |
 | [L4 Default rules](#l4-default-rules) | 9 | Provided or assumed by Soar's general default rules (e.g. an operator no-change substate gets ^name of the operator; ^top-state). |
 | [L5 Selection space (classic)](#l5-selection-space-classic) | 22 | Conventions of the default selection / look-ahead library (^desired, ^success, ^problem-space copy controls, evaluation values). |
@@ -2279,6 +2279,18 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 *If violated:* Duplicates never detected; RL features never match
 
 *Source:* Missionaries & Cannibals family (agentgen, 6 Nov 2026)
+
+**L3-104** (Requirement, Must, convention, shared with World-Conventions) — A property that rules test for true always carries true or false: it is initialized when the world or state is created and maintained by the operators that change it, so that no rule tests for its absence. A negated proposition is a test for false.
+
+*Rationale:* Testing absence is a negated condition; on substate structure it is a local negation, which is dropped from chunks (L0-091, L3-062). A value that is always present is tested by a positive condition that chunking keeps. This extends L3-035 (records always exist) to properties.
+
+*If violated:* Over-general chunks from look-ahead; or, if the property is not initialized, a test for false fails in the initial situation.
+
+*Example:* pick-up: (<hand> ^empty true - false); put-down: (<hand> ^empty false - true); initialization: (<hand> ^empty true).
+
+*See:* parent L3-035
+
+*Source:* JEL, 23 Nov 2026 (PDDL conversion, Tasks/pddl)
 
 ### Goal/desired representation
 

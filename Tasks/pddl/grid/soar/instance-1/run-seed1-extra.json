@@ -1,0 +1,28 @@
+{
+ "seed": 1,
+ "outcome": "cap",
+ "decisions": 60000,
+ "n_actions": 1,
+ "actions": [
+  [
+   "move",
+   "node2-4",
+   "node1-4"
+  ]
+ ],
+ "seconds": 234.3,
+ "cpu": 190.124,
+ "chunks_learned": 0,
+ "chunk_setting": [
+  "===================================================",
+  "           Chunk Commands and Settings",
+  "==================================================="
+ ],
+ "extra": [
+  "/home/claude/build/exp-argN.soar"
+ ],
+ "valid": "-",
+ "problem": "instance-1.pddl",
+ "rules": 23,
+ "chunk": "never"
+}
