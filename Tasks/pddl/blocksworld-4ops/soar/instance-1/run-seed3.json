@@ -1,0 +1,48 @@
+{
+ "seed": 3,
+ "outcome": "success",
+ "decisions": 50357,
+ "n_actions": 6,
+ "actions": [
+  [
+   "pick-up",
+   "b"
+  ],
+  [
+   "stack",
+   "b",
+   "a"
+  ],
+  [
+   "pick-up",
+   "c"
+  ],
+  [
+   "stack",
+   "c",
+   "b"
+  ],
+  [
+   "pick-up",
+   "d"
+  ],
+  [
+   "stack",
+   "d",
+   "c"
+  ]
+ ],
+ "seconds": 29.6,
+ "cpu": 12.808,
+ "chunks_learned": 0,
+ "chunk_setting": [
+  "===================================================",
+  "           Chunk Commands and Settings",
+  "==================================================="
+ ],
+ "extra": [],
+ "valid": "VALID",
+ "problem": "instance-1.pddl",
+ "rules": 20,
+ "chunk": "never"
+}

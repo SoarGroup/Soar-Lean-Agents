@@ -1,0 +1,20 @@
+{
+ "seed": 3,
+ "outcome": "cap",
+ "decisions": 60000,
+ "n_actions": 0,
+ "actions": [],
+ "seconds": 107.3,
+ "cpu": 72.086,
+ "chunks_learned": 0,
+ "chunk_setting": [
+  "===================================================",
+  "           Chunk Commands and Settings",
+  "==================================================="
+ ],
+ "extra": [],
+ "valid": "-",
+ "problem": "instance-1.pddl",
+ "rules": 32,
+ "chunk": "never"
+}

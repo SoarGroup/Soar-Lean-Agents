@@ -1,5 +1,7 @@
 # Classic AI and cognitive tasks: English to Soar through Lean (16 November 2026)
 
+## Rechecked 23 November 2026: chunk never, Soar 9.6.50 built from source, library v2.45
+
 ## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
 
 The seven described tasks were regenerated with `SoarLean-2026-11-21b-release.zip` and run on library v2.45. The release of 21 November lacked the WorldSpec extensions made for these tasks (they were on a separate 16 November line); revision b merges them, and path A now writes the problem-space test on `each` and derived-relation rules as path B does. For every task: `rosiegen json` equals the Python JSON, paths A and B give identical rules, the semantics and Soar agree on all 22 example states, and `rosiegen replay` accepts every new run. The rule changes are the 18 November conventions only (problem-space tests, group comments, `^unachieved-desireds true`); rule counts are unchanged.

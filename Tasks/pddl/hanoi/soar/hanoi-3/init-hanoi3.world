@@ -1,0 +1,47 @@
+objid 1
+category object1
+name peg11
+
+objid 2
+category object1
+name peg21
+
+objid 3
+category object1
+name peg31
+
+objid 4
+category object1
+name d-11
+
+objid 5
+category object1
+name d-21
+
+objid 6
+category object1
+name d-31
+
+predicate clear1
+2
+3
+4
+
+predicate on1
+6 1
+5 6
+4 5
+
+predicate smaller1
+1 4
+1 5
+1 6
+2 4
+2 5
+2 6
+3 4
+3 5
+3 6
+5 4
+6 4
+6 5

@@ -1,0 +1,14 @@
+# WorldSpec description generated from PDDL by Tasks/pddl/tools/pddl2ws.py (literal translation).
+from worldspec_py import *
+TASK = task(
+  name='pddl-blocks',
+  title='blocks / blocks-4-1 (PDDL)',
+  folder='pddl/pddl-blocks',
+  lean_name='pddlBlocks',
+  statements=[(1, 'PDDL action pick-up'), (2, 'PDDL action put-down'), (3, 'PDDL action stack'), (4, 'PDDL action unstack'), (5, 'PDDL goal of problem blocks-4-1')],
+  world_rels=['clear', 'handempty', 'holding', 'on', 'ontable'],
+  ops=[{'name': 'pick-up', 'params': [('x', 'object')], 'stmts': [1], 'pre': [{'rel': 'clear', 'args': [{'var': 'x'}]}, {'rel': 'ontable', 'args': [{'var': 'x'}]}, {'obj': 'nhand', 'type': 'hand'}, {'has': 'nhand', 'prop': 'empty', 'cmp': 'eq', 'rhs': {'val': {'sym': 'true'}}}], 'bind': [{'obj': 'nhand', 'type': 'hand'}], 'effects': [{'del': 'ontable', 'args': [{'var': 'x'}]}, {'del': 'clear', 'args': [{'var': 'x'}]}, {'add': 'holding', 'args': [{'var': 'x'}]}, {'update': 'nhand', 'prop': 'empty', 'rhs': {'val': {'sym': 'false'}}}], 'report': [{'text': 'pick-up '}, {'handle': 'x'}]}, {'name': 'put-down', 'params': [('x', 'object')], 'stmts': [2], 'pre': [{'rel': 'holding', 'args': [{'var': 'x'}]}], 'bind': [{'obj': 'nhand', 'type': 'hand'}], 'effects': [{'del': 'holding', 'args': [{'var': 'x'}]}, {'add': 'clear', 'args': [{'var': 'x'}]}, {'add': 'ontable', 'args': [{'var': 'x'}]}, {'update': 'nhand', 'prop': 'empty', 'rhs': {'val': {'sym': 'true'}}}], 'report': [{'text': 'put-down '}, {'handle': 'x'}]}, {'name': 'stack', 'params': [('x', 'object'), ('y', 'object')], 'stmts': [3], 'pre': [{'rel': 'holding', 'args': [{'var': 'x'}]}, {'rel': 'clear', 'args': [{'var': 'y'}]}], 'bind': [{'obj': 'nhand', 'type': 'hand'}], 'effects': [{'del': 'holding', 'args': [{'var': 'x'}]}, {'del': 'clear', 'args': [{'var': 'y'}]}, {'add': 'clear', 'args': [{'var': 'x'}]}, {'add': 'on', 'args': [{'var': 'x'}, {'var': 'y'}]}, {'update': 'nhand', 'prop': 'empty', 'rhs': {'val': {'sym': 'true'}}}], 'report': [{'text': 'stack '}, {'handle': 'x'}, {'text': ' '}, {'handle': 'y'}]}, {'name': 'unstack', 'params': [('x', 'object'), ('y', 'object')], 'stmts': [4], 'pre': [{'rel': 'on', 'args': [{'var': 'x'}, {'var': 'y'}]}, {'rel': 'clear', 'args': [{'var': 'x'}]}, {'obj': 'nhand', 'type': 'hand'}, {'has': 'nhand', 'prop': 'empty', 'cmp': 'eq', 'rhs': {'val': {'sym': 'true'}}}], 'bind': [{'obj': 'nhand', 'type': 'hand'}], 'effects': [{'del': 'clear', 'args': [{'var': 'x'}]}, {'del': 'on', 'args': [{'var': 'x'}, {'var': 'y'}]}, {'add': 'holding', 'args': [{'var': 'x'}]}, {'add': 'clear', 'args': [{'var': 'y'}]}, {'update': 'nhand', 'prop': 'empty', 'rhs': {'val': {'sym': 'false'}}}], 'report': [{'text': 'unstack '}, {'handle': 'x'}, {'text': ' '}, {'handle': 'y'}]}],
+  goal={'ex': [{'rel': 'on', 'args': [{'h': 'd'}, {'h': 'c'}]}, {'rel': 'on', 'args': [{'h': 'c'}, {'h': 'a'}]}, {'rel': 'on', 'args': [{'h': 'a'}, {'h': 'b'}]}]},
+  goalStmts=[5],
+  assumptions=[],
+)

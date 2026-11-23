@@ -1,0 +1,2270 @@
+{
+  "format": "worldspec-1",
+  "name": "pddl-grid",
+  "title": "grid / strips-grid-y-1 (PDDL)",
+  "statements": [
+    [
+      1,
+      "PDDL action unlock"
+    ],
+    [
+      2,
+      "PDDL action move"
+    ],
+    [
+      3,
+      "PDDL action pickup"
+    ],
+    [
+      4,
+      "PDDL action pickup-and-loose"
+    ],
+    [
+      5,
+      "PDDL action putdown"
+    ],
+    [
+      6,
+      "PDDL goal of problem strips-grid-y-1"
+    ]
+  ],
+  "assumptions": [],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "node0-0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node0-0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node0-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node0-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node0-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node0-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node0-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node0-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node0-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node0-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node1-0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node1-0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node1-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node1-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node1-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node1-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node1-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node1-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node1-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node1-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node2-0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node2-0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node2-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node2-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node2-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node2-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node2-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node2-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node2-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node2-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node3-0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node3-0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node3-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node3-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node3-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node3-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node3-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node3-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node3-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node3-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node4-0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node4-0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node4-1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node4-1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node4-2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node4-2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node4-3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node4-3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "node4-4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "node4-4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "triangle",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "triangle"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "diamond",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "diamond"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "square",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "square"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "circle",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "circle"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key0",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key0"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key1",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key1"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key2",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key2"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key3",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key3"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key4",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key4"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key5",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key5"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key6",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key6"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key7",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key7"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "key8",
+      "type": "object",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "key8"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "arm",
+      "type": "arm",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "arm"
+          }
+        ],
+        [
+          "empty",
+          {
+            "sym": "true"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "at",
+      [
+        "key0",
+        "node2-3"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key1",
+        "node1-3"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key2",
+        "node0-4"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key3",
+        "node0-2"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key4",
+        "node3-3"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key5",
+        "node4-1"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key6",
+        "node4-4"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key7",
+        "node3-4"
+      ]
+    ],
+    [
+      "at",
+      [
+        "key8",
+        "node2-2"
+      ]
+    ],
+    [
+      "at-robot",
+      [
+        "node2-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-0",
+        "node1-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-0",
+        "node0-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-1",
+        "node1-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-1",
+        "node0-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-1",
+        "node0-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-2",
+        "node1-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-2",
+        "node0-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-2",
+        "node0-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-3",
+        "node1-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-3",
+        "node0-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-3",
+        "node0-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-4",
+        "node1-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node0-4",
+        "node0-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-0",
+        "node2-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-0",
+        "node0-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-0",
+        "node1-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-1",
+        "node2-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-1",
+        "node0-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-1",
+        "node1-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-1",
+        "node1-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-2",
+        "node2-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-2",
+        "node0-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-2",
+        "node1-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-2",
+        "node1-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-3",
+        "node2-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-3",
+        "node0-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-3",
+        "node1-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-3",
+        "node1-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-4",
+        "node2-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-4",
+        "node0-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node1-4",
+        "node1-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-0",
+        "node3-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-0",
+        "node1-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-0",
+        "node2-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-1",
+        "node3-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-1",
+        "node1-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-1",
+        "node2-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-1",
+        "node2-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-2",
+        "node3-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-2",
+        "node1-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-2",
+        "node2-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-2",
+        "node2-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-3",
+        "node3-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-3",
+        "node1-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-3",
+        "node2-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-3",
+        "node2-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-4",
+        "node3-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-4",
+        "node1-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node2-4",
+        "node2-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-0",
+        "node4-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-0",
+        "node2-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-0",
+        "node3-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-1",
+        "node4-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-1",
+        "node2-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-1",
+        "node3-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-1",
+        "node3-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-2",
+        "node4-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-2",
+        "node2-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-2",
+        "node3-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-2",
+        "node3-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-3",
+        "node4-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-3",
+        "node2-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-3",
+        "node3-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-3",
+        "node3-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-4",
+        "node4-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-4",
+        "node2-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node3-4",
+        "node3-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-0",
+        "node3-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-0",
+        "node4-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-1",
+        "node3-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-1",
+        "node4-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-1",
+        "node4-0"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-2",
+        "node3-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-2",
+        "node4-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-2",
+        "node4-1"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-3",
+        "node3-3"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-3",
+        "node4-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-3",
+        "node4-2"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-4",
+        "node3-4"
+      ]
+    ],
+    [
+      "conn",
+      [
+        "node4-4",
+        "node4-3"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key0"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key1"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key2"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key3"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key4"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key5"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key6"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key7"
+      ]
+    ],
+    [
+      "key",
+      [
+        "key8"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key0",
+        "triangle"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key1",
+        "circle"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key2",
+        "diamond"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key3",
+        "square"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key4",
+        "square"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key5",
+        "triangle"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key6",
+        "triangle"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key7",
+        "circle"
+      ]
+    ],
+    [
+      "key-shape",
+      [
+        "key8",
+        "triangle"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node4-3",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node4-4",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node3-4",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node3-3",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node2-3",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node2-2",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node3-2",
+        "square"
+      ]
+    ],
+    [
+      "lock-shape",
+      [
+        "node4-2",
+        "square"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node4-3"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node4-4"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node3-4"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node3-3"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node2-3"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node2-2"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node3-2"
+      ]
+    ],
+    [
+      "locked",
+      [
+        "node4-2"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node0-0"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node0-1"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node0-2"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node0-3"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node0-4"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node1-0"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node1-1"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node1-2"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node1-3"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node1-4"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node2-0"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node2-1"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node2-4"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node3-0"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node3-1"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node4-0"
+      ]
+    ],
+    [
+      "open",
+      [
+        "node4-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node0-0"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node0-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node0-2"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node0-3"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node0-4"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node1-0"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node1-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node1-2"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node1-3"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node1-4"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node2-0"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node2-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node2-2"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node2-3"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node2-4"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node3-0"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node3-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node3-2"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node3-3"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node3-4"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node4-0"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node4-1"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node4-2"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node4-3"
+      ]
+    ],
+    [
+      "place",
+      [
+        "node4-4"
+      ]
+    ],
+    [
+      "shape",
+      [
+        "triangle"
+      ]
+    ],
+    [
+      "shape",
+      [
+        "diamond"
+      ]
+    ],
+    [
+      "shape",
+      [
+        "square"
+      ]
+    ],
+    [
+      "shape",
+      [
+        "circle"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "unlock",
+      "params": [
+        [
+          "curpos",
+          "object"
+        ],
+        [
+          "lockpos",
+          "object"
+        ],
+        [
+          "key",
+          "object"
+        ],
+        [
+          "shape",
+          "object"
+        ]
+      ],
+      "stmts": [
+        1
+      ],
+      "pre": [
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "lockpos"
+            }
+          ]
+        },
+        {
+          "rel": "key",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        },
+        {
+          "rel": "shape",
+          "args": [
+            {
+              "var": "shape"
+            }
+          ]
+        },
+        {
+          "rel": "conn",
+          "args": [
+            {
+              "var": "curpos"
+            },
+            {
+              "var": "lockpos"
+            }
+          ]
+        },
+        {
+          "rel": "key-shape",
+          "args": [
+            {
+              "var": "key"
+            },
+            {
+              "var": "shape"
+            }
+          ]
+        },
+        {
+          "rel": "lock-shape",
+          "args": [
+            {
+              "var": "lockpos"
+            },
+            {
+              "var": "shape"
+            }
+          ]
+        },
+        {
+          "rel": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "locked",
+          "args": [
+            {
+              "var": "lockpos"
+            }
+          ]
+        },
+        {
+          "rel": "holding",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "locked",
+          "args": [
+            {
+              "var": "lockpos"
+            }
+          ]
+        },
+        {
+          "add": "open",
+          "args": [
+            {
+              "var": "lockpos"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "unlock "
+        },
+        {
+          "handle": "curpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "lockpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "key"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "shape"
+        }
+      ]
+    },
+    {
+      "name": "move",
+      "params": [
+        [
+          "curpos",
+          "object"
+        ],
+        [
+          "nextpos",
+          "object"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "nextpos"
+            }
+          ]
+        },
+        {
+          "rel": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "conn",
+          "args": [
+            {
+              "var": "curpos"
+            },
+            {
+              "var": "nextpos"
+            }
+          ]
+        },
+        {
+          "rel": "open",
+          "args": [
+            {
+              "var": "nextpos"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "add": "at-robot",
+          "args": [
+            {
+              "var": "nextpos"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "move "
+        },
+        {
+          "handle": "curpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "nextpos"
+        }
+      ]
+    },
+    {
+      "name": "pickup",
+      "params": [
+        [
+          "curpos",
+          "object"
+        ],
+        [
+          "key",
+          "object"
+        ]
+      ],
+      "stmts": [
+        3
+      ],
+      "pre": [
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "key",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        },
+        {
+          "rel": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "key"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "obj": "narm",
+          "type": "arm"
+        },
+        {
+          "has": "narm",
+          "prop": "empty",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "narm",
+          "type": "arm"
+        }
+      ],
+      "effects": [
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "key"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "add": "holding",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        },
+        {
+          "update": "narm",
+          "prop": "empty",
+          "rhs": {
+            "val": {
+              "sym": "false"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "pickup "
+        },
+        {
+          "handle": "curpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "key"
+        }
+      ]
+    },
+    {
+      "name": "pickup-and-loose",
+      "params": [
+        [
+          "curpos",
+          "object"
+        ],
+        [
+          "newkey",
+          "object"
+        ],
+        [
+          "oldkey",
+          "object"
+        ]
+      ],
+      "stmts": [
+        4
+      ],
+      "pre": [
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "key",
+          "args": [
+            {
+              "var": "newkey"
+            }
+          ]
+        },
+        {
+          "rel": "key",
+          "args": [
+            {
+              "var": "oldkey"
+            }
+          ]
+        },
+        {
+          "rel": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "holding",
+          "args": [
+            {
+              "var": "oldkey"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "newkey"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "del": "holding",
+          "args": [
+            {
+              "var": "oldkey"
+            }
+          ]
+        },
+        {
+          "del": "at",
+          "args": [
+            {
+              "var": "newkey"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "add": "holding",
+          "args": [
+            {
+              "var": "newkey"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "oldkey"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        }
+      ],
+      "report": [
+        {
+          "text": "pickup-and-loose "
+        },
+        {
+          "handle": "curpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "newkey"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "oldkey"
+        }
+      ]
+    },
+    {
+      "name": "putdown",
+      "params": [
+        [
+          "curpos",
+          "object"
+        ],
+        [
+          "key",
+          "object"
+        ]
+      ],
+      "stmts": [
+        5
+      ],
+      "pre": [
+        {
+          "rel": "place",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "key",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        },
+        {
+          "rel": "at-robot",
+          "args": [
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "rel": "holding",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "narm",
+          "type": "arm"
+        }
+      ],
+      "effects": [
+        {
+          "del": "holding",
+          "args": [
+            {
+              "var": "key"
+            }
+          ]
+        },
+        {
+          "add": "at",
+          "args": [
+            {
+              "var": "key"
+            },
+            {
+              "var": "curpos"
+            }
+          ]
+        },
+        {
+          "update": "narm",
+          "prop": "empty",
+          "rhs": {
+            "val": {
+              "sym": "true"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "putdown "
+        },
+        {
+          "handle": "curpos"
+        },
+        {
+          "text": " "
+        },
+        {
+          "handle": "key"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "key0"
+          },
+          {
+            "h": "node1-1"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    6
+  ],
+  "failures": []
+}

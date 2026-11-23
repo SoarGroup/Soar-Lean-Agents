@@ -1,0 +1,89 @@
+{
+ "seed": 3,
+ "outcome": "success",
+ "decisions": 41176,
+ "n_actions": 11,
+ "actions": [
+  [
+   "move",
+   "d-1",
+   "d-2",
+   "peg3"
+  ],
+  [
+   "move",
+   "d-2",
+   "d-3",
+   "peg2"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg3",
+   "d-2"
+  ],
+  [
+   "move",
+   "d-3",
+   "peg1",
+   "peg3"
+  ],
+  [
+   "move",
+   "d-1",
+   "d-2",
+   "peg1"
+  ],
+  [
+   "move",
+   "d-2",
+   "peg2",
+   "d-3"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg1",
+   "peg2"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg2",
+   "peg1"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg1",
+   "peg2"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg2",
+   "peg1"
+  ],
+  [
+   "move",
+   "d-1",
+   "peg1",
+   "d-2"
+  ]
+ ],
+ "seconds": 29.1,
+ "cpu": 13.383,
+ "chunks_learned": 0,
+ "chunk_setting": [
+  "===================================================",
+  "           Chunk Commands and Settings",
+  "==================================================="
+ ],
+ "extra": [
+  "/home/claude/build/exp-argN.soar"
+ ],
+ "valid": "VALID",
+ "problem": "hanoi-3.pddl",
+ "rules": 11,
+ "chunk": "never"
+}
