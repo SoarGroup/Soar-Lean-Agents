@@ -1,6 +1,6 @@
 # World conventions for Soar programs, version 6
 
-Generated 23 November 2026, 18:07 by `gen_spec.py` from `World-Conventions-v6.xlsx` (595 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 23 November 2026, 15:52 by `gen_spec.py` from `World-Conventions-v6.xlsx` (593 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -9,11 +9,11 @@ Generated 23 November 2026, 18:07 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L0 Definitional](#l0-definitional) | 113 | Describes what Soar is or does: definitions, syntax and architectural mechanisms. A program cannot violate it. |
 | [L1 Architectural](#l1-architectural) | 24 | Tells the programmer what to do or avoid, where the architecture makes a violation fail. |
 | [L2 Universal practice](#l2-universal-practice) | 14 | Adopted in essentially every Soar program. |
-| [L3 Guidance](#l3-guidance) | 104 | Guidance from the Soar manual and tutorial that the library material supports. |
+| [L3 Guidance](#l3-guidance) | 103 | Guidance from the Soar manual and tutorial that the library material supports. |
 | [L4 Default rules](#l4-default-rules) | 9 | Conventions set by the default rules of soar-base (loaded with the shared library). |
 | [L5 Selection space (classic)](#l5-selection-space-classic) | 10 | Conventions of the classic selection space that selection-world keeps. |
 | [L6 Program organization](#l6-program-organization) | 10 | Library conventions for naming, files, flags and constants. |
-| [L7 World state](#l7-world-state) | 26 | The world representation every agent-world program shares: ^world, objects and relations. |
+| [L7 World state](#l7-world-state) | 25 | The world representation every agent-world program shares: ^world, objects and relations. |
 | [L8 Desireds](#l8-desireds) | 24 | How goals are represented as desireds, and the library's bookkeeping for them. |
 | [L9 Operators](#l9-operators) | 27 | Task, composite and non-task operators. |
 | [L10 Application and output](#l10-application-and-output) | 11 | Internal and external operator application, output commands and events. |
@@ -2067,20 +2067,6 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 
 *Source:* Missionaries & Cannibals family (agentgen, 6 Nov 2026)
 
-**L3-104** (Requirement) — A property that rules test for true always carries true or false: it is initialized when the world or state is created and maintained by the operators that change it, so that no rule tests for its absence. A negated proposition is a test for false.
-
-*Rationale:* Testing absence is a negated condition; on substate structure it is a local negation, which is dropped from chunks (L0-091, L3-062). A value that is always present is tested by a positive condition that chunking keeps. This extends L3-035 (records always exist) to properties.
-
-*If violated:* Over-general chunks from look-ahead; or, if the property is not initialized, a test for false fails in the initial situation.
-
-*Example:* pick-up: (<hand> ^empty true - false); put-down: (<hand> ^empty false - true); initialization: (<hand> ^empty true).
-
-*Task supplies:* yes
-
-*See:* related L3-035; L3-062; L7-027
-
-*Source:* JEL, 23 Nov 2026 (PDDL conversion, Tasks/pddl)
-
 ### Goal/desired representation
 
 **L3-024** (Requirement, formerly GOL-012) — The goal is a structure on the state, created at initialization, and success is recognized by comparing it with the current state; the goal is not hard-coded in a rule.
@@ -3712,20 +3698,6 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 *See:* related L7-016
 
 *Source:* Soar-library v2.45 candidate, 21 Nov 2026; Soar – To-do row 5
-
-**L7-027** (Requirement) — A proposition with no arguments (for example a PDDL nullary predicate such as handempty) is a property of an object in the world: (<objs> ^object <o>) (<o> ^object-handle hand ^empty true). It is not an attribute of the world identifier or of the task object. Which object and which property carry a proposition is a task decision.
-
-*Rationale:* Look-ahead copies a world's objects with their attributes (selection-world*elaborate*evaluate-operator*default-state-copy-object-attributes) and its relations, so an object property needs no new copy rule. The task object carries the goal bookkeeping (^goal-met) and is kept for it.
-
-*If violated:* An attribute on the world identifier needs its own copy rule and a new kind of condition in the generators; one on the task object mixes the proposition with goal bookkeeping.
-
-*Example:* Blocks world (4 operators): (<hand> ^object-handle hand ^empty true); ferry: (<ferry> ^object-handle ferry ^empty false) while a car is on board.
-
-*Task supplies:* yes
-
-*See:* related L3-104; L7-010
-
-*Source:* JEL, 23 Nov 2026 (PDDL conversion, Tasks/pddl, tools/pddl2ws.py)
 
 ### Relations
 

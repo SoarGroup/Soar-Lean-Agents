@@ -1,6 +1,0 @@
-# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
-# The path assumes this folder sits at Tasks/pddl/<domain>/soar/<problem>.
-pushd "../../../../../Soar/soar-library"
-source soar-library.soar
-popd
-source pddl-movie-strips-rules.soar
