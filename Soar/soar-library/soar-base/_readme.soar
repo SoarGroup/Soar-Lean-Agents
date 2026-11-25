@@ -7,7 +7,7 @@
 # Loaded by: soar-library.soar
 #
 # Contents (rules per file)
-#      7  simple.soar: Simple default productions for Soar 9 (substate io pointer, top-state elaborations, no-change handling, conflict rejection).
+#      9  simple.soar: Simple default productions for Soar 9 (substate io pointer, top-state elaborations, no-change handling, conflict rejection, random continuation in look-ahead and its mark).
 #
 # Settings are commands, so they cannot carry :default and are not rules.
 #

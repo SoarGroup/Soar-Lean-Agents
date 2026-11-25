@@ -1,4 +1,4 @@
-## elaborations.soar -- selection-world: 25 elaborations, 1 proposal, 9 applications.
+## elaborations.soar -- selection-world: 27 elaborations, 1 proposal, 11 applications.
 
 ## ---- elaborations ----
 
@@ -119,6 +119,26 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-stamp
    (<new-world> ^duplicate-of.stamp <p>)
 -->
    (<new-world> ^parent-stamp <p>)}
+
+## Elaborate evaluate-operator default-state-copy-steps -> sets parent-steps (v2.47).
+## The look-ahead world starts with the look-ahead step count of the world it was copied from (0 below the real world), so
+## ^look-ahead-steps (ground-state.soar) counts the operators applied on the whole look-ahead path.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-steps
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of.look-ahead-steps <n>)
+-->
+   (<new-world> ^parent-steps <n>)}
+
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-steps*zero
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^duplicate-of <old>)
+   (<old> -^look-ahead-steps)
+-->
+   (<new-world> ^parent-steps 0)}
 
 ## Elaborate evaluate-operator default-state-copy-object -> sets object, object-handle, duplicate-of.
 sp {selection-world*elaborate*evaluate-operator*default-state-copy-object
@@ -530,12 +550,14 @@ sp {selection-world*apply*look-ahead*tried-tied-operator
 
 ## Apply evaluate-operator -> sets symbolic-val.
 ## Return Results
+## v2.47: a failure (partial-failure, exhaustion-failure, failure, prohibit-failure) is not passed back from a look-ahead state
+## that continued at random (^random-continuation true, soar-base/simple.soar): it shows only that one random path failed, not
+## that the evaluated operator fails; it is passed back as depth-exceeded (rule below). Successes are passed back as before.
+## (Soar - To-do row 6: water-jug-look-ahead-rl learned 'pour 3->5 from (3,0) is partial-failure' after a random pour back.)
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal
    :default
    (state <s> ^superstate <superstate>
-              ^ { << required-success partial-success
-                  indifferent partial-failure exhaustion-failure failure prohibit-failure
-                  >> <svalue> } <desireds2>)
+              ^ { << required-success partial-success indifferent >> <svalue> } <desireds2>)
    (<desireds2> ^duplicate-of <desireds>)
    (<superstate> ^operator <super-operator>
                  ^evaluation <evaluation>)
@@ -545,6 +567,38 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal
    (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
 -->
    (<evaluation> ^symbolic-value <svalue>)}
+
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*failure
+   :default
+   (state <s> ^superstate <superstate>
+             -^random-continuation true
+              ^ { << partial-failure exhaustion-failure failure prohibit-failure >> <svalue> } <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+   (<evaluation> ^lower-bound $ <lower-bound>)   # v2.30: the chunk tests this bound literally (none: no cut-off below)
+-->
+   (<evaluation> ^symbolic-value <svalue>)}
+
+
+## A failure after a random continuation is passed back as depth-exceeded (no information about the evaluated operator).
+sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*failure*random-continuation
+   :default
+   (state <s> ^quiescence t   # no chunk (as for the other depth-exceeded results)
+              ^superstate <superstate>
+              ^random-continuation true
+              ^ { << partial-failure exhaustion-failure failure prohibit-failure constraint-failure >> <svalue> } <desireds2>)
+   (<desireds2> ^duplicate-of <desireds>)
+   (<superstate> ^operator <super-operator>
+                 ^evaluation <evaluation>)
+   (<super-operator> ^name evaluate-operator
+                     ^evaluation <evaluation>)
+   (<evaluation> ^desireds <desireds>)
+-->
+   (<evaluation> ^symbolic-value depth-exceeded)}
 
 ## Apply evaluate-operator -> sets symbolic-va.
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*success
@@ -654,6 +708,7 @@ sp {selection-world*apply*evaluate-operator*state*world-copy
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*constraint-failure
    :default
    (state <s> ^superstate <superstate>
+             -^random-continuation true
               ^constraint-failure <desireds2>
               ^failure-string <failure-string>)
    (<desireds2> ^duplicate-of <desireds>)

@@ -30,10 +30,10 @@ TASK = task(
          defn=[rel('live-at', V('pw'), V('r')), rel('actual', V('wa')), obj('c', 'child'),
                rel('knows-at', V('c'), V('pw'), V('r')), none(rel('knows-at', V('c'), V('wa'), V('r')))])],
   ops=[
-    dict(name='father-speaks', params=[('t', 'stage')], stmts=[3], pre=[has('t', 'step', 'eq', val(num(0)))], bind=[],
+    dict(name='father-speaks', monotonic=True, params=[('t', 'stage')], stmts=[3], pre=[has('t', 'step', 'eq', val(num(0)))], bind=[],
          effects=[e_each([rel('all-clean', V('pw'))], e_add('out-at', V('pw'), H('father-round'))), NEXT],
          report=[text('Father: at least one of you has mud on your forehead')]),
-    dict(name='ask', params=[('r', 'round')], stmts=[4, 5],
+    dict(name='ask', monotonic=True, params=[('r', 'round')], stmts=[4, 5],
          pre=[T, has('t', 'step', 'eq', prop('r', 'n')), has('r', 'n', 'gt', val(num(0)))], bind=[T],
          effects=[e_each([rel('actual', V('wa')), rel('knows-at', V('c'), V('wa'), V('r'))], e_add('said-yes', V('c'), V('r'))),
                   e_each([rel('answers-differ', V('pw'), V('r'))], e_add('out-at', V('pw'), V('r'))),

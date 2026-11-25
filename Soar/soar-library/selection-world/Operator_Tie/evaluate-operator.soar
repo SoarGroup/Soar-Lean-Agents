@@ -1,4 +1,4 @@
-## evaluate-operator.soar -- selection-world: 1 proposal, 3 compares, 5 applications.
+## evaluate-operator.soar -- selection-world: 1 proposal, 1 compare, 5 applications.
 
 ## ---- operator proposal ----
 
@@ -27,28 +27,14 @@ sp {selection-world*compare*selection*select*evaluate-operator*indifferent
 -->
    (<s> ^operator <operator> =)}
 
-## Preference for selection evaluate-operator evaluate-first / evaluate-last (v2.46, World-Conventions L15-026).
-## A task marks a proposed task operator ^evaluate-first true or ^evaluate-last true from its search control (a one-step
-## measure of progress). The selection space then evaluates marked-first operators before the others and marked-last
-## operators after them. Only the order of evaluation changes, not the evaluations, so plan length under iterative
-## deepening is unaffected.
-sp {selection-world*compare*selection*evaluate-operator*evaluate-first
-   :default
-   (state <s> ^name selection
-              ^operator <operator> +)
-   (<operator> ^name evaluate-operator
-               ^super-operator.evaluate-first true)
--->
-   (<s> ^operator <operator> >)}
-
-sp {selection-world*compare*selection*evaluate-operator*evaluate-last
-   :default
-   (state <s> ^name selection
-              ^operator <operator> +)
-   (<operator> ^name evaluate-operator
-               ^super-operator.evaluate-last true)
--->
-   (<s> ^operator <operator> <)}
+## evaluate-first / evaluate-last (v2.46, World-Conventions L15-026): disabled in v2.47 (JL, 23 Nov 2026).
+## v2.46 turned a task's ^evaluate-first / ^evaluate-last marks on proposed operators into best and worst preferences on
+## the evaluate-operator choices. Two problems: (1) best also ranked a marked evaluate-operator above the selection's
+## own best operators (init-current-evaluation-depth, init-remaining-operators, decrement-remaining-operators), so a
+## nested look-ahead could start before its depth limit was set and run with none; (2) with add-osk on, the preference
+## and the task conditions behind the mark enter the rules learned from the look-ahead (Tower of London test: 178 of 212
+## learned rules tested a mark; learning about 4 times slower per decision, no solution in 580 s). The marks are now
+## ignored; a task that still sets them gets no preference from them.
 
 ## ---- operator application ----
 

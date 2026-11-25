@@ -1,4 +1,4 @@
-## exceed-depth.soar -- selection-world: 1 proposal, 2 compares, 1 application.
+## exceed-depth.soar -- selection-world: 2 proposals, 2 compares, 1 application.
 
 ## ---- operator proposal ----
 
@@ -11,6 +11,22 @@ sp {selection-world*propose*evaluate-operator*exceed-depth
 -->
    (<s> ^operator <operator> + =, >)
    (<operator> ^name exceed-depth)
+}
+
+## Propose exceed-depth when the look-ahead path has applied ^flags.max-look-ahead-steps operators (v2.47): a backstop for
+## runaway subgoaling or search inside one evaluation. Not with iterative-step operator, where the depth limit already
+## counts every operator applied, so the defined limit is the bound.
+sp {selection-world*propose*evaluate-operator*exceed-depth*look-ahead-steps
+   :default
+   (state <s> ^name evaluate-operator
+              ^world <w>
+             -^flags.iterative-step operator
+              ^flags.max-look-ahead-steps <max>)
+   (<w> ^look-ahead-steps >= <max>)
+-->
+   (<s> ^operator <operator> + =, >)
+   (<operator> ^name exceed-depth)
+   (log 1 (crlf) |Look-ahead steps reached the limit | <max> |: depth exceeded.|)
 }
 
 ## ---- evaluate / compare ----

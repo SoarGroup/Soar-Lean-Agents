@@ -1,0 +1,1 @@
+{"outcome": "success", "decisions": 57, "actions": [["move", "b", null], ["move", "c", null], ["move", "b", null], ["move", "a", null], ["move", "b", null], ["move", "c", null], ["move", "b", null], ["move", "a", null], ["move", "b", null], ["move", "c", null], ["move", "b", null], ["move", "a", null]], "n_actions": 12, "seconds": 0.0, "cpu": "0.008"}

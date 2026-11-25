@@ -1,0 +1,587 @@
+## Missionaries and cannibals, generated from the Rosie teaching script (english-input.txt) under the world conventions.
+##
+## Instructor statements used (numbers as in english-input.txt):
+##   4. The name of an action is ferry-one.
+##   5. You can move the boat and a block on the current bank onto the opposite bank.
+##   6. If an object is below a boat then it is current.
+##   7. If a location is not below a boat then it is opposite.
+##   8. The name of an action is ferry-two.
+##   9. You can move a block that is on the current bank and another block that is on the current bank and the boat onto the opposite bank.
+##  10. The solution has five steps.
+##  12. If the number of cannibals on a bank is more than the number of missionaries on the bank then you lose.
+##  17. The goal is that all the blocks are on a destination bank.
+## World: init-mac.world (two banks; three missionaries, three cannibals and the boat on the first bank)
+##
+## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
+##   - Operators: ferry-one ("the boat and a block on the current bank onto the opposite bank"; argument1 = the block,
+##     argument2 = the opposite bank) and ferry-two ("a block ... and another block ... and the boat"; argument1 and
+##     argument2 = the two blocks, the lower ^index first; the destination is the opposite bank). Each operator records the
+##     bank it leaves (^from), so its look-ahead application fires once.
+##   - current is expanded in place (a bank below the boat); opposite is a maintained one-argument relation.
+##   - The goal ("all the blocks are on a destination bank") is expanded over the blocks of the world file (the boat is a
+##     block).
+##   - "the number of cannibals (missionaries) on a bank" is a maintained attribute ^cannibal-count (^missionary-count) of
+##     each bank, changed by every crossing.
+##   - The losing condition is read with the usual exception (A-M1): a bank with cannibals and no missionaries is safe.
+##   - "The solution has five steps." does not match this world (11 crossings): reported, not used.
+##   - Interchangeable blocks (World-Conventions L7-027; tools/aggregate.py): the cannibal, missionary blocks are identical
+##     within each kind and the statements never single one out, so only how many are on each bank matters. Each bank has
+##     ^cannibal-count, ^missionary-count; each kind is an object (^type kind, ^total). The operators move kinds:
+##     ferry-one argument1 = a kind, argument2 = the opposite bank; a two-block crossing has argument1 and argument2 = two
+##     kinds (in name order; the same kind twice when two of it are on the bank). The boat stays an individual block. An
+##     environment that moves individual blocks binds a kind to any block of that kind on the bank (the output names the
+##     kind).
+
+## Propose initialize-missionaries-and-cannibals when its conditions below hold.
+sp {missionaries-and-cannibals*propose*initialize-missionaries-and-cannibals
+   (state <s> ^superstate nil ^world <w> -^name)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name initialize-missionaries-and-cannibals ^task-operator false)
+}
+
+sp {missionaries-and-cannibals*apply*initialize-missionaries-and-cannibals
+   (state <s> ^operator.name initialize-missionaries-and-cannibals ^world <w>)
+   (<w> ^objects <objs>)
+-->
+   (<s> ^name missionaries-and-cannibals ^desireds <ds>)
+   (<objs> ^object <o-bank-1> <o-bank-2> <o-boat-9> <o-cannibal> <o-missionary> <o-task> <o-history>)
+   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank ^missionary-count 3 ^cannibal-count 3)
+   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination ^missionary-count 0 ^cannibal-count 0)
+   (<o-boat-9> ^object-handle boat-9 ^anchored true ^type block ^shape boat)
+   (<o-cannibal> ^object-handle cannibal ^anchored true ^type kind ^shape cannibal ^kind-of block ^total 3)
+   (<o-missionary> ^object-handle missionary ^anchored true ^type kind ^shape missionary ^kind-of block ^total 3)
+   (<o-task> ^object-handle task ^anchored true ^type task)
+   (<o-history> ^object-handle history ^anchored true ^type history)
+   (<ds> ^desired-count 1 ^desired <d1>)
+   (<d1> ^object <d1-o>)
+   (<d1-o> ^object-handle task ^goal-met true)
+   (<w> ^on <on-6>)
+   (<on-6> ^argument1 <o-boat-9> ^argument2 <o-bank-1>)
+   (<w> ^below <below-6>)
+   (<below-6> ^argument1 <o-bank-1> ^argument2 <o-boat-9>)
+   (<w> ^opposite <opposite-bank-2>)
+   (<opposite-bank-2> ^argument1 <o-bank-2>)
+   (log 1 (crlf) |Initialize missionaries-and-cannibals.|)
+}
+
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+sp {missionaries-and-cannibals*elaborate*problem-space
+   (state <s> ^name missionaries-and-cannibals)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name missionaries-and-cannibals ^copy-relation below ^copy-relation opposite ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute situation)
+}
+
+sp {missionaries-and-cannibals*elaborate*problem-space*mea-substate
+   (state <s> ^impasse no-change ^attribute operator ^superstate <ss>)
+   (<ss> ^problem-space.name missionaries-and-cannibals ^operator <so>)
+   (<so> ^task-operator true -^pre-conditions-satisfied true)
+-->
+   (<s> ^problem-space <p>)
+   (<p> ^name missionaries-and-cannibals ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute situation)
+}
+
+## Elaborate flags: adds ^flag-override, ^mea-operator-selection.
+sp {missionaries-and-cannibals*elaborate*flags
+   (state <s> ^superstate nil ^name missionaries-and-cannibals)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^mea-operator-selection true)
+}
+
+## Achievement of object-property desireds (supplied by the task).
+sp {missionaries-and-cannibals*elaborate*state*achieved*object-property
+   (state <s> ^problem-space.name missionaries-and-cannibals ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true ^objects.object <ob>)
+   (<ob> ^object-handle $ <h> ^<a> <v>)
+-->
+   (<ds> ^achieved <d>)
+}
+
+sp {missionaries-and-cannibals*elaborate*state*unachieved*object-property
+   (state <s> ^problem-space.name missionaries-and-cannibals ^desireds <ds> ^world <w>)
+   (<ds> ^desired <d>)
+   (<d> ^object <do>)
+   (<do> ^object-handle $ <h> ^{ <> object-handle <a> } <v>)
+   (<w> ^anchored-world true)
+  -{(<w> ^objects.object <ob>)
+    (<ob> ^object-handle <h> ^<a> <v>)}
+-->
+   (<ds> ^unachieved <d>)
+}
+## Propose ferry-one in problem space missionaries-and-cannibals when its conditions below hold (cannibal).
+sp {missionaries-and-cannibals*propose*ferry-one*cannibal
+   (state <s> ^problem-space.name missionaries-and-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-cannibal>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^cannibal-count >= 1)
+   (<opp> ^type location)
+   (<k-cannibal> ^type kind ^object-handle cannibal)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-cannibal> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 0)
+   (<pre> ^desired-count 0)
+}
+sp {missionaries-and-cannibals*apply*ferry-one*environment-effect*cannibal
+   :o-support
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 cannibal ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<old> ^cannibal-count <o-cannibal>)
+   (<d> ^cannibal-count <n-cannibal>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^cannibal-count <o-cannibal> - (- <o-cannibal> 1))
+   (<d> ^cannibal-count <n-cannibal> - (+ <n-cannibal> 1))
+   (<pa> ^effect-applied true)
+   (write |ferry-one: cannibal with the boat from | <old> | to | <d> (crlf))
+}
+sp {missionaries-and-cannibals*propose*ferry-one*missionary
+   (state <s> ^problem-space.name missionaries-and-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-missionary>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^missionary-count >= 1)
+   (<opp> ^type location)
+   (<k-missionary> ^type kind ^object-handle missionary)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-missionary> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 1)
+   (<pre> ^desired-count 0)
+}
+sp {missionaries-and-cannibals*apply*ferry-one*environment-effect*missionary
+   :o-support
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 missionary ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<old> ^missionary-count <o-missionary>)
+   (<d> ^missionary-count <n-missionary>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^missionary-count <o-missionary> - (- <o-missionary> 1))
+   (<d> ^missionary-count <n-missionary> - (+ <n-missionary> 1))
+   (<pa> ^effect-applied true)
+   (write |ferry-one: missionary with the boat from | <old> | to | <d> (crlf))
+}
+## Effect of ferry-one (look-ahead): the boat crosses to the opposite bank.
+sp {missionaries-and-cannibals*apply*ferry-one*internal*boat
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^object-handle $ <oldh>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+}
+## Effect of ferry-one (look-ahead): the cannibal count of each bank changes by the number of cannibal blocks moved.
+sp {missionaries-and-cannibals*apply*ferry-one*internal*count*cannibal
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-cannibal { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^cannibal-count <o>)
+   (<d> ^object-handle $ <dh> ^cannibal-count <c>)
+-->
+   (<old> ^cannibal-count <o> - (- <o> <m>))
+   (<d> ^cannibal-count <c> - (+ <c> <m>))
+}
+## Effect of ferry-one (look-ahead): the missionary count of each bank changes by the number of missionary blocks moved.
+sp {missionaries-and-cannibals*apply*ferry-one*internal*count*missionary
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-missionary { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^missionary-count <o>)
+   (<d> ^object-handle $ <dh> ^missionary-count <c>)
+-->
+   (<old> ^missionary-count <o> - (- <o> <m>))
+   (<d> ^missionary-count <c> - (+ <c> <m>))
+}
+## Propose ferry-two in problem space missionaries-and-cannibals when its conditions below hold (cannibal cannibal).
+sp {missionaries-and-cannibals*propose*ferry-two*cannibal-cannibal
+   (state <s> ^problem-space.name missionaries-and-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-cannibal>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^cannibal-count >= 2)
+   (<opp> ^type location)
+   (<k-cannibal> ^type kind ^object-handle cannibal)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-cannibal> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 2 ^move-missionary 0)
+   (<pre> ^desired-count 0)
+}
+sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*cannibal-cannibal
+   :o-support
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-two ^status complete ^argument1 cannibal ^argument2 cannibal -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^cannibal-count <o-cannibal>)
+   (<d> ^cannibal-count <n-cannibal>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^cannibal-count <o-cannibal> - (- <o-cannibal> 2))
+   (<d> ^cannibal-count <n-cannibal> - (+ <n-cannibal> 2))
+   (<pa> ^effect-applied true)
+   (write |ferry-two: cannibal and cannibal with the boat from | <old> | to | <d> (crlf))
+}
+sp {missionaries-and-cannibals*propose*ferry-two*cannibal-missionary
+   (state <s> ^problem-space.name missionaries-and-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-cannibal> <k-missionary>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^cannibal-count >= 1 ^missionary-count >= 1)
+   (<opp> ^type location)
+   (<k-cannibal> ^type kind ^object-handle cannibal)
+   (<k-missionary> ^type kind ^object-handle missionary)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-missionary> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 1)
+   (<pre> ^desired-count 0)
+}
+sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*cannibal-missionary
+   :o-support
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-two ^status complete ^argument1 cannibal ^argument2 missionary -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^cannibal-count <o-cannibal>)
+   (<d> ^cannibal-count <n-cannibal>)
+   (<old> ^missionary-count <o-missionary>)
+   (<d> ^missionary-count <n-missionary>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^cannibal-count <o-cannibal> - (- <o-cannibal> 1))
+   (<d> ^cannibal-count <n-cannibal> - (+ <n-cannibal> 1))
+   (<old> ^missionary-count <o-missionary> - (- <o-missionary> 1))
+   (<d> ^missionary-count <n-missionary> - (+ <n-missionary> 1))
+   (<pa> ^effect-applied true)
+   (write |ferry-two: cannibal and missionary with the boat from | <old> | to | <d> (crlf))
+}
+sp {missionaries-and-cannibals*propose*ferry-two*missionary-missionary
+   (state <s> ^problem-space.name missionaries-and-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-missionary>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^missionary-count >= 2)
+   (<opp> ^type location)
+   (<k-missionary> ^type kind ^object-handle missionary)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-missionary> ^argument2 <k-missionary> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 2)
+   (<pre> ^desired-count 0)
+}
+sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*missionary-missionary
+   :o-support
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-two ^status complete ^argument1 missionary ^argument2 missionary -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^missionary-count <o-missionary>)
+   (<d> ^missionary-count <n-missionary>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^missionary-count <o-missionary> - (- <o-missionary> 2))
+   (<d> ^missionary-count <n-missionary> - (+ <n-missionary> 2))
+   (<pa> ^effect-applied true)
+   (write |ferry-two: missionary and missionary with the boat from | <old> | to | <d> (crlf))
+}
+## Effect of ferry-two (look-ahead): the boat crosses to the opposite bank.
+sp {missionaries-and-cannibals*apply*ferry-two*internal*boat
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^object-handle $ <oldh>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+}
+## Effect of ferry-two (look-ahead): the cannibal count of each bank changes by the number of cannibal blocks moved.
+sp {missionaries-and-cannibals*apply*ferry-two*internal*count*cannibal
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-cannibal { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^cannibal-count <o>)
+   (<d> ^object-handle $ <dh> ^cannibal-count <c>)
+-->
+   (<old> ^cannibal-count <o> - (- <o> <m>))
+   (<d> ^cannibal-count <c> - (+ <c> <m>))
+}
+## Effect of ferry-two (look-ahead): the missionary count of each bank changes by the number of missionary blocks moved.
+sp {missionaries-and-cannibals*apply*ferry-two*internal*count*missionary
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-missionary { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^missionary-count <o>)
+   (<d> ^object-handle $ <dh> ^missionary-count <c>)
+-->
+   (<old> ^missionary-count <o> - (- <o> <m>))
+   (<d> ^missionary-count <c> - (+ <c> <m>))
+}
+## Failure: the number of cannibals on a bank is more than the number of missionaries on the bank, read with the usual
+## exception that a bank with no missionaries is safe (A-M1; the literal reading makes the puzzle unsolvable).
+sp {missionaries-and-cannibals*elaborate*failure*cannibals-outnumber-missionaries
+   (state <s> ^problem-space.name missionaries-and-cannibals ^desireds <ds> ^world <w>)
+   (<w> ^anchored-world true ^objects.object <bank>)
+   (<bank> ^type location ^cannibal-count <c> ^missionary-count { > 0 < <c> })
+-->
+   (<s> ^failure <ds>)
+}
+## ---- Search control (added, not taught): avoid returning to a situation on the current look-ahead path. ----
+## A situation is the count of every kind on every bank and the bank of the boat.
+
+## The cannibal count of bank-1 after a proposed operator.
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-1*cannibal*from
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-cannibal <m>)
+   (<bank> ^object-handle bank-1 ^cannibal-count <c>)
+-->
+   (<op> ^after-bank-1-cannibal (- <c> <m>))
+}
+
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-1*cannibal*to
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-cannibal <m>)
+   (<bank> ^object-handle bank-1 ^cannibal-count <c>)
+-->
+   (<op> ^after-bank-1-cannibal (+ <c> <m>))
+}
+
+## The missionary count of bank-1 after a proposed operator.
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-1*missionary*from
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-missionary <m>)
+   (<bank> ^object-handle bank-1 ^missionary-count <c>)
+-->
+   (<op> ^after-bank-1-missionary (- <c> <m>))
+}
+
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-1*missionary*to
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-missionary <m>)
+   (<bank> ^object-handle bank-1 ^missionary-count <c>)
+-->
+   (<op> ^after-bank-1-missionary (+ <c> <m>))
+}
+
+## The cannibal count of bank-2 after a proposed operator.
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-2*cannibal*from
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-cannibal <m>)
+   (<bank> ^object-handle bank-2 ^cannibal-count <c>)
+-->
+   (<op> ^after-bank-2-cannibal (- <c> <m>))
+}
+
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-2*cannibal*to
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-cannibal <m>)
+   (<bank> ^object-handle bank-2 ^cannibal-count <c>)
+-->
+   (<op> ^after-bank-2-cannibal (+ <c> <m>))
+}
+
+## The missionary count of bank-2 after a proposed operator.
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-2*missionary*from
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-missionary <m>)
+   (<bank> ^object-handle bank-2 ^missionary-count <c>)
+-->
+   (<op> ^after-bank-2-missionary (- <c> <m>))
+}
+
+sp {missionaries-and-cannibals*elaborate*operator*after*bank-2*missionary*to
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-missionary <m>)
+   (<bank> ^object-handle bank-2 ^missionary-count <c>)
+-->
+   (<op> ^after-bank-2-missionary (+ <c> <m>))
+}
+
+## The label of the situation the operator produces.
+sp {missionaries-and-cannibals*elaborate*operator*result
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to.object-handle $ <boat-bank> ^after-bank-1-cannibal <bank-1-cannibal> ^after-bank-1-missionary <bank-1-missionary> ^after-bank-2-cannibal <bank-2-cannibal> ^after-bank-2-missionary <bank-2-missionary>)
+-->
+   (<op> ^result (concat <bank-1-cannibal> |,| <bank-1-missionary> |,| <bank-2-cannibal> |,| <bank-2-missionary> |,| <boat-bank>))
+}
+
+## The label of the current situation (derived; not copied into look-ahead worlds).
+sp {missionaries-and-cannibals*elaborate*situation
+   (state <s> ^problem-space.name missionaries-and-cannibals ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^on <rb>)
+   (<objs> ^object <t> <boat> <bank-bank-1> <bank-bank-2>)
+   (<t> ^type task)
+   (<boat> ^type block ^shape boat)
+   (<rb> ^argument1 <boat> ^argument2 <bb>)
+   (<bb> ^object-handle $ <boat-bank>)
+   (<bank-bank-1> ^object-handle bank-1 ^cannibal-count <bank-1-cannibal> ^missionary-count <bank-1-missionary>)
+   (<bank-bank-2> ^object-handle bank-2 ^cannibal-count <bank-2-cannibal> ^missionary-count <bank-2-missionary>)
+-->
+   (<t> ^situation (concat <bank-1-cannibal> |,| <bank-1-missionary> |,| <bank-2-cannibal> |,| <bank-2-missionary> |,| <boat-bank>))
+}
+
+## In look-ahead, reject an operator whose result is a situation already on the path.
+sp {missionaries-and-cannibals*reject*operator*repeated-situation
+   (state <s> ^problem-space.name missionaries-and-cannibals ^internal-actions true ^operator <op> + ^world <w>)
+   (<w> ^objects.object <hist>)
+   (<hist> ^type history ^visited <l>)
+   (<op> ^task-operator true ^result <l>)
+-->
+   (<s> ^operator <op> -)
+}
+
+## ---- Search control on real moves (added, not taught; JL 16 Nov 2026, as in Tasks/From-English/mc-world): ----
+## a real move back to a situation already visited is worst. It is chosen only when nothing else is left, so the agent
+## prefers progress but is never trapped by its own history. The record is on the top state, not in the world, so it is
+## not copied into look-ahead worlds.
+## The real application records the situation it leaves (not the one it produces: recording that would make the selected
+## operator itself worst, and Soar would replace it before its command completes).
+sp {missionaries-and-cannibals*apply*operator*record-real-move
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^operator <op> ^world <w>)
+   (<op> ^task-operator true)
+   (<w> ^objects.object <t>)
+   (<t> ^type task ^situation <sit>)
+-->
+   (<s> ^real-visited <sit>)
+}
+
+sp {missionaries-and-cannibals*compare*operator*real-repeated-situation
+   (state <s> ^problem-space.name missionaries-and-cannibals ^superstate nil ^operator <op> + ^real-visited <l>)
+   (<op> ^task-operator true ^result <l>)
+-->
+   (<s> ^operator <op> <)
+}
+
+## The look-ahead application records the situation it leaves and the one it produces.
+sp {missionaries-and-cannibals*apply*operator*record-path
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^result <r>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <hist> <t>)
+   (<hist> ^type history)
+   (<t> ^type task ^situation <sit>)
+-->
+   (<hist> ^visited <r> <sit>)
+}
+## Goal: all the blocks are on a destination bank: every block of each kind (^cannibal-count 3 ^missionary-count 3) and the boat.
+sp {missionaries-and-cannibals*elaborate*goal*all-crossed
+   (state <s> ^problem-space.name missionaries-and-cannibals ^world <w>)
+   (<w> ^anchored-world true ^objects <objs> ^on <rb>)
+   (<objs> ^object <t> <dest> <boat>)
+   (<t> ^type task)
+   (<boat> ^type block ^shape boat)
+   (<dest> ^type location ^name destination ^cannibal-count 3 ^missionary-count 3)
+   (<rb> ^argument1 <boat> ^argument2 <dest>)
+-->
+   (<t> ^goal-met true)
+}
+## ---- Search control SC-1 [evaluation] (added, not taught; World-Conventions L15-026): evaluate first a crossing that
+## carries two blocks to the destination bank, and last one that carries two back. Only the order of evaluation changes.
+sp {missionaries-and-cannibals*elaborate*operator*evaluate-first*two-to-destination
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> +)
+   (<op> ^task-operator true ^name ferry-two ^to <d>)
+   (<d> ^name destination)
+-->
+   (<op> ^evaluate-first true)
+}
+
+sp {missionaries-and-cannibals*elaborate*operator*evaluate-last*two-from-destination
+   (state <s> ^problem-space.name missionaries-and-cannibals ^operator <op> +)
+   (<op> ^task-operator true ^name ferry-two ^from <d>)
+   (<d> ^name destination)
+-->
+   (<op> ^evaluate-last true)
+}

@@ -1,0 +1,91 @@
+## implementation-completed.soar -- agent-world: 3 proposals, 1 application, 2 elaborations.
+## Ends an operator-implementation substate whose desireds are phases or a loop (L8-026 - L8-029, L19-001):
+## its last phase is achieved, its termination desireds are achieved, or its repeat count is 0.
+## The substate marks the superstate with ^completed-operator <super-operator> (o-supported, since it is
+## created by an operator application and does not augment the operator), and the superstate rejects that
+## operator. The mark is removed once the operator is no longer proposed.
+## A substate whose desireds have no phases is ended by the world, as before; these rules do not fire there.
+
+## ---- operator proposals ----
+
+## Propose implementation-completed: the last phase is achieved.
+sp {agent-world*propose*implementation-completed*last-phase
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.operator <super-operator>
+              ^desireds <desireds>
+              ^<< required-success success >> <desireds>)
+   (<super-operator> ^pre-conditions-satisfied true)
+   (<desireds> ^phase-copy true
+               ^copied-from <template>)
+   (<template> -^next-desireds)   # the template, not the local copy, so that a chunk keeps the test
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name implementation-completed
+         ^completed-operator <super-operator>)
+}
+
+## Propose implementation-completed: the termination desireds are achieved.
+sp {agent-world*propose*implementation-completed*termination
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.operator <super-operator>
+              ^termination-desireds <termination>
+              ^<< required-success success >> <termination>)
+   (<super-operator> ^pre-conditions-satisfied true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name implementation-completed
+         ^completed-operator <super-operator>)
+}
+
+## Propose implementation-completed: the repeat count is 0.
+sp {agent-world*propose*implementation-completed*repeat-count
+   :default
+   (state <s> ^impasse no-change
+              ^attribute operator
+              ^superstate.operator <super-operator>
+              ^repeat-count 0)
+   (<super-operator> ^pre-conditions-satisfied true)
+-->
+   (<s> ^operator <op> + =, >)
+   (<op> ^name implementation-completed
+         ^completed-operator <super-operator>)
+}
+
+## ---- operator application ----
+
+## Apply implementation-completed -> sets completed-operator on the superstate.
+sp {agent-world*apply*implementation-completed
+   :default
+   (state <s> ^operator <op>
+              ^superstate <ss>)
+   (<op> ^name implementation-completed
+         ^completed-operator <super-operator>)
+-->
+   (<ss> ^completed-operator <super-operator>)
+   (log 1 (crlf) |Implementation completed: | <super-operator>)
+}
+
+## ---- elaborations ----
+
+## Elaborate completed operator -> rejects it.
+sp {agent-world*elaborate*state*completed-operator*reject
+   :default
+   (state <s> ^operator <op> +
+              ^completed-operator <op>)
+-->
+   (<s> ^operator <op> -)
+}
+
+## Elaborate completed operator -> removes the mark once the operator is no longer proposed.
+sp {agent-world*elaborate*state*completed-operator*remove
+   :default
+   :o-support
+   (state <s> ^completed-operator <op>)
+  -(<s> ^operator <op> +)
+-->
+   (<s> ^completed-operator <op> -)
+}

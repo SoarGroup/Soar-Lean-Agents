@@ -45,6 +45,18 @@ def e_del(r, *args): return {'del': r, 'args': list(args)}
 def e_change(r, args, pos, to): return {'change': r, 'args': list(args), 'pos': pos, 'to': to}
 def text(s): return {'text': s}
 def handle(x): return {'handle': x}
+def full_output(f):
+    """The output form with the defaults filled in, as the Lean exporter writes it (World-Conventions L10-018)."""
+    out = dict({'command': 'perform-action', 'nameAttribute': 'name', 'arguments': ['argument1', 'argument2', 'argument3'],
+                'done': ['interrupted', 'complete', 'success'], 'success': ['success'], 'error': ['error', 'failure'],
+                'applied': 'complete'}, **f)
+    if out['command'] is None: out.pop('nameAttribute', None)
+    return out
+def eval_mark(name, op, mark, cond, item='', stmts=()):
+    """An evaluation-order mark from a search-control item of kind evaluation (World-Conventions L15-026):
+    mark is 'first' or 'last'; cond: positive atoms over the operator's parameters and the current world."""
+    assert mark in ('first', 'last'), mark
+    return {'name': name, 'op': op, 'mark': mark, 'cond': list(cond), 'item': item, 'stmts': list(stmts)}
 
 # ---------------------------------------------------------------- world file (WorldFile.lean)
 def strip_sense(s): return s[:-1] if s.endswith('1') else s
@@ -373,7 +385,15 @@ def to_json(t, st):
         'goal': t['goal'], 'goalStmts': t['goalStmts'], 'failures': t['failures'],
         **({'derived': [{'name': d['name'], 'vars': d['vars'], 'defn': d['defn'], 'stmts': d['stmts']} for d in t['derived']]} if t.get('derived') else {}),
         **({'repeatControl': t['repeatControl']} if t.get('repeatControl') else {}),
-        **({'learning': {'off': True, 'reason': t.get('learning_reason', '')}} if t.get('learning') is False else {})}
+        **({'output': full_output(t['output'])} if t.get('output') else {}),
+        **({'evalMarks': [{'name': m['name'], 'op': m['op'], 'mark': m['mark'], 'cond': m['cond'], 'item': m.get('item', ''),
+                           'stmts': m.get('stmts', [])} for m in t['eval_marks']]} if t.get('eval_marks') else {}),
+        **({'learning': {'off': True, 'reason': t.get('learning_reason', '')}} if t.get('learning') is False else {}),
+        **({'phases': [{'name': p['name'], 'cond': p['cond'], 'stmts': p.get('stmts', [])} for p in t['phases']]} if t.get('phases') else {}),
+        **({'loopStart': t['loopStart']} if t.get('loopStart') is not None else {}),
+        **({'termination': {'name': t['termination']['name'], 'cond': t['termination']['cond'],
+                            'stmts': t['termination'].get('stmts', [])}} if t.get('termination') else {}),
+        **({'repeatCount': t['repeatCount']} if t.get('repeatCount') is not None else {})}
 
 def compare_json(a, b):
     """Compare a rosiegen json export with ours (key order and number formatting aside)."""
@@ -439,7 +459,8 @@ def to_lean(t):
                    f'      bind := {l_atoms(o["bind"])}\n'
                    f'      effects := [' + ', '.join(l_eff(e) for e in o['effects']) + ']\n'
                    f'      report := [' + ', '.join(l_say(p) for p in o['report']) + ']' +
-                   (f'\n      stepCost := some {l_rhs(o["stepCost"])}' if o.get('stepCost') is not None else '') + ' }')
+                   (f'\n      stepCost := some {l_rhs(o["stepCost"])}' if o.get('stepCost') is not None else '') +
+                   ('\n      monotonic := true' if o.get('monotonic') else '') + ' }')
     L.append('  ops := [\n    ' + ',\n    '.join(ops) + ']')
     L.append('  goal := ' + l_cond(t['goal']))
     L.append(f'  goalStmts := {l_nats(t["goalStmts"])}')
@@ -452,9 +473,27 @@ def to_lean(t):
     if t.get('repeatControl'):
         rc = t['repeatControl']
         L.append(f'  repeatControl := some {{ rel := {ls(rc["rel"])}, types := [' + ', '.join(ls(x) for x in rc['types']) + '] }')
+    if t.get('output'):
+        f = t['output']
+        fields = ([f'command := some {ls(f["command"])}', f'nameAttribute := {ls(f.get("nameAttribute", "name"))}']
+                  if f.get('command') else ['command := none'])
+        for k, lk in (('arguments', 'arguments'), ('done', 'done'), ('success', 'success'), ('error', 'error')):
+            if k in f: fields.append(f'{lk} := [{", ".join(ls(x) for x in f[k])}]')
+        if 'applied' in f: fields.append(f'applied := {ls(f["applied"])}')
+        L.append('  output := some ({ ' + ', '.join(fields) + ' } : OutputForm)')
+    if t.get('eval_marks'):
+        L.append('  evalMarks := [\n    ' + ',\n    '.join(
+            f'{{ name := {ls(m["name"])}, op := {ls(m["op"])}, first := {"true" if m["mark"] == "first" else "false"}, '
+            f'item := {ls(m.get("item", ""))}, stmts := {l_nats(m.get("stmts", []))},\n      cond := {l_atoms(m["cond"])} }}'
+            for m in t['eval_marks']) + ']')
     if t.get('learning') is False:
         L.append('  learning := false')
         if t.get('learning_reason'): L.append(f'  learningReason := {ls(t["learning_reason"])}')
+    def l_phase(p): return f'{{ name := {ls(p["name"])}, stmts := {l_nats(p.get("stmts", []))},\n      cond := {l_cond(p["cond"], "      ")} }}'
+    if t.get('phases'): L.append('  phases := [\n    ' + ',\n    '.join(l_phase(p) for p in t['phases']) + ']')
+    if t.get('loopStart') is not None: L.append(f'  loopStart := some {t["loopStart"]}')
+    if t.get('termination'): L.append('  termination := some ' + l_phase(t['termination']))
+    if t.get('repeatCount') is not None: L.append(f'  repeatCount := some {t["repeatCount"]}')
     L += ['', 'end WorldSpec.Tasks', '']
     return '\n'.join(L)
 

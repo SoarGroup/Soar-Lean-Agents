@@ -357,3 +357,12 @@ sp {eight-men-raft*elaborate*goal*colors-matched
 -->
    (<t> ^goal-met true)
 }
+
+## Look-ahead depth limit from the stated solution length (World-Conventions L16-045): "The solution has 24 steps",
+## above the library default of 12, so iterative deepening may search 24 steps deep.
+sp {eight-men-raft*elaborate*flags*max-evaluation-depth
+   (state <s> ^superstate nil ^name eight-men-raft)
+-->
+   (<s> ^flag-override <f>)
+   (<f> ^max-evaluation-depth 24)
+}

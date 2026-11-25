@@ -1,4 +1,93 @@
-# SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 21 November 2026)
+# SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 24 November 2026)
+
+## Release of 24 November 2026 (`SoarLean-2026-11-24-release.zip`, for library v2.47)
+
+Joins `SoarLean-2026-11-23-release.zip` with the changes since:
+- WorldSpec phases and loops (World-Conventions L8-026 to L8-030): `Phase` and the `Task` fields `phases`, `loopStart`,
+  `termination`, `repeatCount` (`WorldSpec/Types.lean`); `Compile.lean` (path A) and `worldgen/spec_backend.py` (path B)
+  write the ^next-desireds chain, ^loop-start, ^termination-desireds and ^repeat-count; `Json.lean` and
+  `worldgen/worldspec_py.py` carry them. New tasks `WorldSpec/Tasks/GuardTour.lean` and `GuardPatrol.lean`
+  (Tasks/webtasks/classic-ai). The Lean semantics (check, explore, replay) test only `goal`.
+- Declared output form (L10-018): `WorldSpec.OutputForm`, `Task.output`; `worldgen/wg.py` `Task.output` / `WG_OUTPUT`;
+  `world_backend.py` reads an `output` field.
+- `worldgen/wg.py`: phases and loops (`Task.phases`, `loop_start`, `termination`, `repeat_count`) and `Task.flags_comment`.
+  Byte-identical with `Tasks/From-English/rosie-teaching/tools/wg.py` and with Soar-library-dev `tools/worldgen-v23.zip`.
+- KenKen family and Cheryl's birthday / muddy children: monotonic operators (L15-027), as committed on 23 November.
+
+Checked 24 November 2026 (Lean 4.35.0, `cmcsoar-release-2026-11-14` beside `agentgen`):
+- `lake build agentgen worldcheck rosiegen familygen`: 136 jobs, warnings only; every `wellFormed` theorem proved.
+- `familygen` writes the 67 family variants identically to `Tasks/Families/families-world-lean-2026-11-23.zip`.
+- Water Jug: `agentgen water-jug-desc`, `world_backend.py`: 33 rules; `check_derived.py` passes; `worldcheck --task`: 0 violations.
+- Classic AI (9 tasks): `rosiegen json` equals the Python JSON; paths A and B write the same rules apart from the header
+  (bridge-and-torch also differs by one comment line, as before); path B reproduces every stored rules file.
+  `rosiegen replay` accepts every stored run.
+- Rosie Lean paths (Tower of Hanoi, fox-goose-bean, KenKen): `rosiegen compile` and `spec_backend.py` reproduce the stored
+  agents; JSON unchanged.
+- Every Python generator reproduces its stored outputs: 51 Rosie gen.py (with their search-control variants), the
+  worldgen gen_*.py tasks (flat and static), the five English world agents.
+
+## Release of 23 November 2026 (`SoarLean-2026-11-23-release.zip`, for library v2.46)
+
+Joins `SoarLean-2026-11-21b-release.zip` (which already holds `SoarLean-family-2026-11-21.zip`: its `tools/` files are in
+`agentgen/tools/`, its lakefile lines in `agentgen/lakefile.lean`) with the changes since:
+- `agentgen/Family/Families/TowersOfHanoi.lean`: 3 disks (original and world versions; JL, 22 Nov 2026).
+- `agentgen/Family/Families/Knights.lean`: an enumeration task; the run stops after 100 closed tours or 30,000 moves
+  (knight moves and backups), or when the search is exhausted (JL, 22 Nov 2026).
+- WorldSpec learning setting (World-Conventions L5-021; library v2.46 learns from look-ahead by default with chunk only):
+  `Task.learning` (default true) and `Task.learningReason` in `WorldSpec/Types.lean`; `Compile.lean` (path A) and
+  `worldgen/spec_backend.py` (path B) append `chunk never` with the reason when it is false; `Json.lean` exports it.
+  `worldgen/worldspec_py.py` sets it from a line 'Learning: do not learn from look-ahead. <reason>' in the task's
+  `english-input.txt`, and writes it into the Lean description. `WorldSpec/Tasks/CherylsBirthday.lean` and
+  `MuddyChildren.lean` now carry `learning := false` (their English statements say so: with learning on they do not finish).
+
+Checked 23 November 2026 (Lean 4.35.0, `cmcsoar-release-2026-11-14` beside `agentgen`):
+- `lake build agentgen worldcheck rosiegen familygen`: 132 jobs, warnings only; every `wellFormed` theorem proved.
+- `familygen` writes the 67 family variants identically to `Tasks/Families/*/world-lean` (families-world-lean-2026-11-22).
+- Water Jug: `agentgen water-jug-desc`, `world_backend.py`: 33 rules; `check_derived.py` passes; `worldcheck --task`: 0 violations.
+- Classic AI (7 tasks): `rosiegen json` equals the Python JSON; paths A and B write the same rules apart from the header
+  (bridge-and-torch also differs by one comment line, as before); the stored rules are reproduced, with the four-line
+  learning block added for cheryls-birthday and muddy-children. `rosiegen check` agrees on every example state;
+  `rosiegen replay` accepts every stored run.
+- Rosie Lean paths (Tower of Hanoi, fox-goose-bean, KenKen): `rosiegen compile` and `spec_backend.py` reproduce the stored
+  agents; JSON unchanged.
+
+
+## Revision b of the release, 21 November 2026 (`SoarLean-2026-11-21b-release.zip`)
+
+The release of 21 November was built from the 18 November line (`soarlean-agentgen-2026-11-18b.zip`), which
+branched before the WorldSpec work for the classic-AI web tasks (`soarlean-agentgen-2026-11-16-classicai.zip`,
+`-extensions.zip`, `-knowledge.zip`). Those additions were missing from it, so `spec_backend.py` could not regenerate
+bridge-and-torch, Cheryl's birthday or muddy children. Revision b merges them (three-way merge, base the package each
+line branched from):
+
+- WorldSpec: `plus` right sides, `update` and `each` effects, `stepCost`, `repeatControl`, `derived` relations
+  (Types, Sem, Json, Check, Compile, Proofs); `Var.badName` refuses reserved variable names.
+- `WorldSpec/Tasks/`: MonkeyBananas, VacuumWorld, TowerOfLondon, InstantInsanity, BridgeAndTorch, CherylsBirthday,
+  MuddyChildren; their `wellFormed` theorems are proved by `decide`; `rosiegen` knows all ten tasks.
+- `worldgen/spec_backend.py`: the same extensions, with the 18 November convention pass (`convpass.apply`) kept
+  last; `worldgen/worldspec_py.py` added (the Python port, also in `Tasks/webtasks/tools`).
+- `WorldSpec/Compile.lean` (path A): the `each` apply rules and the derived-relation rules now test
+  `^problem-space.name` (World-Conventions L3-005), as path B does through `convpass.py`. Without this, paths A and B
+  differed on Cheryl's birthday and muddy children.
+- `World/Check.lean`, `World/Compile.lean` keep their 16 November (revision b) versions.
+- `worldgen/spec_backend.py` now refuses description variables whose names the back ends reserve or generate
+  (`s`, `w`, `objs`, `ds`, `op`, `pre`, `pa`, `task`, `any-unachieved`, `dr`, any name with `-`, `r<digits>`,
+  `e<digits>`), the same check as `Var.badName` in `WorldSpec/Check.lean`, so path B no longer writes broken
+  rules silently (the Tower of London `<s>` finding of 16 November).
+- `rosiegen replay` drops the `null`s that `run_agent.py --json` writes for a missing argument, so runs of
+  one-argument actions replay without editing (the fix proposed on 16 November).
+
+Checked 21 November 2026 (Lean 4.35.0): `lake build rosiegen familygen` succeeds; for the seven classic-AI tasks
+`rosiegen json` equals the Python JSON and paths A and B write identical rules (apart from the header);
+`rosiegen check` agrees with Soar on all 22 example states; `rosiegen replay` accepts every run as written by
+`run_agent.py`; `spec_backend.py` writes the same rules as before for all ten WorldSpec tasks and refuses a description
+with a variable named `s`.
+Full build checked 21 November 2026 with `cmcsoar-release-2026-11-14` beside `agentgen` (Linux, Lean 4.35.0):
+`lake build agentgen worldcheck rosiegen familygen` completes (132 jobs, warnings only). The Water Jug commands under
+Use give 33 rules, `check_derived.py` passes and `worldcheck --task` reports 0 violations, as on 16 November;
+`familygen` writes the 67 family variants identically to the build used for the release check. Unchanged outputs:
+`rosiegen compile` on Tower of Hanoi, fox-goose-bean and KenKen (every world file), and `spec_backend.py` on their
+JSON, give the same rules as the release.
 
 ## Release of 21 November 2026 (`SoarLean-2026-11-21-release.zip`)
 
@@ -21,8 +110,7 @@ Checked 21 November 2026 (Lean 4.35.0, library v2.45, Soar 9.6.6 / PyPI bindings
   fox-goose-bean and KenKen in `Tasks/From-English/rosie-teaching` (apart from the header line).
 - The shared Rosie generators (`tools/wg.py` = `worldgen/wg.py`, `convpass.py`) and the four English world agents'
   `gen.py` reproduce every checked agent file unchanged.
-- Not checked here: building `agentgen` and `worldcheck`, which need the cmcsoar release beside `agentgen`
-  (their sources are unchanged from 18 November, when they built).
+- `agentgen` and `worldcheck` were not built for the release itself; revision b builds them (see above).
 - Known: convention IDs cited in the Lean sources and in checker messages are partly pre-renumbering IDs;
   `Conventions/id-renumbering-map-2026-11-18.csv` maps them. The ID history has two renumberings, so an automatic
   rewrite is ambiguous for a few IDs and was not done.
@@ -47,6 +135,23 @@ back end that writes world-convention rules. It replaces `agentgen-bundle.zip` a
   - `tools/vsproject.py`: writes Visual Soar projects.
 - `worldgen/` (Python): `world_backend.py` (Lean description to world-convention rules),
   `check_derived.py` (derived attributes are declared not to be copied), `wg.py` (shared generator).
+  Declared output form (24 Nov 2026, World-Conventions L10-018): `wg.Task.output` (or the environment variable
+  `WG_OUTPUT`, JSON with WorldSpec's OutputForm fields: command, nameAttribute, arguments, done, success, error,
+  applied; `"command": null` = the command is the action handle) rewrites the environment-effect rules to read that
+  command and adds `<task>*elaborate*environment-output-map`; `world_backend.py` takes it from an `output` field of
+  the description. Without it every generator writes exactly what it wrote before (all worldgen gen_*.py tasks and
+  world_backend water-jug variants compared byte for byte). Checked: water-jug (gen_waterjug.py) and
+  water-jug-look-ahead (world_backend.py) with `do ^action ^object ^target` and with the action-handle form give the
+  same actions at the same decisions as the default, seeds 1-3. The Rosie generators share `wg.py`.
+  Phases and loops (24 Nov 2026, World-Conventions L8-026 to L8-030, library v2.47): `wg.Task.phases` (ordered
+  list of named goal conditions), `loop_start`, `termination` and `repeat_count` write a ^next-desireds chain,
+  ^loop-start, ^termination-desireds and ^repeat-count. WorldSpec has the same fields (`phases`, `loopStart`,
+  `termination`, `repeatCount` in `agentgen/WorldSpec/Types.lean`; `Compile.lean` and `spec_backend.py` write the same
+  rules, checked by the new tasks guard-tour and guard-patrol in Tasks/webtasks/classic-ai). Tasks without these
+  fields are written exactly as before. The Lean semantics (check, explore, replay) test only the goal field.
+  `wg.Task.flags_comment` (24 Nov 2026): a comment written above the task's flags rule (gen_blocks.py records how its
+  search setting was measured); without it the convention pass writes the group comment, as before. With it the
+  test set's blocks-world rules are reproduced byte for byte (they had carried the comment, added by hand).
 
 ## Revision b
 

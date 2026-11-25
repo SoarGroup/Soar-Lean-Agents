@@ -30,7 +30,7 @@ sp {selection-world*apply*failure-evaluation*ground-init
    (<s> ^grounding true ^ground-count 0 ^counted-id <w> <d>)}
 
 ## Propose ground-wme for every wme of a reached identifier that has not been read yet.
-## v2.26: ^duplicate-of is never followed. v2.28: nor the failure-grounding counter and stamps (^applied-count, ^counted-operator, ^stamp, ^parent-stamp, ^local-version, ^versioned-operator). It links a look-ahead world (and its objects and desireds) to the copy it was made
+## v2.26: ^duplicate-of is never followed. v2.28: nor the failure-grounding counter and stamps (^applied-count, ^counted-operator, ^stamp, ^parent-stamp, ^local-version, ^versioned-tag, ^look-ahead-steps, ^parent-steps). It links a look-ahead world (and its objects and desireds) to the copy it was made
 ## from; following it read every ancestor world back to the real one, about 90 more wmes per look-ahead level. The copy's wmes
 ## are derived from the parent's, so the failure still depends on the parent world through them.
 ## This rule serves every grounding: the state no-change failure and the depth-limit results (achieved-max-depth.soar).
@@ -38,7 +38,7 @@ sp {selection-world*propose*failure-evaluation*ground-wme
    :default
    (state <s> ^grounding true
               ^counted-id <id>)
-   (<id> ^{ <> duplicate-of <> applied-count <> counted-operator <> stamp <> parent-stamp <> local-version <> versioned-operator <att> } <val>)
+   (<id> ^{ <> duplicate-of <> applied-count <> counted-operator <> stamp <> parent-stamp <> local-version <> versioned-tag <> look-ahead-steps <> parent-steps <att> } <val>)
   -{ (<s> ^counted <c>)
      (<c> ^id <id> ^att <att> ^val <val>) }
   -{ (<s> ^ground-scope-declared true)
@@ -213,31 +213,53 @@ sp {selection-world*elaborate*world*stamp*parent
 
 ## A new version each time an operator is applied to a look-ahead world (once per selected operator). Each version
 ## rule tests the previous stamp, so a result's justification leads back through every version to the real count.
+## v2.47: the world records which operator versioned it by a constant tag of the operator (^version-tag), not by the
+## operator's identifier. When the operator belonged to a means-ends substate below the look-ahead state, the world kept
+## ^versioned-operator <op> after that state was removed, and the next version rule, which tested and replaced that WME,
+## crashed the Soar kernel (segmentation fault in elaborate_gds; Soar - To-do row 5, gen3 held-out blocks-world without its
+## search control: v2.45 every seed, v2.46 seed 3).
+## v2.47: the same rules count the operators applied on the look-ahead path (^look-ahead-steps, from the parent world's
+## ^parent-steps); evaluate-operator/exceed-depth.soar ends an evaluation that reaches ^flags.max-look-ahead-steps.
+sp {selection-world*elaborate*operator*version-tag
+   :default
+   (state <s> ^operator <op> +
+              ^internal-actions true
+              ^world.real false)
+   (<op> ^pre-conditions-satisfied true)
+-->
+   (<op> ^version-tag (make-constant-symbol |op|))}
+
 sp {selection-world*apply*world*local-version*first
    :default
    (state <s> ^operator <op>
               ^internal-actions true
               ^world <w>)
-   (<op> ^pre-conditions-satisfied true)
+   (<op> ^pre-conditions-satisfied true
+         ^version-tag <tag>)
    (<w> ^real false
         -^local-version
-        ^parent-stamp <p>)
+        ^parent-stamp <p>
+        ^parent-steps <ps>)
 -->
    (<w> ^local-version (make-constant-symbol |wv|)
-        ^versioned-operator <op>)}
+        ^versioned-tag <tag>
+        ^look-ahead-steps (+ <ps> 1))}
 
 sp {selection-world*apply*world*local-version
    :default
    (state <s> ^operator <op>
               ^internal-actions true
               ^world <w>)
-   (<op> ^pre-conditions-satisfied true)
+   (<op> ^pre-conditions-satisfied true
+         ^version-tag <tag>)
    (<w> ^real false
         ^local-version <v>
-        ^versioned-operator { <> <op> <old> })
+        ^versioned-tag { <> <tag> <old> }
+        ^look-ahead-steps <n>)
 -->
    (<w> ^local-version <v> - (make-constant-symbol |wv|)
-        ^versioned-operator <old> - <op>)}
+        ^versioned-tag <old> - <tag>
+        ^look-ahead-steps <n> - (+ <n> 1))}
 
 ## counter: the failure substate and the selection state are grounded in the stamp of the world above them;
 ## $ keeps the constant in a chunk, so the chunk never matches another world version.

@@ -8,7 +8,8 @@ neighbour of argument2 in that direction), computed from the locations' coordina
 import os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rosie_gen as R, rosie_blocks as B
+import re
+import rosie_gen as R, rosie_blocks as B, control as C
 from rosie_tasks import _desc, _finish, clear_concept
 from rosie_swap import on, rel, clear, propose_move, move_effect
 
@@ -160,11 +161,49 @@ SLIDE_TRANS = '''
 - The goal is expanded over the blocks of the world file: every block is on the location with its {attr} (A-G3).'''
 
 
-def sliding(name, world, default_world, title, attr, n, note):
+def sc_own_attr_first(t, name, sc_id, attr='color'):
+    """Evaluation item: 'During look-ahead, first try moving a block onto a location of its own color, and try last
+    moving a block off a location of its own color.' A one-step measure of progress (a location becomes or stops being
+    matched, statement 11), used only to order the evaluations (World-Conventions L15-026)."""
+    t.add(f'''
+## ---- Search control {sc_id} [evaluation] (added, not taught; World-Conventions L15-026): evaluate first a slide onto a
+## location of the block's own {attr}, and last a slide off one. Only the order of evaluation changes, not the evaluations.
+sp {{{name}*elaborate*operator*evaluate-first*onto-own-{attr}
+   (state <s> ^operator <op> +)
+   (<op> ^task-operator true ^name slide-block ^argument1 <b> ^argument2 <d>)
+   (<b> ^{attr} <v>)
+   (<d> ^{attr} <v>)
+-->
+   (<op> ^evaluate-first true)
+}}
+
+sp {{{name}*elaborate*operator*evaluate-last*off-own-{attr}
+   (state <s> ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^name slide-block ^argument1 <b>)
+   (<b> ^{attr} <v>)
+   (<w> ^on <r>)
+   (<r> ^argument1 <b> ^argument2 <l>)
+   (<l> ^{attr} <v>)
+-->
+   (<op> ^evaluate-last true)
+}}
+''')
+
+
+# Search-control items (tools/control.py) the sliding puzzles can translate: statement pattern -> rule writer.
+CONTROL_SLIDING = [
+    (re.compile(r'^during look-ahead, first try moving a block onto a location of its own colou?r, and try last moving a '
+                r'block off a location of its own colou?r\.?$', re.I),
+     lambda t, name, sc_id: sc_own_attr_first(t, name, sc_id, 'color')),
+]
+
+
+def sliding(name, world, default_world, title, attr, n, note, control='none'):
     t, objs = _task(name, world, title, (5, 6, 7, 9, 11), note, SLIDE_TRANS.format(attr=attr), default_world)
     step_move(t, 'slide-block', 'Slide', '')
     goal_all_matched(t, name, objs, attr)
-    _finish(t, name, world, default_world)
+    tag = C.translate(t, name, control, CONTROL_SLIDING)
+    _finish(t, name, world, default_world, tag)
 
 
 def maze(name, world, default_world, push_too=False, nums=(4, 5, 6, 7, 14)):

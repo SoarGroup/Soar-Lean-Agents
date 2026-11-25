@@ -1,6 +1,6 @@
 # World conventions for Soar programs, version 6
 
-Generated 23 November 2026, 15:52 by `gen_spec.py` from `World-Conventions-v6.xlsx` (593 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 24 November 2026, 18:28 by `gen_spec.py` from `World-Conventions-v6.xlsx` (603 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -13,16 +13,16 @@ Generated 23 November 2026, 15:52 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L4 Default rules](#l4-default-rules) | 9 | Conventions set by the default rules of soar-base (loaded with the shared library). |
 | [L5 Selection space (classic)](#l5-selection-space-classic) | 10 | Conventions of the classic selection space that selection-world keeps. |
 | [L6 Program organization](#l6-program-organization) | 10 | Library conventions for naming, files, flags and constants. |
-| [L7 World state](#l7-world-state) | 25 | The world representation every agent-world program shares: ^world, objects and relations. |
-| [L8 Desireds](#l8-desireds) | 24 | How goals are represented as desireds, and the library's bookkeeping for them. |
+| [L7 World state](#l7-world-state) | 26 | The world representation every agent-world program shares: ^world, objects and relations. |
+| [L8 Desireds](#l8-desireds) | 29 | How goals are represented as desireds, and the library's bookkeeping for them. |
 | [L9 Operators](#l9-operators) | 27 | Task, composite and non-task operators. |
-| [L10 Application and output](#l10-application-and-output) | 11 | Internal and external operator application, output commands and events. |
+| [L10 Application and output](#l10-application-and-output) | 12 | Internal and external operator application, output commands and events. |
 | [L11 Learning](#l11-learning) | 6 | Chunking conventions for agent-world programs. |
 | [L12 Scene and attention](#l12-scene-and-attention) | 4 | Holds when attention (attend/remove) over the scene is in use. |
 | [L13 Grounding](#l13-grounding) | 14 | Holds when grounding (object-world) is in use. |
 | [L14 Selection space](#l14-selection-space) | 67 | Holds when the selection-world selection space is in use. |
-| [L15 Substates, search and look-ahead](#l15-substates-search-and-look-ahead) | 26 | Substates and search control in general, and look-ahead with its cost when in use. |
-| [L16 Iterative deepening](#l16-iterative-deepening) | 43 | Holds when the iterative-deepening strategy is in use. |
+| [L15 Substates, search and look-ahead](#l15-substates-search-and-look-ahead) | 27 | Substates and search control in general, and look-ahead with its cost when in use. |
+| [L16 Iterative deepening](#l16-iterative-deepening) | 45 | Holds when the iterative-deepening strategy is in use. |
 | [L17 MEA operator subgoaling](#l17-mea-operator-subgoaling) | 4 | Holds when means-ends (MEA) operator subgoaling is in use. |
 | [L18 Time and future events](#l18-time-and-future-events) | 13 | Holds when time, future events or idle waiting are in use. |
 | [L19 Goal completion and memory storage](#l19-goal-completion-and-memory-storage) | 6 | Holds when goal completion or semantic-memory storage is in use. |
@@ -1563,6 +1563,8 @@ sp {elaborate*reward (state <s> ^name left-right ^reward-link <r> ...) --> (<r> 
 (<out> ^perform-action <p>) (<p> ^name <action-handle> ^argument1 <handle>)   # Thor-Soar
 ```
 
+*See:* related L10-018
+
 *Source:* Tutorial Part 2, 2.2.1 English Version; Tutorial Part 2, 2.2.2 Soar Version; agent-world/external-operator-application.soar; thor-soar/external-operator-application.soar
 
 ### Settings/commands
@@ -2140,6 +2142,8 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 (<o> ^name jump ^actions.jump.direction <dir>)
 ```
 
+*See:* related L10-018
+
 *Source:* Tutorial Part 2, 2.8.3 Simplified Operators; Tutorial Part 3, 2. Simple Wandering Tank
 
 **L3-029** (Requirement, formerly OPR-015) — Each action in the world is performed by a new operator instance. One selected operator must not be expected to perform repeated actions.
@@ -2308,6 +2312,8 @@ sp {chase*elaborate*state*sound-direction (state <s> ^name chase ^io.input-link.
 ```
 sp {elaborate*shields-on (state <s> ^operator.actions <a> ^io.input-link <il>) (<il> ^incoming.<dir> yes ^shield-status off) --> (<a> ^shields.switch on)}
 ```
+
+*See:* related L10-018
 
 *Source:* Tutorial Part 3, 4.8 Shield Control Rules
 
@@ -2910,6 +2916,8 @@ sp {apply*move-north (state <s> ^operator.name move-north ^io.output-link <out>)
 sp {io*elaborate*operator*remove-command (state <s> ^operator.actions ^io.output-link <out>) (<out> ^<att> <v>) (<v> ^status complete) --> (<out> ^<att> <v> -)}
 ```
 
+*See:* related L10-018
+
 *Source:* Tutorial Part 2, 2.8.3 Simplified Operators; Tutorial Part 3, 3.4 General Rule Summary
 
 **L3-092** (Requirement, formerly IO-019) — Interpreted input lands on the task state: elaborations that test ^io.input-link copy what the task needs onto the state (constants as they are, objects with fresh identifiers, L1-021). All other task rules test the state, never the input-link.
@@ -2926,7 +2934,7 @@ sp {io*elaborate*operator*remove-command (state <s> ^operator.actions ^io.output
 
 *Source:* Soar-Lean-Agents issue 5; Tasks/Reference/io-guess (15 Nov 2026)
 
-**L3-093** (Requirement, formerly IO-022) — An agent in an environment halts on the environment's input-link signal that the task instance has ended (for example ^game-over true), by an operator application; the agent's own goal is not the end of the task instance unless the environment says so.
+**L3-093** (Requirement, formerly IO-022) — An agent in an environment halts on the environment's input-link signal that the task instance has ended (for example ^game-over true), by an operator application; the agent's own goal is not the end of the task instance unless the environment says so. The halting operator is proposed only once the agent's world holds every effect it has been told of: each opponent move reported, and the effect of each of its own commands that the environment has completed (no completed command without ^effect-applied), since the environment may report the end in the same input as the completion of the last move.
 
 *Rationale:* The environment owns the task instance. In the task language Goal is terminal, so a goal reached before the environment's signal stops the agent too early.
 
@@ -3093,7 +3101,7 @@ sp {top-state*propose*wait (state <s> ^attribute state ^choices none -^operator.
 
 ### Selection space
 
-**L4-004** (Library definition, formerly EVA-011) — With the default rules (simple.soar), an operator whose tie substate reaches a state no-change with nothing proposed gets indifferent and worst preferences; one whose conflict substate does gets rejected. In the world library the tie rule applies in real states (^real true) and, in look-ahead states (^real false), only when the task has no cost metric and does not optimize (^flags.cost-metric none, ^flags.optimize false): there the look-ahead goes on past the depth limit with a random choice. With a cost metric or optimize true, a look-ahead tie that cannot be resolved returns depth-exhaustion instead (iterative deepening).
+**L4-004** (Library definition, formerly EVA-011) — With the default rules (simple.soar), an operator whose tie substate reaches a state no-change with nothing proposed gets indifferent and worst preferences; one whose conflict substate does gets rejected. In the world library the tie rule applies in real states (^real true) and, in look-ahead states (^real false), only when the task has no cost metric and does not optimize (^flags.cost-metric none, ^flags.optimize false): there the look-ahead goes on past the depth limit with a random choice. With a cost metric or optimize true, a look-ahead tie that cannot be resolved returns depth-exhaustion instead (iterative deepening). A look-ahead state that continues at random is marked (^random-continuation true); a failure found in it afterwards (partial-failure, exhaustion-failure, failure, prohibit-failure, constraint-failure) is passed back as depth-exceeded, since it shows only that one random path failed; a success is passed back as usual.
 
 *Rationale:* Breaks ties and conflicts the agent has no knowledge for. In look-ahead, random continuation finds some plan quickly where any plan is acceptable; where cost matters it would charge a random path to the evaluated operator.
 
@@ -3699,6 +3707,16 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* Soar-library v2.45 candidate, 21 Nov 2026; Soar – To-do row 5
 
+**L7-027** (Requirement, status: Accepted) — Interchangeable objects are represented by counts. Objects are interchangeable when nothing in the task tells them apart: (1) same category and same attribute values (no name or other distinguishing attribute); (2) each takes part in the same kinds of relations, only as a member of an object that is not itself interchangeable (on a bank, in a cell, in a container), never in a relation with another interchangeable object (no stacking or order among them); (3) no statement of the task refers to one of them individually. The world then keeps, on each place, one ^<kind>-count per kind, and one object per kind (^type kind, the shared attributes, ^total), in place of the individuals and their membership relations. Operators take a kind as their argument and change the counts; goals, failures and situation labels test counts. A kind needs at least two members; a single object (the boat) stays an individual. The generator detects the condition from the world description and the task's statements and writes counts wherever the task family's operators can be written over them.
+
+*Rationale:* Individuals that are always treated the same multiply the operators (one per individual or pair) and the situations (every permutation), and every learned rule tests each of them. Counts remove the symmetry: Rosie missionaries-and-cannibals has 5 crossings instead of 21, learned rules of median 37 condition tests instead of 75, and solves in 529-576 decisions (0.7 s) instead of 1,680-2,081 (10-22 s); family-crossing 85-198 decisions instead of 2,738-3,152.
+
+*If violated:* search over permutations of identical objects; large learned rules; slow or no solution
+
+*See:* related L14-068 (repeated states)
+
+*Source:* JL, 24 Nov 2026; Soar – To-do row 48. Generators: Tasks/From-English/rosie-teaching/tools/aggregate.py (detection), rosie_gen.py (RosieTask aggregate=), rosie_river.py (river crossings over counts)
+
 ### Relations
 
 **L7-016** (Requirement, formerly W-REL-001) — A relation is a relation object on the world: (<w> ^<relation> <r>) with (<r> ^argument1 <object> ^argument2 <object>), one object per fact; a one-argument relation has only ^argument1. In a look-ahead copy the relation object also has ^duplicate-of. A relation is never represented as an attribute of one object that points to the other.
@@ -3759,7 +3777,7 @@ How goals are represented as desireds, and the library's bookkeeping for them.
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Desireds" ^desired-count; agent-world/achieved-desireds.soar, achieved-desired-operators.soar
 
-**L8-004** (Requirement, formerly W-DES-004) — A desireds structure has at most 6 ^desired: the library's counting rules cover ^desired-count 0 to 6, and for 6 only the case in which all are achieved.
+**L8-004** (Requirement, status: Accepted, formerly W-DES-004) — A desireds structure has at most 10 ^desired: the library's counting rules cover ^desired-count 0 to 10 for state desireds and for operator preconditions, every achieved/unachieved split. A desireds with ^desired-count above 10 makes the library print an ERROR line and interrupt.
 
 *Rationale:* Counting is done by enumerated rules, not arithmetic.
 
@@ -3767,7 +3785,7 @@ How goals are represented as desireds, and the library's bookkeeping for them.
 
 *Task supplies:* yes
 
-*Library rules:* count rules
+*Library rules:* agent-world*elaborate*desired-count1..10*achieved-k, agent-world*elaborate*operator*desired-count0..10*achieved-k (count rules); agent-world*apply*desired-count*too-many, agent-world*apply*operator*desired-count*too-many
 
 *Source:* agent-world/elaborations/achieved-desireds.soar; achieved-desired-operators.soar
 
@@ -3869,13 +3887,15 @@ How goals are represented as desireds, and the library's bookkeeping for them.
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Disjunction"; agent-world/achieved-desireds.soar:agent-world*elaborate*state*achieved-desired*disjunction
 
-**L8-013** (Requirement, formerly W-DES-013) — ^next-desireds <ds2> on a desireds structure names the goal set to pursue after every current desired is achieved (strict sequence).
+**L8-013** (Requirement, status: Accepted, formerly W-DES-013) — ^next-desireds <ds2> on a desireds structure names the phase to pursue once every desired of the current one is achieved. A chain of desireds linked this way is a sequence of phases (L8-026); a chain whose last phase points back to an earlier one is a loop (L8-027). The state's ^desireds is always the current phase.
 
 *Rationale:* Represents step-by-step procedures.
 
 *Task supplies:* yes
 
-*Library rules:* Thor next-desireds operator; agent-world*elaborate*operator*acheived-all-next-desireds
+*Library rules:* agent-world*propose*next-desireds, agent-world*apply*next-desireds (agent-world/next-desireds.soar); agent-world*elaborate*operator*acheived-all-next-desireds (operator preconditions)
+
+*See:* related L8-026, L8-027, L8-028, L8-029, L8-030, L9-024
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Desireds" ^next-desireds; cCTO section
 
@@ -3906,6 +3926,70 @@ How goals are represented as desireds, and the library's bookkeeping for them.
 *See:* related L15-015 (overlap)
 
 *Source:* agent-world/Impasse__Operator_Tie/evaluate-operator/elaborations.soar:agent-world*elaborate*evaluate-operator*copy-desired*
+
+**L8-026** (Requirement, status: Accepted) — Phases. A task, or a composite operator's effect, made of stages is a chain of desireds linked by ^next-desireds: the first is the initial ^desireds (or ^effect-desireds), the last has no ^next-desireds. The chain's desireds are templates: each phase entered becomes a fresh copy, and the templates are never current and must not be changed while in use. The goal is achieved when the last phase is achieved.
+
+*Rationale:* Step-by-step goals; a fresh copy starts with no achievement flags whatever their support; templates stay clean for loops.
+
+*If violated:* flags from an earlier phase or pass carry over; a changed template in a substate removes it (GDS)
+
+*Task supplies:* yes
+
+*Library rules:* agent-world/next-desireds.soar
+
+*See:* related L8-013, L8-027, L9-024, L19-001
+
+*Source:* JL, 24 Nov 2026
+
+**L8-027** (Requirement, status: Accepted) — Loops. A repeating sequence closes its chain: the last phase's ^next-desireds points back to an earlier phase, the loop start, which carries ^loop-start true. A phase that comes round again is judged afresh from the world (a new copy). Without termination desireds or a repeat count the loop never ends.
+
+*Rationale:* Repeating procedures; the loop start marks a pass for the repeat count and stops the recursive look-ahead copy of a chain.
+
+*If violated:* without ^loop-start the repeat count is not lowered
+
+*Task supplies:* yes
+
+*Library rules:* agent-world*apply*next-desireds*repeat-count; agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*next-desireds*loop-start
+
+*See:* related L8-013, L8-026, L8-028, L8-029
+
+*Source:* JL, 24 Nov 2026
+
+**L8-028** (Requirement, status: Accepted) — Termination. The state that holds a loop may have ^termination-desireds <t>, a desireds structure. On the top state the task's initialization creates it; in an operator-implementation substate the library makes a local copy of the super-operator's ^termination-desireds. The library counts it like ^desireds, and the task's achievement rules match ^<< desireds termination-desireds >>. When <t> is achieved, the state's goal is achieved whatever phase is current: the task completes on the top state; the operator's implementation is done in a substate.
+
+*Rationale:* An end condition that does not depend on the phase; on the state that holds the loop, not on each phase.
+
+*If violated:* task rules that match only ^desireds never mark the termination desireds, so the loop does not end
+
+*Task supplies:* yes
+
+*Library rules:* achieved-desireds.soar (count rules); agent-world*propose*goal-completed*termination; agent-world*propose*implementation-completed*termination; generic-operator *termination-desireds
+
+*See:* related L8-027, L8-029, L9-017, L19-001
+
+*Source:* JL, 24 Nov 2026
+
+**L8-029** (Requirement, status: Accepted) — Repeat count. The state that holds a loop may have ^repeat-count N (top state: from the task's initialization; substate: from the super-operator), the number of passes still to run, counting the current one. Each return to the loop start lowers it by 1; when it would reach 0 the loop does not return and the count is 0, and the state's goal is achieved. Termination desireds and a repeat count can be combined: whichever is met first ends the loop.
+
+*Rationale:* Counting down makes 0 the end condition in every case.
+
+*Task supplies:* yes
+
+*Library rules:* agent-world*apply*next-desireds*repeat-count; *substate*progress*...; agent-world*propose*goal-completed*repeat-count; agent-world*propose*implementation-completed*repeat-count
+
+*See:* related L8-027, L8-028, L9-017, L19-001
+
+*Source:* JL, 24 Nov 2026
+
+**L8-030** (Guidance, status: Accepted) — From English. When a task or an operator's effect is described in stages (first ..., then ..., after that ..., finally ...), each stage is a phase, chained in order (L8-026). When it repeats (repeat, again, keep ..., each time), the repeated stages are a loop (L8-027). 'Until <condition>' gives the termination desireds (L8-028); 'N times' gives ^repeat-count N (L8-029). With neither, the loop is endless, and the description should say so.
+
+*Rationale:* The generators map sequential and repeating English onto one representation.
+
+*Task supplies:* yes
+
+*See:* related L8-026 to L8-029
+
+*Source:* JL, 24 Nov 2026
 
 ### Desireds bookkeeping
 
@@ -4223,13 +4307,15 @@ sp {apply*clean-object*internal (state <s> ^operator <o> ^internal-actions true)
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Simple Composite Task Operators"
 
-**L9-017** (Requirement, formerly W-COP-002) — A complex composite task operator (cCTO) has the structure of an sCTO plus ^effect-desireds <ed>, a desireds structure (^desired, ^desired-count, optionally ^next-desireds and disjunctions). When every precondition is satisfied, <ed> becomes the ^desireds of the operator-implementation substate, where task-action and composite operators achieve it.
+**L9-017** (Requirement, formerly W-COP-002) — A complex composite task operator (cCTO) has the structure of an sCTO plus ^effect-desireds <ed>, a desireds structure (^desired, ^desired-count, optionally ^next-desireds and disjunctions). When every precondition is satisfied, <ed> becomes the ^desireds of the operator-implementation substate, where task-action and composite operators achieve it. The effect desireds may be the first of a chain of phases or a loop (L8-026, L8-027); the cCTO may also carry ^termination-desireds and ^repeat-count (L8-028, L8-029), which the library gives the substate (termination desireds as a local copy).
 
 *Rationale:* Separates preconditions from effects; supports sequencing, disjunction and temporal extent.
 
 *If violated:* cCTO never implemented
 
 *Task supplies:* yes
+
+*See:* related L8-026, L8-027, L8-028, L8-029, L19-001
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Complex Composite Task Operators"
 
@@ -4307,13 +4393,15 @@ sp {apply*clean-object*internal (state <s> ^operator <o> ^internal-actions true)
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Non-Task Operators"; agent-world/search-control.soar
 
-**L9-024** (Library definition, formerly W-NOP-002) — When a state's desireds have ^success and ^next-desireds, the operator next-desireds makes the next set the state's current desireds.
+**L9-024** (Library definition, status: Accepted, formerly W-NOP-002) — When a state's current phase (its ^desireds) is achieved and has ^next-desireds, the operator next-desireds (agent-world, any state) makes a fresh copy of the next phase the current desireds (^copied-from <template> ^phase-copy true); returning to a ^loop-start phase lowers the repeat count by 1, and when the count would reach 0 the phase stays and the count becomes 0. It is not proposed once the state's termination desireds are achieved or its count is 0. On the top state the copy is o-supported on the state; in an operator-implementation substate the progress is recorded on the superstate as ^operator-progress (^operator, ^phase, ^pass, ^repeat-count), a result, and the substate's desireds and count are elaborated from it, because o-supported progress in the substate would put the superstate's world into its GDS. Those results are not chunked.
 
-*Rationale:* Sequenced goals.
+*Rationale:* Sequenced and repeating goals; fresh copies so no achievement flag carries over; no GDS removals in substates.
 
-*See:* related L9-002 (overlap)
+*Library rules:* agent-world/next-desireds.soar (agent-world*propose*next-desireds, *apply*next-desireds, *apply*next-desireds*repeat-count, *apply*next-desireds*substate*progress*..., *elaborate*state*desireds*phase-copy*attributes); generic-operator/elaborations.soar (*operator-progress*desireds, *operator-progress*repeat-count); thor-soar*compare*next-desireds (Thor preference)
 
-*Source:* Thor-Soar Agent Documentation (thor.txt) "Next-desireds"
+*See:* related L9-002 (overlap); L8-013, L8-026 to L8-029
+
+*Source:* agent-world/next-desireds.soar; Thor-Soar Agent Documentation (thor.txt) "Next-desireds"
 
 **L9-025** (Library definition, status: Planned, formerly W-NOP-003) — In a state no-change substate (^attribute state ^choices none) agent-world proposes wait with a worst preference, and proposes it again after each selection (the proposal tests -^operator.name wait); every other operator is better than wait. Planned exception (not in library v2.41, which still proposes wait there): no wait or other idle operator is proposed in a state no-change below an evaluate-operator substate (look-ahead), where the state no-change means the evaluated operator fails (L14-039).
 
@@ -4335,11 +4423,20 @@ Internal and external operator application, output commands and events.
 
 ### Operator application (internal/external)
 
-**L10-002** (Library definition, formerly W-APP-002) — External application is usually generic. When a task operator with ^action-handle is selected, has ^pre-conditions-satisfied true, and the state has ^internal-actions false, library rules create (<output-link> ^perform-action <p>) with ^name <action-handle> and the argument handles. Task operators usually need no external application rules (in Thor, go-to, turn-on, turn-off and look-at are exceptions).
+**L10-002** (Library definition, formerly W-APP-002) — External application is generic and environment-neutral. When a task operator with ^action-handle is selected, has ^pre-conditions-satisfied true, and the state has ^internal-actions false, library rules write the action to the output-link in the form given by the top state's ^output-map (L10-018): either (<output-link> ^<command> <c>) (<c> ^<name-attribute> <action-handle> ^<attr1> <h1> ...) or, with ^command-is-action-handle true, (<output-link> ^<action-handle> <c>) (<c> ^<attr1> <h1> ...). Each argument is written as its object handle, or as itself when it is not an object. A map with ^rules environment leaves application to the environment's own rules (Thor-Soar). Task operators need no external application rules.
 
-*Rationale:* Uniform output.
+*Rationale:* One set of library rules serves every environment; a new environment needs only its output map, not rules.
 
-*Library rules:* external-operator-application.soar
+*Example:*
+
+```
+Default map: (<ol> ^perform-action <p>) (<p> ^name slide-block ^argument1 block-12 ^argument2 location-4)
+Map with ^command-is-action-handle true ^argument1 block ^argument2 destination: (<ol> ^slide-block <c>) (<c> ^block block-12 ^destination location-4)
+```
+
+*Library rules:* agent-world*apply*operator*external*argument0..3*named, *argument0..3*action-handle; agent-world*elaborate*operator*output-form*map, *action; *output-argument1..3*handle, *value
+
+*See:* related L10-018; L10-014; L10-016; L20-042; L1-022; L2-014
 
 *Source:* Thor-Soar Agent Documentation (thor.txt) "Task Operator Rules", "Go-to"; agent-world/_readme.soar; external-operator-application.soar
 
@@ -4431,19 +4528,21 @@ Internal and external operator application, output commands and events.
 
 ### Output and events
 
-**L10-014** (Library definition, formerly W-OUT-005) — agent-world removes a ^perform-action command from the output-link once its ^status is interrupted, complete or success. A command with ^status error stays, and its ^error-info is logged.
+**L10-014** (Library definition, formerly W-OUT-005) — agent-world removes an output command once its ^status is one of the output map's ^done-status values, and logs the ^error-info of a command whose ^status is one of its ^error-status values; such a command stays. The default map's done statuses are interrupted, complete and success; its error statuses are error and failure.
 
 *Rationale:* Keeps the output-link clean without per-operator removal rules.
 
 *Example:*
 
 ```
-(<ol> ^perform-action <v>) (<v> ^status complete) --> (<ol> ^perform-action <v> -)
+(<ol> ^<command> <v>) (<v> ^status complete), complete a done status of the map --> (<ol> ^<command> <v> -)
 ```
 
-*Library rules:* agent-world*elaborate*operator*remove-command
+*Library rules:* agent-world*elaborate*output-link*remove-command, agent-world*elaborate*output-link*error
 
-*Source:* agent-world/elaborations/output.soar:agent-world*elaborate*operator*remove-command, agent-world*elaborate*operator*error
+*See:* related L10-018; L10-002
+
+*Source:* agent-world/elaborations/output.soar
 
 **L10-015** (Library definition, formerly W-OUT-006) — ^agent-event structures on the output-link are removed once the environment marks them ^status complete.
 
@@ -4453,7 +4552,7 @@ Internal and external operator application, output commands and events.
 
 *Source:* agent-world/elaborations/output.soar:agent-world*elaborate*top-state*any*remove*completed*agent-event
 
-**L10-016** (Library definition, formerly W-OUT-007) — When the perform-action of the selected operator returns ^status success during an active interaction segment, agent-world adds ^events.executed-action.action-handle <h>; on ^status error or failure it adds ^events.failed-action.action-handle <h> and interrupts.
+**L10-016** (Library definition, formerly W-OUT-007) — When the selected operator's output command reports one of the output map's ^success-status values during an active interaction segment, agent-world adds ^events.executed-action.action-handle <h>; when an output command reports one of its ^error-status values it adds ^events.failed-action.action-handle <h> and interrupts.
 
 *Rationale:* Reports action outcomes to the interaction/learning layer.
 
@@ -4465,7 +4564,36 @@ Internal and external operator application, output commands and events.
 
 *Task supplies:* yes
 
+*Library rules:* agent-world*apply*operator*external*report*action-event*success, *success*action-handle, *report*failed-action*event
+
+*See:* related L10-018
+
 *Source:* agent-world/external-operator-application.soar:agent-world*apply*operator*external*report*action-event*success, *report*failed-action*event
+
+**L10-018** (Requirement, status: Accepted) — The description of an agent and its environment states how the environment takes actions on the output-link: the command form and the statuses it reports. The agent declares it as ^environment-output-map <m> on the top state, with ^command <attr> and ^name-attribute <attr> (or ^command-is-action-handle true), ^argument1 to ^argument3 <attr>, ^done-status, ^success-status and ^error-status values, optional ^action entries (^action-handle <h> with their own command and argument fields) for actions written differently, and ^rules environment when the environment's own rules write the commands. Without a declaration the library's default map applies: the ^perform-action form of Thor-Soar (L20-042), which the test harnesses complete. Generators write the declaration from the description, and write any environment-effect rules they generate (rules that apply a completed command to the agent's world) for the same form.
+
+*Rationale:* Environments have different interfaces; a declared map lets the library write any of them, so a new environment needs no output rules.
+
+*If violated:* Commands in a form the environment does not read; or environment-effect rules that never match the commands the library writes.
+
+*Example:*
+
+```
+sp {my-env*elaborate*environment-output-map
+   (state <s> ^superstate nil)
+-->
+   (<s> ^environment-output-map <m>)
+   (<m> ^command-is-action-handle true ^argument1 block ^argument2 destination
+        ^done-status complete ^success-status complete ^error-status error)}
+```
+
+*Task supplies:* ^environment-output-map, when the environment does not take the default ^perform-action form
+
+*Library rules:* agent-world*elaborate*top-state*output-map*environment, *default
+
+*See:* related L10-002; L10-014; L10-016; L20-042; L1-022; L2-014; L3-028; L3-091
+
+*Source:* JL decision, 23 Nov 2026; library v2.47 candidate
 
 ## L11 Learning
 
@@ -5033,7 +5161,7 @@ Holds when the selection-world selection space is in use.
 
 *Rationale:* A failed operator can still be chosen if nothing else is left.
 
-*See:* related L14-027 (overlap)
+*See:* related L14-027 (overlap); L15-028
 
 *Source:* selection-world/Operator_Tie/elaborations.soar:selection-world*compare*selection*select*failure-evaluation-becomes-reject-preference (creates <), selection-world*compare*selection*select*exhaustion-failure-evaluation-becomes-worst-preference, selection-world*compare*selection*success-evaluation-better-than-failure, selection-world*compare*selection*exhaustion-evaluation-better-than-failure, selection-world*compare*selection*success-evaluation-equal-failure; agent-world/Impasse__Operator_Tie/elaborations.soar:agent-world*compare*selection*select*constraint-failure-becomes-reject
 
@@ -5147,9 +5275,13 @@ Holds when the selection-world selection space is in use.
 
 *Source:* selection-world/Operator_Tie/evaluate-operator/elaborations.soar
 
-**L14-044** (Library definition, capacity: selection-world, formerly W-LAH-018) — The evaluated operator is selected first in the evaluation substate through a require preference on the operator that is both ^look-ahead-operator and ^untried-tied-operator. agent-world makes ^look-ahead-operator a shallow copy of the tied operator: a new object with ^copied-from <the original> and every attribute of the original except ^evaluation and ^super-operator, with the same values.
+**L14-044** (Library definition, capacity: selection-world, status: Accepted, formerly W-LAH-018) — The evaluated operator is selected first in the evaluation substate through a require preference on the operator that is both ^look-ahead-operator and ^untried-tied-operator. agent-world makes ^look-ahead-operator a copy of the tied operator: a new object with ^copied-from <the original> and every attribute of the original except ^evaluation and ^super-operator, with the same values, except that its ^desireds (the operator's preconditions) is its own: a new desireds object with ^copied-from <the original desireds> and every attribute of the original desireds (its ^desired structures shared) except the achieved and unachieved counts, which are computed for the copy; ^next-desireds is copied the same way.
 
-*Rationale:* The look-ahead should start with the operator being evaluated.
+*Rationale:* The look-ahead should start with the operator being evaluated. Achievement of the copy's preconditions is decided in the look-ahead world, so it must not change the original's.
+
+*If violated:* The o-supported achievement rules for the selected operator (agent-world*apply*operator*acheived-desired*handle, *anchored-only, *info) mark the real operator's preconditions achieved from a look-ahead world; the marks stay after the look-ahead, so a later look-ahead (or the real state) treats unmet preconditions as met: illegal moves in look-ahead, a Soar crash in a gen3 Tower of Hanoi agent.
+
+*Library rules:* agent-world*elaborate*evaluate-operator*state*look-ahead-operator*copy, *copy*attributes, *copy*desireds, *copy*next-desireds, *copy*desireds*attributes
 
 *Source:* selection-world/Operator_Tie/evaluate-operator/task-operator.soar:selection-world*compare*evaluate-operator*look-ahead; agent-world/.../elaborations.soar:agent-world*elaborate*evaluate-operator*state*look-ahead-operator*copy
 
@@ -5445,7 +5577,7 @@ Substates and search control in general, and look-ahead with its cost when in us
 
 *See:* related L3-041; L9-003; L9-009; L14-051; L16-038; to-do: conventions for choosing MEA or forward search
 
-**L15-026** (Choice, status: Accepted) — When the task's search control gives a measure of progress for one step, its default use is to order which tied operators the selection space evaluates first. The task marks a proposed operator ^evaluate-first true (promising) or ^evaluate-last true (unpromising); the library turns the marks into best and worst preferences among the evaluate-operator choices. This changes only how soon a solution is found, so it applies whether or not the task asks for the shortest or cheapest solution. Using the measure to choose the real operator, or as a ^numeric-value that ends a look-ahead, is allowed only when the task does not ask for the shortest or cheapest solution. The measure comes from the task's search-control section, not from the generator.
+**L15-026** (Choice, status: Suspended) — When the task's search control gives a measure of progress for one step, its default use is to order which tied operators the selection space evaluates first. The task marks a proposed operator ^evaluate-first true (promising) or ^evaluate-last true (unpromising); the library turns the marks into best and worst preferences among the evaluate-operator choices. This changes only how soon a solution is found, so it applies whether or not the task asks for the shortest or cheapest solution. Using the measure to choose the real operator, or as a ^numeric-value that ends a look-ahead, is allowed only when the task does not ask for the shortest or cheapest solution. The measure comes from the task's search-control section, not from the generator.
 
 *Rationale:* Iterative deepening completes every tied operator at one depth before going deeper, so evaluation order changes when a solution is found, not how long it is. Evaluating promising operators first finds it sooner. Choosing the real operator by the measure, or ending look-ahead with it, can give a longer plan.
 
@@ -5465,7 +5597,7 @@ sp {eight-puzzle*elaborate*move-tile*evaluate-first
 
 *Task supplies:* ^evaluate-first / ^evaluate-last marks on proposed operators, from its search-control items
 
-*Library rules:* selection-world*compare*selection*evaluate-operator*evaluate-first, *evaluate-last (v2.46)
+*Library rules:* None in v2.47 (the v2.46 rules selection-world*compare*selection*evaluate-operator*evaluate-first and *evaluate-last are removed; marks are ignored)
 
 *See:* related L15-023; L15-024; L14-048; L5-013
 
@@ -5491,6 +5623,22 @@ sp {eight-puzzle*elaborate*move-tile*evaluate-first
 *See:* related L9-001; L9-023; L15-001; L3-039; L15-026
 
 *Source:* JL decision, 22 Nov 2026; gen3 KenKen agents
+
+**L15-028** (Requirement, status: Accepted) — In a task whose ties among task operators go to look-ahead, the task's search control gives no best preference to operators that can tie with each other. It orders them with binary better/worse preferences, or with indifferent, or leaves the ordering to the look-ahead. A best preference from the task on several tied operators hides a success the look-ahead finds: the library returns a success as a best preference (L14-028), and a best cannot beat another best.
+
+*Rationale:* The look-ahead's success must be able to decide among the tied operators.
+
+*If violated:* The look-ahead finds a success but the tie stays: iterative deepening goes on to greater depths, and the real state may apply and undo moves (blocks world with prefer-ontop best on two tied moves: 573 decisions and 11 real moves instead of 3).
+
+*Example:* Instead of (<s> ^operator <o> >) for every move that puts a block on its goal destination, give such a move better than a move that does not: (<s> ^operator <o1> > <o2>).
+
+*Task supplies:* its search-control preferences
+
+*Library rules:* selection-world*compare*selection*select*success-evaluation-becomes-best-preference (the success it must not hide)
+
+*See:* related L14-028; L15-002; L15-026; L3-039
+
+*Source:* JL decision, 24 Nov 2026 (to-do row 50)
 
 ### Substates (general)
 
@@ -6106,6 +6254,32 @@ Holds when the iterative-deepening strategy is in use.
 
 *Source:* JEL, 12 Nov 2026 (LF-22); selection-iterative-deepening; agent-world evaluate-operator elaborations (numeric-value from time)
 
+**L16-045** (Guidance, capacity: iterative deepening, status: Accepted) — When a task's description states the length of its solution ("The solution has N steps"), the generator sets ^flag-override.max-evaluation-depth to N when N is above the library default (12), so iterative deepening may search as deep as the stated solution. The statement is used only as a lower bound on the depth limit, never to lower it, since a stated length can be wrong.
+
+*Rationale:* At the depth limit the selection picks among the moves not ruled out without a success in sight; where moves cannot be undone, such a guess can make the task unsolvable.
+
+*If violated:* irreversible tasks longer than the limit commit to dead ends
+
+*Task supplies:* yes (the statement)
+
+*Library rules:* selection-world*elaborate*flags*default*max-evaluation-depth; achieved-max-depth.soar
+
+*See:* related L16-001
+
+*Source:* JL, 24 Nov 2026; Soar – To-do row 7. Generator: Tasks/From-English/rosie-teaching/tools/solution_length.py (through RosieTask.write)
+
+**L16-046** (Library definition, capacity: iterative deepening, status: Accepted) — Each look-ahead world counts the operators applied on its look-ahead path (^look-ahead-steps, starting from the count of the world it was copied from). With iterative-step tie-impasse or cost, an evaluation whose count reaches ^flags.max-look-ahead-steps (default 1000) ends as depth-exceeded. With iterative-step operator the depth limit already counts every operator, so the defined limit is the bound and the step count is not used. A task that knows how many operators one evaluation may need sets ^flag-override.max-look-ahead-steps.
+
+*Rationale:* With tie-impasse the depth limit counts only ties, so an evaluation that never ties again (a means-ends subgoal loop) ran without bound. Legitimate inference inside one evaluation can be long (KenKen 6x6: 233 operators after one guess), so the default is a backstop far above it, not a search limit.
+
+*If violated:* a runaway evaluation never returns
+
+*Library rules:* selection-world*propose*evaluate-operator*exceed-depth*look-ahead-steps; selection-world*apply*world*local-version (*first); selection-world*elaborate*evaluate-operator*default-state-copy-steps (*zero); selection-world*elaborate*flags*default*max-look-ahead-steps
+
+*See:* related L16-045
+
+*Source:* JL, 24 Nov 2026; Soar – To-do rows 5 and 42; library v2.47 candidate
+
 ### MEA operator subgoaling
 
 **L16-038** (Library definition, capacity: iterative deepening, formerly W-MEA-001) — A substate whose ^problem-space.name equals its superstate's (an MEA subgoal) shares the superstate's ^current-evaluation-depth identifier; an MEA subgoal therefore keeps the ^problem-space.name of the state that created it. An operator-implementation substate has the operator's name as problem-space name and does not share it.
@@ -6310,13 +6484,15 @@ Holds when goal completion or semantic-memory storage is in use.
 
 ### Desireds bookkeeping
 
-**L19-001** (Library definition, capacity: goal completion, formerly W-DBK-016) — goal-completed is proposed at the top state (worst, indifferent) when the state has ^success or ^required-success <desireds>, the desireds have no ^next-desireds, and the world is real and anchored. The operator carries ^completed-desireds <desireds>.
+**L19-001** (Library definition, capacity: goal completion, status: Accepted, formerly W-DBK-016) — goal-completed is proposed at the top state (worst, indifferent) when the world is real and anchored and either the state has ^success or ^required-success <desireds> and the desireds have no ^next-desireds (last phase), or the state's ^termination-desireds are achieved (L8-028), or its ^repeat-count is 0 (L8-029). The operator carries ^completed-desireds (the desireds or the termination desireds). In an operator-implementation substate the same three conditions (the last phase only after a phase change) propose implementation-completed, which marks the superstate ^completed-operator <op>; the superstate then rejects that operator.
 
 *Rationale:* Ends a task in the real world.
 
-*Library rules:* agent-world*propose*goal-completed
+*Library rules:* agent-world*propose*goal-completed, *goal-completed*termination, *goal-completed*repeat-count; agent-world/implementation-completed.soar; selection-world*apply*top-goal*halt*success*termination, *repeat-count
 
-*Source:* agent-world/goal-completed.soar:agent-world*propose*goal-completed
+*See:* related L8-028, L8-029
+
+*Source:* agent-world/goal-completed.soar; agent-world/implementation-completed.soar
 
 **L19-002** (Library definition, capacity: goal completion, smem storage, formerly W-DBK-017) — When goal-completed is selected: with ^flags.agent-mode testing the library outputs ^report-test-result.result success; with ^flags.smem-store true it stores the scene and the smem-storage-structure in semantic memory.
 
@@ -6524,7 +6700,7 @@ Applies only to Thor-Soar (the Thor-specific sheet).
 
 ### Output and events
 
-**L20-042** (Requirement, formerly L10-012; W-OUT-003) — In Thor-Soar, the real-world output of a task-action operator must be (<output-link> ^perform-action <p>) (<p> ^name <action-handle> ^argument1 <handle> [^argument2 <handle>]), created by agent-world and not by task rules. Other projects may use the same form; some use a different output command name instead of ^perform-action (a single form across projects is to be agreed: Soar – To-do).
+**L20-042** (Requirement, formerly L10-012; W-OUT-003) — In Thor-Soar, the real-world output of a task-action operator is (<output-link> ^perform-action <p>) (<p> ^name <action-handle> ^argument1 <handle> [^argument2 <handle>]), with ^status success, complete, interrupted, error or failure reported on it. Thor-Soar declares this as its output map with ^rules environment and writes the commands with its own rules (thor-soar/external-operator-application.soar, moved from agent-world in v2.47). The form is specific to Thor-Soar; it is also the library's default map, so agents that declare no map keep it (L10-018).
 
 *Rationale:* Generic rules translate the uniform operator structure into the environment command.
 
@@ -6534,7 +6710,9 @@ Applies only to Thor-Soar (the Thor-specific sheet).
 (<ol> ^perform-action <p>) (<p> ^name put-in ^argument1 Apple1 ^argument2 Fridge40)
 ```
 
-*Library rules:* agent-world*apply*operator*external*argument0/1/2 (+ variants)
+*Library rules:* thor-soar*elaborate*top-state*environment-output-map; thor-soar*apply*operator*external*perform-action*argument0..3 (+ variants)
+
+*See:* related L10-018; L10-002
 
 *Source:* agent-world/external-operator-application.soar; Thor-Soar Agent Documentation (thor.txt) 'Innate Task-Action Operators' (generic operator-independent rules)
 

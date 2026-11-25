@@ -50,10 +50,20 @@ def main():
             if c.GetCommandName() == 'perform-action' and c.GetParameterValue('status') is None:
                 acts.append([c.GetParameterValue('name'), c.GetParameterValue('argument1'), c.GetParameterValue('argument2')])
                 c.AddStatusComplete()
+            elif c.GetParameterValue('status') is None:   # a declared output form (World-Conventions L10-018)
+                ps = [(c.GetChild(q).GetAttribute(), c.GetChild(q).GetValueAsString()) for q in range(c.GetNumberChildren())]
+                acts.append([c.GetCommandName()] + [v for _, v in ps])
+                c.AddStatusComplete()
         a.Commit(); a.ClearOutputLinkChanges()
         # A losing condition takes precedence over the goal (John, 2026-11-16): a top state with both reports failure.
         if re.search(r'\^failure', a.ExecuteCommandLine('print s1')): outcome = 'failure'; break
-        if 'success' in a.ExecuteCommandLine('print (s1 ^success *)'): outcome = 'success'; break
+        if 'success' in a.ExecuteCommandLine('print (s1 ^success *)'):
+            # With phases or a loop (World-Conventions L8-026 to L8-029) a phase's success is not the end: the run ends
+            # when the library's top-goal halt rule reports the task done.
+            s1 = a.ExecuteCommandLine('print --depth 2 s1')
+            if not re.search(r'\^next-desireds|\^repeat-count|\^termination-desireds', s1) or \
+               re.search(r'achieved - success|achieved all desireds|completed its repeat count|achieved termination desireds', ''.join(out)):
+                outcome = 'success'; break
     st = a.ExecuteCommandLine('stats')
     res = dict(outcome=outcome, decisions=step + 1, actions=acts, n_actions=len(acts), seconds=round(time.time() - t0, 1),
                cpu=re.search(r'Kernel CPU Time:\s+([\d.]+)', st).group(1))

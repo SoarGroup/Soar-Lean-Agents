@@ -24,3 +24,6 @@ World vocabulary (extracted from the world files loaded above; not part of the d
   Names are as written in the world files, including their trailing 1 (red1, on1).
 
 Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/grid-puzzles/eight-puzzle/.
+
+Search control (added 23 November 2026 by Claude, supervised by John E. Laird; not part of the Rosie teaching data; it augments the puzzle and does not change it. Select items with tools/control.py, e.g. python3 gen.py --control SC-1):
+  SC-1 [evaluation]: During look-ahead, first try moving a block onto a location of its own color, and try last moving a block off a location of its own color.

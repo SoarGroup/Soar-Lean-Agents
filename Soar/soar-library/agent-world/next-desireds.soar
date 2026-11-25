@@ -1,0 +1,277 @@
+## next-desireds.soar -- agent-world: 1 proposal, 1 compare, 10 applications, 3 elaborations.
+## Phases and loops of desireds (L8-013, L8-026 - L8-029; moved from thor-soar in v2.47).
+## A state's ^desireds is the current phase. Its ^next-desireds names the next phase in a chain of template
+## desireds; when the last phase points back to an earlier one (^loop-start true), the phases loop.
+## Each phase entered becomes a fresh copy (^copied-from <template> ^phase-copy true), so no ^achieved flag,
+## whatever its support, carries over from an earlier pass; the templates are never current and stay clean.
+## A loop ends when the state's ^termination-desireds are achieved or its ^repeat-count reaches 0.
+
+## ---- operator proposal ----
+
+## Propose next-desireds when the current phase is achieved and it has a next phase, unless the state's loop
+## has ended (termination achieved, or repeat count 0).
+sp {agent-world*propose*next-desireds
+   :default
+   (state <s> ^desireds <desireds>
+              ^<< required-success success >> <desireds>)
+   (<desireds> ^next-desireds <next>)
+  -(<s> ^repeat-count 0)
+  -{(<s> ^termination-desireds <termination>
+         ^<< required-success success >> <termination>)}
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name next-desireds
+         ^current-desireds <desireds>
+         ^next-desireds <next>)
+}
+
+## Compare next-desireds: better than goal-completed.
+sp {agent-world*compare*next-desireds
+   :default
+   (state <s> ^operator <op1> +
+                        { <> <op1> <op2> } +)
+   (<op1> ^name next-desireds)
+   (<op2> ^name goal-completed)
+-->
+   (<s> ^operator <op1> > <op2>)
+}
+
+## ---- operator application ----
+
+## Apply next-desireds -> sets desireds (top state).
+## The current phase is replaced by a fresh copy of the next phase, unless this pass ends a counted loop.
+sp {agent-world*apply*next-desireds
+   :default
+   (state <s> ^operator <op>
+              ^superstate nil
+              ^desireds <desireds>)
+   (<op> ^name next-desireds
+         ^current-desireds <desireds>
+         ^next-desireds <next>)
+  -{(<next> ^loop-start true)
+    (<s> ^repeat-count 1)}
+-->
+   (<s> ^desireds <desireds> -
+                  <copy>)
+   (<copy> ^copied-from <next>
+           ^phase-copy true)
+}
+
+## Apply next-desireds -> sets repeat-count (top state).
+## Returning to the loop start ends a pass: the count of passes still to run goes down by one.
+sp {agent-world*apply*next-desireds*repeat-count
+   :default
+   (state <s> ^operator <op>
+              ^superstate nil
+              ^repeat-count { > 0 <count> })
+   (<op> ^name next-desireds
+         ^next-desireds.loop-start true)
+-->
+   (<s> ^repeat-count <count> -
+                      (- <count> 1))
+}
+
+## Apply next-desireds -> removes depth-exceeded.
+## Nothing may keep the replaced phase in working memory.
+sp {agent-world*apply*next-desireds*depth-exceeded
+   :default
+   (state <s> ^operator <op>
+              ^depth-exceeded <desireds>)
+   (<op> ^name next-desireds
+         ^current-desireds <desireds>)
+-->
+   (<s> ^depth-exceeded <desireds> -)
+}
+
+## Apply next-desireds: log.
+sp {agent-world*apply*next-desireds*log
+   :default
+   (state <s> ^operator <op>)
+   (<op> ^name next-desireds
+         ^next-desireds <next>)
+-->
+   (log 1 (crlf) |Next desireds: | <next>)
+}
+
+## ---- operator application in an operator-implementation substate ----
+## In a substate the progress through the phases is not kept in the substate: an o-supported WME there would
+## put the superstate's world into the substate's GDS (it rests on the achievement of the phase), and the
+## next change to the world would remove the substate. Instead next-desireds records the progress on the
+## superstate, as a result: (<ss> ^operator-progress <r>) (<r> ^operator <super-operator> ^phase <template>
+## ^pass <k> [^repeat-count <n>]). The substate's ^desireds and ^repeat-count are elaborated from it
+## (generic-operator/elaborations.soar).
+
+## Apply next-desireds -> creates operator-progress (first phase change, no repeat count).
+sp {agent-world*apply*next-desireds*substate*progress*create
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>
+             -^repeat-count)
+   (<ss> ^operator <super-operator>)
+   (<super-operator> ^pre-conditions-satisfied true)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <super-operator>)}
+   (<op> ^name next-desireds
+         ^next-desireds <next>)
+-->
+   (<ss> ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^phase <next>
+        ^pass 1)
+}
+
+## Apply next-desireds -> creates operator-progress (first phase change, repeat count, not at the loop start).
+sp {agent-world*apply*next-desireds*substate*progress*create*count
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>
+              ^repeat-count <count>)
+   (<ss> ^operator <super-operator>)
+   (<super-operator> ^pre-conditions-satisfied true)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <super-operator>)}
+   (<op> ^name next-desireds
+         ^next-desireds <next>)
+   (<next> -^loop-start true)
+-->
+   (<ss> ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^phase <next>
+        ^pass 1
+        ^repeat-count <count>)
+}
+
+## Apply next-desireds -> creates operator-progress (first phase change, back to the loop start, passes remain).
+sp {agent-world*apply*next-desireds*substate*progress*create*count*loop
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>
+              ^repeat-count { > 1 <count> })
+   (<ss> ^operator <super-operator>)
+   (<super-operator> ^pre-conditions-satisfied true)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <super-operator>)}
+   (<op> ^name next-desireds
+         ^next-desireds <next>)
+   (<next> ^loop-start true)
+-->
+   (<ss> ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^phase <next>
+        ^pass 1
+        ^repeat-count (- <count> 1))
+}
+
+## Apply next-desireds -> creates operator-progress (first phase change, back to the loop start, last pass:
+## the phase stays and the count becomes 0).
+sp {agent-world*apply*next-desireds*substate*progress*create*count*end
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>
+              ^repeat-count 1
+              ^desireds.copied-from <template>)
+   (<ss> ^operator <super-operator>)
+   (<super-operator> ^pre-conditions-satisfied true)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <super-operator>)}
+   (<op> ^name next-desireds
+         ^next-desireds.loop-start true)
+-->
+   (<ss> ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^phase <template>
+        ^pass 1
+        ^repeat-count 0)
+}
+
+## Apply next-desireds -> sets operator-progress phase and pass (later phase changes).
+sp {agent-world*apply*next-desireds*substate*progress*phase
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>)
+   (<ss> ^operator <super-operator>
+         ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^phase <phase>
+        ^pass <pass>)
+   (<op> ^name next-desireds
+         ^next-desireds <next>)
+  -{(<next> ^loop-start true)
+    (<r> ^repeat-count 1)}
+-->
+   (<r> ^phase <phase> -
+               <next>
+        ^pass <pass> -
+              (+ <pass> 1))
+}
+
+## Apply next-desireds -> sets operator-progress repeat-count (later returns to the loop start).
+sp {agent-world*apply*next-desireds*substate*progress*repeat-count
+   :default
+   (state <s> ^operator <op>
+              ^quiescence t   # no chunk: the progress of a loop is not learned (it would run in the superstate)
+              ^impasse no-change
+              ^attribute operator
+              ^superstate <ss>)
+   (<ss> ^operator <super-operator>
+         ^operator-progress <r>)
+   (<r> ^operator <super-operator>
+        ^repeat-count { > 0 <count> })
+   (<op> ^name next-desireds
+         ^next-desireds.loop-start true)
+-->
+   (<r> ^repeat-count <count> -
+                      (- <count> 1))
+}
+
+## ---- elaborations ----
+
+## Elaborate phase copy attributes -> copies the template's attributes, except its achievement and counts.
+sp {agent-world*elaborate*state*desireds*phase-copy*attributes
+   :default
+   (state <s> ^desireds <desireds>)
+   (<desireds> ^phase-copy true
+               ^copied-from <template>)
+   (<template> ^{ <> achieved <> unachieved <> achieved-desireds-count <> unachieved-desireds-count
+                  <> unachieved-desireds <> copied-from <> phase-copy <> better <attribute> } <value>)
+-->
+   (<desireds> ^<attribute> <value>)
+}
+
+## Elaborate phase copy better -> on the top state, copies the template's ^better (in a substate the
+## operator-implementation rules set ^better from the superstate).
+sp {agent-world*elaborate*state*desireds*phase-copy*better
+   :default
+   (state <s> ^superstate nil
+              ^desireds <desireds>)
+   (<desireds> ^phase-copy true
+               ^copied-from.better <better>)
+-->
+   (<desireds> ^better <better>)
+}
+
+## Elaborate operator-progress -> removes it once its operator is no longer proposed.
+sp {agent-world*elaborate*state*operator-progress*remove
+   :default
+   :o-support
+   (state <s> ^operator-progress <r>)
+   (<r> ^operator <op>)
+  -(<s> ^operator <op> +)
+-->
+   (<s> ^operator-progress <r> -)
+}

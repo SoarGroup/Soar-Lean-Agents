@@ -6,7 +6,8 @@ usage from a task folder:  python3 gen.py [WORLD]   (WORLD: another example stat
 import os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rosie_gen as R, rosie_blocks as B
+import re
+import rosie_gen as R, rosie_blocks as B, control as C
 
 def _statements(nums):
     lines = [l.strip() for l in open('script.txt').read().splitlines() if l.strip()]
@@ -18,11 +19,27 @@ def _desc(title, nums, world_note, translation):
             f'## World: {world_note}\n##\n## Translation (tools/rosie-language.md gives the general reading; the assumption '
             f'ledger is in README.md):\n' + '\n'.join('##   ' + l for l in translation.strip().splitlines()) + '\n')
 
-def _finish(t, name, world, default_world):
-    out = f'{name}-rules.soar' if world == default_world else f'{name}-rules-{world[:-6]}.soar'
+def _finish(t, name, world, default_world, tag=''):
+    out = f'{name}{tag}-rules.soar' if world == default_world else f'{name}{tag}-rules-{world[:-6]}.soar'
     t.write(out)
-    open(f'{name}.soar', 'w').write(R.loader(f'{name}.soar', f'{name}-rules.soar', 5))
+    open(f'{name}{tag}.soar', 'w').write(R.loader(f'{name}{tag}.soar', f'{name}{tag}-rules.soar', 5))
     print('wrote', out)
+
+# Search-control items (tools/control.py) this module can translate: statement pattern -> rule writer.
+CONTROL = [
+    (re.compile(r'^during look-ahead, do not move the smallest (block|disk) twice in a row\.?$', re.I),
+     lambda t, name, sc_id: B.sc_no_repeat_smallest(t, name, sc_id)),
+    (re.compile(r'^work first on the largest (block|disk) that is not yet in place\b', re.I),
+     lambda t, name, sc_id: B.sc_largest_first(t, name, sc_id)),
+    (re.compile(r'^in look-ahead, do not move the smallest (block|disk) back to the (location|peg) it was on before\b', re.I),
+     lambda t, name, sc_id: B.sc_smallest_not_back(t, name, sc_id)),
+    (re.compile(r'^work toward one (block|disk) at a time\b', re.I),
+     lambda t, name, sc_id: B.sc_largest_recursive(t, name, sc_id)),
+]
+
+def _control(t, name, spec):
+    """Adds the rules for the selected search-control items of english-input.txt; returns the file-name tag."""
+    return C.translate(t, name, spec, CONTROL)
 
 def clear_concept(name, objs, rels):
     """'If a location is not below an object then it is clear', for every object (A-H1)."""
@@ -31,7 +48,7 @@ def clear_concept(name, objs, rels):
     return {i for i in objs if i not in below_first}
 
 # ---------------------------------------------------------------- Tower of Hanoi (3, 4, 5 blocks)
-def hanoi(name, world, default_world, nums=(4, 5, 6, 8)):
+def hanoi(name, world, default_world, nums=(4, 5, 6, 8), control='none'):
     desc = _desc(f'Tower of Hanoi ({name})', nums, default_world + ' (two green locations and a blue one; the blocks stacked '
                  'by volume on a green location)', '''
 - Operator move (argument1 = the block, argument2 = the object it is moved onto).
@@ -56,7 +73,7 @@ sp {{{name}*elaborate*goal*two-clear-green-locations
    (<t> ^goal-met true)
 }}
 ''')
-    _finish(t, name, world, default_world)
+    _finish(t, name, world, default_world, _control(t, name, control))
 
 # ---------------------------------------------------------------- Blocks world (two colorings)
 def blocks_world(name, world, default_world, bottom, top_on, top_below, nums=(4, 5, 7)):
@@ -113,7 +130,34 @@ sp {{{name}*elaborate*goal*sorted
    (<t> ^goal-met true)
 }}
 ''')
+    _named_goals_all_on(t, name, blocks)
     _finish(t, name, world, default_world)
+
+
+def _named_goals_all_on(t, name, blocks):
+    """Goals declared in the English for phases (tools/sequence.py, World-Conventions L8-030) of the form
+    'Goal <g>: all the blocks are on the <color> location.': ^<g>-met on the task object."""
+    import sequence
+    seq = sequence.read('english-input.txt') if os.path.exists('english-input.txt') else None
+    for g, text in (seq or {}).get('goals', {}).items():
+        m = re.match(r'all the blocks are on the (\w+) location$', text, re.I)
+        if not m: raise ValueError(f'goal {g}: cannot read "{text}"')
+        conds = '\n'.join(f'''   (<b-{h}> ^object-handle {h})
+   (<w> ^on <on-{h}>)
+   (<on-{h}> ^argument1 <b-{h}> ^argument2 <l>)''' for h, _ in blocks)
+        t.add(f'''
+## Goal {g} (stated for the phases): all the blocks are on the {m.group(1)} location.
+sp {{{name}*elaborate*goal*{g}
+   (state <s> ^world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^object <t> <l> {' '.join(f'<b-{h}>' for h, _ in blocks)})
+   (<t> ^type task)
+   (<l> ^type location ^color {m.group(1)})
+{conds}
+-->
+   (<t> ^{g}-met true)
+}}
+''')
 
 # ---------------------------------------------------------------- Stacking frogs (three variants)
 def _block_count(i, a, rels):

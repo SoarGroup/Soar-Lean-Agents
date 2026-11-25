@@ -33,3 +33,18 @@ sp {selection-world*elaborate*flags*default*max-evaluation-depth
 -->
    (<f> ^max-evaluation-depth 12)
 }
+
+## Elaborate flags default max-look-ahead-steps -> 1000 (v2.47).
+## A backstop for runaway subgoaling or search inside one evaluation: an evaluation whose look-ahead path has applied this
+## many operators ends as depth-exceeded (evaluate-operator/exceed-depth.soar). With iterative-step tie-impasse the depth
+## limit counts only tie impasses, so an evaluation that never ties again was unbounded (Soar - To-do row 42). Long chains
+## of inference inside one evaluation are legitimate (KenKen 6x6: up to 233 operators after one guess), so the default
+## is far above them; a task that knows its bound sets ^flag-override.max-look-ahead-steps.
+sp {selection-world*elaborate*flags*default*max-look-ahead-steps
+   :default
+   (state <s> ^superstate nil
+              ^flags <f>
+             -^flag-override.max-look-ahead-steps <any>)
+-->
+   (<f> ^max-look-ahead-steps 1000)
+}

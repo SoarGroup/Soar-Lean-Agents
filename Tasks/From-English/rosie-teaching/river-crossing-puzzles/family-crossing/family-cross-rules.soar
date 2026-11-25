@@ -19,11 +19,13 @@
 ##   - The goal ("all the blocks are on a destination bank") is expanded over the blocks of the world file (the boat is a
 ##     block).
 ##   - No losing condition is taught. "The solution has nine steps." is checked against the plans, not used.
-##   - Search control added at JL's direction (16 Nov 2026), not from the English: in look-ahead, a move whose result is a
-##     situation already on the current look-ahead path is rejected. A situation is the bank of every block; each operator
-##     carries the label of the situation it produces (^result), the task object the label of the current one (^situation),
-##     and the look-ahead application records both on the history object (^visited). Real moves (JL, 16 Nov 2026, as in
-##     mc-world): a real move back to a situation already visited is worst (the top state records ^real-visited).
+##   - Interchangeable blocks (World-Conventions L7-027; tools/aggregate.py): the adult, child blocks are identical
+##     within each kind and the statements never single one out, so only how many are on each bank matters. Each bank has
+##     ^adult-count, ^child-count; each kind is an object (^type kind, ^total). The operators move kinds:
+##     ferry-one argument1 = a kind, argument2 = the opposite bank; a two-block crossing has argument1 and argument2 = two
+##     kinds (in name order; the same kind twice when two of it are on the bank). The boat stays an individual block. An
+##     environment that moves individual blocks binds a kind to any block of that kind on the bank (the output names the
+##     kind).
 
 ## Propose initialize-family-cross when its conditions below hold.
 sp {family-cross*propose*initialize-family-cross
@@ -38,37 +40,19 @@ sp {family-cross*apply*initialize-family-cross
    (<w> ^objects <objs>)
 -->
    (<s> ^name family-cross ^desireds <ds>)
-   (<objs> ^object <o-bank-1> <o-bank-2> <o-adult-3> <o-adult-4> <o-child-5> <o-child-6> <o-boat-7> <o-task> <o-history>)
-   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank)
-   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination)
-   (<o-adult-3> ^object-handle adult-3 ^anchored true ^type block ^shape adult ^index 3 ^label-key pos-3)
-   (<o-adult-4> ^object-handle adult-4 ^anchored true ^type block ^shape adult ^index 4 ^label-key pos-4)
-   (<o-child-5> ^object-handle child-5 ^anchored true ^type block ^shape child ^index 5 ^label-key pos-5)
-   (<o-child-6> ^object-handle child-6 ^anchored true ^type block ^shape child ^index 6 ^label-key pos-6)
-   (<o-boat-7> ^object-handle boat-7 ^anchored true ^type block ^shape boat ^label-key pos-7)
+   (<objs> ^object <o-bank-1> <o-bank-2> <o-boat-7> <o-adult> <o-child> <o-task> <o-history>)
+   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank ^adult-count 2 ^child-count 2)
+   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination ^adult-count 0 ^child-count 0)
+   (<o-boat-7> ^object-handle boat-7 ^anchored true ^type block ^shape boat)
+   (<o-adult> ^object-handle adult ^anchored true ^type kind ^shape adult ^kind-of block ^total 2)
+   (<o-child> ^object-handle child ^anchored true ^type kind ^shape child ^kind-of block ^total 2)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<o-history> ^object-handle history ^anchored true ^type history)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
    (<d1-o> ^object-handle task ^goal-met true)
-   (<w> ^on <on-0>)
-   (<on-0> ^argument1 <o-adult-3> ^argument2 <o-bank-1>)
-   (<w> ^on <on-1>)
-   (<on-1> ^argument1 <o-adult-4> ^argument2 <o-bank-1>)
-   (<w> ^on <on-2>)
-   (<on-2> ^argument1 <o-child-5> ^argument2 <o-bank-1>)
-   (<w> ^on <on-3>)
-   (<on-3> ^argument1 <o-child-6> ^argument2 <o-bank-1>)
    (<w> ^on <on-4>)
    (<on-4> ^argument1 <o-boat-7> ^argument2 <o-bank-1>)
-   (<w> ^below <below-0>)
-   (<below-0> ^argument1 <o-bank-1> ^argument2 <o-adult-3>)
-   (<w> ^below <below-1>)
-   (<below-1> ^argument1 <o-bank-1> ^argument2 <o-adult-4>)
-   (<w> ^below <below-2>)
-   (<below-2> ^argument1 <o-bank-1> ^argument2 <o-child-5>)
-   (<w> ^below <below-3>)
-   (<below-3> ^argument1 <o-bank-1> ^argument2 <o-child-6>)
    (<w> ^below <below-4>)
    (<below-4> ^argument1 <o-bank-1> ^argument2 <o-boat-7>)
    (<w> ^opposite <opposite-bank-2>)
@@ -124,233 +108,310 @@ sp {family-cross*elaborate*state*unachieved*object-property
 -->
    (<ds> ^unachieved <d>)
 }
-## Propose ferry-two-children in problem space family-cross when its conditions below hold.
-sp {family-cross*propose*ferry-two-children
+## Propose ferry-two-children in problem space family-cross when its conditions below hold (child child).
+sp {family-cross*propose*ferry-two-children*child-child
    (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <x> <y> <cur>)
+   (<objs> ^object <boat> <cur> <opp> <k-child>)
    (<boat> ^type block ^shape boat)
-   (<x> ^type block ^shape child ^index <xi> ^object-handle $ <xh>)
-   (<y> ^type block ^shape child ^index > <xi> ^object-handle $ <yh>)
-   (<cur> ^type location)
-   (<objs> ^object <opp>)
-   (<w> ^below <bb> ^on <xo> <yo> ^opposite <op-r>)
-   (<op-r> ^argument1 <opp>)
+   (<cur> ^type location ^child-count >= 2)
+   (<opp> ^type location)
+   (<k-child> ^type kind ^object-handle child)
+   (<w> ^below <bb> ^opposite <op-r>)
    (<bb> ^argument1 <cur> ^argument2 <boat>)
-   (<xo> ^argument1 <x> ^argument2 <cur>)
-   (<yo> ^argument1 <y> ^argument2 <cur>)
-   (<ds> ^unachieved-desireds true)
--->
-   (<s> ^operator <op> +)
-   (<op> ^name ferry-two-children ^task-operator true ^action-handle ferry-two-children ^argument1 <x> ^argument2 <y> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
-   (<pre> ^desired-count 0)
-}
-## Effect of ferry-two-children (look-ahead).
-sp {family-cross*apply*ferry-two-children*internal
-   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
-   (<op> ^task-operator true ^name ferry-two-children ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <yh> ^from.object-handle $ <oldh>)
-   (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
-   (<w> ^on <rb> ^below <bb> ^opposite <od>)
-   (<rb> ^argument1 <boat> ^argument2 <old>)
-   (<bb> ^argument1 <old> ^argument2 <boat>)
-   (<old> ^object-handle $ <oldh>)
-   (<od> ^argument1 <d>)
-   (<objs> ^object <x>)
-   (<x> ^object-handle $ <xh>)
-   (<w> ^on <rx> ^below <bx>)
-   (<rx> ^argument1 <x> ^argument2 <old>)
-   (<bx> ^argument1 <old> ^argument2 <x>)
-   (<objs> ^object <y>)
-   (<y> ^object-handle $ <yh>)
-   (<w> ^on <ry> ^below <by>)
-   (<ry> ^argument1 <y> ^argument2 <old>)
-   (<by> ^argument1 <old> ^argument2 <y>)
--->
-   (<rb> ^argument2 <old> - <d>)
-   (<bb> ^argument1 <old> - <d>)
-   (<w> ^opposite <od> - <no>)
-   (<no> ^argument1 <old>)
-   (<rx> ^argument2 <old> - <d>)
-   (<bx> ^argument1 <old> - <d>)
-   (<ry> ^argument2 <old> - <d>)
-   (<by> ^argument1 <old> - <d>)
-}
-
-sp {family-cross*apply*ferry-two-children*environment-effect
-   :o-support
-   (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
-   (<pa> ^name ferry-two-children ^status complete ^argument1 <xh> ^argument2 <yh> -^effect-applied true)
-   (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
-   (<w> ^on <rb> ^below <bb> ^opposite <od>)
-   (<rb> ^argument1 <boat> ^argument2 <old>)
-   (<bb> ^argument1 <old> ^argument2 <boat>)
-   (<old> ^object-handle $ <oldh>)
-   (<od> ^argument1 <d>)
-   (<objs> ^object <x>)
-   (<x> ^object-handle $ <xh>)
-   (<w> ^on <rx> ^below <bx>)
-   (<rx> ^argument1 <x> ^argument2 <old>)
-   (<bx> ^argument1 <old> ^argument2 <x>)
-   (<objs> ^object <y>)
-   (<y> ^object-handle $ <yh>)
-   (<w> ^on <ry> ^below <by>)
-   (<ry> ^argument1 <y> ^argument2 <old>)
-   (<by> ^argument1 <old> ^argument2 <y>)
--->
-   (<rb> ^argument2 <old> - <d>)
-   (<bb> ^argument1 <old> - <d>)
-   (<w> ^opposite <od> - <no>)
-   (<no> ^argument1 <old>)
-   (<rx> ^argument2 <old> - <d>)
-   (<bx> ^argument1 <old> - <d>)
-   (<ry> ^argument2 <old> - <d>)
-   (<by> ^argument1 <old> - <d>)
-   (<pa> ^effect-applied true)
-   (write |ferry-two-children: | <xh> | and | <yh> | with the boat from | <old> | to | <d> (crlf))
-}
-## Propose ferry-one in problem space family-cross when its conditions below hold.
-sp {family-cross*propose*ferry-one
-   (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
-   (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <x> <cur> <opp>)
-   (<boat> ^type block ^shape boat ^object-handle $ <bh>)
-   (<x> ^type block ^object-handle { <> <bh> <xh> })
-   (<cur> ^type location)
-   (<opp> ^type location ^object-handle $ <oh>)
-   (<w> ^below <bb> ^on <xo> ^opposite <op-r>)
-   (<bb> ^argument1 <cur> ^argument2 <boat>)
-   (<xo> ^argument1 <x> ^argument2 <cur>)
    (<op-r> ^argument1 <opp>)
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
+   (<op> ^name ferry-two-children ^task-operator true ^action-handle ferry-two-children ^argument1 <k-child> ^argument2 <k-child> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 0 ^move-child 2)
    (<pre> ^desired-count 0)
 }
-## Effect of ferry-one (look-ahead).
-sp {family-cross*apply*ferry-one*internal
-   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
-   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^argument1.object-handle $ <xh> ^argument2.object-handle $ <dh> ^from.object-handle $ <oldh>)
-   (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
-   (<w> ^on <rb> ^below <bb> ^opposite <od>)
-   (<rb> ^argument1 <boat> ^argument2 <old>)
-   (<bb> ^argument1 <old> ^argument2 <boat>)
-   (<old> ^object-handle $ <oldh>)
-   (<od> ^argument1 <d>)
-   (<d> ^object-handle $ <dh>)
-   (<objs> ^object <x>)
-   (<x> ^object-handle $ <xh>)
-   (<w> ^on <rx> ^below <bx>)
-   (<rx> ^argument1 <x> ^argument2 <old>)
-   (<bx> ^argument1 <old> ^argument2 <x>)
--->
-   (<rb> ^argument2 <old> - <d>)
-   (<bb> ^argument1 <old> - <d>)
-   (<w> ^opposite <od> - <no>)
-   (<no> ^argument1 <old>)
-   (<rx> ^argument2 <old> - <d>)
-   (<bx> ^argument1 <old> - <d>)
-}
-
-sp {family-cross*apply*ferry-one*environment-effect
+sp {family-cross*apply*ferry-two-children*environment-effect*child-child
    :o-support
    (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
-   (<pa> ^name ferry-one ^status complete ^argument1 <xh> ^argument2 <dh> -^effect-applied true)
+   (<pa> ^name ferry-two-children ^status complete ^argument1 child ^argument2 child -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <boat> <d>)
    (<boat> ^type block ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
-   (<old> ^object-handle $ <oldh>)
    (<od> ^argument1 <d>)
-   (<d> ^object-handle $ <dh>)
-   (<objs> ^object <x>)
-   (<x> ^object-handle $ <xh>)
-   (<w> ^on <rx> ^below <bx>)
-   (<rx> ^argument1 <x> ^argument2 <old>)
-   (<bx> ^argument1 <old> ^argument2 <x>)
+   (<old> ^child-count <o-child>)
+   (<d> ^child-count <n-child>)
 -->
    (<rb> ^argument2 <old> - <d>)
    (<bb> ^argument1 <old> - <d>)
    (<w> ^opposite <od> - <no>)
    (<no> ^argument1 <old>)
-   (<rx> ^argument2 <old> - <d>)
-   (<bx> ^argument1 <old> - <d>)
+   (<old> ^child-count <o-child> - (- <o-child> 2))
+   (<d> ^child-count <n-child> - (+ <n-child> 2))
    (<pa> ^effect-applied true)
-   (write |ferry-one: | <xh> | with the boat from | <old> | to | <d> (crlf))
+   (write |ferry-two-children: child and child with the boat from | <old> | to | <d> (crlf))
+}
+## Effect of ferry-two-children (look-ahead): the boat crosses to the opposite bank.
+sp {family-cross*apply*ferry-two-children*internal*boat
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two-children ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^object-handle $ <oldh>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+}
+## Effect of ferry-two-children (look-ahead): the adult count of each bank changes by the number of adult blocks moved.
+sp {family-cross*apply*ferry-two-children*internal*count*adult
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two-children ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-adult { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^adult-count <o>)
+   (<d> ^object-handle $ <dh> ^adult-count <c>)
+-->
+   (<old> ^adult-count <o> - (- <o> <m>))
+   (<d> ^adult-count <c> - (+ <c> <m>))
+}
+## Effect of ferry-two-children (look-ahead): the child count of each bank changes by the number of child blocks moved.
+sp {family-cross*apply*ferry-two-children*internal*count*child
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-two-children ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-child { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^child-count <o>)
+   (<d> ^object-handle $ <dh> ^child-count <c>)
+-->
+   (<old> ^child-count <o> - (- <o> <m>))
+   (<d> ^child-count <c> - (+ <c> <m>))
+}
+## Propose ferry-one in problem space family-cross when its conditions below hold (adult).
+sp {family-cross*propose*ferry-one*adult
+   (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-adult>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^adult-count >= 1)
+   (<opp> ^type location)
+   (<k-adult> ^type kind ^object-handle adult)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-adult> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 1 ^move-child 0)
+   (<pre> ^desired-count 0)
+}
+sp {family-cross*apply*ferry-one*environment-effect*adult
+   :o-support
+   (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 adult ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<old> ^adult-count <o-adult>)
+   (<d> ^adult-count <n-adult>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^adult-count <o-adult> - (- <o-adult> 1))
+   (<d> ^adult-count <n-adult> - (+ <n-adult> 1))
+   (<pa> ^effect-applied true)
+   (write |ferry-one: adult with the boat from | <old> | to | <d> (crlf))
+}
+sp {family-cross*propose*ferry-one*child
+   (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <cur> <opp> <k-child>)
+   (<boat> ^type block ^shape boat)
+   (<cur> ^type location ^child-count >= 1)
+   (<opp> ^type location)
+   (<k-child> ^type kind ^object-handle child)
+   (<w> ^below <bb> ^opposite <op-r>)
+   (<bb> ^argument1 <cur> ^argument2 <boat>)
+   (<op-r> ^argument1 <opp>)
+   (<ds> ^unachieved-desireds true)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-child> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 0 ^move-child 1)
+   (<pre> ^desired-count 0)
+}
+sp {family-cross*apply*ferry-one*environment-effect*child
+   :o-support
+   (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name ferry-one ^status complete ^argument1 child ^argument2 <dh> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<d> ^object-handle $ <dh>)
+   (<old> ^child-count <o-child>)
+   (<d> ^child-count <n-child>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+   (<old> ^child-count <o-child> - (- <o-child> 1))
+   (<d> ^child-count <n-child> - (+ <n-child> 1))
+   (<pa> ^effect-applied true)
+   (write |ferry-one: child with the boat from | <old> | to | <d> (crlf))
+}
+## Effect of ferry-one (look-ahead): the boat crosses to the opposite bank.
+sp {family-cross*apply*ferry-one*internal*boat
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <boat> <d>)
+   (<boat> ^type block ^shape boat)
+   (<w> ^on <rb> ^below <bb> ^opposite <od>)
+   (<rb> ^argument1 <boat> ^argument2 <old>)
+   (<bb> ^argument1 <old> ^argument2 <boat>)
+   (<od> ^argument1 <d>)
+   (<old> ^object-handle $ <oldh>)
+-->
+   (<rb> ^argument2 <old> - <d>)
+   (<bb> ^argument1 <old> - <d>)
+   (<w> ^opposite <od> - <no>)
+   (<no> ^argument1 <old>)
+}
+## Effect of ferry-one (look-ahead): the adult count of each bank changes by the number of adult blocks moved.
+sp {family-cross*apply*ferry-one*internal*count*adult
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-adult { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^adult-count <o>)
+   (<d> ^object-handle $ <dh> ^adult-count <c>)
+-->
+   (<old> ^adult-count <o> - (- <o> <m>))
+   (<d> ^adult-count <c> - (+ <c> <m>))
+}
+## Effect of ferry-one (look-ahead): the child count of each bank changes by the number of child blocks moved.
+sp {family-cross*apply*ferry-one*internal*count*child
+   (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>
+         ^to.object-handle $ <dh> ^move-child { > 0 <m> })
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <old> <d>)
+   (<old> ^object-handle $ <oldh> ^child-count <o>)
+   (<d> ^object-handle $ <dh> ^child-count <c>)
+-->
+   (<old> ^child-count <o> - (- <o> <m>))
+   (<d> ^child-count <c> - (+ <c> <m>))
 }
 ## ---- Search control (added, not taught): avoid returning to a situation on the current look-ahead path. ----
-## Where each block would be after a proposed operator: a moved block (an argument, or the boat) on the destination bank.
-sp {family-cross*elaborate*operator*after*moved-block
+## A situation is the count of every kind on every bank and the bank of the boat.
+
+## The adult count of bank-1 after a proposed operator.
+sp {family-cross*elaborate*operator*after*bank-1*adult*from
    (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
-   (<op> ^task-operator true ^<< argument1 argument2 >> <b> ^to <dest>)
-   (<b> ^type block ^label-key <k>)
-   (<dest> ^object-handle $ <dh>)
+   (<op> ^task-operator true ^from <bank> ^move-adult <m>)
+   (<bank> ^object-handle bank-1 ^adult-count <c>)
 -->
-   (<op> ^<k> <dh>)
+   (<op> ^after-bank-1-adult (- <c> <m>))
 }
 
-sp {family-cross*elaborate*operator*after*boat
+sp {family-cross*elaborate*operator*after*bank-1*adult*to
    (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
-   (<w> ^objects.object <b>)
-   (<op> ^task-operator true ^to <dest>)
-   (<b> ^type block ^shape boat ^label-key <k>)
-   (<dest> ^object-handle $ <dh>)
+   (<op> ^task-operator true ^to <bank> ^move-adult <m>)
+   (<bank> ^object-handle bank-1 ^adult-count <c>)
 -->
-   (<op> ^<k> <dh>)
+   (<op> ^after-bank-1-adult (+ <c> <m>))
 }
 
-## A block that does not move stays on its bank.
-sp {family-cross*elaborate*operator*after*unmoved-block
+## The child count of bank-1 after a proposed operator.
+sp {family-cross*elaborate*operator*after*bank-1*child*from
    (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
-   (<op> ^task-operator true ^argument1 <a1> ^argument2 <a2> ^to <dest>)
-   (<w> ^objects <objs> ^on <r>)
-   (<objs> ^object { <> <a1> <> <a2> <b> })
-   (<b> ^type block ^shape { <> boat } ^label-key <k>)
-   (<r> ^argument1 <b> ^argument2 <bank>)
-   (<bank> ^object-handle $ <bh>)
+   (<op> ^task-operator true ^from <bank> ^move-child <m>)
+   (<bank> ^object-handle bank-1 ^child-count <c>)
 -->
-   (<op> ^<k> <bh>)
+   (<op> ^after-bank-1-child (- <c> <m>))
+}
+
+sp {family-cross*elaborate*operator*after*bank-1*child*to
+   (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-child <m>)
+   (<bank> ^object-handle bank-1 ^child-count <c>)
+-->
+   (<op> ^after-bank-1-child (+ <c> <m>))
+}
+
+## The adult count of bank-2 after a proposed operator.
+sp {family-cross*elaborate*operator*after*bank-2*adult*from
+   (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-adult <m>)
+   (<bank> ^object-handle bank-2 ^adult-count <c>)
+-->
+   (<op> ^after-bank-2-adult (- <c> <m>))
+}
+
+sp {family-cross*elaborate*operator*after*bank-2*adult*to
+   (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-adult <m>)
+   (<bank> ^object-handle bank-2 ^adult-count <c>)
+-->
+   (<op> ^after-bank-2-adult (+ <c> <m>))
+}
+
+## The child count of bank-2 after a proposed operator.
+sp {family-cross*elaborate*operator*after*bank-2*child*from
+   (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^from <bank> ^move-child <m>)
+   (<bank> ^object-handle bank-2 ^child-count <c>)
+-->
+   (<op> ^after-bank-2-child (- <c> <m>))
+}
+
+sp {family-cross*elaborate*operator*after*bank-2*child*to
+   (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
+   (<op> ^task-operator true ^to <bank> ^move-child <m>)
+   (<bank> ^object-handle bank-2 ^child-count <c>)
+-->
+   (<op> ^after-bank-2-child (+ <c> <m>))
 }
 
 ## The label of the situation the operator produces.
 sp {family-cross*elaborate*operator*result
    (state <s> ^problem-space.name family-cross ^operator <op> + ^world <w>)
-   (<op> ^task-operator true ^pos-3 <pos-3> ^pos-4 <pos-4> ^pos-5 <pos-5> ^pos-6 <pos-6> ^pos-7 <pos-7>)
+   (<op> ^task-operator true ^to.object-handle $ <boat-bank> ^after-bank-1-adult <bank-1-adult> ^after-bank-1-child <bank-1-child> ^after-bank-2-adult <bank-2-adult> ^after-bank-2-child <bank-2-child>)
 -->
-   (<op> ^result (concat <pos-3> |,| <pos-4> |,| <pos-5> |,| <pos-6> |,| <pos-7>))
+   (<op> ^result (concat <bank-1-adult> |,| <bank-1-child> |,| <bank-2-adult> |,| <bank-2-child> |,| <boat-bank>))
 }
 
 ## The label of the current situation (derived; not copied into look-ahead worlds).
 sp {family-cross*elaborate*situation
    (state <s> ^problem-space.name family-cross ^world <w>)
-   (<w> ^anchored-world true ^objects <objs> ^on <r3> <r4> <r5> <r6> <r7>)
-   (<objs> ^object <t> <b3> <b4> <b5> <b6> <b7>)
+   (<w> ^anchored-world true ^objects <objs> ^on <rb>)
+   (<objs> ^object <t> <boat> <bank-bank-1> <bank-bank-2>)
    (<t> ^type task)
-   (<b3> ^label-key pos-3)
-   (<r3> ^argument1 <b3> ^argument2 <bank3>)
-   (<bank3> ^object-handle $ <h3>)
-   (<b4> ^label-key pos-4)
-   (<r4> ^argument1 <b4> ^argument2 <bank4>)
-   (<bank4> ^object-handle $ <h4>)
-   (<b5> ^label-key pos-5)
-   (<r5> ^argument1 <b5> ^argument2 <bank5>)
-   (<bank5> ^object-handle $ <h5>)
-   (<b6> ^label-key pos-6)
-   (<r6> ^argument1 <b6> ^argument2 <bank6>)
-   (<bank6> ^object-handle $ <h6>)
-   (<b7> ^label-key pos-7)
-   (<r7> ^argument1 <b7> ^argument2 <bank7>)
-   (<bank7> ^object-handle $ <h7>)
+   (<boat> ^type block ^shape boat)
+   (<rb> ^argument1 <boat> ^argument2 <bb>)
+   (<bb> ^object-handle $ <boat-bank>)
+   (<bank-bank-1> ^object-handle bank-1 ^adult-count <bank-1-adult> ^child-count <bank-1-child>)
+   (<bank-bank-2> ^object-handle bank-2 ^adult-count <bank-2-adult> ^child-count <bank-2-child>)
 -->
-   (<t> ^situation (concat <h3> |,| <h4> |,| <h5> |,| <h6> |,| <h7>))
+   (<t> ^situation (concat <bank-1-adult> |,| <bank-1-child> |,| <bank-2-adult> |,| <bank-2-child> |,| <boat-bank>))
 }
 
 ## In look-ahead, reject an operator whose result is a situation already on the path.
@@ -396,28 +457,15 @@ sp {family-cross*apply*operator*record-path
 -->
    (<hist> ^visited <r> <sit>)
 }
-## Goal: all the blocks are on a destination bank (expanded over the blocks of the world file).
+## Goal: all the blocks are on a destination bank: every block of each kind (^adult-count 2 ^child-count 2) and the boat.
 sp {family-cross*elaborate*goal*all-crossed
    (state <s> ^problem-space.name family-cross ^world <w>)
-   (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <dest> <b-adult-3> <b-adult-4> <b-child-5> <b-child-6> <b-boat-7>)
+   (<w> ^anchored-world true ^objects <objs> ^on <rb>)
+   (<objs> ^object <t> <dest> <boat>)
    (<t> ^type task)
-   (<dest> ^type location ^name destination)
-   (<b-adult-3> ^object-handle adult-3)
-   (<w> ^on <on-adult-3>)
-   (<on-adult-3> ^argument1 <b-adult-3> ^argument2 <dest>)
-   (<b-adult-4> ^object-handle adult-4)
-   (<w> ^on <on-adult-4>)
-   (<on-adult-4> ^argument1 <b-adult-4> ^argument2 <dest>)
-   (<b-child-5> ^object-handle child-5)
-   (<w> ^on <on-child-5>)
-   (<on-child-5> ^argument1 <b-child-5> ^argument2 <dest>)
-   (<b-child-6> ^object-handle child-6)
-   (<w> ^on <on-child-6>)
-   (<on-child-6> ^argument1 <b-child-6> ^argument2 <dest>)
-   (<b-boat-7> ^object-handle boat-7)
-   (<w> ^on <on-boat-7>)
-   (<on-boat-7> ^argument1 <b-boat-7> ^argument2 <dest>)
+   (<boat> ^type block ^shape boat)
+   (<dest> ^type location ^name destination ^adult-count 2 ^child-count 2)
+   (<rb> ^argument1 <boat> ^argument2 <dest>)
 -->
    (<t> ^goal-met true)
 }

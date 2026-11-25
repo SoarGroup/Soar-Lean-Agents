@@ -1,0 +1,24 @@
+objid 1
+category square
+name a
+
+objid 2
+category square
+name b
+
+objid 3
+category square
+name c
+
+objid 4
+category agent
+name guard
+
+predicate at
+4 1
+
+predicate next
+1 2
+2 1
+2 3
+3 2

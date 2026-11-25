@@ -1,4 +1,4 @@
-## elaborations.soar -- agent-world: 7 elaborations.
+## elaborations.soar -- agent-world: 12 elaborations.
 
 ## Elaborate substate super-operator attributes.
 sp {agent-world*elaborate*substate*super-operator*attributes
@@ -6,7 +6,7 @@ sp {agent-world*elaborate*substate*super-operator*attributes
    :default
    (state <s> ^impasse no-change
               ^attribute operator
-              ^superstate.operator.{ <> desireds <> superstate <> current-evaluation-depth <attribute> } <value>)
+              ^superstate.operator.{ <> desireds <> superstate <> current-evaluation-depth <> termination-desireds <> repeat-count <attribute> } <value>)
 -->
    (<s> ^<attribute> <value>)
 }
@@ -37,14 +37,69 @@ sp {agent-world*elaborate*operator-implementation-substate*super-operator-proble
 ## Elaborate operator-implementation-substate super-operator-desireds -> sets desireds, copied-from, better.
 sp {agent-world*elaborate*operator-implementation-substate*super-operator-desireds
    :default
-   (state <s> ^superstate.operator <sso>
+   (state <s> ^superstate <ss>
               ^impasse no-change
               ^attribute operator)
+   (<ss> ^operator <sso>)
    (<sso> ^pre-conditions-satisfied true
           ^effect-desireds <effect-desireds>)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <sso>)}
 -->
    (<s> ^desireds <desireds>)
    (<desireds> ^copied-from <effect-desireds>)
+}
+
+## Elaborate operator-implementation-substate desireds from operator-progress -> sets desireds, copied-from,
+## phase-copy, pass.
+## After the first phase change the current phase is recorded on the superstate (next-desireds.soar); the
+## substate's desireds are a copy of that phase, new for each phase and each pass (L8-026, L8-027).
+sp {agent-world*elaborate*operator-implementation-substate*operator-progress*desireds
+   :default
+   (state <s> ^superstate <ss>
+              ^impasse no-change
+              ^attribute operator)
+   (<ss> ^operator <sso>
+         ^operator-progress <progress>)
+   (<sso> ^pre-conditions-satisfied true)
+   (<progress> ^operator <sso>
+               ^phase <template>
+               ^pass <pass>)
+-->
+   (<s> ^desireds <desireds>)
+   (<desireds> ^copied-from <template>
+               ^phase-copy true
+               ^pass <pass>)
+}
+
+## Elaborate operator-implementation-substate repeat-count -> from the super-operator until the first
+## phase change (L8-029).
+sp {agent-world*elaborate*operator-implementation-substate*repeat-count
+   :default
+   (state <s> ^superstate <ss>
+              ^impasse no-change
+              ^attribute operator)
+   (<ss> ^operator <sso>)
+   (<sso> ^pre-conditions-satisfied true
+          ^repeat-count <count>)
+  -{(<ss> ^operator-progress <progress>)
+    (<progress> ^operator <sso>)}
+-->
+   (<s> ^repeat-count <count>)
+}
+
+## Elaborate operator-implementation-substate repeat-count -> from operator-progress after it.
+sp {agent-world*elaborate*operator-implementation-substate*operator-progress*repeat-count
+   :default
+   (state <s> ^superstate <ss>
+              ^impasse no-change
+              ^attribute operator)
+   (<ss> ^operator <sso>
+         ^operator-progress <progress>)
+   (<progress> ^operator <sso>
+               ^repeat-count <count>)
+-->
+   (<s> ^repeat-count <count>)
 }
 
 ## Elaborate operator-implementation-substate desireds better -> the orientation of numeric values (^better) of the superstate's desireds (v2.45;
@@ -87,4 +142,31 @@ sp {agent-world*elaborate*operator-implementation-substate*super-operator-desire
                          <> better <attribute> } <value>)
 -->
    (<desireds> ^<attribute> <value>)
+}
+
+## Elaborate operator-implementation-substate termination-desireds -> sets termination-desireds, copied-from.
+## The substate holds its own copy of the super-operator's termination desireds, so that their achievement
+## is marked locally and does not become a result (L8-028).
+sp {agent-world*elaborate*operator-implementation-substate*termination-desireds
+   :default
+   (state <s> ^superstate.operator <sso>
+              ^impasse no-change
+              ^attribute operator)
+   (<sso> ^pre-conditions-satisfied true
+          ^termination-desireds <super-termination>)
+-->
+   (<s> ^termination-desireds <termination>)
+   (<termination> ^copied-from <super-termination>)
+}
+
+## Elaborate operator-implementation-substate termination-desireds copy.
+sp {agent-world*elaborate*operator-implementation-substate*termination-desireds*copy
+   :default
+   (state <s> ^termination-desireds <termination>
+              ^superstate.operator.termination-desireds <super-termination>)
+   (<termination> ^copied-from <super-termination>)
+   (<super-termination> ^{ <> achieved <> unachieved <> achieved-desireds-count
+                           <> unachieved-desireds-count <> unachieved-desireds <attribute> } <value>)
+-->
+   (<termination> ^<attribute> <value>)
 }

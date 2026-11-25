@@ -14,6 +14,8 @@ Outcome, decisions and actions for seeds 1-3 (stored: 16 November rules on v2.41
 | instant-insanity | valid column; 15748 / 14951 / 16092 | valid column; 19608 / 19588 / 20093 | different valid columns, about 25% more decisions |
 | cheryls-birthday | July 16; 21 / 22 / 22 | July 16; 15 / 15 / 15 | fewer decisions |
 | muddy-children | 15 decisions, 36 s each | 15 decisions, under 0.1 s each | same answers; the 16 Nov rules take 130-150 s on v2.45 |
+| guard-tour | runnable (phases: C, then A, then B) | 5 moves every seed (shortest), 32-38 decisions |
+| guard-patrol | runnable (loop C, A repeated 3 times) | 12 moves every seed, 57-63 decisions |
 | bridge-and-torch | no move in 400,000 decisions | no move in 400,000 decisions | still unsolved |
 
 The 16 November rules on v2.45 make the same decisions as the regenerated rules on every task except Cheryl's birthday (21-22 decisions), so the decision changes elsewhere come from the library; library v2.44 reproduces the stored Tower of London runs exactly. The large speed-up on muddy children and Cheryl's birthday most likely comes from `^unachieved-desireds true` (the old proposal bound every unachieved desired); not profiled.
@@ -66,3 +68,7 @@ cheryls-birthday and muddy-children turn learning off: their `english-input.txt`
 ## Files
 
 Each task folder: `english-input.txt`, `<task>-spec.py`, `<Name>.lean`, the `.world` files, `<task>-worldspec.json`, `<task>-rules.soar`, the loader `<task>.soar`, `run-seed1..3.json` and `README.md` (results, assumption ledger, how to reproduce and how to check with Lean). Tools: `../tools/worldspec_py.py`.
+
+## Phases and loops (library v2.47, 24 November 2026)
+
+guard-tour and guard-patrol test the WorldSpec fields `phases`, `loopStart`, `termination` and `repeatCount` (World-Conventions L8-026 to L8-030). For both, `rosiegen json` equals the Python JSON and paths A and B give identical rules. The WorldSpec check, explore and replay commands test only the goal field: phases, loop start, termination and repeat count are compiled into the agent but not checked by the Lean semantics, so the replays confirm only the final goal.

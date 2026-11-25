@@ -358,11 +358,16 @@ sp {tic-tac-toe*reject*move*not-my-turn
    (<s> ^operator <op> -)
 }
 
-## The environment's signal that the task instance has ended ends the run (L3-093), once every blue move reported has been applied.
+## The environment's signal that the task instance has ended ends the run (L3-093), once every blue move reported has been applied
+## and the effect of red's own last command is in the world (a completed command without ^effect-applied waits): the
+## environment reports the end in the same input as the completion of the winning move, and halting first left the
+## agent without the goal (seeds 4 and 5, To-do row 8).
 sp {tic-tac-toe*propose*game-over
-   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w>)
+   (state <s> ^problem-space.name tic-tac-toe ^superstate nil ^env-game-over <r> ^env-blue-moves <n> ^world <w> ^io.output-link <ol>)
    (<w> ^objects.object <t>)
    (<t> ^type task ^blue-moves-applied <n>)
+  -{(<ol> ^perform-action <pa>)
+    (<pa> ^status complete -^effect-applied true)}
 -->
    (<s> ^operator <o> + >)
    (<o> ^name game-over ^result <r>)

@@ -45,7 +45,8 @@ def muddyChildren : Task where
       pre := [.has "t" "step" .eq (.val (.int 0))]
       bind := []
       effects := [.each [.rel "all-clean" [.var "pw"]] (.add "out-at" [.var "pw", .h "father-round"]), .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Father: at least one of you has mud on your forehead"] },
+      report := [.text "Father: at least one of you has mud on your forehead"]
+      monotonic := true },
     { name := "ask", params := [("r", some "round")], stmts := [4, 5]
       pre := [.obj "t" (some "stage"),
        .has "t" "step" .eq (.prop "r" "n"),
@@ -53,7 +54,8 @@ def muddyChildren : Task where
       bind := [.obj "t" (some "stage")]
       effects := [.each [.rel "actual" [.var "wa"],
          .rel "knows-at" [.var "c", .var "wa", .var "r"]] (.add "said-yes" [.var "c", .var "r"]), .each [.rel "answers-differ" [.var "pw", .var "r"]] (.add "out-at" [.var "pw", .var "r"]), .each [.rel "answers-differ-too" [.var "pw", .var "r"]] (.add "out-at" [.var "pw", .var "r"]), .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Father asks, round ", .prop "r" "n"] }]
+      report := [.text "Father asks, round ", .prop "r" "n"]
+      monotonic := true }]
   goal := .all { outer := [], var := "x", type := "child", filter := [], body := [.rel "said-yes" [.var "x", .var "y"]] }
   goalStmts := [6]
   assumptions := [

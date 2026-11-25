@@ -1,4 +1,4 @@
-## top-state.soar -- selection-world: 3 applications.
+## top-state.soar -- selection-world: 5 applications.
 
 ## Apply top-goal halt success.
 sp {selection-world*apply*top-goal*halt*success
@@ -27,6 +27,33 @@ sp {selection-world*apply*top-goal*halt*success*desireds-count
               -^next-desireds <n>)
 -->
    (write (crlf)  <name>  | achieved all desireds|)
+   (interrupt)}
+
+## Apply top-goal halt success termination.
+## The top state's loop ends when its termination desireds are achieved (L8-028).
+sp {selection-world*apply*top-goal*halt*success*termination
+   :default
+   (state <s> ^name <name>
+              ^superstate nil
+              ^termination-desireds <termination>
+              ^<< required-success success >> <termination>
+              ^desireds <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)
+-->
+   (write (crlf)   <name>  | achieved termination desireds - success|)
+   (interrupt)}
+
+## Apply top-goal halt success repeat-count.
+## The top state's loop ends when its repeat count reaches 0 (L8-029).
+sp {selection-world*apply*top-goal*halt*success*repeat-count
+   :default
+   (state <s> ^name <name>
+              ^superstate nil
+              ^repeat-count 0
+              ^desireds <desireds>
+             -^<< prohibit-failure failure exhaustion-failure >> <desireds>)
+-->
+   (write (crlf)   <name>  | completed its repeat count - success|)
    (interrupt)}
 
 ## Apply top-goal halt failure.

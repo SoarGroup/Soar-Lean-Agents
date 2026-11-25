@@ -11,6 +11,11 @@ change it (initial state, legal moves, goal).  Generators and writers see the it
     select(path, spec)   -> list of (id, kind, text) for spec 'none' | 'all' | 'SC-1,SC-3'
     strip(path)          -> the file's text without the section (what a 'none' condition sees)
     text(path, spec)     -> the file's text with only the selected items
+    translate(t, name, spec, table, path) -> adds the rules for the selected items (table: statement pattern ->
+                            writer(t, name, sc_id)); returns the file-name tag. An item with no translation is an error.
+
+Items of kind evaluation become ^evaluate-first / ^evaluate-last marks on proposed task operators (World-Conventions
+L15-026): they order which tied operators look-ahead evaluates first and leave the evaluations themselves unchanged.
 
 usage: python3 control.py FILE [none|all|SC-1,SC-2]   prints the text for that condition.
 Written 22 November 2026 by Claude, supervised by John E. Laird.
@@ -71,6 +76,19 @@ def text(path, spec='none'):
         return body
     head = _split(path)[1][0]
     return body + '\n' + head + '\n' + '\n'.join(f'  {i} [{k}]: {t}' for i, k, t in chosen) + '\n'
+
+
+def translate(t, name, spec, table, path='english-input.txt'):
+    """Adds the rules for the selected search-control items of PATH to task T; returns the file-name tag."""
+    chosen = select(path, spec)
+    for sc_id, kind, text in chosen:
+        for pat, write in table:
+            if pat.match(text):
+                write(t, name, sc_id)
+                break
+        else:
+            raise ValueError(f'{sc_id}: no translation for control statement: {text}')
+    return tag(chosen)
 
 
 def tag(spec_items):

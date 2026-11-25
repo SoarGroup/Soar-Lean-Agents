@@ -482,3 +482,5 @@ object-world/elaborations/world-from-scene.soar,agent-world*apply*world-from-sce
 object-world/find-object/assume-successful-grounding.soar,evaluate-operator*compare*assume-successful-grounding*real-world,object-world*compare*evaluate-operator*assume-successful-grounding*real-world,compare
 object-world/find-object/assume-successful-grounding.soar,evaluate-operator*compare*assume-successful-grounding*internal,object-world*compare*evaluate-operator*assume-successful-grounding*internal,compare
 object-world/find-object/assume-successful-grounding.soar,apply*assume-successful-grounding*failue-if-would-assume-ground,object-world*apply*assume-successful-grounding*failue-if-would-assume-ground,apply
+thor-soar/next-desireds.soar,thor-soar*propose*next-desireds,agent-world*propose*next-desireds,propose
+thor-soar/next-desireds.soar,apply*next-desireds,agent-world*apply*next-desireds,apply

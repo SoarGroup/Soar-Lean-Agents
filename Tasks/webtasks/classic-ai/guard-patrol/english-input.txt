@@ -1,0 +1,7 @@
+Guard patrol: English input (written 24 November 2026 by Claude, supervised by John E. Laird; a test of loops and a repeat count, World-Conventions L8-027, L8-029 and L8-030)
+
+Statements, numbered (the input to formalization):
+ 1. The world has three squares, A, B and C, in a row.
+ 2. A guard robot is in square A.
+ 3. The robot can move to a neighbouring square.
+ 4. The robot goes to square C, then back to square A, and repeats this three times.

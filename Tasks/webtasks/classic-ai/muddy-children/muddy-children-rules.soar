@@ -210,7 +210,7 @@ sp {muddy-children*propose*father-speaks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name father-speaks ^task-operator true ^action-handle father-speaks ^argument1 <t> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name father-speaks ^task-operator true ^monotonic true ^action-handle father-speaks ^argument1 <t> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 
@@ -288,7 +288,7 @@ sp {muddy-children*propose*ask
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ask ^task-operator true ^action-handle ask ^argument1 <r> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name ask ^task-operator true ^monotonic true ^action-handle ask ^argument1 <r> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 

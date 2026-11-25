@@ -41,18 +41,33 @@ class RosieTask:
     computed for the initial world by concept(name, objs, rels) -> set of ids."""
     def __init__(s, name, desc, world, handle, maintained=(), concept=None, static=(), derived=('goal-met',),
                  member_sets=(), copy_relations=('below',), extra_flags='', task_props=None,
-                 extra_props=None, static_relations=None):
+                 extra_props=None, static_relations=None, aggregate=None):
+        # aggregate: interchangeable objects kept as counts (tools/aggregate.py, World-Conventions L7-027): the members
+        # and their membership relations are left out; each place gets ^<kind>-count and each kind a ^type kind object.
         s.name = name
         s.objs, s.rels, s.sets = read_world(world)
         s.h = {i: handle(i, a) for i, a in s.objs.items()}
+        s.groups = aggregate or {}
+        gone = {i for g in s.groups.values() for i in g['members']}
+        places = sorted({p for g in s.groups.values() for p in g['places']} |
+                        {b for g in s.groups.values() for a, b in s.rels.get(g['relation'], []) if b not in gone and
+                         s.objs[b].get('category') == s.objs[next(iter(g['places']))].get('category')}) if s.groups else []
+        place_cat = {s.objs[p].get('category') for p in places}
         t = s.t = wg.Task(name, desc, layout='flat', static=static, derived=list(derived))
         for i, a in sorted(s.objs.items()):
+            if i in gone: continue
             props = {'type': a['category'], **{k: v for k, v in a.items() if k != 'category'},
                      **(extra_props(i, a, s.rels) if extra_props else {})}
+            if a.get('category') in place_cat:
+                props.update({f'{k}-count': g['places'].get(i, 0) for k, g in s.groups.items()})
             t.objects.append((s.h[i], props, []))
+        for k, g in sorted(s.groups.items()):
+            t.objects.append((k, {'type': 'kind', **{a: v for a, v in g['attrs'].items() if a != 'category'},
+                                  'kind-of': g['attrs'].get('category'), 'total': len(g['members'])}, []))
         t.objects.append(('task', {'type': 'task', **(task_props or {})}, []))
         for rel in ('on', 'below'):
             for k, (a, b) in enumerate(s.rels.get(rel, [])):
+                if a in gone or b in gone: continue
                 v = f'<{rel}-{k}>'
                 t.init_extra += [f'(<w> ^{rel} {v})', f'({v} ^argument1 <o-{s.h[a]}> ^argument2 <o-{s.h[b]}>)']
         for name_ in maintained:
@@ -81,8 +96,17 @@ class RosieTask:
 
     def write(s, out):
         # Learning setting from the task's English statement (tools/learning.py, World-Conventions L5-021).
-        import learning
+        import learning, solution_length, sequence, output_form
         extra = learning.block('english-input.txt') if os.path.exists('english-input.txt') else ''
+        if os.path.exists('english-input.txt'):
+            extra = solution_length.block('english-input.txt', s.name) + extra
+            # Phases and loops (tools/sequence.py, World-Conventions L8-026 to L8-030); the task's generator has written
+            # a rule that sets ^<name>-met on the task object for each goal the sequence names.
+            seq = sequence.read('english-input.txt')
+            if seq: sequence.apply(s.t, seq)
+            # The environment's output form (tools/output_form.py, World-Conventions L10-018).
+            form = output_form.read('english-input.txt')
+            if form: s.t.output = form
         open(out, 'w').write(s.text() + extra)
 
 def loader(task_file, rules_file, depth_to_repo):

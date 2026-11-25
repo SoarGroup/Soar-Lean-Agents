@@ -56,25 +56,29 @@ def cherylsBirthday : Task where
       pre := [.has "t" "step" .eq (.val (.int 1))]
       bind := []
       effects := [.each [.rel "albert-would-know" [.var "d"]] (.add "out3" [.var "d"]), .each [.rel "bernard-might-know" [.var "d"]] (.add "out3" [.var "d"]), .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Statement 3 rules out the dates in months where Albert would know, or where Bernard might know"] },
+      report := [.text "Statement 3 rules out the dates in months where Albert would know, or where Bernard might know"]
+      monotonic := true },
     { name := "statement-4", params := [("t", some "stage")], stmts := [4, 6]
       pre := [.has "t" "step" .eq (.val (.int 2))]
       bind := []
       effects := [.each [.rel "left-after-3" [.var "d"],
          .rel "bernard-would-know" [.var "d"]] (.add "out4" [.var "d"]), .each [.rel "bernard-unsure-after-3" [.var "d"]] (.add "out4" [.var "d"]), .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Statement 4 rules out the dates where Bernard would have known at first, or would still not know"] },
+      report := [.text "Statement 4 rules out the dates where Bernard would have known at first, or would still not know"]
+      monotonic := true },
     { name := "statement-5", params := [("t", some "stage")], stmts := [5, 6]
       pre := [.has "t" "step" .eq (.val (.int 3))]
       bind := []
       effects := [.each [.rel "albert-unsure-after-4" [.var "d"]] (.add "out5" [.var "d"]), .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Statement 5 rules out the dates where Albert would still not know"] },
+      report := [.text "Statement 5 rules out the dates where Albert would still not know"]
+      monotonic := true },
     { name := "answer", params := [("d", some "date")], stmts := [7]
       pre := [.obj "t" (some "stage"),
        .has "t" "step" .eq (.val (.int 4)),
        .rel "only-date" [.var "d"]]
       bind := [.obj "t" (some "stage")]
       effects := [.add "answer" [.var "d"], .update "t" "step" (.plus (.prop "t" "step") (.val (.int 1)))]
-      report := [.text "Cheryl's birthday is ", .prop "d" "month", .text " ", .prop "d" "day"] }]
+      report := [.text "Cheryl's birthday is ", .prop "d" "month", .text " ", .prop "d" "day"]
+      monotonic := true }]
   goal := .ex [.rel "answer" [.var "x"]]
   goalStmts := [7]
   assumptions := [

@@ -1,4 +1,4 @@
-## elaborations.soar -- agent-world: 20 elaborations, 1 application.
+## elaborations.soar -- agent-world: 24 elaborations, 3 applications.
 
 ## ---- elaborations ----
 
@@ -29,9 +29,66 @@ sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*attributes
    :default
    (state <s> ^look-ahead-operator <copy>)
    (<copy> ^copied-from <real>)
-   (<real> ^{ <> copied-from <> evaluation <> super-operator <attribute> } <value>)
+   (<real> ^{ <> copied-from <> evaluation <> super-operator <> desireds <attribute> } <value>)
 -->
    (<copy> ^<attribute> <value>)
+}
+
+## Elaborate evaluate-operator look-ahead-operator copy desireds (v2.47, JL): the copy gets its own ^desireds (the
+## operator's preconditions). Until v2.46 the copy shared the tied operator's ^desireds, so the o-supported achievement
+## rules (agent-world*apply*operator*acheived-desired*handle, *anchored-only, *info), matching the selected copy in a
+## look-ahead world, wrote ^achieved and removed ^unachieved on the real operator's preconditions, which then stayed
+## after the look-ahead ended (stale ^pre-conditions-satisfied; a Soar crash in a gen3 Tower of Hanoi agent).
+## The copy is one level deep: its ^desired structures are the original's; ^next-desireds is copied the same way.
+sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*desireds
+   :default
+   (state <s> ^look-ahead-operator <copy>)
+   (<copy> ^copied-from <real>)
+   (<real> ^desireds <desireds>)
+-->
+   (<copy> ^desireds <copy-desireds>
+           ^desireds-copy <copy-desireds>)
+   (<copy-desireds> ^copied-from <desireds>)
+}
+
+## Elaborate evaluate-operator look-ahead-operator copy next-desireds: a copied ^desireds gets its own ^next-desireds.
+sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*next-desireds
+   :default
+   (state <s> ^look-ahead-operator <copy>)
+   (<copy> ^desireds-copy <copy-desireds>)
+   (<copy-desireds> ^copied-from <desireds>)
+   (<desireds> ^next-desireds <next>)
+   (<next> -^loop-start true)
+-->
+   (<copy-desireds> ^next-desireds <copy-next>)
+   (<copy> ^desireds-copy <copy-next>)
+   (<copy-next> ^copied-from <next>)
+}
+
+## Elaborate evaluate-operator look-ahead-operator copy next-desireds loop-start -> sets next-desireds.
+## A chain that loops back is not copied again: the copy points to the loop start itself (L8-027), so the
+## recursive copy ends.
+sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*next-desireds*loop-start
+   :default
+   (state <s> ^look-ahead-operator <copy>)
+   (<copy> ^desireds-copy <copy-desireds>)
+   (<copy-desireds> ^copied-from <desireds>)
+   (<desireds> ^next-desireds <next>)
+   (<next> ^loop-start true)
+-->
+   (<copy-desireds> ^next-desireds <next>)
+}
+
+## Elaborate evaluate-operator look-ahead-operator copy desireds attributes: every attribute of the original desireds
+## except the counts, which the count rules compute for the copy.
+sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*desireds*attributes
+   :default
+   (state <s> ^look-ahead-operator <copy>)
+   (<copy> ^desireds-copy <copy-desireds>)
+   (<copy-desireds> ^copied-from <desireds>)
+   (<desireds> ^{ <> copied-from <> next-desireds <> achieved-desireds-count <> unachieved-desireds-count <attribute> } <value>)
+-->
+   (<copy-desireds> ^<attribute> <value>)
 }
 
 ## Elaborate evaluate-operator copy-desired -> sets desired, duplicate-o.

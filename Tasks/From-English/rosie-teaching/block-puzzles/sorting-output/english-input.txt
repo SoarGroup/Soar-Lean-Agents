@@ -1,0 +1,25 @@
+Sorting: English input (Rosie teaching script)
+
+The instructor's statements to Rosie, verbatim and in order (script.txt). "Load <name>" sets up the world state in <name>.world in this folder. A bare "Ok." from the instructor answers Rosie's request to set up a state (the puzzle, a failure condition or the goal), "Done." ends the teaching, and the final "No." declines Rosie's offer to solve the task. Rosie's side of the dialog is in dialog.txt; dialog.html shows the dialog with pictures of the world states.
+
+Teaching script:
+  1. The name of the puzzle is sorting-puzzle.
+  2. Load init-sorting.   [world state: init-sorting.world]
+  3. Ok.
+  4. You can move a block onto a location.
+  5. Load final-sorting.   [world state: final-sorting.world]
+  6. The goal is that all the red blocks are on a red location and all the blue blocks are on a blue location and all the green blocks are on a green location.
+  7. Ok.
+  8. Done.
+  9. No.
+
+World vocabulary (extracted from the world files loaded above; not part of the dialog):
+  Object categories: block, location
+  Object attributes: color (blue1, green1, red1)
+  Relations: below1, on1
+  Names are as written in the world files, including their trailing 1 (red1, on1).
+
+Source: IJCAI 2019 teaching data for games and puzzles, teaching-data/block-puzzles/sorting/.
+
+Environment (added 24 November 2026 by Claude, supervised by John E. Laird; a test of World-Conventions L10-018, not part of the Rosie teaching data):
+Output: command do; name attribute action; arguments block target.

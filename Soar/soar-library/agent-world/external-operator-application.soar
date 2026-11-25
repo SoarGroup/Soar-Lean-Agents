@@ -1,124 +1,145 @@
-## external-operator-application.soar -- agent-world: 12 applications.
+## external-operator-application.soar -- agent-world: 8 elaborations, 11 applications.
+## v2.47: environment-neutral output (World-Conventions L10-002). A selected task operator with ^action-handle, applied
+## externally, is written to the output-link in the form the top state's ^output-map gives (see
+## elaborations/output.soar): either (<output-link> ^<command> <c>) (<c> ^<name-attribute> <action-handle> ^<attr1> <h1>
+## ...), or, with ^command-is-action-handle true, (<output-link> ^<action-handle> <c>) (<c> ^<attr1> <h1> ...). An
+## argument is written as its object handle, or as itself when it is not an object. A map with ^rules environment leaves
+## application to the environment's own rules (Thor-Soar: thor-soar/external-operator-application.soar).
 
-## Apply operator external argument0 -> sets perform-action.
-## Will not work for operators not in the constant-map
-## Those have custom applications in their operator definition files
-sp {agent-world*apply*operator*external*argument0
+## Elaborate operator output-form: the form for this action, from the output map (World-Conventions L10-002).
+## The map's own fields are the form unless it has an entry (^action) for this action handle.
+sp {agent-world*elaborate*operator*output-form*map
+   :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io
+              ^external-top-state.output-map <m>)
+   (<operator> ^action-handle <action-handle>)
+   (<m> -^rules environment
+        -^action.action-handle <action-handle>)
+-->
+   (<operator> ^output-form <m>)
+}
+
+## Elaborate operator output-form: the map's entry for this action handle.
+sp {agent-world*elaborate*operator*output-form*action
+   :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^io
+              ^external-top-state.output-map <m>)
+   (<operator> ^action-handle <action-handle>)
+   (<m> -^rules environment
+         ^action <a>)
+   (<a> ^action-handle <action-handle>)
+-->
+   (<operator> ^output-form <a>)
+}
+
+## Elaborate operator output-argument1: the object handle of argument1, or argument1 itself when it is not an object.
+sp {agent-world*elaborate*operator*output-argument1*handle
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument1.object-handle <h>)
+-->
+   (<operator> ^output-argument1 <h>)
+}
+
+sp {agent-world*elaborate*operator*output-argument1*value
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument1 <v>)
+   (<v> -^object-handle)
+-->
+   (<operator> ^output-argument1 <v>)
+}
+
+## Elaborate operator output-argument2: the object handle of argument2, or argument2 itself when it is not an object.
+sp {agent-world*elaborate*operator*output-argument2*handle
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument2.object-handle <h>)
+-->
+   (<operator> ^output-argument2 <h>)
+}
+
+sp {agent-world*elaborate*operator*output-argument2*value
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument2 <v>)
+   (<v> -^object-handle)
+-->
+   (<operator> ^output-argument2 <v>)
+}
+
+## Elaborate operator output-argument3: the object handle of argument3, or argument3 itself when it is not an object.
+sp {agent-world*elaborate*operator*output-argument3*handle
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument3.object-handle <h>)
+-->
+   (<operator> ^output-argument3 <h>)
+}
+
+sp {agent-world*elaborate*operator*output-argument3*value
+   :default
+   (state <s> ^operator <operator>)
+   (<operator> ^output-form <form>
+               ^argument3 <v>)
+   (<v> -^object-handle)
+-->
+   (<operator> ^output-argument3 <v>)
+}
+
+## Apply operator external, 0 arguments, command named by the form, action handle under its name attribute.
+sp {agent-world*apply*operator*external*argument0*named
    :default
    (state <s> ^operator <operator>
               ^quiescence t
               ^internal-actions false
               ^io.output-link <output>)
    (<operator> ^name <operator-name>
-               ^action-handle { <> turn-on <action-handle> }
+               ^action-handle <action-handle>
                ^pre-conditions-satisfied true
-               ^argument-count 0)
+               ^argument-count 0
+               ^output-form <form>)
+   (<form> ^command <command>
+        ^name-attribute <name-attribute>)
 -->
    (log 1 (crlf) |Apply | <operator-name> |, action: | <action-handle> |: external.|)
-   (<output> ^perform-action.name <action-handle>)
+   (<output> ^<command> <c>)
+   (<c> ^<name-attribute> <action-handle>)
 }
 
-## Apply operator external argument1 -> sets perform-action, argument1.
-sp {agent-world*apply*operator*external*argument1
+## Apply operator external, 1 argument, command named by the form, action handle under its name attribute.
+sp {agent-world*apply*operator*external*argument1*named
    :default
    (state <s> ^operator <operator>
               ^quiescence t
               ^internal-actions false
               ^io.output-link <output>)
    (<operator> ^name <operator-name>
-               ^action-handle { <> turn-off <> turn-on <> look-at <action-handle> }
+               ^action-handle <action-handle>
                ^pre-conditions-satisfied true
                ^argument-count 1
-               ^argument1.object-handle <argument1-handle>)
+               ^output-form <form>
+               ^output-argument1 <v1>)
+   (<form> ^command <command>
+        ^name-attribute <name-attribute>
+        ^argument1 <a1>)
 -->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1-handle>)
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, action: | <action-handle> | external.|)
+   (<output> ^<command> <c>)
+   (<c> ^<name-attribute> <action-handle> ^<a1> <v1>)
 }
 
-## Apply turn-on -> sets perform-action, argument1.
-sp {agent-world*apply*operator*external*argument1*turn-on
-   :default
-   (state <s> ^operator <operator>
-              ^internal-actions false
-              ^io.output-link <output>)
-   (<operator> ^name <operator-name>
-               ^action-handle turn-on
-               ^pre-conditions-satisfied true
-               ^argument-count 1
-               ^argument1.object-handle <argument1-handle>)
--->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, action: turn-on external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name turn-on
-              ^argument1 <argument1-handle>)
-}
-
-## Apply turn-on -> sets perform-action, argument1, argument2.
-sp {agent-world*apply*operator*external*argument1*turn-on*time
-   :default
-   (state <s> ^operator <operator>
-              ^internal-actions false
-           #   ^quiescence t
-              ^io.output-link <output>)
-   (<operator> ^name <operator-name>
-               ^action-handle turn-on
-               ^pre-conditions-satisfied true
-               ^argument-count 2
-               ^argument2 <event-time>
-               ^argument1 <argument1>)
-   (<argument1> ^class <> stoveknob
-                ^object-handle <argument1-handle>)
--->
-   (log 1 (crlf) |Apply Turn-on: | <argument1-handle> |, time:| <event-time>)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name turn-on
-              ^argument1 <argument1-handle>
-              ^argument2 <event-time>)
-}
-
-## Apply turn-off -> sets perform-action, argument1.
-sp {agent-world*apply*operator*external*argument1*turn-off
-   :default
-   (state <s> ^operator <operator>
-              ^internal-actions false
-              ^quiescence t
-              ^io.output-link <output>)
-   (<operator> ^name <operator-name>
-               ^action-handle turn-off
-               ^pre-conditions-satisfied true
-               ^argument-count 1
-               ^argument1.object-handle <argument1-handle>)
--->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, action: turn-off external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name turn-off
-              ^argument1 <argument1-handle>)
-}
-
-## Apply operator external argument1 no-handle -> sets perform-action, argument1.
-sp {agent-world*apply*operator*external*argument1*no-handle
-   :default
-   (state <s> ^operator <operator>
-              ^internal-actions false
-              ^quiescence t
-              ^io.output-link <output>)
-   (<operator> ^name <operator-name>
-               ^action-handle { <> turn-on <action-handle> }
-               ^pre-conditions-satisfied true
-               ^argument-count 1
-               ^argument1 <argument1>)
-   (<argument1> -^object-handle)
--->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1>)
-}
-
-## Apply operator external argument2 -> sets perform-action, argument1, argument2.
-sp {agent-world*apply*operator*external*argument2
+## Apply operator external, 2 arguments, command named by the form, action handle under its name attribute.
+sp {agent-world*apply*operator*external*argument2*named
    :default
    (state <s> ^operator <operator>
               ^quiescence t
@@ -128,119 +149,190 @@ sp {agent-world*apply*operator*external*argument2
                ^action-handle <action-handle>
                ^pre-conditions-satisfied true
                ^argument-count 2
-               ^argument1.object-handle <argument1-handle>
-               ^argument2.object-handle <argument2-handle>)
+               ^output-form <form>
+               ^output-argument1 <v1>
+               ^output-argument2 <v2>)
+   (<form> ^command <command>
+        ^name-attribute <name-attribute>
+        ^argument1 <a1>
+        ^argument2 <a2>)
 -->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, | <argument2-handle> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1-handle>
-              ^argument2 <argument2-handle>)
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, | <v2> |, action: | <action-handle> | external.|)
+   (<output> ^<command> <c>)
+   (<c> ^<name-attribute> <action-handle> ^<a1> <v1> ^<a2> <v2>)
 }
 
-## Apply operator external argument2 no-handle1 -> sets perform-action, argument1, argument2.
-sp {agent-world*apply*operator*external*argument2*no-handle1
+## Apply operator external, 3 arguments, command named by the form, action handle under its name attribute.
+sp {agent-world*apply*operator*external*argument3*named
    :default
    (state <s> ^operator <operator>
               ^quiescence t
               ^internal-actions false
               ^io.output-link <output>)
    (<operator> ^name <operator-name>
-               ^action-handle { <> turn-on <action-handle> }
-               ^pre-conditions-satisfied true
-               ^argument-count 2
-               ^argument2.object-handle <argument2-handle>
-               ^argument1 <argument1>)
-   (<argument1> -^object-handle)
--->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1> |, | <argument2-handle> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1>
-              ^argument2 <argument2-handle>)
-}
-
-## Apply operator external argument2 no-handle2 -> sets perform-action, argument1, argument2.
-sp {agent-world*apply*operator*external*argument2*no-handle2
-   :default
-   (state <s> ^operator <operator>
-              ^quiescence t
-              ^internal-actions false
-              ^io.output-link <output>)
-   (<operator> ^name <operator-name>
-               ^action-handle { <action-handle> <> turn-on }
-               ^pre-conditions-satisfied true
-               ^argument-count 2
-               ^argument1.object-handle <argument1-handle>
-               ^argument2 <argument2>)
-   (<argument2> -^object-handle)
--->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument1-handle> |, | <argument2> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1-handle>
-              ^argument2 <argument2>)
-}
-
-## Apply operator external argument3 no-handle2 -> sets perform-action, argument1, argument2.
-## For turn on microwave - needs to be more general for handling extra argument3
-sp {agent-world*apply*operator*external*argument3*no-handle2
-   :default
-   (state <s> ^operator <operator>
-             # ^quiescence t
-              ^internal-actions false
-              ^io.output-link <output>)
-   (<operator> ^name { <> cook-microwave <> make-coffee <> toast <operator-name> } ## BUG
                ^action-handle <action-handle>
                ^pre-conditions-satisfied true
                ^argument-count 3
-               ^argument2 <argument2>
-               ^argument3.object-handle <argument3-handle>
-               ^argument1.object-handle <argument1-handle>)
-   (<argument2> -^object-handle)
+               ^output-form <form>
+               ^output-argument1 <v1>
+               ^output-argument2 <v2>
+               ^output-argument3 <v3>)
+   (<form> ^command <command>
+        ^name-attribute <name-attribute>
+        ^argument1 <a1>
+        ^argument2 <a2>
+        ^argument3 <a3>)
 -->
-   (log 1 (crlf) |Apply | <operator-name> |: | <argument2> |, | <argument1-handle> |, action: | <action-handle> | external.|)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^argument1 <argument1-handle>
-              ^argument2 <argument2>)
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, | <v2> |, | <v3> |, action: | <action-handle> | external.|)
+   (<output> ^<command> <c>)
+   (<c> ^<name-attribute> <action-handle> ^<a1> <v1> ^<a2> <v2> ^<a3> <v3>)
+}
+
+## Apply operator external, 0 arguments, command named by the action handle.
+sp {agent-world*apply*operator*external*argument0*action-handle
+   :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle <action-handle>
+               ^pre-conditions-satisfied true
+               ^argument-count 0
+               ^output-form <form>)
+   (<form> ^command-is-action-handle true)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |, action: | <action-handle> |: external.|)
+   (<output> ^<action-handle> <c>)
+}
+
+## Apply operator external, 1 argument, command named by the action handle.
+sp {agent-world*apply*operator*external*argument1*action-handle
+   :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle <action-handle>
+               ^pre-conditions-satisfied true
+               ^argument-count 1
+               ^output-form <form>
+               ^output-argument1 <v1>)
+   (<form> ^command-is-action-handle true
+        ^argument1 <a1>)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, action: | <action-handle> | external.|)
+   (<output> ^<action-handle> <c>)
+   (<c> ^<a1> <v1>)
+}
+
+## Apply operator external, 2 arguments, command named by the action handle.
+sp {agent-world*apply*operator*external*argument2*action-handle
+   :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle <action-handle>
+               ^pre-conditions-satisfied true
+               ^argument-count 2
+               ^output-form <form>
+               ^output-argument1 <v1>
+               ^output-argument2 <v2>)
+   (<form> ^command-is-action-handle true
+        ^argument1 <a1>
+        ^argument2 <a2>)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, | <v2> |, action: | <action-handle> | external.|)
+   (<output> ^<action-handle> <c>)
+   (<c> ^<a1> <v1> ^<a2> <v2>)
+}
+
+## Apply operator external, 3 arguments, command named by the action handle.
+sp {agent-world*apply*operator*external*argument3*action-handle
+   :default
+   (state <s> ^operator <operator>
+              ^quiescence t
+              ^internal-actions false
+              ^io.output-link <output>)
+   (<operator> ^name <operator-name>
+               ^action-handle <action-handle>
+               ^pre-conditions-satisfied true
+               ^argument-count 3
+               ^output-form <form>
+               ^output-argument1 <v1>
+               ^output-argument2 <v2>
+               ^output-argument3 <v3>)
+   (<form> ^command-is-action-handle true
+        ^argument1 <a1>
+        ^argument2 <a2>
+        ^argument3 <a3>)
+-->
+   (log 1 (crlf) |Apply | <operator-name> |: | <v1> |, | <v2> |, | <v3> |, action: | <action-handle> | external.|)
+   (<output> ^<action-handle> <c>)
+   (<c> ^<a1> <v1> ^<a2> <v2> ^<a3> <v3>)
 }
 
 ## Apply operator external report action-event success -> sets executed-action, action-handle.
-## If the output command (perform-action) is successful,
-## Report an executed-action event
+## If the selected operator's output command reports the map's success status, report an executed-action event.
 sp {agent-world*apply*operator*external*report*action-event*success
    :default
    (state <s> ^operator <operator>
               ^internal-actions false
               ^interaction-stack.top-segment <> nil
               ^io.output-link <output>
+              ^external-top-state.output-map <m>
               ^events <events>)
    (<operator> ^name <operator-name>
                ^action-handle <action-handle>)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-handle>
-              ^status success)
+   (<m> ^command <command>
+        ^name-attribute <name-attribute>
+        ^success-status <status>)
+   (<output> ^<command> <perform>)
+   (<perform> ^<name-attribute> <action-handle>
+              ^status <status>)
+-->
+   (<events> ^executed-action <action>)
+   (<action> ^action-handle <action-handle>)
+}
+
+## Apply operator external report action-event success, command named by the action handle.
+sp {agent-world*apply*operator*external*report*action-event*success*action-handle
+   :default
+   (state <s> ^operator <operator>
+              ^internal-actions false
+              ^interaction-stack.top-segment <> nil
+              ^io.output-link <output>
+              ^external-top-state.output-map <m>
+              ^events <events>)
+   (<operator> ^name <operator-name>
+               ^action-handle <action-handle>
+               ^output-form.command-is-action-handle true)
+   (<m> ^success-status <status>)
+   (<output> ^<action-handle> <perform>)
+   (<perform> ^status <status>)
 -->
    (<events> ^executed-action <action>)
    (<action> ^action-handle <action-handle>)
 }
 
 ## Apply operator external report failed-action event -> sets failed-action, action-handle.
-## If the output command (perform-action) results in an error,
-## Report an failed-action event
+## If an output command reports one of the map's error statuses, report a failed-action event and interrupt.
 sp {agent-world*apply*operator*external*report*failed-action*event
    :default
    (state <s> ^operator <operator>
               ^internal-actions false
              -^interaction-stack.top-segment nil
               ^io.output-link <output>
+              ^external-top-state.output-map <m>
               ^events <events>)
    (<operator> ^name <operator-name>
                ^action-handle <action-handle>)
-   (<output> ^perform-action <perform>)
-   (<perform> ^name <action-name>
-              ^status << error failure >>)
+   (<m> ^error-status <status>)
+   (<output> ^<command> <perform>)
+   (<perform> ^status <status>)
 -->
    (interrupt)
    (<events> ^failed-action <failure>)

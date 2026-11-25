@@ -1,6 +1,6 @@
 """Shared generator pieces for world-convention tasks (agent-world / selection-world conventions).
 Layout switch: LAYOUT='flat' (all properties on the object) or 'static' (properties listed in STATIC under ^static)."""
-import re, sys
+import re, sys, os, json
 
 def _negated_spans(lhs):
     """Spans of negated conditions (-( ... ) and -{ ... }) in a rule's LHS."""
@@ -38,6 +38,38 @@ def literalize_handles(text):
         out.append(lhs + '-->' + rhs)
     return ''.join(out)
 
+DEFAULT_OUTPUT = {'command': 'perform-action', 'nameAttribute': 'name', 'arguments': ['argument1', 'argument2', 'argument3'],
+                  'done': ['interrupted', 'complete', 'success'], 'success': ['success'], 'error': ['error', 'failure'],
+                  'applied': 'complete'}   # the same fields as WorldSpec's OutputForm (spec_backend.py)
+
+_EFFECT = re.compile(r'\^io\.output-link\.perform-action <pa>\)\n(\s*)\(<pa> \^name (\S+) \^status complete((?: \^argument\d+ [^ )]+)*) -\^effect-applied true\)')
+
+def apply_output_form(text, task, form):
+    """Rewrite the environment-effect rules for a declared output form and add the environment's output map
+    (World-Conventions L10-018). The rules are generated in the default perform-action form; this changes only the
+    command they read from the output-link, so the default output is unchanged byte for byte."""
+    f = dict(DEFAULT_OUTPUT, **form)
+    attrs = f['arguments']
+    def sub(m):
+        ind, name, args = m.group(1), m.group(2), m.group(3)
+        def arg(a):
+            k = int(a.group(1))
+            return f"^{attrs[k - 1] if k <= len(attrs) else f'argument{k}'} "
+        args = re.sub(r'\^argument(\d+) ', arg, args)
+        if f.get('command'):
+            return f"^io.output-link.{f['command']} <pa>)\n{ind}(<pa> ^{f['nameAttribute']} {name} ^status {f['applied']}{args} -^effect-applied true)"
+        return f"^io.output-link.{name} <pa>)\n{ind}(<pa> ^status {f['applied']}{args} -^effect-applied true)"
+    text, n = _EFFECT.subn(sub, text)
+    assert n or 'perform-action' not in text, f'{task}: environment-effect rules not in the expected form'
+    body = ([f"^command {f['command']}", f"^name-attribute {f['nameAttribute']}"] if f.get('command')
+            else ['^command-is-action-handle true'])
+    body += [f'^argument{k} {a}' for k, a in enumerate(attrs, 1)]
+    body += [f"^done-status {' '.join(f['done'])}", f"^success-status {' '.join(f['success'])}", f"^error-status {' '.join(f['error'])}"]
+    rule = (f"\n## How the environment takes actions on the output-link (World-Conventions L10-018).\n"
+            f"sp {{{task}*elaborate*environment-output-map\n   (state <s> ^problem-space.name {task} ^superstate nil)\n-->\n"
+            f"   (<s> ^environment-output-map <m>)\n   (<m> " + '\n        '.join(body) + ")\n}\n")
+    return text + rule
+
 class Task:
     def __init__(s, name, desc, layout='flat', static=(), strategy='iterative-deepening', derived=(), literal_handles=True):
         s.name, s.desc, s.layout, s.static, s.strategy = name, desc, layout, set(static), strategy
@@ -47,6 +79,13 @@ class Task:
         s.objects = []     # (handle, {attr:val}, extra_rhs_lines)
         s.desired = []     # (handle, {attr:val})
         s.init_extra = []  # extra RHS lines in the initialize operator
+        # Phases and loops (World-Conventions L8-026 to L8-030): phases = list of desired lists (s.desired unused then);
+        # loop_start = index of the phase the last one returns to (None: no loop); termination = a desired list (the
+        # state's ^termination-desireds); repeat_count = passes to run (^repeat-count).
+        s.phases, s.loop_start, s.termination, s.repeat_count = [], None, [], None
+        # Output form the environment takes (World-Conventions L10-018); None = the default ^perform-action form,
+        # written exactly as before. Also from the environment variable WG_OUTPUT (JSON), so every gen_*.py takes it.
+        s.output = json.loads(os.environ['WG_OUTPUT']) if os.environ.get('WG_OUTPUT') else None
     def add(s, text): s.parts.append(text.strip('\n') + '\n')
     # ---- attribute access
     def lhs_attr(s, attr, val, in_static=None):
@@ -85,17 +124,37 @@ sp {{{n}*apply*initialize-{n}
    (<objs> ^object {vars_})
 '''
         for h, props, _ in s.objects: t += s.obj_rhs(f'<o-{h}>', h, props)
-        t += f'   (<ds> ^desired-count {len(s.desired)} ' + ' '.join(f'^desired <d{i}>' for i in range(1, len(s.desired)+1)) + ')\n'
-        for i, dd in enumerate(s.desired, 1):
-            if dd[0] == 'rel':   # ('rel', name, handle1, handle2, ...): desired relation, canonical relation-object shape
-                _, rn, *hs = dd
-                t += f'   (<d{i}> ^{rn} <d{i}-r>)\n   (<d{i}-r> ' + ' '.join(f'^argument{k} <d{i}-a{k}>' for k in range(1, len(hs)+1)) + ')\n'
-                for k, hh in enumerate(hs, 1): t += f'   (<d{i}-a{k}> ^object-handle {hh})\n'
-            else:
-                h, props = dd
-                t += f'   (<d{i}> ^object <d{i}-o>)\n   (<d{i}-o> ^object-handle {h} ' + ' '.join(f'^{a} {v}' for a, v in props.items()) + ')\n'
+        if not s.phases:
+            t += s.desireds_rhs('<ds>', 'd', s.desired)
+        else:
+            # Phases (World-Conventions L8-026 to L8-029): a chain of desireds linked by ^next-desireds; the first is
+            # the state's ^desireds; a loop closes the chain back to s.loop_start (^loop-start true).
+            names = ['<ds>'] + [f'<ph{k}>' for k in range(2, len(s.phases) + 1)]
+            for k, (dv, ph) in enumerate(zip(names, s.phases)):
+                t += s.desireds_rhs(dv, f'p{k + 1}d', ph)
+                nxt = names[k + 1] if k + 1 < len(names) else (names[s.loop_start] if s.loop_start is not None else None)
+                if nxt: t += f'   ({dv} ^next-desireds {nxt})\n'
+            if s.loop_start is not None: t += f'   ({names[s.loop_start]} ^loop-start true)\n'
+        if s.termination:
+            t += '   (<s> ^termination-desireds <tds>)\n' + s.desireds_rhs('<tds>', 'td', s.termination)
+        if s.repeat_count is not None:
+            t += f'   (<s> ^repeat-count {s.repeat_count})\n'
         for l in s.init_extra: t += '   ' + l + '\n'
         t += f'   (log 1 (crlf) |Initialize {n}.|)\n}}\n'
+        return t
+    def desireds_rhs(s, var, pre, desired):
+        """RHS lines of one desireds structure (desired-count and its desired objects or relations)."""
+        t = f'   ({var} ^desired-count {len(desired)} ' + ' '.join(f'^desired <{pre}{i}>' for i in range(1, len(desired)+1)) + ')\n'
+        if pre == 'd': pre = 'd'
+        for i, dd in enumerate(desired, 1):
+            d = f'{pre}{i}'
+            if dd[0] == 'rel':   # ('rel', name, handle1, handle2, ...): desired relation, canonical relation-object shape
+                _, rn, *hs = dd
+                t += f'   (<{d}> ^{rn} <{d}-r>)\n   (<{d}-r> ' + ' '.join(f'^argument{k} <{d}-a{k}>' for k in range(1, len(hs)+1)) + ')\n'
+                for k, hh in enumerate(hs, 1): t += f'   (<{d}-a{k}> ^object-handle {hh})\n'
+            else:
+                h, props = dd
+                t += f'   (<{d}> ^object <{d}-o>)\n   (<{d}-o> ^object-handle {h} ' + ' '.join(f'^{a} {v}' for a, v in props.items()) + ')\n'
         return t
     def space_and_flags(s):
         n = s.name
@@ -121,13 +180,18 @@ sp {{{n}*elaborate*problem-space*mea-substate
    (<p> ^name {n}{dc})
 }}
 
-sp {{{n}*elaborate*flags
+{s.flags_comment_line()}sp {{{n}*elaborate*flags
    (state <s> ^superstate nil ^name {n})
 -->
    (<s> ^flag-override <f>)
    (<f> {fl}{s.extra_flags if hasattr(s,'extra_flags') else ''})
 }}
 '''
+    def flags_comment_line(s):
+        # A comment the task gives for its flag settings (e.g. how a search setting was measured); without one, the
+        # convention pass writes the group comment (L3-012).
+        c = getattr(s, 'flags_comment', None)
+        return f'## {c}\n' if c else ''
     def achievement(s):
         n = s.name
         t = ''
@@ -259,6 +323,9 @@ sp {{{n}*propose*{opname}
 '''
     def text(s):
         t = s.header() + s.init() + s.space_and_flags() + '\n' + ''.join(s.parts)
+        if s.termination:   # the task's achievement rules also mark the termination desireds (L8-028)
+            t = t.replace('(state <s> ^desireds <ds> ^world <w>)', '(state <s> ^<< desireds termination-desireds >> <ds> ^world <w>)')
+        if s.output: t = apply_output_form(t, s.name, s.output)
         if s.literal_handles: t = literalize_handles(t)
         import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
         t = convpass.apply(t)

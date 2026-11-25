@@ -109,7 +109,7 @@ sp {cheryls-birthday*propose*statement-3
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-3 ^task-operator true ^action-handle statement-3 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name statement-3 ^task-operator true ^monotonic true ^action-handle statement-3 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 
@@ -208,7 +208,7 @@ sp {cheryls-birthday*propose*statement-4
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-4 ^task-operator true ^action-handle statement-4 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name statement-4 ^task-operator true ^monotonic true ^action-handle statement-4 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 
@@ -311,7 +311,7 @@ sp {cheryls-birthday*propose*statement-5
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-5 ^task-operator true ^action-handle statement-5 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name statement-5 ^task-operator true ^monotonic true ^action-handle statement-5 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 
@@ -385,7 +385,7 @@ sp {cheryls-birthday*propose*answer
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name answer ^task-operator true ^action-handle answer ^argument1 <d> ^argument-count 1 ^desireds <pre>)
+   (<op> ^name answer ^task-operator true ^monotonic true ^action-handle answer ^argument1 <d> ^argument-count 1 ^desireds <pre>)
    (<pre> ^desired-count 0)
 }
 

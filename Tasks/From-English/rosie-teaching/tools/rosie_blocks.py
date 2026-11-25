@@ -349,3 +349,174 @@ sp {{{name}*{sid}*compare*{op}*smallest-back*reject*block
    (<s> ^operator <o> -)
 }}
 ''')
+
+
+def sc_largest_recursive(t, name, sc_id, op='move', home_test='^type location ^color blue'):
+    """Search-control item (method): 'Work toward one block at a time. The current goal is to put the largest block that
+    is not in place onto its place. If something is in the way (blocks on top of that block, or smaller blocks on the
+    location it must go to), the largest of them becomes the current goal, to be put onto the third location; and so on.
+    Move a block when nothing is in its way.' Recursive goal decomposition (JL, 24 Nov 2026). In place and the largest
+    block not in place are derived as for SC-2 (sc_largest_first); a goal is a block and the location (peg) it must end
+    up on; a goal's blockers are the blocks above its block and the blocks smaller than it on its location; the largest
+    blocker becomes a goal for the third location; a goal with no blocker makes its move best. All derived on the
+    state (i-supported), in the real state and in look-ahead. Rule names carry the item ID."""
+    sid = sc_id.lower()
+    ps = f'(state <s> ^problem-space.name {name} ^world <w>)'
+    t.add(f'''
+## {sc_id} [method]: work toward one block at a time, recursively (largest block not in place, then whatever is in its way).
+## In place (state elaboration): the largest block on the home location.
+sp {{{name}*{sid}*elaborate*in-place*largest
+   {ps}
+   (<w> ^anchored-world true ^objects <objs> ^on <r>)
+   (<objs> ^object <b> <h>)
+   (<b> ^type block ^volume <bv>)
+   (<h> {home_test})
+   (<r> ^argument1 <b> ^argument2 <h>)
+  -{{(<objs> ^object <x>)
+    (<x> ^type block ^volume > <bv>)}}
+-->
+   (<s> ^{sid}-in-place <b>)
+}}
+
+## In place: a block on the next larger block, when that block is in place.
+sp {{{name}*{sid}*elaborate*in-place*next
+   {ps}
+   (<s> ^{sid}-in-place <y>)
+   (<w> ^anchored-world true ^objects <objs> ^on <r>)
+   (<objs> ^object <b>)
+   (<b> ^type block ^volume <bv>)
+   (<y> ^volume <yv>)
+   (<r> ^argument1 <b> ^argument2 <y>)
+  -{{(<objs> ^object <x>)
+    (<x> ^type block ^volume {{ > <bv> < <yv> }})}}
+-->
+   (<s> ^{sid}-in-place <b>)
+}}
+
+## The location (peg) a block is on: directly on a location.
+sp {{{name}*{sid}*elaborate*peg*base
+   {ps}
+   (<w> ^anchored-world true ^on <r>)
+   (<r> ^argument1 <b> ^argument2 <l>)
+   (<b> ^type block)
+   (<l> ^type location)
+-->
+   (<s> ^{sid}-peg <p>)
+   (<p> ^block <b> ^location <l>)
+}}
+
+## The location (peg) a block is on: on a block that is on that peg.
+sp {{{name}*{sid}*elaborate*peg*stack
+   {ps}
+   (<s> ^{sid}-peg <q>)
+   (<q> ^block <y> ^location <l>)
+   (<w> ^anchored-world true ^on <r>)
+   (<r> ^argument1 <b> ^argument2 <y>)
+   (<b> ^type block)
+-->
+   (<s> ^{sid}-peg <p>)
+   (<p> ^block <b> ^location <l>)
+}}
+
+## Above: a block directly on another block.
+sp {{{name}*{sid}*elaborate*above*direct
+   {ps}
+   (<w> ^anchored-world true ^on <r>)
+   (<r> ^argument1 <c> ^argument2 <b>)
+   (<c> ^type block)
+   (<b> ^type block)
+-->
+   (<s> ^{sid}-above <a>)
+   (<a> ^upper <c> ^lower <b>)
+}}
+
+## Above: a block on a block that is above another.
+sp {{{name}*{sid}*elaborate*above*stack
+   {ps}
+   (<s> ^{sid}-above <q>)
+   (<q> ^upper <y> ^lower <b>)
+   (<w> ^anchored-world true ^on <r>)
+   (<r> ^argument1 <c> ^argument2 <y>)
+   (<c> ^type block)
+-->
+   (<s> ^{sid}-above <a>)
+   (<a> ^upper <c> ^lower <b>)
+}}
+
+## The first goal: the largest block not in place goes to the home location (all larger blocks are in place there).
+sp {{{name}*{sid}*elaborate*goal*first
+   {ps}
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object <b> <h>)
+   (<b> ^type block ^volume <bv>)
+   (<h> {home_test})
+  -(<s> ^{sid}-in-place <b>)
+  -{{(<objs> ^object <z>)
+    (<z> ^type block ^volume > <bv>)
+    -(<s> ^{sid}-in-place <z>)}}
+-->
+   (<s> ^{sid}-goal <g>)
+   (<g> ^block <b> ^location <h>)
+}}
+
+## A goal's blocker: a block above the goal's block.
+sp {{{name}*{sid}*elaborate*goal*blocker*above
+   {ps}
+   (<s> ^{sid}-goal <g> ^{sid}-above <a>)
+   (<g> ^block <b>)
+   (<a> ^upper <c> ^lower <b>)
+-->
+   (<g> ^blocker <c>)
+}}
+
+## A goal's blocker: a block smaller than the goal's block on the goal's location.
+sp {{{name}*{sid}*elaborate*goal*blocker*on-location
+   {ps}
+   (<s> ^{sid}-goal <g> ^{sid}-peg <p>)
+   (<g> ^block <b> ^location <l>)
+   (<b> ^volume <bv>)
+   (<p> ^block {{ <> <b> <c> }} ^location <l>)
+   (<c> ^volume < <bv>)
+-->
+   (<g> ^blocker <c>)
+}}
+
+## A subgoal: the largest blocker goes to the third location (neither the goal block's location nor the goal's location).
+sp {{{name}*{sid}*elaborate*goal*subgoal
+   {ps}
+   (<s> ^{sid}-goal <g> ^{sid}-peg <p>)
+   (<g> ^block <b> ^location <l> ^blocker <c>)
+   (<c> ^volume <cv>)
+  -{{(<g> ^blocker <c2>)
+    (<c2> ^volume > <cv>)}}
+   (<p> ^block <b> ^location {{ <> <l> <bl> }})
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^object {{ <> <l> <> <bl> <third> }})
+   (<third> ^type location)
+-->
+   (<s> ^{sid}-goal <g2>)
+   (<g2> ^block <c> ^location <third>)
+}}
+
+## Control: the move of a goal with nothing in its way is best: onto its location when that location is clear ...
+sp {{{name}*{sid}*compare*{op}*goal*to-location*best
+   (state <s> ^problem-space.name {name} ^operator <o> + ^{sid}-goal <g>)
+   (<g> ^block.object-handle $ <bh> ^location.object-handle $ <lh>)
+  -(<g> ^blocker)
+   (<o> ^name {op} ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
+-->
+   (<s> ^operator <o> >)
+}}
+
+## ... or onto the top block on that location.
+sp {{{name}*{sid}*compare*{op}*goal*to-block*best
+   (state <s> ^problem-space.name {name} ^operator <o> + ^{sid}-goal <g> ^{sid}-peg <p>)
+   (<g> ^block.object-handle $ <bh> ^location <l>)
+  -(<g> ^blocker)
+   (<p> ^block <d> ^location <l>)
+   (<d> ^object-handle $ <dh>)
+   (<o> ^name {op} ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
+-->
+   (<s> ^operator <o> >)
+}}
+''')

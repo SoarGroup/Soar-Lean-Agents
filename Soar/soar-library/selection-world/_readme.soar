@@ -19,7 +19,7 @@
 #      2  Operator_Tie/evaluate-operator/Operator_Tie/elaborations.soar
 #      1  Operator_Tie/evaluate-operator/State_No-Change/elaborations.soar
 #      1  Operator_Tie/evaluate-operator/State_No-Change/State_No-Change/elaborations.soar
-#      3  elaborations/top-state.soar: Halting the top-level goal with success or failure (top-goal*halt*...), including the desireds-count test.
+#      5  elaborations/top-state.soar: Halting the top-level goal with success or failure (top-goal*halt*...), including the desireds-count test, termination desireds and a repeat count of 0.
 #   162  strategies/: Strategies for how look-ahead proceeds and how outcomes are preferred (see below).
 #
 # Strategies: strategies/strategies_source.soar sources iterative-deepening and first-success. strategies/optimal was retired in v2.15;

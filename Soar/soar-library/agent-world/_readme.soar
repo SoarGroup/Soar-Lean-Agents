@@ -10,26 +10,28 @@
 #
 # Contents (rules per file)
 #     12  _flags.soar: Flags convention: creates ^flags, copies ^flag-override values into it, and gives defaults to the flags agent-world reads.
-#     12  external-operator-application.soar: Turns a selected task operator into an output-link perform-action command and records completion. Contains Thor-specific action cases; to be redesigned (action table).
-#     11  goal-completed.soar: Marks the task achieved, logs it, reports success on the output link in testing mode, interrupts on a no-change wait when desireds come from elaborations.
+#     19  external-operator-application.soar: Writes a selected task operator to the output-link in the form of the top state's output map (elaborations/output.soar; default: ^perform-action) and reports action events. Thor-Soar's own perform-action rules are in thor-soar (v2.47).
+#     13  goal-completed.soar: Marks the task achieved (last phase, termination desireds or repeat count 0), logs it, reports success on the output link in testing mode, interrupts on a no-change wait when desireds come from elaborations.
+#      6  implementation-completed.soar: Ends an operator-implementation substate whose phases or loop are done (^completed-operator on the superstate; the operator is rejected) (v2.47).
 #      2  initialize-agent-world.soar: Operator that creates the ^world structure and agent-world state; a task's own initialize-<task> operator follows it.
+#     15  next-desireds.soar: Phases and loops of desireds: moves to the next phase (a fresh copy), counts passes, records a substate's progress on the superstate (v2.47; from thor-soar).
 #      1  Impasse__Operator_Conflict/elaborations.soar: Operator conflict impasse handling.
 #      2  Impasse__Operator_Tie/elaborations.soar: Tie impasse: constraint-failure handling (v2.38: force-conflict rule removed).
 #      0  Impasse__Operator_Tie/evaluate-operator.soar: Agent-world additions to the evaluate-operator operator (v2.38: the two force-conflict rules removed; the file is kept for the Visual Soar operator).
 #      4  Impasse__Operator_Tie/evaluate-operator/cutoff-search.soar: Search cutoff in evaluation (noted in the source as not very helpful).
-#     23  Impasse__Operator_Tie/evaluate-operator/elaborations.soar: Adapters between agent-world operators and selection-world evaluation (what to copy, how achievement is passed back).
+#     27  Impasse__Operator_Tie/evaluate-operator/elaborations.soar: Adapters between agent-world operators and selection-world evaluation (what to copy, how achievement is passed back).
 #     11  elaborations/_all.soar: Elaborations for many states and substates, for example the pointer from a substate to the top state.
-#     34  elaborations/achieved-desired-operators.soar: The same for desireds attached to operators (^desireds on a task operator).
-#     37  elaborations/achieved-desireds.soar: Detects when each desired (object properties, relations, disjunctions) is achieved in the world and maintains ^achieved/^unachieved.
+#     72  elaborations/achieved-desired-operators.soar: The same for desireds attached to operators (^desireds on a task operator).
+#     75  elaborations/achieved-desireds.soar: Detects when each desired (object properties, relations, disjunctions) is achieved in the world and maintains ^achieved/^unachieved.
 #      4  elaborations/internal-actions.soar: Tasks with no external environment: all operators are applied internally.
 #      4  elaborations/monitor-operator.soar: Trace output for operator arguments.
-#      3  elaborations/output.soar: Copies the actions structure to the output link.
+#      5  elaborations/output.soar: The output map (environment-declared or the default ^perform-action form), and removal and error logging of output commands by the map's statuses.
 #      3  elaborations/problem-space.soar: Problem-space name and agent-world flag elaborations.
 #      1  elaborations/reward.soar: Reward elaborations (not updated).
 #     14  elaborations/search-control.soar: Search-control preferences among operators.
 #      2  elaborations/super-desireds.soar: Copies super-desireds down into substates.
 #      1  elaborations/time.soar: Time elaboration.
-#      7  generic-operator/elaborations.soar: Elaborates an operator-implementation substate with the super-operator attributes, including the name.
+#     12  generic-operator/elaborations.soar: Elaborates an operator-implementation substate with the super-operator attributes, including the name; its desireds, termination desireds and repeat count (from the super-operator, or from the superstate's ^operator-progress after the first phase change).
 #      2  generic-operator/failure.soar: Failure handling for generic operators.
 #      5  goal-completed/clean-up-topstate.soar: Removes desireds and learning events and marks the segment satisfied when desireds come from language.
 #     21  events/: Optional time and event machinery: scheduled future events, waiting, skipping ahead and dispatching agent events. Comment the events line out of agent-world_source.soar to run without it.
@@ -38,7 +40,7 @@
 #
 # Datamap
 #   agent-world.vsa.json holds this project's state attributes plus those of the projects it requires.
-#   Top-state attributes owned by this project: ^attends, ^effect-desireds, ^environment, ^events, ^external-top-state, ^failure, ^initial-in-relations, ^interaction-stack, ^reward-link, ^scene, ^smem, ^smem-storage-structure, ^super-desired, ^super-desireds
+#   Top-state attributes owned by this project: ^attends, ^effect-desireds, ^environment, ^events, ^external-top-state, ^completed-operator, ^failure, ^initial-in-relations, ^interaction-stack, ^operator-progress, ^repeat-count, ^reward-link, ^scene, ^smem, ^smem-storage-structure, ^super-desired, ^super-desireds, ^termination-desireds
 #   Single source: datamaps/library-datamap.json (each edge tagged with its owning project). Regenerate the
 #   project files with: python3 tools/datamaps.py <this-directory> --assemble
 #

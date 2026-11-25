@@ -1,4 +1,4 @@
-## simple.soar -- soar-base: 4 elaborations, 1 proposal, 1 compare, 1 application.
+## simple.soar -- soar-base: 5 elaborations, 1 proposal, 2 compares, 1 application.
 
 ## ---- elaborations ----
 
@@ -98,6 +98,28 @@ sp {soar-base*compare*default*select*indifferent-and-worst*tied*look-ahead*no-co
            ^quiescence t)
    -->
    (<s1> ^operator <o> =, < )}
+
+## Mark random continuation (v2.47): the look-ahead state whose tie the rule above breaks at random records it, so that a
+## failure found in that state from then on is not passed back as the evaluation of the operator being evaluated (it shows
+## only that one random path failed; selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*random-continuation).
+sp {soar-base*elaborate*look-ahead*random-continuation
+   :default
+   :o-support
+   (state <s1> ^operator <o> +
+               ^real false
+               ^flags <f>)
+   (<f> ^cost-metric none
+        ^optimize false)
+   (state <s2> ^impasse tie
+               ^superstate <s1>
+               ^item <o>
+               ^quiescence t)
+   (state <s3> ^attribute state
+           ^choices none
+           ^superstate <s2>
+           ^quiescence t)
+   -->
+   (<s1> ^random-continuation true)}
 
 ## ---- operator application ----
 

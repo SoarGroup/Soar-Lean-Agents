@@ -1,18 +1,56 @@
-## output.soar -- agent-world: 3 elaborations.
+## output.soar -- agent-world: 5 elaborations.
+## v2.47: the output map (World-Conventions L10-002, L10-014). The top state's ^output-map says how a task operator's
+## action is written to the output-link and which ^status values the environment reports. An environment declares its
+## own map as ^environment-output-map on the top state; without one, the default map below applies. The default is the
+## ^perform-action form (Thor-Soar's, World-Conventions L20-042), which the test harnesses complete, so agents that
+## declare nothing run as before v2.47.
+## Map fields: ^command <attr> and ^name-attribute <attr> (the command is (<ol> ^<command> <c>) (<c> ^<name-attribute>
+## <action-handle>)), or ^command-is-action-handle true (the command is (<ol> ^<action-handle> <c>)); ^argument1 to
+## ^argument3 <attr> (the attribute each operator argument is written under); ^done-status (removed from the
+## output-link), ^success-status (an executed-action event), ^error-status (a failed-action event; kept on the
+## output-link and its ^error-info logged); optional ^action <a> entries with ^action-handle <h> and their own command
+## and argument fields for single actions; ^rules environment when the environment's own rules write the commands.
 
-## Elaborate operator remove-command -> sets perform-ac.
-sp {agent-world*elaborate*operator*remove-command
+## Elaborate top-state output-map: the environment's map.
+sp {agent-world*elaborate*top-state*output-map*environment
+   :default
+   (state <s> ^superstate nil
+              ^environment-output-map <m>)
+-->
+   (<s> ^output-map <m>)
+}
+
+## Elaborate top-state output-map: the default map (the ^perform-action form) when the environment declares none.
+sp {agent-world*elaborate*top-state*output-map*default
+   :default
+   (state <s> ^superstate nil
+             -^environment-output-map)
+-->
+   (<s> ^output-map <m>)
+   (<m> ^command perform-action
+        ^name-attribute name
+        ^argument1 argument1
+        ^argument2 argument2
+        ^argument3 argument3
+        ^done-status interrupted complete success
+        ^success-status success
+        ^error-status error failure)
+}
+
+## Elaborate output-link remove-command: remove a command once its status is one of the map's done statuses.
+sp {agent-world*elaborate*output-link*remove-command
    :default
    :o-support
    (state <s> ^superstate nil
+              ^output-map.done-status <status>
               ^io.output-link <ol>)
-   (<ol> ^perform-action <value>)
-   (<value> ^status << interrupted complete success >>) #error
+   (<ol> ^<command> <value>)
+   (<value> ^status <status>)
 -->
-   (<ol> ^perform-action <value> -)
+   (<ol> ^<command> <value> -)
 }
 
-## Elaborate top-state any remove completed agent-event -> sets agent-e.
+## Elaborate top-state any remove completed agent-event -> removes the agent-event.
 ## Apply Rule for any top-state operator:
 ## If an agent-event on the output-link is marked complete,
 sp {agent-world*elaborate*top-state*any*remove*completed*agent-event
@@ -26,13 +64,15 @@ sp {agent-world*elaborate*top-state*any*remove*completed*agent-event
    (<out> ^agent-event <event> -)
 }
 
-## Elaborate operator error.
-sp {agent-world*elaborate*operator*error
+## Elaborate output-link error: log the ^error-info of a command whose status is one of the map's error statuses.
+sp {agent-world*elaborate*output-link*error
    :default
    :o-support
    (state <s> ^superstate nil
-              ^io.output-link.perform-action <perform-action>)
-   (<perform-action> ^status error
+              ^output-map.error-status <status>
+              ^io.output-link <ol>)
+   (<ol> ^<command> <perform-action>)
+   (<perform-action> ^status <status>
                      ^error-info <string>)
 -->
    (log 1 (crlf) |Output Error: | <string>)

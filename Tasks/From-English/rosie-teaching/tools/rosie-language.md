@@ -50,7 +50,7 @@ The `Load init-*` world is the agent's initial world. The other loaded worlds (`
 | You can move a block onto a location. | any block onto any location other than the one it is on (sorting) |
 | If the number of the locations between L and C is the number of the blocks that are on C then you can move it onto L. | all the blocks on C move together onto L (the frog-stacking pile). "The number of the locations between" is a static relation apart-k computed from the locations' x and y; "the number of the blocks on C" is a mutable attribute ^block-count kept by the moves |
 | There is six. (answer to Rosie's "How many instances of this action are there, 6 or 4?") | a check on the reading of the action: the reading chosen must give that many instances in the initial world, and the generated agent must propose exactly that many. In the frog dialogs it settles "between": adjacent locations count 1 |
-| The solution has three steps. | a statement about the solution, not used by the agent; checked against the plans |
+| The solution has three steps. | checked against the plans; since 24 Nov 2026 also a lower bound on the look-ahead depth (section 8) |
 | The goal is that all the X are on a Y (and ...). | expanded over the X of the world file, one positive condition each |
 | The goal is that a X is on a Y and the X is below a Z. | one elaboration with a variable per noun phrase; "the X" refers back to the same object |
 
@@ -82,3 +82,19 @@ A losing condition and the goal can hold together (fail-color-ken, fail-kakuro, 
 | The solution has nine (five) steps. | checked against the plans; "five" does not fit the three-couple and three-pair worlds (11 crossings), only the two-couple world init-husbands2 |
 
 Search control (JL, 16 Nov 2026; not from the English): in look-ahead, a move whose result is a situation already on the current look-ahead path is rejected; a real move back to a situation already visited is worst (the top state records each situation it leaves).
+
+## 8. Lines added after the teaching script (23-24 November 2026)
+
+These lines augment a task; they never change its initial state, legal moves or goal. Each is read by one tool, and a task without the line is generated exactly as before.
+
+| Line | Reading | Tool, convention |
+|---|---|---|
+| `Learning: do not learn from look-ahead. <reason>` | `chunk never` after the library loads | learning.py, L5-021 |
+| `The solution has N steps.` (in the teaching script) | max-evaluation-depth = max(12, N) | solution_length.py, L16-045 |
+| `Goal <name>: <goal statement>.` | an extra named goal, ^<name>-met on the task object | sequence.py, L8-026 |
+| `Phases: first <goal>, then <goal>, ..., finally <goal>.` | ^next-desireds chain, pursued in order | sequence.py, L8-026 |
+| `Repeat: from <goal>[, N times][, until <goal>].` | ^loop-start, ^repeat-count, ^termination-desireds; no count and no until-goal loops for ever | sequence.py, L8-027 to L8-030 |
+| `Output: command <name>; name attribute <a>; arguments <a1> <a2> <a3>; done ...; success ...; error ...; applied ...` | environment command form and output map | output_form.py, L10-018 |
+| `Search control` section, items `SC-<n> [<kind>]: <statement>` | desired order, operator preference, evaluation order or method rules, selectable per test condition (evaluation-order marks are ignored by library v2.47: L15-026 suspended) | control.py, L15-026 |
+
+Interchangeable objects (same category and attributes, never named individually, never related to one another) are found by aggregate.py (L7-027) and kept as counts per place where the task family's generator supports it (river crossings, rosie_river.py). Examples: block-puzzles/sorting-phases (Goal, Phases, Repeat) and block-puzzles/sorting-output (Output).

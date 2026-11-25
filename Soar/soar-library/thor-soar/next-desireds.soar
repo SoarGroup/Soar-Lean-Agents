@@ -1,26 +1,6 @@
-## next-desireds.soar -- thor-soar: 1 proposal, 1 compare, 1 application.
-
-## Propose next-desireds.
-sp {thor-soar*propose*next-desireds
-    :default
-   (state <s> ^desireds <desireds1>
-              ^<< required-success success >> <desireds1>)
-   (<desireds1> ^next-desireds <desireds2>)
--->
-   (<s> ^operator <op> + =, <)
-   (<op> ^name next-desireds)
-}
-
-## Apply next-desireds -> sets desireds.
-sp {apply*next-desireds
-    :default
-   (state <s> ^operator.name next-desireds
-              ^desireds <desireds1>)
-   (<desireds1> ^next-desireds <desireds2>)
--->
-   (<s> ^desireds <desireds1> -
-                  <desireds2>)
-}
+## next-desireds.soar -- thor-soar: 1 compare.
+## v2.47: the next-desireds operator (proposal and application) moved to agent-world/next-desireds.soar
+## (L9-024); only the Thor-specific preference stays here.
 
 ## Preference for next-desireds.
 sp {thor-soar*compare*next-desireds
@@ -28,7 +8,7 @@ sp {thor-soar*compare*next-desireds
    (state <s> ^operator <op1> +
                         { <> <op1> <op2> }  +)
    (<op1> ^name next-desireds)
-   (<op2> ^name << create-object-state-desired goal-completed >>)
+   (<op2> ^name create-object-state-desired)
 -->
    (<s> ^operator <op1> > <op2>)
 }

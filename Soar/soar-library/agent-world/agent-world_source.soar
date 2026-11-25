@@ -18,6 +18,8 @@ popd
 pushd events
 source events_source.soar
 popd
+source implementation-completed.soar
+source next-desireds.soar
 source generic-operator.soar
 pushd generic-operator
 source generic-operator_source.soar

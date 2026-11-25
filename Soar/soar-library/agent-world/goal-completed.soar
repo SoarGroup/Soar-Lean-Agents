@@ -1,4 +1,4 @@
-## goal-completed.soar -- agent-world: 1 proposal, 10 applications.
+## goal-completed.soar -- agent-world: 3 proposals, 10 applications.
 
 ## ---- operator proposal ----
 
@@ -10,6 +10,36 @@ sp {agent-world*propose*goal-completed
               ^<< required-success success >> <desireds>
               ^world <world>)
    (<desireds> -^next-desireds)
+   (<world> ^anchored-world true
+            ^real true)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name goal-completed
+         ^completed-desireds <desireds>)
+}
+
+## Propose goal-completed: the top state's termination desireds are achieved (L8-028, L19-001).
+sp {agent-world*propose*goal-completed*termination
+   :default
+   (state <s> ^termination-desireds <termination>
+              ^superstate nil
+              ^<< required-success success >> <termination>
+              ^world <world>)
+   (<world> ^anchored-world true
+            ^real true)
+-->
+   (<s> ^operator <op> + =, <)
+   (<op> ^name goal-completed
+         ^completed-desireds <termination>)
+}
+
+## Propose goal-completed: the top state's repeat count is 0 (L8-029, L19-001).
+sp {agent-world*propose*goal-completed*repeat-count
+   :default
+   (state <s> ^repeat-count 0
+              ^superstate nil
+              ^desireds <desireds>
+              ^world <world>)
    (<world> ^anchored-world true
             ^real true)
 -->
