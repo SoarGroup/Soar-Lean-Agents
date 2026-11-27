@@ -17,6 +17,14 @@
 ##   - clear is a maintained one-argument relation (statement 5). left-of and right-of are static relations between
 ##     locations; a block is to the left/right of a location when the location it is on is (A-S1).
 ##   - The goal (statement 15) is expanded over the blocks of the world file: each block is on a location of its colour (A-S2).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 10
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute clear 5
+production optimize-attribute left-of 4
+production optimize-attribute right-of 4
+
 
 ## Propose initialize-frogs-and-toads when its conditions below hold.
 sp {frogs-and-toads*propose*initialize-frogs-and-toads
@@ -32,15 +40,15 @@ sp {frogs-and-toads*apply*initialize-frogs-and-toads
 -->
    (<s> ^name frogs-and-toads ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color red ^row 1 ^column 2)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^color blue ^row 1 ^column 4)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^color blue ^row 1 ^column 5)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color blue)
-   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^color blue)
-   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^color red)
-   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^color red)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color red ^row 1 ^column 2 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^color blue ^row 1 ^column 4 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^color blue ^row 1 ^column 5 ^static true)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^color red ^static true)
+   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^color red ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -95,7 +103,7 @@ sp {frogs-and-toads*elaborate*problem-space
    (state <s> ^name frogs-and-toads)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name frogs-and-toads ^copy-relation below ^copy-relation left-of ^copy-relation right-of ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name frogs-and-toads ^copy-relation below ^share-relation left-of ^share-relation right-of ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {frogs-and-toads*elaborate*problem-space*mea-substate
@@ -155,8 +163,7 @@ sp {frogs-and-toads*propose*move*toad-step
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {frogs-and-toads*propose*move*frog-step
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -174,8 +181,7 @@ sp {frogs-and-toads*propose*move*frog-step
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {frogs-and-toads*propose*move*frog-jump
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -199,8 +205,7 @@ sp {frogs-and-toads*propose*move*frog-jump
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {frogs-and-toads*propose*move*toad-jump
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -224,8 +229,7 @@ sp {frogs-and-toads*propose*move*toad-jump
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {frogs-and-toads*apply*move*internal

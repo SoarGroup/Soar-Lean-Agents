@@ -22,6 +22,16 @@
 ##   - clear is a maintained one-argument relation. The goal is three different clear locations.
 ## Search settings: ^iterative-step tie-impasse, chosen by the P6 probe (probe_settings.py, 16 Nov 2026, library
 ## v2.34, seeds 1-3): same 3-move plans as operator depth with fewer decisions (probe.json).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 9
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute clear 4
+production optimize-attribute accessible 3
+production optimize-attribute apart-1 6
+production optimize-attribute apart-2 4
+production optimize-attribute apart-3 2
+
 
 ## Propose initialize-lazy-stacked-frogs when its conditions below hold.
 sp {lazy-stacked-frogs*propose*initialize-lazy-stacked-frogs
@@ -41,10 +51,10 @@ sp {lazy-stacked-frogs*apply*initialize-lazy-stacked-frogs
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^x 2 ^y 1 ^block-count 1)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^x 3 ^y 1 ^block-count 1)
    (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^x 4 ^y 1 ^block-count 1)
-   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color red)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block)
-   (<o-block-7> ^object-handle block-7 ^anchored true ^type block)
-   (<o-block-8> ^object-handle block-8 ^anchored true ^type block)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color red ^static true)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^static true)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^static true)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -168,8 +178,7 @@ sp {lazy-stacked-frogs*propose*move*1-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {lazy-stacked-frogs*propose*move*2-blocks
    (state <s> ^problem-space.name lazy-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -184,8 +193,7 @@ sp {lazy-stacked-frogs*propose*move*2-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {lazy-stacked-frogs*propose*move*3-blocks
    (state <s> ^problem-space.name lazy-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -200,8 +208,7 @@ sp {lazy-stacked-frogs*propose*move*3-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {lazy-stacked-frogs*propose*move*4-blocks
    (state <s> ^problem-space.name lazy-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -216,8 +223,7 @@ sp {lazy-stacked-frogs*propose*move*4-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {lazy-stacked-frogs*apply*move*internal*blocks

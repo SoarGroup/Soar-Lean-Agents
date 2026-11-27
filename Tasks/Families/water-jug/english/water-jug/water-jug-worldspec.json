@@ -1,0 +1,532 @@
+{
+  "format": "worldspec-1",
+  "name": "water-jug",
+  "title": "Water jug (families, from English)",
+  "statements": [
+    [
+      1,
+      "You have two unmarked jugs, one holding 3 gallons and one holding 5 gallons, both empty, and an unlimited supply of water."
+    ],
+    [
+      2,
+      "In one step you may fill a jug completely or empty a jug completely."
+    ],
+    [
+      3,
+      "In one step you may pour from one jug into the other until the receiving jug is full or the pouring jug is empty."
+    ],
+    [
+      4,
+      "The goal is to end with exactly 1 gallon in the 3-gallon jug."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-WJ1",
+      "kind": "intent",
+      "text": "Two jug objects, three-gallon and five-gallon, with a capacity and the amount of water in them (both 0 at the start). The supply of water is not an object: fill needs nothing.",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-WJ2",
+      "kind": "intent",
+      "text": "Pouring needs the amount that fits in the receiving jug, room = capacity - amount, in a condition, where arithmetic cannot be compiled; so each jug keeps room as a property beside its amount, and every operator updates both (with minus, added to WorldSpec 26 Nov 2026; the first version kept negated copies of the amounts, since WorldSpec then had only addition).",
+      "stmts": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "A-WJ3",
+      "kind": "intent",
+      "text": "\"until the receiving jug is full or the pouring jug is empty\": two operators. pour-all when the pouring jug's amount fits in the room of the other (the pouring jug ends empty); pour-until-full when it is more than the room (the receiving jug ends full and the rest stays behind).",
+      "stmts": [
+        3
+      ]
+    },
+    {
+      "id": "A-WJ4",
+      "kind": "intent",
+      "text": "Filling a full jug or emptying an empty one changes nothing, so fill needs room in the jug and empty needs water in it.",
+      "stmts": [
+        2
+      ]
+    },
+    {
+      "id": "A-WJ5",
+      "kind": "intent",
+      "text": "No repeated-situation control: it compares relations, and the amounts are numbers on the jugs. The look-ahead's depth limit bounds the search.",
+      "stmts": []
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "three-gallon",
+      "type": "jug",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "three-gallon"
+          }
+        ],
+        [
+          "capacity",
+          {
+            "int": 3
+          }
+        ],
+        [
+          "amount",
+          {
+            "int": 0
+          }
+        ],
+        [
+          "room",
+          {
+            "int": 3
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "five-gallon",
+      "type": "jug",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "five-gallon"
+          }
+        ],
+        [
+          "capacity",
+          {
+            "int": 5
+          }
+        ],
+        [
+          "amount",
+          {
+            "int": 0
+          }
+        ],
+        [
+          "room",
+          {
+            "int": 5
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "fill",
+      "params": [
+        [
+          "j",
+          "jug"
+        ]
+      ],
+      "stmts": [
+        1,
+        2
+      ],
+      "pre": [
+        {
+          "has": "j",
+          "prop": "room",
+          "cmp": "gt",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "update": "j",
+          "prop": "amount",
+          "rhs": {
+            "prop": [
+              "j",
+              "capacity"
+            ]
+          }
+        },
+        {
+          "update": "j",
+          "prop": "room",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Fill the "
+        },
+        {
+          "handle": "j"
+        },
+        {
+          "text": " jug"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "params": [
+        [
+          "j",
+          "jug"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "has": "j",
+          "prop": "amount",
+          "cmp": "gt",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "update": "j",
+          "prop": "amount",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        },
+        {
+          "update": "j",
+          "prop": "room",
+          "rhs": {
+            "prop": [
+              "j",
+              "capacity"
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Empty the "
+        },
+        {
+          "handle": "j"
+        },
+        {
+          "text": " jug"
+        }
+      ]
+    },
+    {
+      "name": "pour-all",
+      "params": [
+        [
+          "a",
+          "jug"
+        ],
+        [
+          "b",
+          "jug"
+        ]
+      ],
+      "stmts": [
+        3
+      ],
+      "pre": [
+        {
+          "distinct": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "has": "a",
+          "prop": "amount",
+          "cmp": "gt",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        },
+        {
+          "has": "a",
+          "prop": "amount",
+          "cmp": "le",
+          "rhs": {
+            "prop": [
+              "b",
+              "room"
+            ]
+          }
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "update": "b",
+          "prop": "amount",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "b",
+                  "amount"
+                ]
+              },
+              {
+                "prop": [
+                  "a",
+                  "amount"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "update": "b",
+          "prop": "room",
+          "rhs": {
+            "minus": [
+              {
+                "prop": [
+                  "b",
+                  "room"
+                ]
+              },
+              {
+                "prop": [
+                  "a",
+                  "amount"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "update": "a",
+          "prop": "amount",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        },
+        {
+          "update": "a",
+          "prop": "room",
+          "rhs": {
+            "prop": [
+              "a",
+              "capacity"
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Pour the "
+        },
+        {
+          "handle": "a"
+        },
+        {
+          "text": " jug into the "
+        },
+        {
+          "handle": "b"
+        },
+        {
+          "text": " jug until it is empty"
+        }
+      ]
+    },
+    {
+      "name": "pour-until-full",
+      "params": [
+        [
+          "a",
+          "jug"
+        ],
+        [
+          "b",
+          "jug"
+        ]
+      ],
+      "stmts": [
+        3
+      ],
+      "pre": [
+        {
+          "distinct": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "has": "b",
+          "prop": "room",
+          "cmp": "gt",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        },
+        {
+          "has": "a",
+          "prop": "amount",
+          "cmp": "gt",
+          "rhs": {
+            "prop": [
+              "b",
+              "room"
+            ]
+          }
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "update": "a",
+          "prop": "amount",
+          "rhs": {
+            "minus": [
+              {
+                "prop": [
+                  "a",
+                  "amount"
+                ]
+              },
+              {
+                "prop": [
+                  "b",
+                  "room"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "update": "a",
+          "prop": "room",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "a",
+                  "room"
+                ]
+              },
+              {
+                "prop": [
+                  "b",
+                  "room"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "update": "b",
+          "prop": "amount",
+          "rhs": {
+            "prop": [
+              "b",
+              "capacity"
+            ]
+          }
+        },
+        {
+          "update": "b",
+          "prop": "room",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Pour the "
+        },
+        {
+          "handle": "a"
+        },
+        {
+          "text": " jug into the "
+        },
+        {
+          "handle": "b"
+        },
+        {
+          "text": " jug until it is full"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "j",
+        "type": "jug"
+      },
+      {
+        "has": "j",
+        "prop": "capacity",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "int": 3
+          }
+        }
+      },
+      {
+        "has": "j",
+        "prop": "amount",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "int": 1
+          }
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    4
+  ],
+  "failures": []
+}

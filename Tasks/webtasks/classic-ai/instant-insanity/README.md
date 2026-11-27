@@ -1,5 +1,74 @@
 # Instant Insanity: English to Soar through Lean (WorldSpec), 16 November 2026
 
+## Regenerated 25 November 2026: matching hints for learned rules (World-Conventions L11-009)
+
+**Runnable with the library default (learning on, `chunk only`)** and with learning off. The rules now open with
+`production optimize-attribute` lines written by both generators (`Compile.lean` `matchHints`, `spec_backend.py`
+`match_hints`): `object 77`, `orient 72`, `unplaced 4`, `unplaced-next 3`, `unplaced-first 2`, `placed 2` (sizes from
+the initial world). Nothing else in the rules changes; paths A and B agree apart from the header.
+
+Cause of the earlier blow-up (To-do row 44): at decision 5,201 look-ahead learns two chunks of 70-80 conditions that
+test five `^orient` tuples of cube-d and 13 `^object` links, with the orientations identified only by handle tests in
+later conditions. Without hints Soar's reorderer treats `^orient` (72 tuples) and `^object` (77 links) as single-valued
+and joins them before those tests, so the partial matches of one chunk exhaust memory.
+
+Runs, library v2.47, `run_agent.py`, cap 20,000 (two runs at a time on 2 cores, so CPU times are high):
+
+| Seed | `chunk only` (default) | `chunk never` |
+|---|---|---|
+| 1 | success, 5,170 decisions, 1,606 s CPU | success, 18,874 decisions |
+| 2 | success, 5,367 decisions, 1,711 s CPU | success, 18,692 decisions |
+| 3 | success, 5,358 decisions, 1,548 s CPU | success, 19,208 decisions |
+
+Memory stayed below about 225 MB. `chunk never` makes exactly the decisions of 24 November (the hints change only
+condition order). `rosiegen replay` accepts the three `chunk only` runs (`run-chunk-only-seed1..3.json`), each 4
+actions. Learning cuts decisions by more than two thirds but costs CPU time: the large chunks are expensive to match.
+
+## Regenerated 24 November 2026: the cube order is generated, not written (World-Conventions L21-001)
+
+Runnable with learning off (`chunk never`). With learning on it did not finish on library v2.47 (see "Learning on"
+below); fixed on 25 November (above).
+
+What changed (JL, 24 Nov 2026):
+- **Description.** Assumption A-II2 no longer fixes the order 1, 2, 3, 4. `place` now tests only that the cube is
+  unplaced and that the orientation is one of its own (the tests `prev(c, q)` and `placed(q, r)` are gone). The world
+  files lose the `ground` and `ground-pose` objects, the `prev` relation and the initial `placed(ground, ground-pose)`.
+  A-II2 now records the reading that a cube's place in the column does not matter, so cubes are placed in any order.
+- **Generators.** Both paths recognize from the description that it is a set of slots (cubes) each filled once, with
+  commuting fills (`SoarLean/agentgen/WorldSpec/SlotOrder.lean`; `worldgen/spec_backend.py`, `slots`), and propose
+  `place` only for the first unplaced cube in the order of the world file (`unplaced-first`, moved along
+  `unplaced-next`). The order is the same as before (cube-a, b, c, d), but it now comes from the generator, and the
+  rules say so in a comment after the assumption ledger. 17 rules (15 before: the two new ones are the `each` rules that
+  move `unplaced-first`).
+
+Checks (SoarLean release of 24 November 2026, revision b; Lean 4.35.0):
+- `instantInsanity_wellFormed` and `instantInsanity_slots` (the structure is recognized) are proved by `decide`.
+- `rosiegen json` equals the JSON written by `worldspec_py.py`; paths A and B write the same rules apart from the header,
+  on the initial world and on both example states.
+- `rosiegen check` and Soar on the path A and path B rules agree on the three example states (init: neither; fail: lost;
+  final: goal).
+- `rosiegen explore`: shortest plan 4 actions (19,850 states now that the description allows any order); 0 errors.
+- `rosiegen replay` and `worldspec_py.py replay` accept the three new runs.
+
+Runs, library v2.47 with `chunk never` (`run_agent.py --extra` with a file holding `chunk never`), cap 300,000:
+
+| Seed | Rules of 21 Nov (A-II2 in the description) | Regenerated rules (generated order) | Plan (regenerated rules) |
+|---|---|---|---|
+| 1 | success, 19,608 decisions | success, 18,874 decisions | place cube-a a-o23x; cube-b b-o3x; cube-c c-o2x; cube-d d-o3x |
+| 2 | success, 19,588 decisions | success, 18,692 decisions | place cube-a a-o2x; cube-b b-o2x; cube-c c-o3x; cube-d d-o2x |
+| 3 | success, 20,093 decisions | success, 19,208 decisions | place cube-a a-o16x; cube-b b-o6x; cube-c c-o13x; cube-d d-o12x |
+
+The old rules make exactly the decisions of their 21 November runs on v2.45. The regenerated rules tie the same
+operators at the first decision (the 24 orientations of cube-a, in the same order), but they do not make the same
+decisions throughout: the look-ahead worlds hold other relations (no `prev` or ground objects; `unplaced-next` and
+`unplaced-first` added), so the library's random choices among tied evaluations fall differently. All six runs find a
+valid column; the regenerated rules take 3-5% fewer decisions on these seeds. `run-seed1..3.json` are the new runs.
+
+**Learning on (the library default since v2.46).** With `chunk only`, every run, with the old rules and the new,
+grew past 5.5 GB and was killed by the workspace's 8 GB memory limit, after several minutes of CPU
+each. The old rules do it too, so the generated order is not the cause. It may be related to To-do rows 35-37
+(chunking blow-ups); not yet investigated. (Cause found and fixed 25 November; see above.)
+
 ## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
 
 Rules regenerated from `instant-insanity-spec.py` with `spec_backend.py` of `SoarLean-2026-11-21b-release.zip` (path B); `rosiegen compile` (path A) gives identical rules apart from the header; `rosiegen json` equals the Python JSON. 15 rules, as before. The 23 changed lines are the 18 November conventions: `^problem-space.name` tests on the task rules (World-Conventions L3-005), the three rule-group comments (L3-012), and `^unachieved-desireds true` in place of a binding of every unachieved desired. The semantics and Soar agree on every example state; `rosiegen replay` accepts every new run.

@@ -1,0 +1,9 @@
+Counting: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/counting/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. Count upwards from a starting number to a target number, one at a time.
+ 2. This instance counts from 0 to 100.
+
+Source of the task: the Soar counting example agents (count-up).
+Kind of agent: repeated action, no search.

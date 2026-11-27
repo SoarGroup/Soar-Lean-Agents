@@ -147,11 +147,35 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-object
               ^world <new-world>)
    (<new-world> ^objects <new-objects>
                 ^duplicate-of.objects.object <old-object>)
-   (<old-object> ^object-handle <handle>)
+   (<old-object> ^object-handle <handle>
+                -^static true)
 -->
    (<new-objects> ^object <new-object>)
    (<new-object> ^object-handle <handle>
                  ^duplicate-of <old-object>)}
+
+## Static objects (v2.48 candidate, World-Conventions L7-028): an object marked ^static true is one no operator changes, so the
+## look-ahead world shares it instead of copying it: the new world's ^objects holds the same identifier, and the copy map maps
+## it to itself, so relations to it are copied with the object itself as their argument.
+sp {selection-world*elaborate*evaluate-operator*default-state-share-static-object
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^objects <new-objects>
+                ^duplicate-of.objects.object <old-object>)
+   (<old-object> ^static true)
+-->
+   (<new-objects> ^object <old-object>)}
+
+sp {selection-world*elaborate*evaluate-operator*copy-map*static
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^copy-map <map>
+                ^duplicate-of.objects.object <old-object>)
+   (<old-object> ^static true)
+-->
+   (<map> ^<old-object> <old-object>)}
 
 ## Copy map (v2.45): ^copy-map on the new world has one WME per object, whose attribute is the old object and whose value is
 ## the object's copy in the new world (L7-026). Relation copies look up their arguments here: the
@@ -276,6 +300,19 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*decl
    (<new-relation-object> ^duplicate-of <relation-object>
                           ^argument1 <new-argument1>
                           ^argument2 <new-argument2>)
+}
+
+## Shared relation (v2.48 candidate, L7-028): a relation the task declares with (<problem-space> ^share-relation <name>) is
+## one no operator changes, between static objects; the look-ahead world gets the same relation identifier, not a copy.
+sp {selection-world*elaborate*evaluate-operator*default-state-share-relation*declared
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>
+              ^superstate.operator.super-problem-space.share-relation <relation>)
+   (<new-world> ^duplicate-of <old-world>)
+   (<old-world> ^<relation> <relation-object>)
+-->
+   (<new-world> ^<relation> <relation-object>)
 }
 
 ## Declared relation with one argument (v2.29), for example a maintained ^clear.

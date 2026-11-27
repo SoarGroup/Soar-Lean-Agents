@@ -9,6 +9,11 @@
 ## Assumption ledger:
 ##   A-G1: "neighbouring": a static next relation between A and B and between B and C, both ways.
 ##   A-G2: Going to C and back to A are two phases; repeats closes the loop back to the first (L8-027); three times is ^repeat-count 3 (L8-029).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 5
+production optimize-attribute at 2
+production optimize-attribute next 4
+
 
 ## Propose initialize-guard-patrol when its conditions below hold.
 sp {guard-patrol*propose*initialize-guard-patrol
@@ -24,10 +29,10 @@ sp {guard-patrol*apply*initialize-guard-patrol
 -->
    (<s> ^name guard-patrol ^desireds <ds>)
    (<objs> ^object <k-a> <k-b> <k-c> <k-guard> <k-task>)
-   (<k-a> ^object-handle a ^anchored true ^type square ^name a)
-   (<k-b> ^object-handle b ^anchored true ^type square ^name b)
-   (<k-c> ^object-handle c ^anchored true ^type square ^name c)
-   (<k-guard> ^object-handle guard ^anchored true ^type agent ^name guard)
+   (<k-a> ^object-handle a ^anchored true ^type square ^name a ^static true)
+   (<k-b> ^object-handle b ^anchored true ^type square ^name b ^static true)
+   (<k-c> ^object-handle c ^anchored true ^type square ^name c ^static true)
+   (<k-guard> ^object-handle guard ^anchored true ^type agent ^name guard ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <p1d1>)
    (<p1d1> ^object <p1d1-o>)
@@ -52,12 +57,12 @@ sp {guard-patrol*apply*initialize-guard-patrol
    (log 1 (crlf) |Initialize guard-patrol.|)
 }
 
-## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space, ^share-relation.
 sp {guard-patrol*elaborate*problem-space
    (state <s> ^name guard-patrol)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name guard-patrol ^copy-relation at ^copy-relation next ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute at-c-met ^dont-copy-object-attribute at-a-met)
+   (<p> ^name guard-patrol ^copy-relation at ^share-relation next ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute at-c-met ^dont-copy-object-attribute at-a-met)
 }
 
 sp {guard-patrol*elaborate*problem-space*mea-substate
@@ -116,8 +121,7 @@ sp {guard-patrol*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <to> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <to> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of move (look-ahead).

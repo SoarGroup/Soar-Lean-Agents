@@ -1,0 +1,17 @@
+Three wizards: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/wizards/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. Three wizards, A, B and C, sit where each can see the others but not himself.
+ 2. Each has a spot on his forehead that is either white or black.
+ 3. They are told that at least one spot is white.
+ 4. They are asked in turn, A, then B, then C, whether they know the colour of their own spot.
+ 5. Each can reason about what the others would have concluded from what they see and from the answers so far.
+ 6. In this instance B and C have white spots and A has a black spot.
+ 7. The goal is that a wizard correctly states the colour of his own spot.
+
+Initial state partly not in the English: the description says B and C start "marked" and A unmarked; statement 6
+reads "marked" as a white spot (the spot the announcement is about). The order of asking (A, B, C) is the
+order in which the description names them.
+Source of the task: the wise men puzzle (McCarthy).
+Kind of agent: epistemic reasoning over possible worlds.

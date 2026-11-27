@@ -1,0 +1,150 @@
+{
+  "format": "worldspec-1",
+  "name": "counting",
+  "title": "Counting (families, from English)",
+  "statements": [
+    [
+      1,
+      "Count upwards from a starting number to a target number, one at a time."
+    ],
+    [
+      2,
+      "This instance counts from 0 to 100."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-CT1",
+      "kind": "intent",
+      "text": "A counter object holds the current number (count, starting at 0) and the target (100).",
+      "stmts": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "A-CT2",
+      "kind": "intent",
+      "text": "\"one at a time\": each count-up action adds 1 to the count; it is proposed only while the count is below the target, and the goal is a count equal to the target.",
+      "stmts": [
+        1
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "counter",
+      "type": "counter",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "counter"
+          }
+        ],
+        [
+          "count",
+          {
+            "int": 0
+          }
+        ],
+        [
+          "target",
+          {
+            "int": 100
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "count-up",
+      "params": [],
+      "stmts": [
+        1
+      ],
+      "pre": [
+        {
+          "obj": "c",
+          "type": "counter"
+        },
+        {
+          "has": "c",
+          "prop": "count",
+          "cmp": "lt",
+          "rhs": {
+            "prop": [
+              "c",
+              "target"
+            ]
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "c",
+          "type": "counter"
+        }
+      ],
+      "effects": [
+        {
+          "update": "c",
+          "prop": "count",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "c",
+                  "count"
+                ]
+              },
+              {
+                "val": {
+                  "int": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Count one more"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "c",
+        "type": "counter"
+      },
+      {
+        "has": "c",
+        "prop": "count",
+        "cmp": "eq",
+        "rhs": {
+          "prop": [
+            "c",
+            "target"
+          ]
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    1
+  ],
+  "failures": []
+}

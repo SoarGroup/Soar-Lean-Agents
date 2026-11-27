@@ -14,6 +14,13 @@
 ##   A-TL3: "onto a peg that is not full": into the peg's lowest empty slot, i.e. an empty slot over a slot or floor that something is at. Each floor holds a fixed base object, which no action moves.
 ##   A-TL4: "another peg": the target slot is of a different peg than the ball's slot.
 ##   A-TL5: "as few moves as possible": unit cost per move, read through the library's search settings, not through the rules.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 22
+production optimize-attribute over 9
+production optimize-attribute of 6
+production optimize-attribute at 6
+production optimize-attribute empty 6
+
 
 ## Propose initialize-tower-of-london when its conditions below hold.
 sp {tower-of-london*propose*initialize-tower-of-london
@@ -29,27 +36,27 @@ sp {tower-of-london*apply*initialize-tower-of-london
 -->
    (<s> ^name tower-of-london ^desireds <ds>)
    (<objs> ^object <k-red-ball> <k-green-ball> <k-blue-ball> <k-peg-a> <k-a-floor> <k-a-base> <k-a-low> <k-a-mid> <k-a-top> <k-a-cap> <k-peg-b> <k-b-floor> <k-b-base> <k-b-low> <k-b-top> <k-b-cap> <k-peg-c> <k-c-floor> <k-c-base> <k-c-low> <k-c-cap> <k-task>)
-   (<k-red-ball> ^object-handle red-ball ^anchored true ^type ball ^name red-ball ^color red)
-   (<k-green-ball> ^object-handle green-ball ^anchored true ^type ball ^name green-ball ^color green)
-   (<k-blue-ball> ^object-handle blue-ball ^anchored true ^type ball ^name blue-ball ^color blue)
-   (<k-peg-a> ^object-handle peg-a ^anchored true ^type peg ^name peg-a ^capacity 3)
-   (<k-a-floor> ^object-handle a-floor ^anchored true ^type floor ^name a-floor)
-   (<k-a-base> ^object-handle a-base ^anchored true ^type base ^name a-base)
-   (<k-a-low> ^object-handle a-low ^anchored true ^type slot ^name a-low ^kind space)
-   (<k-a-mid> ^object-handle a-mid ^anchored true ^type slot ^name a-mid ^kind space)
-   (<k-a-top> ^object-handle a-top ^anchored true ^type slot ^name a-top ^kind space)
-   (<k-a-cap> ^object-handle a-cap ^anchored true ^type cap ^name a-cap ^kind space)
-   (<k-peg-b> ^object-handle peg-b ^anchored true ^type peg ^name peg-b ^capacity 2)
-   (<k-b-floor> ^object-handle b-floor ^anchored true ^type floor ^name b-floor)
-   (<k-b-base> ^object-handle b-base ^anchored true ^type base ^name b-base)
-   (<k-b-low> ^object-handle b-low ^anchored true ^type slot ^name b-low ^kind space)
-   (<k-b-top> ^object-handle b-top ^anchored true ^type slot ^name b-top ^kind space)
-   (<k-b-cap> ^object-handle b-cap ^anchored true ^type cap ^name b-cap ^kind space)
-   (<k-peg-c> ^object-handle peg-c ^anchored true ^type peg ^name peg-c ^capacity 1)
-   (<k-c-floor> ^object-handle c-floor ^anchored true ^type floor ^name c-floor)
-   (<k-c-base> ^object-handle c-base ^anchored true ^type base ^name c-base)
-   (<k-c-low> ^object-handle c-low ^anchored true ^type slot ^name c-low ^kind space)
-   (<k-c-cap> ^object-handle c-cap ^anchored true ^type cap ^name c-cap ^kind space)
+   (<k-red-ball> ^object-handle red-ball ^anchored true ^type ball ^name red-ball ^color red ^static true)
+   (<k-green-ball> ^object-handle green-ball ^anchored true ^type ball ^name green-ball ^color green ^static true)
+   (<k-blue-ball> ^object-handle blue-ball ^anchored true ^type ball ^name blue-ball ^color blue ^static true)
+   (<k-peg-a> ^object-handle peg-a ^anchored true ^type peg ^name peg-a ^capacity 3 ^static true)
+   (<k-a-floor> ^object-handle a-floor ^anchored true ^type floor ^name a-floor ^static true)
+   (<k-a-base> ^object-handle a-base ^anchored true ^type base ^name a-base ^static true)
+   (<k-a-low> ^object-handle a-low ^anchored true ^type slot ^name a-low ^kind space ^static true)
+   (<k-a-mid> ^object-handle a-mid ^anchored true ^type slot ^name a-mid ^kind space ^static true)
+   (<k-a-top> ^object-handle a-top ^anchored true ^type slot ^name a-top ^kind space ^static true)
+   (<k-a-cap> ^object-handle a-cap ^anchored true ^type cap ^name a-cap ^kind space ^static true)
+   (<k-peg-b> ^object-handle peg-b ^anchored true ^type peg ^name peg-b ^capacity 2 ^static true)
+   (<k-b-floor> ^object-handle b-floor ^anchored true ^type floor ^name b-floor ^static true)
+   (<k-b-base> ^object-handle b-base ^anchored true ^type base ^name b-base ^static true)
+   (<k-b-low> ^object-handle b-low ^anchored true ^type slot ^name b-low ^kind space ^static true)
+   (<k-b-top> ^object-handle b-top ^anchored true ^type slot ^name b-top ^kind space ^static true)
+   (<k-b-cap> ^object-handle b-cap ^anchored true ^type cap ^name b-cap ^kind space ^static true)
+   (<k-peg-c> ^object-handle peg-c ^anchored true ^type peg ^name peg-c ^capacity 1 ^static true)
+   (<k-c-floor> ^object-handle c-floor ^anchored true ^type floor ^name c-floor ^static true)
+   (<k-c-base> ^object-handle c-base ^anchored true ^type base ^name c-base ^static true)
+   (<k-c-low> ^object-handle c-low ^anchored true ^type slot ^name c-low ^kind space ^static true)
+   (<k-c-cap> ^object-handle c-cap ^anchored true ^type cap ^name c-cap ^kind space ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -111,12 +118,12 @@ sp {tower-of-london*apply*initialize-tower-of-london
    (log 1 (crlf) |Initialize tower-of-london.|)
 }
 
-## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space, ^share-relation.
 sp {tower-of-london*elaborate*problem-space
    (state <s> ^name tower-of-london)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name tower-of-london ^copy-relation over ^copy-relation of ^copy-relation at ^copy-relation empty ^dont-copy-object-attribute goal-met)
+   (<p> ^name tower-of-london ^copy-relation at ^copy-relation empty ^share-relation over ^share-relation of ^dont-copy-object-attribute goal-met)
 }
 
 sp {tower-of-london*elaborate*problem-space*mea-substate
@@ -188,8 +195,7 @@ sp {tower-of-london*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <t> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <t> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 
 ## Effect of move (look-ahead).

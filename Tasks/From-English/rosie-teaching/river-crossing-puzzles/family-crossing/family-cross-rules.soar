@@ -26,6 +26,12 @@
 ##     kinds (in name order; the same kind twice when two of it are on the bank). The boat stays an individual block. An
 ##     environment that moves individual blocks binds a kind to any block of that kind on the bank (the output names the
 ##     kind).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 7
+production optimize-attribute on 2
+production optimize-attribute below 2
+production optimize-attribute opposite 2
+
 
 ## Propose initialize-family-cross when its conditions below hold.
 sp {family-cross*propose*initialize-family-cross
@@ -123,8 +129,7 @@ sp {family-cross*propose*ferry-two-children*child-child
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-two-children ^task-operator true ^action-handle ferry-two-children ^argument1 <k-child> ^argument2 <k-child> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 0 ^move-child 2)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-two-children ^task-operator true ^action-handle ferry-two-children ^argument1 <k-child> ^argument2 <k-child> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-adult 0 ^move-child 2)
 }
 sp {family-cross*apply*ferry-two-children*environment-effect*child-child
    :o-support
@@ -208,8 +213,7 @@ sp {family-cross*propose*ferry-one*adult
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-adult> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 1 ^move-child 0)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-adult> ^argument2 <opp> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-adult 1 ^move-child 0)
 }
 sp {family-cross*apply*ferry-one*environment-effect*adult
    :o-support
@@ -249,8 +253,7 @@ sp {family-cross*propose*ferry-one*child
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-child> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-adult 0 ^move-child 1)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-child> ^argument2 <opp> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-adult 0 ^move-child 1)
 }
 sp {family-cross*apply*ferry-one*environment-effect*child
    :o-support

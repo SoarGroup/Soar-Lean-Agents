@@ -17,6 +17,11 @@
 ##   A-BT6: "within 17 minutes" asks for a fast crossing, so a crossing's minutes are also its step cost, and the task searches by cost (flags iterative-step cost, which brings cost-metric unit): iterative deepening on a cost cap, the library's IDA*. The clock still decides the losing state.
 ##   A-BT7: Search control, not from the English (as decided by JL on 16 Nov 2026 for the river crossings): a look-ahead state that returns to a situation already on its path fails. A situation is where each person and the torch are; the clock is not part of it, so going back and forth is cut off even though it changes the time.
 ##   A-BT5: "within 17 minutes": more than 17 elapsed minutes is a losing state; the goal itself tests only where the people are.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 9
+production optimize-attribute at 5
+production optimize-attribute other 2
+
 
 ## Propose initialize-bridge-and-torch when its conditions below hold.
 sp {bridge-and-torch*propose*initialize-bridge-and-torch
@@ -32,14 +37,14 @@ sp {bridge-and-torch*apply*initialize-bridge-and-torch
 -->
    (<s> ^name bridge-and-torch ^desireds <ds>)
    (<objs> ^object <k-near-side> <k-far-side> <k-torch> <k-clock> <k-ann> <k-bob> <k-cy> <k-di> <k-task>)
-   (<k-near-side> ^object-handle near-side ^anchored true ^type bank ^name near-side)
-   (<k-far-side> ^object-handle far-side ^anchored true ^type bank ^name far-side)
-   (<k-torch> ^object-handle torch ^anchored true ^type torch ^name torch)
+   (<k-near-side> ^object-handle near-side ^anchored true ^type bank ^name near-side ^static true)
+   (<k-far-side> ^object-handle far-side ^anchored true ^type bank ^name far-side ^static true)
+   (<k-torch> ^object-handle torch ^anchored true ^type torch ^name torch ^static true)
    (<k-clock> ^object-handle clock ^anchored true ^type clock ^name clock ^elapsed 0)
-   (<k-ann> ^object-handle ann ^anchored true ^type person ^name ann ^minutes 1)
-   (<k-bob> ^object-handle bob ^anchored true ^type person ^name bob ^minutes 2)
-   (<k-cy> ^object-handle cy ^anchored true ^type person ^name cy ^minutes 5)
-   (<k-di> ^object-handle di ^anchored true ^type person ^name di ^minutes 10)
+   (<k-ann> ^object-handle ann ^anchored true ^type person ^name ann ^minutes 1 ^static true)
+   (<k-bob> ^object-handle bob ^anchored true ^type person ^name bob ^minutes 2 ^static true)
+   (<k-cy> ^object-handle cy ^anchored true ^type person ^name cy ^minutes 5 ^static true)
+   (<k-di> ^object-handle di ^anchored true ^type person ^name di ^minutes 10 ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -61,12 +66,12 @@ sp {bridge-and-torch*apply*initialize-bridge-and-torch
    (log 1 (crlf) |Initialize bridge-and-torch.|)
 }
 
-## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space, ^share-relation.
 sp {bridge-and-torch*elaborate*problem-space
    (state <s> ^name bridge-and-torch)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name bridge-and-torch ^copy-relation at ^copy-relation other ^dont-copy-object-attribute goal-met)
+   (<p> ^name bridge-and-torch ^copy-relation at ^share-relation other ^dont-copy-object-attribute goal-met)
 }
 
 sp {bridge-and-torch*elaborate*problem-space*mea-substate
@@ -130,8 +135,7 @@ sp {bridge-and-torch*propose*cross-one
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-one ^task-operator true ^action-handle cross-one ^argument1 <a> ^argument2 <to> ^argument-count 2 ^step-cost <a-minutes> ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name cross-one ^task-operator true ^action-handle cross-one ^argument1 <a> ^argument2 <to> ^argument-count 2 ^step-cost <a-minutes> ^pre-conditions-satisfied true)
 }
 
 ## Effect of cross-one (look-ahead).
@@ -214,8 +218,7 @@ sp {bridge-and-torch*propose*cross-two
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-two ^task-operator true ^action-handle cross-two ^argument1 <a> ^argument2 <b> ^argument3 <to> ^argument-count 3 ^step-cost <b-minutes> ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name cross-two ^task-operator true ^action-handle cross-two ^argument1 <a> ^argument2 <b> ^argument3 <to> ^argument-count 3 ^step-cost <b-minutes> ^pre-conditions-satisfied true)
 }
 
 ## Effect of cross-two (look-ahead).

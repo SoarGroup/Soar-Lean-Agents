@@ -1,0 +1,397 @@
+{
+  "format": "worldspec-1",
+  "name": "blocks-world",
+  "title": "Blocks world (families, from English)",
+  "statements": [
+    [
+      1,
+      "Lettered blocks sit on a table, some stacked on others."
+    ],
+    [
+      2,
+      "You may move one block at a time, and only a block with nothing on top of it."
+    ],
+    [
+      3,
+      "A block can go onto the table or onto another block that has nothing on top of it."
+    ],
+    [
+      4,
+      "Blocks A and B start on the table and block C is on block A."
+    ],
+    [
+      5,
+      "The goal is A on B, B on C and C on the table."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-BW1",
+      "kind": "intent",
+      "text": "One on relation from each block to what it sits on, a block or the table (a single table object).",
+      "stmts": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": "A-BW2",
+      "kind": "intent",
+      "text": "\"nothing on top of it\": no block is on it, a derived relation clear(block) tested positively (W-CHK-009). Two operators: move-to-table for a block that is on a block, and move-to-block onto a different clear block.",
+      "stmts": [
+        2,
+        3
+      ]
+    },
+    {
+      "id": "A-BW3",
+      "kind": "intent",
+      "text": "Search control, not from the English (as for the other WorldSpec search tasks): a look-ahead state that returns to a situation already on its path fails; a situation is where each block is.",
+      "stmts": []
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "table",
+      "type": "table",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "table"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "a",
+      "type": "block",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b",
+      "type": "block",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c",
+      "type": "block",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "on",
+      [
+        "a",
+        "table"
+      ]
+    ],
+    [
+      "on",
+      [
+        "b",
+        "table"
+      ]
+    ],
+    [
+      "on",
+      [
+        "c",
+        "a"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "move-to-table",
+      "params": [
+        [
+          "b",
+          "block"
+        ]
+      ],
+      "stmts": [
+        2,
+        3
+      ],
+      "pre": [
+        {
+          "rel": "clear",
+          "args": [
+            {
+              "var": "b"
+            }
+          ]
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "from",
+          "type": "block"
+        }
+      ],
+      "bind": [
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "h": "table"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Move block "
+        },
+        {
+          "handle": "b"
+        },
+        {
+          "text": " to the table"
+        }
+      ]
+    },
+    {
+      "name": "move-to-block",
+      "params": [
+        [
+          "b",
+          "block"
+        ],
+        [
+          "to",
+          "block"
+        ]
+      ],
+      "stmts": [
+        2,
+        3
+      ],
+      "pre": [
+        {
+          "rel": "clear",
+          "args": [
+            {
+              "var": "b"
+            }
+          ]
+        },
+        {
+          "rel": "clear",
+          "args": [
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "b",
+            "to"
+          ]
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "from",
+            "to"
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "on",
+          "args": [
+            {
+              "var": "b"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Move block "
+        },
+        {
+          "handle": "b"
+        },
+        {
+          "text": " onto block "
+        },
+        {
+          "handle": "to"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "on",
+        "args": [
+          {
+            "h": "a"
+          },
+          {
+            "h": "b"
+          }
+        ]
+      },
+      {
+        "rel": "on",
+        "args": [
+          {
+            "h": "b"
+          },
+          {
+            "h": "c"
+          }
+        ]
+      },
+      {
+        "rel": "on",
+        "args": [
+          {
+            "h": "c"
+          },
+          {
+            "h": "table"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    5
+  ],
+  "failures": [],
+  "derived": [
+    {
+      "name": "clear",
+      "vars": [
+        "b"
+      ],
+      "defn": [
+        {
+          "obj": "b",
+          "type": "block"
+        },
+        {
+          "none": [
+            {
+              "rel": "on",
+              "args": [
+                {
+                  "var": "x"
+                },
+                {
+                  "var": "b"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        2,
+        3
+      ]
+    }
+  ],
+  "repeatControl": {
+    "rel": "on",
+    "types": [
+      "block"
+    ]
+  }
+}

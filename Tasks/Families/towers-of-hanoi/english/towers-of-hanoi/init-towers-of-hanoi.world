@@ -1,0 +1,31 @@
+objid 1
+category peg
+name a
+
+objid 2
+category peg
+name b
+
+objid 3
+category peg
+name c
+
+objid 4
+category disk
+name small
+size 1.0
+
+objid 5
+category disk
+name medium
+size 2.0
+
+objid 6
+category disk
+name large
+size 3.0
+
+predicate on
+4 1
+5 1
+6 1

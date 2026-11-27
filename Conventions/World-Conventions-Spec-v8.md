@@ -1,6 +1,6 @@
 # World conventions for Soar programs, version 6
 
-Generated 24 November 2026, 18:28 by `gen_spec.py` from `World-Conventions-v6.xlsx` (603 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 27 November 2026, 10:36 by `gen_spec.py` from `World-Conventions-v6.xlsx` (608 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -9,15 +9,15 @@ Generated 24 November 2026, 18:28 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L0 Definitional](#l0-definitional) | 113 | Describes what Soar is or does: definitions, syntax and architectural mechanisms. A program cannot violate it. |
 | [L1 Architectural](#l1-architectural) | 24 | Tells the programmer what to do or avoid, where the architecture makes a violation fail. |
 | [L2 Universal practice](#l2-universal-practice) | 14 | Adopted in essentially every Soar program. |
-| [L3 Guidance](#l3-guidance) | 103 | Guidance from the Soar manual and tutorial that the library material supports. |
+| [L3 Guidance](#l3-guidance) | 104 | Guidance from the Soar manual and tutorial that the library material supports. |
 | [L4 Default rules](#l4-default-rules) | 9 | Conventions set by the default rules of soar-base (loaded with the shared library). |
 | [L5 Selection space (classic)](#l5-selection-space-classic) | 10 | Conventions of the classic selection space that selection-world keeps. |
 | [L6 Program organization](#l6-program-organization) | 10 | Library conventions for naming, files, flags and constants. |
-| [L7 World state](#l7-world-state) | 26 | The world representation every agent-world program shares: ^world, objects and relations. |
+| [L7 World state](#l7-world-state) | 27 | The world representation every agent-world program shares: ^world, objects and relations. |
 | [L8 Desireds](#l8-desireds) | 29 | How goals are represented as desireds, and the library's bookkeeping for them. |
 | [L9 Operators](#l9-operators) | 27 | Task, composite and non-task operators. |
 | [L10 Application and output](#l10-application-and-output) | 12 | Internal and external operator application, output commands and events. |
-| [L11 Learning](#l11-learning) | 6 | Chunking conventions for agent-world programs. |
+| [L11 Learning](#l11-learning) | 8 | Chunking conventions for agent-world programs. |
 | [L12 Scene and attention](#l12-scene-and-attention) | 4 | Holds when attention (attend/remove) over the scene is in use. |
 | [L13 Grounding](#l13-grounding) | 14 | Holds when grounding (object-world) is in use. |
 | [L14 Selection space](#l14-selection-space) | 67 | Holds when the selection-world selection space is in use. |
@@ -27,7 +27,7 @@ Generated 24 November 2026, 18:28 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L18 Time and future events](#l18-time-and-future-events) | 13 | Holds when time, future events or idle waiting are in use. |
 | [L19 Goal completion and memory storage](#l19-goal-completion-and-memory-storage) | 6 | Holds when goal completion or semantic-memory storage is in use. |
 | [L20 Thor-Soar](#l20-thor-soar) | 40 | Applies only to Thor-Soar (the Thor-specific sheet). |
-| [L21 Strategy selection](#l21-strategy-selection) | 0 | How a task description determines which problem-solving strategies an agent uses (for example look-ahead, iterative deepening, means-ends analysis, reinforcement learning) and how their flags are set. Added 21 Nov 2026; to be populated, and some existing rows may move here; its place in the order may change. |
+| [L21 Strategy selection](#l21-strategy-selection) | 1 | How a task description determines which problem-solving strategies an agent uses (for example look-ahead, iterative deepening, means-ends analysis, reinforcement learning) and how their flags are set. Added 21 Nov 2026; to be populated, and some existing rows may move here; its place in the order may change. |
 
 ## L0 Definitional
 
@@ -2968,6 +2968,8 @@ sp {io*elaborate*operator*remove-command (state <s> ^operator.actions ^io.output
 
 *Example:* production optimize-attribute thing 20
 
+*See:* related L11-009 (generated declarations)
+
 *Source:* Manual §9.2.3.8, p.213
 
 **L3-096** (Requirement, formerly SET-012) — A max-elaborations warning is treated as a sign of a fire-and-retract loop. The limit is raised only for a program that really needs that many elaboration cycles.
@@ -3004,6 +3006,31 @@ preferences I3 move --names
 ```
 
 *Source:* Tutorial Part 1, 1.3.1 Hello World Operator: English Version; Tutorial Part 2, 2.5.3 Runtime Debugging Commands; Tutorial Part 3, 3.2 Impasses and State Creation
+
+### Rule form
+
+**L3-104** (Requirement, status: Accepted Evening 25 Nov 2026: in all generators (JL: release and regenerate everything). Rosie: 20 object tests left out in 8 logic puzzles (kakuro, color-ken-ken, ken-ken, killer-sudoku, shuffle, sujiko, suko, survo); WorldSpec: the three color-ken-ken group-sum rules; families: 87 rule files (relation tests with several values on one attribute now count too).) — A rule that binds an object as an argument of a relation it tests on the world, (<w> ^rel <r>) (<r> ^argument1 <x>), does not also test (<w> ^objects.object <x>). The object test adds nothing to what the rule matches and only offers Soar's reorderer a join of the world's objects with one another. The generators leave such tests out: familygen (Prod.dropRedundantObjectTests), wg.py (drop_redundant_object_tests, used by worldgen, the Rosie generators and, through wg.finish, the English-world generators) and WorldSpec (the group-sum rules, paths A and B).
+
+*Rationale:* The library copies relations into look-ahead worlds through the copy map (selection-world*elaborate*evaluate-operator*default-state-copy-relation*declared), so a relation's arguments are always objects of the world that holds the relation. The redundant test makes the rule's cost depend on condition order: in kenken drop-tuple, ^objects.object <t> <x> joined before ^in-tuple ranges over 392 x 392 objects.
+
+*If violated:* KenKen families (kenken-6-1, 25 Nov 2026, chunk only): with the L11-009 declarations and the redundant tests, 18-20 s CPU per seed (1-2 s without the declarations) and kenken-6-4 not finishing in 300 s; with the tests left out, 4.0 s and every variant solves. Leaving the tests out alone changes no decision in any of the 67 family variants.
+
+*Example:*
+
+```
+(<w> ^in-tuple <it>)
+(<it> ^argument1 <x> ^argument2 <t>)
+(<t> ^type tuple ^alive 1)
+not: (<w> ^objects.object <t> <x> ^in-tuple <it>)
+```
+
+*Task supplies:* nothing (generated)
+
+*Library rules:* None
+
+*See:* related L3-095; L11-009; L7-010
+
+*Source:* JL decision, 25 Nov 2026 (To-do row 44)
 
 ## L4 Default rules
 
@@ -3594,17 +3621,17 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 12 Nov 2026 (decision on LF-21); selection-world selection-world*elaborate*evaluate-operator*default-state-copy-object-attributes; kenken direct-world NOTES
 
-**L7-017** (Requirement) — A world object may have ^static <st>: a structure that holds the object's attributes that no task operator changes (for example its class, or whether it can be opened). Every attribute under ^static has a constant value. Which attributes are static is the task's decision and is relative to its operators: an attribute that any operator of the task changes is not static. Derived (i-supported) attributes are never under ^static (L14-026).
+**L7-017** (Requirement) — A world object may have ^fixed <fx>: a structure that holds object attributes that no task operator changes (for example its row and column, or its class). Every attribute under ^fixed has a constant value. Which attributes are fixed is relative to the task's operators: an attribute that any operator of the task changes is not fixed. Derived (i-supported) attributes are never under ^fixed (L14-026).
 
-*Rationale:* The look-ahead copy copies the ^static link like any other attribute value, so every copy shares the original's ^static structure instead of copying each static attribute: one WME per object in each look-ahead state instead of one per static attribute.
+*Rationale:* The look-ahead copy copies the ^fixed link like any other attribute value, so every copy shares the original's ^fixed structure instead of copying each fixed attribute: one WME per object in each look-ahead state instead of one per fixed attribute.
 
-*If violated:* Static attributes are copied one by one in every look-ahead state (cost only)
+*If violated:* Fixed attributes are copied one by one in every look-ahead state (cost only)
 
 *Example:*
 
 ```
-(<o> ^object-handle mug1 ^anchored true ^dirty true ^static <st>)
-(<st> ^class mug ^openable false ^cookable false)
+(<o> ^object-handle loc-1-1 ^anchored true ^color red ^fixed <fx>)
+(<fx> ^row 1 ^column 1 ^region a)
 ```
 
 *Task supplies:* yes
@@ -3615,9 +3642,9 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-018** (Requirement) — Nothing changes the structure under ^static once the object is created: no rule (task or library, in the real world or in look-ahead) adds, removes or replaces a WME under ^static, and an object's ^static link is never replaced while the object exists. An attribute that must change is not static (L7-017).
+**L7-018** (Requirement) — Nothing changes the structure under ^fixed once the object is created: no rule (task or library, in the real world or in look-ahead) adds, removes or replaces a WME under ^fixed, and an object's ^fixed link is never replaced while the object exists. An attribute that must change is not fixed (L7-017).
 
-*Rationale:* Every look-ahead copy shares the real object's ^static structure (L7-015), so a change made under ^static in look-ahead would change the real world.
+*Rationale:* Every look-ahead copy shares the real object's ^fixed structure (L7-017), so a change made under ^fixed in look-ahead would change the real world.
 
 *If violated:* A look-ahead operator changes the real world through the shared structure; wrong evaluations, and the real world is corrupted
 
@@ -3627,25 +3654,27 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-019** (Requirement, status: Planned) — Rules reach a static attribute through ^static: (<o> ^static.<attr> <value>). A desired, an attend, a world-context or a find-object description names a static attribute flat, like any other attribute (^class mug); a desired object never has ^static. The library's achievement, unachieved and grounding rules match a desired's attribute against either the world object's own attribute or the same attribute under its ^static (L7-012, L8-022).
+**L7-019** (Requirement) — Rules reach a fixed attribute through ^fixed: (<o> ^fixed.<attr> <value>), also through paths (^argument1.fixed.<attr>). A desired, an attend, a world-context or a find-object description names an attribute flat (^class mug); a desired object never has ^fixed. The library does not match desireds under ^fixed, so an attribute that any desired tests stays flat (L7-022).
 
-*Rationale:* A desired describes what must hold, not where the world keeps it; one form of desired works whether the task makes the attribute static or not.
+*Rationale:* A desired describes what must hold, not where the world keeps it.
 
-*If violated:* A desired on a static attribute is never achieved, or is always unachieved
+*If violated:* A desired on an attribute under ^fixed is never achieved, or is always unachieved
 
-*Example:* desired (<do> ^object-handle mug1 ^class mug) matches world (<o> ^object-handle mug1 ^static.class mug)
+*Example:*
 
-*Library rules:* Planned: static variants of the agent-world and thor-soar achieved and unachieved rules, and of the Thor-Soar grounding rules
+```
+(<c> ^fixed.row <r>)  (<o> ^argument1.fixed.column <col>)
+```
 
 *See:* related L7-012; L7-017; L8-022
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-020** (Requirement) — An object derived from another (L7-014) gets its own ^static; it does not share the original's, because its static attributes differ (a slice is not an apple).
+**L7-020** (Requirement) — An object derived from another (L7-014) gets its own ^fixed; it does not share the original's, because its fixed attributes differ (a slice is not an apple).
 
-*Rationale:* A shared ^static would give the derived object the original's class and abilities, and changing it would violate L7-018.
+*Rationale:* A shared ^fixed would give the derived object the original's class and abilities, and changing it would violate L7-018.
 
-*If violated:* The derived object has the original's static attributes
+*If violated:* The derived object has the original's fixed attributes
 
 *Task supplies:* yes
 
@@ -3653,11 +3682,11 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-021** (Requirement) — An object attribute is static for a task when no task operator and no environment process changes it. Static attributes are typically innate properties (type or class, material, mass, size) and affordances (openable, graspable, sliceable, cookable, fillable). State properties that actions or the environment change (open, dirty, cook-state, temperature, sliced, fill level) and relations are never static. An innate property that an operator of the task changes (color in a painting task) is not static for that task.
+**L7-021** (Requirement) — An object attribute can be fixed for a task when no task operator and no environment process changes it. Such attributes are typically innate properties (type or class, material, mass, size), positions that never change (row, column), and affordances (openable, graspable, sliceable, cookable, fillable). State properties that actions or the environment change (open, dirty, cook-state, temperature, sliced, fill level) and relations are never fixed. An innate property that an operator of the task changes (color in a painting task) is not fixed for that task.
 
 *Rationale:* Static is relative to the task's operators and environment; the categories give the default, the task's operators decide.
 
-*If violated:* An attribute under ^static is changed (L7-018), or a static attribute is copied in every look-ahead state
+*If violated:* An attribute under ^fixed is changed (L7-018), or a fixed attribute is copied in every look-ahead state
 
 *Task supplies:* yes
 
@@ -3665,17 +3694,17 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-022** (Requirement) — A generator computes the static set from the task description: every non-derived object attribute that no operator effect writes, plus the object's type. For a task with an external environment, the description also lists the attributes the environment changes, and those are excluded. The generator puts the static set under ^static (L7-017), reads it through ^static.<attr> (L7-019), and checks that no generated rule writes it (L7-018).
+**L7-022** (Requirement) — A generator computes the fixed set from the task. It uses ^fixed only when the task has look-ahead (some task operator is neither monotonic nor given an indifferent preference for every proposal) and, for an object type, only when (1) some operator writes some attribute of the type (a type no operator writes is shared whole, L7-028), (2) at least 3 constant-valued attributes of the type are written by no operator, by no rule other than the initialize rule, and by no rule that adds objects of the type, (3) no desired tests them, (4) no rule tests an attribute of the type through an attribute that is not a constant (^<a>, ^<< a b >>, ^{ ... }), since such a test would not see an attribute moved under ^fixed, and (5) an attribute name is fixed on every type that has it or on none. Library attributes (object-handle, type, anchored, static, fixed) stay flat. An operator that writes an attribute of an object whose type the generator cannot determine makes nothing fixed, and so does a non-constant attribute test on such an object, except on a desired object or when the attribute variable comes from a desired object's attribute (the achievement rules, whose attributes stay flat by (3)). The generator puts the set under ^fixed in the initialize rule (L7-017), reads it through ^fixed.<attr> (L7-019), and no generated rule writes it (L7-018).
 
-*Rationale:* The description already states every operator's effects, so the static set follows from it without labels; only environment changes, which no operator models, must be stated.
+*Rationale:* The operators' effects give the fixed set without labels. With few fixed attributes, or without look-ahead, the extra ^fixed join costs more than the copies it saves (KenKen families: +17% CPU with 3-4 fixed attributes and light look-ahead, 26 Nov 2026; Rosie logic puzzles with heavy look-ahead: -10 to -56%).
 
-*If violated:* A generated rule writes a static attribute, or the environment changes an attribute held under ^static
+*If violated:* A generated rule writes a fixed attribute, or a rule tests a fixed attribute by a variable or disjunctive attribute name and no longer sees it
 
 *See:* related L7-017; L7-018; L7-019; L7-021
 
-*Source:* JEL, 19 Nov 2026; worldgen world_backend.py (static layout)
+*Source:* JEL, 19 and 26 Nov 2026; worldgen spec_backend.fixed_info, static_pass._fixed_props and _varattr_types; agentgen WorldSpec/Compile.lean Task.fixedProps, Family/Task.lean staticInfo and varAttrTypes
 
-**L7-023** (Requirement) — A task description written from English classifies each object attribute as innate, affordance or state. The English-to-Lean step assigns the class; the generator treats innate properties and affordances as static candidates, and the computation of L7-022 decides the final set.
+**L7-023** (Requirement) — A task description written from English classifies each object attribute as innate, affordance or state. The English-to-Lean step assigns the class; the generator treats innate properties and affordances as fixed candidates, and the computation of L7-022 decides the final set.
 
 *Rationale:* English descriptions name properties without saying how they change; the class records the intent so that a disagreement with the computed set (an affordance that an operator changes) can be reported.
 
@@ -3685,11 +3714,11 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-024** (Requirement) — An operator that removes or changes an object's innate property or affordance (breaking an object, slicing it) replaces the object with a derived object (L7-014) that has its own ^static (L7-020); it does not change the original. The original's attributes therefore stay static. When computing the static set (L7-022), a generator treats such an effect as creating a new object, not as a write to the original's attributes.
+**L7-024** (Requirement) — An operator that removes or changes an object's innate property or affordance (breaking an object, slicing it) replaces the object with a derived object (L7-014) that has its own ^fixed (L7-020); it does not change the original. The original's attributes therefore stay fixed. When computing the fixed set (L7-022), a generator treats such an effect as creating a new object, not as a write to the original's attributes.
 
-*Rationale:* Keeps affordances static even when an action takes them away (a broken object can no longer be cooked or grasped), so L7-018 holds.
+*Rationale:* Keeps affordances fixed even when an action takes them away (a broken object can no longer be cooked or grasped), so L7-018 holds.
 
-*If violated:* The operator changes an attribute under ^static (violating L7-018), or the attribute is left out of the static set for every object of the type
+*If violated:* The operator changes an attribute under ^fixed (violating L7-018), or the attribute is left out of the fixed set for every object of the type
 
 *See:* related L7-021; L7-022
 
@@ -3716,6 +3745,27 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 *See:* related L14-068 (repeated states)
 
 *Source:* JL, 24 Nov 2026; Soar – To-do row 48. Generators: Tasks/From-English/rosie-teaching/tools/aggregate.py (detection), rosie_gen.py (RosieTask aggregate=), rosie_river.py (river crossings over counts)
+
+**L7-028** (Requirement, status: Accepted) — An object that no rule other than the initialize rule ever changes (no operator writes any of its attributes) is marked ^static true. The look-ahead copy does not copy it: the new world's object set holds the same identifier, and the copy map maps it to itself. A relation that no operator changes and whose arguments are all static is declared with (<problem-space> ^share-relation <name>) in place of ^copy-relation, and the new world gets the same relation identifier. The task object is never static, nor is a type whose attributes a sum or count rule maintains. Generators mark both from the operators' effects.
+
+*Rationale:* A static object or relation is the same in every look-ahead world, so sharing it saves the copy firings and the copy map's lookups. Instant Insanity: 384 to 134 s without learning, 1,287 to 747 s with it; other WorldSpec tasks 7-32% fewer WME changes; Rosie 876 to 753 s CPU; decisions identical (26 Nov 2026).
+
+*If violated:* A change to a static object in look-ahead changes the real world; a non-static object marked static is shared and corrupted
+
+*Example:*
+
+```
+(<table> ^object-handle table ^anchored true ^type table ^static true)
+(<p> ^name hanoi ^share-relation adjacent)
+```
+
+*Task supplies:* yes (generators)
+
+*Library rules:* selection-world*elaborate*evaluate-operator*default-state-share-static-object, *copy-map*static, *default-state-share-relation*declared; default-state-copy-object skips ^static true
+
+*See:* related L7-017; L7-026; L14-026
+
+*Source:* JEL, 26 Nov 2026; worldgen spec_backend.static_info, static_pass.mark_static; agentgen Compile.lean Task.staticInfo, Family/Task.lean markStatic
 
 ### Relations
 
@@ -4037,7 +4087,7 @@ How goals are represented as desireds, and the library's bookkeeping for them.
 
 *Source:* agent-world/elaborations/achieved-desired-operators.soar (all achieved rules); verified in Soar 9.6.5 that an i-supported reject suppresses an i-supported WME
 
-**L8-022** (Library definition, formerly W-DBK-006) — An object-property desired of an operator is achieved when an anchored world object with the same handle has the same attribute and value, directly or under its ^static (L7-019). If partial counts are needed, the task supplies the operator's ^unachieved.
+**L8-022** (Library definition, formerly W-DBK-006) — An object-property desired of an operator is achieved when an anchored world object with the same handle has the same attribute and value. Attributes under ^fixed are not matched (L7-019).
 
 *Rationale:* Library gives achieved; counts with unachieved need ^unachieved.
 
@@ -4203,23 +4253,24 @@ Task, composite and non-task operators.
 
 *Source:* agent-world/external-operator-application.soar:agent-world*apply*operator*external*argument0..argument3*no-handle2; Thor-Soar Agent Documentation (thor.txt) '^argument-count'
 
-**L9-011** (Requirement, formerly W-TOP-011) — Every task-action operator has ^desireds with ^desired-count, also when it has no preconditions (^desired-count 0): ^pre-conditions-satisfied is computed only from that structure.
+**L9-011** (Requirement, status: Accepted, formerly W-TOP-011) — Every task-action operator has ^pre-conditions-satisfied computed from ^desireds with ^desired-count, or, when it has no preconditions, its proposal writes ^pre-conditions-satisfied true itself instead of an empty ^desireds (^desired-count 0). The direct form is used only when no rule can add desireds or ^next-desireds to the operator; generators use it when no rule of the agent tests an operator's ^desireds.
 
-*Rationale:* Without ^desireds no ^pre-conditions-satisfied is produced and neither external nor internal application fires.
+*Rationale:* Without ^pre-conditions-satisfied neither external nor internal application fires. An empty ^desireds costs two WMEs and two library firings per proposal (the counts and the precondition elaboration), two elaboration waves after the proposal, only to produce the same result.
 
 *If violated:* operator is selected but never applied (operator no-change)
 
 *Example:*
 
 ```
-(<operator> ^desireds <d2>) (<d2> ^desired-count 0)
+(<o> ^name eliminate ^task-operator true ^pre-conditions-satisfied true)    no preconditions
+(<o> ^name move ^desireds <d>) (<d> ^desired-count 1 ^desired <x>)    with preconditions
 ```
 
 *Task supplies:* yes
 
 *Library rules:* agent-world*elaborate*operator*pre-conditions-satisfied
 
-*Source:* elaborations/achieved-desired-operators.soar:agent-world*elaborate*operator*pre-conditions-satisfied, agent-world*elaborate*operator*desired-count0*achieved-0; Thor-Soar Agent Documentation (thor.txt) '^desireds'
+*Source:* elaborations/achieved-desired-operators.soar; JL 27 Nov 2026 (direct form); convpass.no_precondition_form, Family/Task.lean noPreconditionForm
 
 **L9-012** (Requirement, formerly W-TOP-012) — For each task-action operator the task supplies a proposal and an internal application rule (used in look-ahead, and for every application when ^environment is none). External application is generic and needs no task rule. A second, non-MEA proposal (proposed when the preconditions hold) is allowed but untested.
 
@@ -4662,6 +4713,48 @@ Chunking conventions for agent-world programs.
 *See:* related L3-099 (general form)
 
 *Source:* FINDING-chunking-overgeneral.md (update of 15 Nov 2026); World-Conventions-Spec-v6 section 2; soar-dollar-bugs.zip (bug report)
+
+**L11-008** (Requirement, status: Accepted) — When a result in look-ahead stands for an unknown outcome because a semantic or episodic retrieval found nothing (for example, no episode matches the cue for the tied operator, so the evaluation is set to a default such as partial-success), the rule that writes that result tests ^quiescence t, so no chunk is learned from it. Testing the cue does not make such a chunk correct: the cue is already tested, and what the result depends on is the absence of a matching memory, which is not in working memory and can change as memory grows. Results computed from what a retrieval did return (an action model replayed from a retrieved episode) are learned as usual.
+
+*Rationale:* A chunk over a no-match default turns a one-time guess into a permanent evaluation of the operator in that situation, and the selection rules then turn it into a learned preference. Neither kernel setting is a fit: allow-opaque off does not apply (the no-match path recalls nothing), and allow-local-negations off stops this but also most other learning, for every agent.
+
+*If violated:* blocks-world-epmem (standard Soar family, chunk always, Soar 9.6.6): the model-unknown rule's partial-success 2.5 is chunked without any test of the retrieval, partial-success becomes a learned best preference, and from decision 46 the agent alternates A->C and A->B without a tie until the 3,000-decision cap (0/3 seeds). With ^quiescence t on that rule: 3/3 seeds in both runs (174, 329, 129 decisions; run 2 217, 13, 47), and the action-model rules from real retrievals are still learned.
+
+*Example:*
+
+```
+sp {blocks-world*model*unknown (state <s> ^operator <m> ^quiescence t) (<m> ^name model-unknown) ... --> (<ev> ^symbolic-value partial-success ^numeric-value 2.5)}
+```
+
+*Task supplies:* yes (the task rule that writes the default for an unknown outcome)
+
+*Library rules:* None
+
+*See:* related L3-064; L3-065; L0-094; L11-003; L14-068
+
+*Source:* JL decision, 25 Nov 2026; analysis of blocks-world-epmem with chunk always (families run on library v2.47)
+
+**L11-009** (Requirement, status: Accepted 25 Nov 2026 (afternoon): familygen too (JL: both, with L3-104). Families, chunk only, seeds 1-3: with the declarations alone the 6x6 KenKen variants became 15-70 times slower (the in-tuple declaration made the reorderer join ^objects.object <t> <x> first in drop-tuple); with L3-104 as well, 174 of 174 seeds solve (as before), kenken-6-1 4.0 s, knights-8 58 s CPU (75 s before), knights-6 22 s (10 s), kenken-6-2 more decisions (1,343 / 1,485 / 975 vs 735 / 862 / 1,096). Instant Insanity: the orient declaration alone solves seed 1 (5,219 decisions); the object declaration alone does not. wg.py held for a decision on how to choose the declarations. Evening 25 Nov 2026 (JL): released in wg.py as well, with L3-104, so every generator writes them.) — Generated task rules declare every many-valued attribute of the world before any chunk is learned: production optimize-attribute (alias multi-attributes) for ^object, sized by the number of objects, and for every relation of the task (declared, maintained, or added by an operator), sized by its number of tuples in the initial world, at least 2. The WorldSpec generators write these lines after the header (WorldSpec/Compile.lean, matchHints; worldgen/spec_backend.py, match_hints); paths A and B write the same lines. familygen writes the same lines at the end of each variant's _firstload.soar (Variant.matchHints), together with L3-104. wg.py writes them too (match_hints, read from the generated rules), and wg.finish adds them to the English-world rules.
+
+*Rationale:* Chunks learned in look-ahead test several values of one attribute at once (several relation tuples, many ^object links). Without a hint the reorderer assumes one value per attribute and can join those conditions before the constant tests that narrow them, so the partial matches of one chunk can exhaust memory. The declaration changes condition order only, never what matches; it applies to rules loaded after it, which includes every chunk, so it may follow the library.
+
+*If violated:* Instant Insanity (WorldSpec, library v2.47, chunk only): two chunks of 70-80 conditions learned at decision 5,201 (five ^orient tuples, 13 ^object links) take memory from about 150 MB past 5.5 GB and the run is killed, seeds 1-3. With the generated declarations (object 77, orient 72, unplaced 4, unplaced-next 3, unplaced-first 2, placed 2): 3/3 seeds solve in 5,170 / 5,367 / 5,358 decisions, about 225 MB at most; learning off unchanged (18,874 / 18,692 / 19,208).
+
+*Example:*
+
+```
+production optimize-attribute object 77
+production optimize-attribute orient 72
+production optimize-attribute placed 2
+```
+
+*Task supplies:* nothing (generated)
+
+*Library rules:* None
+
+*See:* related L3-095 (general form); L11-003; L21-001
+
+*Source:* JL decision, 25 Nov 2026 (To-do row 44); Soar Manual production optimize-attribute
 
 ### Learning: RL
 
@@ -5127,7 +5220,7 @@ Holds when the selection-world selection space is in use.
 
 *Source:* selection-world/Operator_Tie/Impasse__State_No-Change/elaborations.soar:selection-world*compare*default*select*reject*conflict
 
-**L14-026** (Library definition, capacity: selection-world, formerly W-SEL-009) — The look-ahead world copy copies every attribute of every world object except ^object-handle, ^duplicate-of and ^anchored (which it sets itself) and the attributes listed as ^dont-copy-object-attribute on the state's problem space. Derived (i-supported) object attributes are not recommended (L3-031, L3-035, L3-062, L5-004). A task that uses them lists every one there, on both problem-space rules (task state and MEA substate), so that the copy derives them again and holds no stale value. ^static is copied as a link: the copy shares the original's ^static structure (L7-017); it is never listed as ^dont-copy-object-attribute.
+**L14-026** (Library definition, capacity: selection-world, formerly W-SEL-009) — The look-ahead world copy copies every attribute of every world object except ^object-handle, ^duplicate-of and ^anchored (which it sets itself) and the attributes listed as ^dont-copy-object-attribute on the state's problem space. Derived (i-supported) object attributes are not recommended (L3-031, L3-035, L3-062, L5-004). A task that uses them lists every one there, on both problem-space rules (task state and MEA substate), so that the copy derives them again and holds no stale value. ^fixed is copied as a link: the copy shares the original's ^fixed structure (L7-017); it is never listed as ^dont-copy-object-attribute. An object with ^static true is not copied at all (L7-028).
 
 *Rationale:* A computed property copied from the real world may disagree with the copied properties it is derived from.
 
@@ -5603,7 +5696,7 @@ sp {eight-puzzle*elaborate*move-tile*evaluate-first
 
 *Source:* JL decision, 22 Nov 2026; gen3 experiments (eight-puzzle, missionaries-cannibals)
 
-**L15-027** (Requirement, status: Accepted) — An operator is monotonic when its effect follows from the current state, so it adds information and never needs to be undone or compared with alternatives: removing a candidate a constraint rules out, or making the assignment when only one value remains. All other task operators are non-monotonic: they make a choice (such as guessing a value) or an irreversible change. The task marks monotonic operators ^monotonic true (they remain task operators, ^task-operator true, L9-001); the library prefers them over non-monotonic operators and makes them indifferent among themselves, because their order does not change the result. So a guess, and the look-ahead it brings, comes only when no monotonic operator applies. For constraint satisfaction problems (KenKen, sudoku variants, logic grids), the task supplies a monotonic operator for every kind of constraint it can propagate.
+**L15-027** (Requirement, status: Accepted) — An operator is monotonic when its effect follows from the current state, so it adds information and never needs to be undone or compared with alternatives: removing a candidate a constraint rules out, or making the assignment when only one value remains. All other task operators are non-monotonic: they make a choice (such as guessing a value) or an irreversible change. The task marks monotonic operators ^monotonic true (they remain task operators, ^task-operator true, L9-001); the library makes every non-monotonic task operator worst while a monotonic operator is proposed, and makes monotonic operators indifferent among themselves, because their order does not change the result. So a guess, and the look-ahead it brings, comes only when no monotonic operator applies. For constraint satisfaction problems (KenKen, sudoku variants, logic grids), the task supplies a monotonic operator for every kind of constraint it can propagate.
 
 *Rationale:* Inference is cheaper than search; every inference applied before a guess shrinks the ties look-ahead has to resolve. Marking (rather than ^task-operator false) keeps such operators task operators: they change the world, and look-ahead copies their effects.
 
@@ -5618,7 +5711,7 @@ sp {eight-puzzle*elaborate*move-tile*evaluate-first
 
 *Task supplies:* ^monotonic true on its monotonic operators, and one such operator for each kind of constraint it can propagate
 
-*Library rules:* agent-world*compare*monotonic-non-monotonic, agent-world*compare*monotonic*indifferent (v2.46)
+*Library rules:* agent-world*elaborate*monotonic-candidate, agent-world*compare*non-monotonic*worst, agent-world*compare*monotonic*indifferent (v2.48; before: agent-world*compare*monotonic-non-monotonic, one binary preference per pair)
 
 *See:* related L9-001; L9-023; L15-001; L3-039; L15-026
 
@@ -6002,11 +6095,11 @@ Holds when the iterative-deepening strategy is in use.
 
 *Source:* selection-world/strategies/iterative-deepening/Impasse__Operator_Tie/elaborations.soar
 
-**L16-042** (Library definition, capacity: iterative deepening) — When ^remaining-operators is still 1 but every tied operator already has an evaluation (no ^item-no-evaluation), typically because chunks supplied them before the counter was decremented, two operators with the same symbolic value are indifferent unless it is a cut-off value. Unlike L16-041, this rule also covers success without testing ^closed or ^better (to-do: make it match L16-041). Common to these rules: both evaluations are for the tied state's desireds (^desireds.duplicate-of), and the preference points to an operator with ^task-operator true.
+**L16-042** (Library definition, capacity: iterative deepening) — When ^remaining-operators is still 1 but every tied operator already has an evaluation (no ^item-no-evaluation), typically because chunks supplied them before the counter was decremented, two operators with the same symbolic value are indifferent unless it is a cut-off value. Two successes are indifferent only when both evaluations are closed (^closed true) and the desireds have no ^better, as in L16-041. Common to these rules: both evaluations are for the tied state's desireds (^desireds.duplicate-of), and the preference points to an operator with ^task-operator true.
 
 *Rationale:* Lets the choice be made as soon as all evaluations exist, without waiting for the counter.
 
-*Library rules:* selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval
+*Library rules:* selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval; selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval*success*no-better
 
 *See:* related L16-014; L14-013; L16-031
 
@@ -6910,4 +7003,24 @@ Applies only to Thor-Soar (the Thor-specific sheet).
 
 How a task description determines which problem-solving strategies an agent uses (for example look-ahead, iterative deepening, means-ends analysis, reinforcement learning) and how their flags are set. Added 21 Nov 2026; to be populated, and some existing rows may move here; its place in the order may change.
 
-No conventions at this level yet.
+### Search control
+
+**L21-001** (Choice, status: Accepted) — When a task description is a set of slots that are each filled once and whose fills commute, the generators propose the fill operators only for the first unfilled slot, in the order of the objects in the initial world; the English need not state an order, and the description does not carry one. The structure is recognized from the description, never from the task's name (WorldSpec/SlotOrder.lean, Task.slots?; worldgen/spec_backend.py, slots): (1) a maintained relation M(x) holds of an unfilled slot, defined as 'x of type T lacks property p' or 'x is in no tuple of R as first argument'; (2) every operator has a slot parameter x of type T with M(x) among its preconditions, no binding condition, and exactly two effects, the fill (set x.p, or add R(x, ...)) and del M(x); (3) apart from M(x), no precondition, step cost or fill value reads p, R, M, a derived relation or a sum, so a fill stays legal whatever the other slots hold; (4) every losing condition is existential and tests neither M nor a derived relation, so (conditions are positive, Task.wellFormed's W-CHK-009 check and L11-003, and fills are never undone) a state that loses still loses after more fills; (5) the goal is universal over T and tests the fill of every slot; (6) no phases or termination desireds. The generated rules keep a static chain <M>-next(x, y) over the slots unfilled in the initial world and a relation <M>-first(x) on the first of them; each fill proposal also tests <M>-first(x), and its application moves <M>-first to the successor. All tests are positive (L11-003). A description whose English fixes an order tests the previous slot in its preconditions, fails check 3 and keeps its own order. The Task field slotOrder := false (JSON slotOrder: false) turns it off, to compare runs with and without it.
+
+*Rationale:* Every order of commuting fills reaches the same states, so look-ahead over all orders repeats the same work up to k! times. By 5 a goal state has every slot filled; by 2 its fills can be made in the fixed order; by 3 each is legal when made; by 4 no state on the way loses: no solution is lost. This is not a desired order (L15-024): it removes duplicate orderings and changes no evaluation.
+
+*If violated:* Without it, a hand-written order in the description (Instant Insanity's former assumption A-II2), or ties over every slot: KenKen (color-ken-ken, Lean paths A and B, library v2.47) 459 / 473 / 459 decisions on seeds 1-3, 73 / 73 / 81 with it.
+
+*Example:*
+
+```
+(<w> ^unplaced-first <r2>) (<r2> ^argument1 <c>) in the proposal of place; apply: (<w> ^unplaced-first <e3> -) and, for (<w> ^unplaced-next <r1>) (<r1> ^argument1 <c> ^argument2 <nextslot>), (<w> ^unplaced-first <new-2>) (<new-2> ^argument1 <nextslot>)
+```
+
+*Task supplies:* nothing (generated); slotOrder := false to turn it off
+
+*Library rules:* None
+
+*See:* related L15-024; L15-027; L3-039; L11-003; L14-068
+
+*Source:* JL decision, 24 Nov 2026 (Mastermind search-structure hand-off, proposal 2); Instant Insanity, KenKen

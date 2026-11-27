@@ -14,7 +14,7 @@ def instantInsanity : Task where
     (3, "You stack the four cubes in a column, each turned any way you like."),
     (4, "The column has four sides: front, back, left and right."),
     (5, "The goal is that each of the four sides of the column shows four different colours.")]
-  world := { handle := fun o => o.sym "name", rels := ["orient", "prev", "placed"] }
+  world := { handle := fun o => o.sym "name", rels := ["orient", "placed"] }
   maintained := [
     { name := "unplaced", var := "x", stmts := [3],
       defn := [.obj "x" (some "cube"),
@@ -22,9 +22,7 @@ def instantInsanity : Task where
   ops := [
     { name := "place", params := [("c", some "cube"), ("o", some "orientation")], stmts := [3, 4]
       pre := [.rel "unplaced" [.var "c"],
-       .rel "orient" [.var "o", .var "c"],
-       .rel "prev" [.var "c", .var "q"],
-       .rel "placed" [.var "q", .var "r"]]
+       .rel "orient" [.var "o", .var "c"]]
       bind := []
       effects := [.add "placed" [.var "c", .var "o"], .del "unplaced" [.var "c"]]
       report := [.text "Place ", .handle "c", .text " turned as ", .handle "o"] }]
@@ -61,7 +59,7 @@ def instantInsanity : Task where
        .has "o1" "right" .eq (.prop "o2" "right")] }]
   assumptions := [
     { id := "A-II1", kind := .intent, stmts := [2, 3, 4], text := "\"turned any way you like\": each cube has one orientation object per distinct assignment of colours to the four sides (front, back, left, right); the top and bottom faces do not matter. Cube 1 has 24, cubes 2 to 4 have 16 (each has a pair of equal colours)." },
-    { id := "A-II2", kind := .intent, stmts := [3], text := "\"stack in a column\": cubes are placed one at a time in the order 1, 2, 3, 4, each on the one before; cube 1 goes on the ground, which counts as placed from the start." },
+    { id := "A-II2", kind := .intent, stmts := [3, 5], text := "\"stack in a column\": where a cube is in the column does not matter (the goal and the losing conditions depend only on the colours each cube shows on the four sides), so placing a cube is choosing its orientation; cubes are placed one at a time, in any order. Until 24 Nov 2026 this entry fixed the order 1, 2, 3, 4 in the description; the generators now supply an order as search control (World-Conventions L21-001)." },
     { id := "A-II3", kind := .intent, stmts := [5], text := "\"four different colours\" on a side: two placed cubes showing the same colour on the same side is a losing state, so a partial column that cannot be completed is cut off at once." }]
 
 end WorldSpec.Tasks

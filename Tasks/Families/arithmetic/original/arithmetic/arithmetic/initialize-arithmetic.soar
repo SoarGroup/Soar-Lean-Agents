@@ -15,7 +15,7 @@ sp {arithmetic*apply*initialize-arithmetic
    (<s> ^problem <x0>)
    (<x0> ^operation 0)
    (<x0> ^carry 0)
-   (<x0> ^count 10000)
+   (<x0> ^count 100)
    (<x0> ^pid 1)
    (<x0> ^digits 0)
    (<s> ^column <x1>)

@@ -16,6 +16,13 @@
 ##   A-CB4: "I know that Bernard doesn't know": rules out every date in a month that has a date whose day is unique among all ten (Bernard might know). "I don't know": rules out dates in a month with one date (none here).
 ##   A-CB5: "At first I didn't know": rules out dates with a unique day among all ten (already gone after statement 3). "I know now": rules out dates whose day is shared by another date left after statement 3.
 ##   A-CB6: "Then I also know": rules out dates whose month is shared by another date left after statement 4. The answer is the one date left; with more than one left, no answer is proposed.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 12
+production optimize-attribute out3 2
+production optimize-attribute out4 2
+production optimize-attribute out5 2
+production optimize-attribute answer 2
+
 
 ## Propose initialize-cheryls-birthday when its conditions below hold.
 sp {cheryls-birthday*propose*initialize-cheryls-birthday
@@ -31,16 +38,16 @@ sp {cheryls-birthday*apply*initialize-cheryls-birthday
 -->
    (<s> ^name cheryls-birthday ^desireds <ds>)
    (<objs> ^object <k-may-15> <k-may-16> <k-may-19> <k-june-17> <k-june-18> <k-july-14> <k-july-16> <k-august-14> <k-august-15> <k-august-17> <k-talk> <k-task>)
-   (<k-may-15> ^object-handle may-15 ^anchored true ^type date ^name may-15 ^month may ^day 15)
-   (<k-may-16> ^object-handle may-16 ^anchored true ^type date ^name may-16 ^month may ^day 16)
-   (<k-may-19> ^object-handle may-19 ^anchored true ^type date ^name may-19 ^month may ^day 19)
-   (<k-june-17> ^object-handle june-17 ^anchored true ^type date ^name june-17 ^month june ^day 17)
-   (<k-june-18> ^object-handle june-18 ^anchored true ^type date ^name june-18 ^month june ^day 18)
-   (<k-july-14> ^object-handle july-14 ^anchored true ^type date ^name july-14 ^month july ^day 14)
-   (<k-july-16> ^object-handle july-16 ^anchored true ^type date ^name july-16 ^month july ^day 16)
-   (<k-august-14> ^object-handle august-14 ^anchored true ^type date ^name august-14 ^month august ^day 14)
-   (<k-august-15> ^object-handle august-15 ^anchored true ^type date ^name august-15 ^month august ^day 15)
-   (<k-august-17> ^object-handle august-17 ^anchored true ^type date ^name august-17 ^month august ^day 17)
+   (<k-may-15> ^object-handle may-15 ^anchored true ^type date ^name may-15 ^month may ^day 15 ^static true)
+   (<k-may-16> ^object-handle may-16 ^anchored true ^type date ^name may-16 ^month may ^day 16 ^static true)
+   (<k-may-19> ^object-handle may-19 ^anchored true ^type date ^name may-19 ^month may ^day 19 ^static true)
+   (<k-june-17> ^object-handle june-17 ^anchored true ^type date ^name june-17 ^month june ^day 17 ^static true)
+   (<k-june-18> ^object-handle june-18 ^anchored true ^type date ^name june-18 ^month june ^day 18 ^static true)
+   (<k-july-14> ^object-handle july-14 ^anchored true ^type date ^name july-14 ^month july ^day 14 ^static true)
+   (<k-july-16> ^object-handle july-16 ^anchored true ^type date ^name july-16 ^month july ^day 16 ^static true)
+   (<k-august-14> ^object-handle august-14 ^anchored true ^type date ^name august-14 ^month august ^day 14 ^static true)
+   (<k-august-15> ^object-handle august-15 ^anchored true ^type date ^name august-15 ^month august ^day 15 ^static true)
+   (<k-august-17> ^object-handle august-17 ^anchored true ^type date ^name august-17 ^month august ^day 17 ^static true)
    (<k-talk> ^object-handle talk ^anchored true ^type stage ^name talk ^step 1)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -109,8 +116,7 @@ sp {cheryls-birthday*propose*statement-3
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-3 ^task-operator true ^monotonic true ^action-handle statement-3 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name statement-3 ^task-operator true ^monotonic true ^action-handle statement-3 ^argument1 <t> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of statement-3 (look-ahead).
@@ -208,8 +214,7 @@ sp {cheryls-birthday*propose*statement-4
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-4 ^task-operator true ^monotonic true ^action-handle statement-4 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name statement-4 ^task-operator true ^monotonic true ^action-handle statement-4 ^argument1 <t> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of statement-4 (look-ahead).
@@ -311,8 +316,7 @@ sp {cheryls-birthday*propose*statement-5
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name statement-5 ^task-operator true ^monotonic true ^action-handle statement-5 ^argument1 <t> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name statement-5 ^task-operator true ^monotonic true ^action-handle statement-5 ^argument1 <t> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of statement-5 (look-ahead).
@@ -385,8 +389,7 @@ sp {cheryls-birthday*propose*answer
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name answer ^task-operator true ^monotonic true ^action-handle answer ^argument1 <d> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name answer ^task-operator true ^monotonic true ^action-handle answer ^argument1 <d> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of answer (look-ahead).

@@ -1,6 +1,6 @@
 import sys as _sys, os as _os
 _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'rosie-teaching', 'tools'))
-import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
+import wg, convpass   # wg.finish: World-Conventions L3-104, L11-009; 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
 import os
 import sys, itertools
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 3
@@ -359,7 +359,7 @@ def learning_block():
             return ('\n## Learning is off for this agent: the English statement says "Learning: do not learn from look-ahead"'
                     ' (World-Conventions L5-021).\n' + (f'## Reason given: {m.group(1)}\n' if m.group(1) else '') + 'chunk never\n')
     return ''
-open('artists-rules.soar', 'w').write(convpass.apply(''.join(R)) + learning_block())
+open('artists-rules.soar', 'w').write(wg.finish(convpass.apply(''.join(R))) + learning_block())
 open('artists.soar', 'w').write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

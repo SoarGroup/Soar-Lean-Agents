@@ -1,0 +1,12 @@
+Blocks world: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/blocks-world/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. Lettered blocks sit on a table, some stacked on others.
+ 2. You may move one block at a time, and only a block with nothing on top of it.
+ 3. A block can go onto the table or onto another block that has nothing on top of it.
+ 4. Blocks A and B start on the table and block C is on block A.
+ 5. The goal is A on B, B on C and C on the table.
+
+Source of the task: classic AI planning domain (instance of the family's look-ahead variants).
+Kind of agent: state-space search.

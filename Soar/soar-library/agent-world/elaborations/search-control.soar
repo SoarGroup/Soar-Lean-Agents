@@ -45,15 +45,22 @@ sp {agent-world*compare*task-operator-non-task-operator
 ## A monotonic operator's effect follows from the current state (e.g. removing a candidate a constraint rules out), so it
 ## never needs to be undone or compared with alternatives. The task marks it ^monotonic true; it is applied before any
 ## task operator that makes a choice, so look-ahead resolves only choices that inference cannot settle.
-sp {agent-world*compare*monotonic-non-monotonic
+sp {agent-world*elaborate*monotonic-candidate
    :default
-   (state <s> ^operator <op1> +
-                        { <> <op1> <op2> }  +)
-   (<op1> ^monotonic true)
+   (state <s> ^operator <op> +)
+   (<op> ^monotonic true)
+-->
+   (<s> ^monotonic-candidate true)
+}
+
+sp {agent-world*compare*non-monotonic*worst
+   :default
+   (state <s> ^monotonic-candidate true
+              ^operator <op2> +)
    (<op2> ^task-operator true
          -^monotonic true)
 -->
-   (<s> ^operator <op1> > <op2>)
+   (<s> ^operator <op2> <)
 }
 
 ## Monotonic operators are indifferent among themselves: their order does not change the result (L15-027, L3-039).

@@ -15,6 +15,20 @@
 ##   - The jumped peg is removed: it loses its on relation and is off the board (A-P1).
 ##   - Goal (statement 11): one covered location: a covered location and no other (A-P2). "The solution has eight steps"
 ##     (statement 7) is checked against the plans, not used.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 20
+production optimize-attribute on 9
+production optimize-attribute below 9
+production optimize-attribute clear 10
+production optimize-attribute step-1 6
+production optimize-attribute step-2 6
+production optimize-attribute step-3 6
+production optimize-attribute step-4 6
+production optimize-attribute step-5 3
+production optimize-attribute step-6 3
+production optimize-attribute step-7 6
+production optimize-attribute step-8 6
+
 
 ## Propose initialize-peg-solitaire-r when its conditions below hold.
 sp {peg-solitaire-r*propose*initialize-peg-solitaire-r
@@ -30,25 +44,25 @@ sp {peg-solitaire-r*apply*initialize-peg-solitaire-r
 -->
    (<s> ^name peg-solitaire-r ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-block-11> <o-block-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-block-18> <o-block-19> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^x 1 ^y 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^x 2 ^y 1)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^x 3 ^y 1)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^x 4 ^y 1)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^x 1 ^y 2)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^x 2 ^y 2)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^x 3 ^y 2)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^x 1 ^y 3)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^x 2 ^y 3)
-   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^x 1 ^y 4)
-   (<o-block-11> ^object-handle block-11 ^anchored true ^type block)
-   (<o-block-12> ^object-handle block-12 ^anchored true ^type block)
-   (<o-block-13> ^object-handle block-13 ^anchored true ^type block)
-   (<o-block-14> ^object-handle block-14 ^anchored true ^type block)
-   (<o-block-15> ^object-handle block-15 ^anchored true ^type block)
-   (<o-block-16> ^object-handle block-16 ^anchored true ^type block)
-   (<o-block-17> ^object-handle block-17 ^anchored true ^type block)
-   (<o-block-18> ^object-handle block-18 ^anchored true ^type block)
-   (<o-block-19> ^object-handle block-19 ^anchored true ^type block)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^x 1 ^y 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^x 2 ^y 1 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^x 3 ^y 1 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^x 4 ^y 1 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^x 1 ^y 2 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^x 2 ^y 2 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^x 3 ^y 2 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^x 1 ^y 3 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^x 2 ^y 3 ^static true)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^x 1 ^y 4 ^static true)
+   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^static true)
+   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^static true)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^static true)
+   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^static true)
+   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^static true)
+   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^static true)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^static true)
+   (<o-block-18> ^object-handle block-18 ^anchored true ^type block ^static true)
+   (<o-block-19> ^object-handle block-19 ^anchored true ^type block ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -201,7 +215,7 @@ sp {peg-solitaire-r*elaborate*problem-space
    (state <s> ^name peg-solitaire-r)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name peg-solitaire-r ^copy-relation below ^copy-relation step-1 ^copy-relation step-2 ^copy-relation step-3 ^copy-relation step-4 ^copy-relation step-5 ^copy-relation step-6 ^copy-relation step-7 ^copy-relation step-8 ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name peg-solitaire-r ^copy-relation below ^share-relation step-1 ^share-relation step-2 ^share-relation step-3 ^share-relation step-4 ^share-relation step-5 ^share-relation step-6 ^share-relation step-7 ^share-relation step-8 ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {peg-solitaire-r*elaborate*problem-space*mea-substate
@@ -265,8 +279,7 @@ sp {peg-solitaire-r*propose*jump*dir-1
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 1)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 1)
 }
 ## Effect of jump in direction 1 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-1
@@ -346,8 +359,7 @@ sp {peg-solitaire-r*propose*jump*dir-2
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 2)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 2)
 }
 ## Effect of jump in direction 2 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-2
@@ -427,8 +439,7 @@ sp {peg-solitaire-r*propose*jump*dir-3
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 3)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 3)
 }
 ## Effect of jump in direction 3 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-3
@@ -508,8 +519,7 @@ sp {peg-solitaire-r*propose*jump*dir-4
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 4)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 4)
 }
 ## Effect of jump in direction 4 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-4
@@ -589,8 +599,7 @@ sp {peg-solitaire-r*propose*jump*dir-5
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 5)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 5)
 }
 ## Effect of jump in direction 5 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-5
@@ -670,8 +679,7 @@ sp {peg-solitaire-r*propose*jump*dir-6
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 6)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 6)
 }
 ## Effect of jump in direction 6 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-6
@@ -751,8 +759,7 @@ sp {peg-solitaire-r*propose*jump*dir-7
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 7)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 7)
 }
 ## Effect of jump in direction 7 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-7
@@ -832,8 +839,7 @@ sp {peg-solitaire-r*propose*jump*dir-8
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^desireds <pre> ^direction 8)
-   (<pre> ^desired-count 0)
+   (<op> ^name jump ^task-operator true ^action-handle jump ^argument1 <q> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true ^direction 8)
 }
 ## Effect of jump in direction 8 (look-ahead).
 sp {peg-solitaire-r*apply*jump*internal*dir-8

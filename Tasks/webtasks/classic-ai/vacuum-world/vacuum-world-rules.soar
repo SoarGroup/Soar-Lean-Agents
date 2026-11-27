@@ -13,6 +13,13 @@
 ##   A-V2: "clean" is "not dirty", kept as a maintained relation (it tests absence and decides the goal).
 ##   A-V3: Suck is proposed only in a dirty square: sucking a clean square changes nothing, so it is never part of a shortest plan.
 ##   A-V4: "as few steps as possible": unit cost per action, read through the library's search settings, not through the rules.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 4
+production optimize-attribute at 2
+production optimize-attribute dirty 2
+production optimize-attribute next 2
+production optimize-attribute clean 2
+
 
 ## Propose initialize-vacuum-world when its conditions below hold.
 sp {vacuum-world*propose*initialize-vacuum-world
@@ -28,9 +35,9 @@ sp {vacuum-world*apply*initialize-vacuum-world
 -->
    (<s> ^name vacuum-world ^desireds <ds>)
    (<objs> ^object <k-left> <k-right> <k-vacuum> <k-task>)
-   (<k-left> ^object-handle left ^anchored true ^type square ^name left)
-   (<k-right> ^object-handle right ^anchored true ^type square ^name right)
-   (<k-vacuum> ^object-handle vacuum ^anchored true ^type agent ^name vacuum)
+   (<k-left> ^object-handle left ^anchored true ^type square ^name left ^static true)
+   (<k-right> ^object-handle right ^anchored true ^type square ^name right ^static true)
+   (<k-vacuum> ^object-handle vacuum ^anchored true ^type agent ^name vacuum ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -48,12 +55,12 @@ sp {vacuum-world*apply*initialize-vacuum-world
    (log 1 (crlf) |Initialize vacuum-world.|)
 }
 
-## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space, ^share-relation.
 sp {vacuum-world*elaborate*problem-space
    (state <s> ^name vacuum-world)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name vacuum-world ^copy-relation at ^copy-relation dirty ^copy-relation next ^copy-relation clean ^dont-copy-object-attribute goal-met)
+   (<p> ^name vacuum-world ^copy-relation at ^copy-relation dirty ^copy-relation clean ^share-relation next ^dont-copy-object-attribute goal-met)
 }
 
 sp {vacuum-world*elaborate*problem-space*mea-substate
@@ -112,8 +119,7 @@ sp {vacuum-world*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <to> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <to> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of move (look-ahead).
@@ -164,8 +170,7 @@ sp {vacuum-world*propose*suck
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name suck ^task-operator true ^action-handle suck ^argument1 <sq> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name suck ^task-operator true ^action-handle suck ^argument1 <sq> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of suck (look-ahead).

@@ -25,11 +25,14 @@ sp {agent-world*elaborate*evaluate-operator*state*look-ahead-operator*copy
 }
 
 ## Elaborate evaluate-operator look-ahead-operator copy attributes.
+## v2.48 candidate: ^version-tag is not copied. The copy gets its own tag (ground-state.soar); with the original's as well,
+## the local-version rules fired once per tag, so worlds got several versions at once and the work multiplied with depth
+## (Soar - To-do row 43: 8-men-on-a-raft 15,294 decisions in 31 s again, no finish in 900 s on v2.47).
 sp {agent-world*elaborate*evaluate-operator*look-ahead-operator*copy*attributes
    :default
    (state <s> ^look-ahead-operator <copy>)
    (<copy> ^copied-from <real>)
-   (<real> ^{ <> copied-from <> evaluation <> super-operator <> desireds <attribute> } <value>)
+   (<real> ^{ <> copied-from <> evaluation <> super-operator <> desireds <> version-tag <attribute> } <value>)
 -->
    (<copy> ^<attribute> <value>)
 }

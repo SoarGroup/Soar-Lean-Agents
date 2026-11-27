@@ -1,0 +1,11 @@
+Water jug: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/water-jug/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. You have two unmarked jugs, one holding 3 gallons and one holding 5 gallons, both empty, and an unlimited supply of water.
+ 2. In one step you may fill a jug completely or empty a jug completely.
+ 3. In one step you may pour from one jug into the other until the receiving jug is full or the pouring jug is empty.
+ 4. The goal is to end with exactly 1 gallon in the 3-gallon jug.
+
+Source of the task: classic water pouring puzzle.
+Kind of agent: state-space search.

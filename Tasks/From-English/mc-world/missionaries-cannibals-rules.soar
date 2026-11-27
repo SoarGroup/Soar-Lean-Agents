@@ -20,6 +20,9 @@
 ## situation already visited are rejected. Look-ahead (iterative deepening) chooses among the rest.
 
 ## Propose initialize-missionaries-cannibals when its conditions below hold.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 3
+
 sp {missionaries-cannibals*propose*initialize-missionaries-cannibals
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -121,11 +124,10 @@ sp {missionaries-cannibals*propose*cross-1m*mea
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-1m ^task-operator true ^action-handle cross-1m ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^desireds <pre>
+   (<op> ^name cross-1m ^task-operator true ^action-handle cross-1m ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^pre-conditions-satisfied true
          ^m-load 1 ^c-load 0
          ^from-m (- <fm> 1) ^from-c (- <fc> 0) ^to-m (+ <tm> 1) ^to-c (+ <tc> 0)
          ^result (concat <fh> |-| (- <fm> 1) |-| (- <fc> 0) |-| <th> |-| (+ <tm> 1) |-| (+ <tc> 0) |-| <th>))
-   (<pre> ^desired-count 0)
 }
 
 ## Propose cross-2m in problem space missionaries-cannibals when its conditions below hold (mea).
@@ -139,11 +141,10 @@ sp {missionaries-cannibals*propose*cross-2m*mea
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-2m ^task-operator true ^action-handle cross-2m ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^desireds <pre>
+   (<op> ^name cross-2m ^task-operator true ^action-handle cross-2m ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^pre-conditions-satisfied true
          ^m-load 2 ^c-load 0
          ^from-m (- <fm> 2) ^from-c (- <fc> 0) ^to-m (+ <tm> 2) ^to-c (+ <tc> 0)
          ^result (concat <fh> |-| (- <fm> 2) |-| (- <fc> 0) |-| <th> |-| (+ <tm> 2) |-| (+ <tc> 0) |-| <th>))
-   (<pre> ^desired-count 0)
 }
 
 ## Propose cross-1c in problem space missionaries-cannibals when its conditions below hold (mea).
@@ -157,11 +158,10 @@ sp {missionaries-cannibals*propose*cross-1c*mea
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-1c ^task-operator true ^action-handle cross-1c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^desireds <pre>
+   (<op> ^name cross-1c ^task-operator true ^action-handle cross-1c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^pre-conditions-satisfied true
          ^m-load 0 ^c-load 1
          ^from-m (- <fm> 0) ^from-c (- <fc> 1) ^to-m (+ <tm> 0) ^to-c (+ <tc> 1)
          ^result (concat <fh> |-| (- <fm> 0) |-| (- <fc> 1) |-| <th> |-| (+ <tm> 0) |-| (+ <tc> 1) |-| <th>))
-   (<pre> ^desired-count 0)
 }
 
 ## Propose cross-2c in problem space missionaries-cannibals when its conditions below hold (mea).
@@ -175,11 +175,10 @@ sp {missionaries-cannibals*propose*cross-2c*mea
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-2c ^task-operator true ^action-handle cross-2c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^desireds <pre>
+   (<op> ^name cross-2c ^task-operator true ^action-handle cross-2c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^pre-conditions-satisfied true
          ^m-load 0 ^c-load 2
          ^from-m (- <fm> 0) ^from-c (- <fc> 2) ^to-m (+ <tm> 0) ^to-c (+ <tc> 2)
          ^result (concat <fh> |-| (- <fm> 0) |-| (- <fc> 2) |-| <th> |-| (+ <tm> 0) |-| (+ <tc> 2) |-| <th>))
-   (<pre> ^desired-count 0)
 }
 
 ## Propose cross-1m1c in problem space missionaries-cannibals when its conditions below hold (mea).
@@ -193,11 +192,10 @@ sp {missionaries-cannibals*propose*cross-1m1c*mea
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name cross-1m1c ^task-operator true ^action-handle cross-1m1c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^desireds <pre>
+   (<op> ^name cross-1m1c ^task-operator true ^action-handle cross-1m1c ^super-desired <sd> ^argument1 <from> ^argument2 <to> ^argument-count 2 ^pre-conditions-satisfied true
          ^m-load 1 ^c-load 1
          ^from-m (- <fm> 1) ^from-c (- <fc> 1) ^to-m (+ <tm> 1) ^to-c (+ <tc> 1)
          ^result (concat <fh> |-| (- <fm> 1) |-| (- <fc> 1) |-| <th> |-| (+ <tm> 1) |-| (+ <tc> 1) |-| <th>))
-   (<pre> ^desired-count 0)
 }
 
 ## Reject loads that are impossible, unsafe, or return to a visited situation.

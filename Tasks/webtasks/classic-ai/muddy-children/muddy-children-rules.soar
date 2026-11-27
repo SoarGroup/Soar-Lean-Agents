@@ -14,6 +14,15 @@
 ##   A-MC3: The father's statement and each round are operators that rule out worlds (out-at(w, round)), on every world at once. A world is live at round r if it was not ruled out in an earlier round, so each round is judged on the worlds left before it. A stage number keeps the order; round objects carry their number.
 ##   A-MC4: A round records which children answer yes in the actual world (said-yes(c, r)), and rules out every world where some child would answer differently than in the actual world (all answers are heard).
 ##   A-MC5: The goal is that every child has answered yes in some round; the rounds of first yes are read from said-yes. Four rounds are provided.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 18
+production optimize-attribute muddy 12
+production optimize-attribute clean 12
+production optimize-attribute view-mate 24
+production optimize-attribute actual 2
+production optimize-attribute out-at 2
+production optimize-attribute said-yes 2
+
 
 ## Propose initialize-muddy-children when its conditions below hold.
 sp {muddy-children*propose*initialize-muddy-children
@@ -29,22 +38,22 @@ sp {muddy-children*apply*initialize-muddy-children
 -->
    (<s> ^name muddy-children ^desireds <ds>)
    (<objs> ^object <k-amy> <k-ben> <k-cal> <k-w-ccc> <k-w-ccm> <k-w-cmc> <k-w-cmm> <k-w-mcc> <k-w-mcm> <k-w-mmc> <k-w-mmm> <k-father-round> <k-first> <k-second> <k-third> <k-fourth> <k-talk> <k-task>)
-   (<k-amy> ^object-handle amy ^anchored true ^type child ^name amy)
-   (<k-ben> ^object-handle ben ^anchored true ^type child ^name ben)
-   (<k-cal> ^object-handle cal ^anchored true ^type child ^name cal)
-   (<k-w-ccc> ^object-handle w-ccc ^anchored true ^type world ^name w-ccc)
-   (<k-w-ccm> ^object-handle w-ccm ^anchored true ^type world ^name w-ccm)
-   (<k-w-cmc> ^object-handle w-cmc ^anchored true ^type world ^name w-cmc)
-   (<k-w-cmm> ^object-handle w-cmm ^anchored true ^type world ^name w-cmm)
-   (<k-w-mcc> ^object-handle w-mcc ^anchored true ^type world ^name w-mcc)
-   (<k-w-mcm> ^object-handle w-mcm ^anchored true ^type world ^name w-mcm)
-   (<k-w-mmc> ^object-handle w-mmc ^anchored true ^type world ^name w-mmc)
-   (<k-w-mmm> ^object-handle w-mmm ^anchored true ^type world ^name w-mmm)
-   (<k-father-round> ^object-handle father-round ^anchored true ^type round ^name father-round ^n 0)
-   (<k-first> ^object-handle first ^anchored true ^type round ^name first ^n 1)
-   (<k-second> ^object-handle second ^anchored true ^type round ^name second ^n 2)
-   (<k-third> ^object-handle third ^anchored true ^type round ^name third ^n 3)
-   (<k-fourth> ^object-handle fourth ^anchored true ^type round ^name fourth ^n 4)
+   (<k-amy> ^object-handle amy ^anchored true ^type child ^name amy ^static true)
+   (<k-ben> ^object-handle ben ^anchored true ^type child ^name ben ^static true)
+   (<k-cal> ^object-handle cal ^anchored true ^type child ^name cal ^static true)
+   (<k-w-ccc> ^object-handle w-ccc ^anchored true ^type world ^name w-ccc ^static true)
+   (<k-w-ccm> ^object-handle w-ccm ^anchored true ^type world ^name w-ccm ^static true)
+   (<k-w-cmc> ^object-handle w-cmc ^anchored true ^type world ^name w-cmc ^static true)
+   (<k-w-cmm> ^object-handle w-cmm ^anchored true ^type world ^name w-cmm ^static true)
+   (<k-w-mcc> ^object-handle w-mcc ^anchored true ^type world ^name w-mcc ^static true)
+   (<k-w-mcm> ^object-handle w-mcm ^anchored true ^type world ^name w-mcm ^static true)
+   (<k-w-mmc> ^object-handle w-mmc ^anchored true ^type world ^name w-mmc ^static true)
+   (<k-w-mmm> ^object-handle w-mmm ^anchored true ^type world ^name w-mmm ^static true)
+   (<k-father-round> ^object-handle father-round ^anchored true ^type round ^name father-round ^n 0 ^static true)
+   (<k-first> ^object-handle first ^anchored true ^type round ^name first ^n 1 ^static true)
+   (<k-second> ^object-handle second ^anchored true ^type round ^name second ^n 2 ^static true)
+   (<k-third> ^object-handle third ^anchored true ^type round ^name third ^n 3 ^static true)
+   (<k-fourth> ^object-handle fourth ^anchored true ^type round ^name fourth ^n 4 ^static true)
    (<k-talk> ^object-handle talk ^anchored true ^type stage ^name talk ^step 0)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -151,12 +160,12 @@ sp {muddy-children*apply*initialize-muddy-children
    (log 1 (crlf) |Initialize muddy-children.|)
 }
 
-## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space.
+## Elaborate problem space: adds ^copy-relation, ^dont-copy-object-attribute, ^problem-space, ^share-relation.
 sp {muddy-children*elaborate*problem-space
    (state <s> ^name muddy-children)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name muddy-children ^copy-relation muddy ^copy-relation clean ^copy-relation view-mate ^copy-relation actual ^copy-relation out-at ^copy-relation said-yes ^dont-copy-object-attribute goal-met)
+   (<p> ^name muddy-children ^copy-relation out-at ^copy-relation said-yes ^share-relation muddy ^share-relation clean ^share-relation view-mate ^share-relation actual ^dont-copy-object-attribute goal-met)
 }
 
 sp {muddy-children*elaborate*problem-space*mea-substate
@@ -210,8 +219,7 @@ sp {muddy-children*propose*father-speaks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name father-speaks ^task-operator true ^monotonic true ^action-handle father-speaks ^argument1 <t> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name father-speaks ^task-operator true ^monotonic true ^action-handle father-speaks ^argument1 <t> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of father-speaks (look-ahead).
@@ -288,8 +296,7 @@ sp {muddy-children*propose*ask
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ask ^task-operator true ^monotonic true ^action-handle ask ^argument1 <r> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name ask ^task-operator true ^monotonic true ^action-handle ask ^argument1 <r> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of ask (look-ahead).

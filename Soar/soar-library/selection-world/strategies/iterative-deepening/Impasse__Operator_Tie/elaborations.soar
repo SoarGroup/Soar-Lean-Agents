@@ -136,6 +136,8 @@ sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*
    (<superstate> ^operator <x> = <y>)}
 
 ## Preference for selection same-symbolic-evaluations-are-indifferent no-eval.
+## Every tied operator already has an evaluation (^remaining-operators 1, no item without one). Success is left to the rule below
+## (v2.48, L16-042), which tests ^closed and no ^better as the ^remaining-operators 0 rule does (L16-041).
 sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval
    :default
    (state <s> ^name selection
@@ -146,12 +148,37 @@ sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*
                           { <> <evaluation1> <evaluation2> })
    (<superstate> ^desireds <desireds>)
    (<evaluation1> ^super-operator <x>
-                  ^symbolic-value { <> partial-success <> depth-exceeded <> exhaustion-failure <> depth-exhaustion <v> }
+                  ^symbolic-value { <> success <> partial-success <> depth-exceeded <> exhaustion-failure <> depth-exhaustion <v> }
                   ^desireds.duplicate-of <desireds>)
    (<evaluation2> ^super-operator { <> <x> <y> }
                   ^symbolic-value <v>
                   ^desireds.duplicate-of <desireds>)
    (<y> ^task-operator true)
+-->
+   (<superstate> ^operator <x> = <y>)}
+
+## Preference for selection same-symbolic-evaluations-are-indifferent no-eval success no-better (v2.48, L16-042).
+## Two successes are indifferent when every tied operator has an evaluation only if both are closed and the desireds have no
+## ^better, as at ^remaining-operators 0 (L16-041).
+sp {selection-world*compare*selection*same-symbolic-evaluations-are-indifferent*no-eval*success*no-better
+   :default
+   (state <s> ^name selection
+             -^item-no-evaluation true
+              ^remaining-operators 1
+              ^superstate <superstate>
+              ^evaluation <evaluation1>
+                          { <> <evaluation1> <evaluation2> })
+   (<superstate> ^desireds <desireds>)
+  -(<desireds> ^better)
+   (<evaluation1> ^super-operator <x>
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<evaluation2> ^super-operator { <> <x> <y> }
+                  ^symbolic-value success
+                  ^desireds.duplicate-of <desireds>)
+   (<y> ^task-operator true)
+   (<evaluation1> ^closed true)
+   (<evaluation2> ^closed true)
 -->
    (<superstate> ^operator <x> = <y>)}
 

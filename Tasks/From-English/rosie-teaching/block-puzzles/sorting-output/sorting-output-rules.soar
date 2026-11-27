@@ -10,6 +10,11 @@
 ##     one it is on (A-S1).
 ##   - The goal ("all the red blocks are on a red location and ...") is expanded over the blocks of the world file: each block
 ##     is on a location of its own color (A-S2). The test is positive.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 10
+production optimize-attribute on 6
+production optimize-attribute below 6
+
 
 ## Propose initialize-sorting-output when its conditions below hold.
 sp {sorting-output*propose*initialize-sorting-output
@@ -25,15 +30,15 @@ sp {sorting-output*apply*initialize-sorting-output
 -->
    (<s> ^name sorting-output ^desireds <ds>)
    (<objs> ^object <o-red-location-1> <o-green-location-2> <o-blue-location-3> <o-red-block-4> <o-green-block-5> <o-blue-block-6> <o-red-block-7> <o-green-block-8> <o-blue-block-9> <o-task>)
-   (<o-red-location-1> ^object-handle red-location-1 ^anchored true ^type location ^color red)
-   (<o-green-location-2> ^object-handle green-location-2 ^anchored true ^type location ^color green)
-   (<o-blue-location-3> ^object-handle blue-location-3 ^anchored true ^type location ^color blue)
-   (<o-red-block-4> ^object-handle red-block-4 ^anchored true ^type block ^color red)
-   (<o-green-block-5> ^object-handle green-block-5 ^anchored true ^type block ^color green)
-   (<o-blue-block-6> ^object-handle blue-block-6 ^anchored true ^type block ^color blue)
-   (<o-red-block-7> ^object-handle red-block-7 ^anchored true ^type block ^color red)
-   (<o-green-block-8> ^object-handle green-block-8 ^anchored true ^type block ^color green)
-   (<o-blue-block-9> ^object-handle blue-block-9 ^anchored true ^type block ^color blue)
+   (<o-red-location-1> ^object-handle red-location-1 ^anchored true ^type location ^color red ^static true)
+   (<o-green-location-2> ^object-handle green-location-2 ^anchored true ^type location ^color green ^static true)
+   (<o-blue-location-3> ^object-handle blue-location-3 ^anchored true ^type location ^color blue ^static true)
+   (<o-red-block-4> ^object-handle red-block-4 ^anchored true ^type block ^color red ^static true)
+   (<o-green-block-5> ^object-handle green-block-5 ^anchored true ^type block ^color green ^static true)
+   (<o-blue-block-6> ^object-handle blue-block-6 ^anchored true ^type block ^color blue ^static true)
+   (<o-red-block-7> ^object-handle red-block-7 ^anchored true ^type block ^color red ^static true)
+   (<o-green-block-8> ^object-handle green-block-8 ^anchored true ^type block ^color green ^static true)
+   (<o-blue-block-9> ^object-handle blue-block-9 ^anchored true ^type block ^color blue ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -125,8 +130,7 @@ sp {sorting-output*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {sorting-output*apply*move*internal

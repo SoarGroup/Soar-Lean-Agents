@@ -20,6 +20,10 @@
 ## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
 ##   - "a location ... a location ... the former ... the latter" are two different locations (A-L1).
 ##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 4).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 21
+production optimize-attribute empty 4
+
 
 ## Propose initialize-jigsawdoku-sudoku when its conditions below hold.
 sp {jigsawdoku-sudoku*propose*initialize-jigsawdoku-sudoku
@@ -35,27 +39,43 @@ sp {jigsawdoku-sudoku*apply*initialize-jigsawdoku-sudoku
 -->
    (<s> ^name jigsawdoku-sudoku ^desireds <ds>)
    (<objs> ^object <o-loc-1-1> <o-loc-2-1> <o-loc-3-1> <o-loc-4-1> <o-loc-1-2> <o-loc-2-2> <o-loc-3-2> <o-loc-4-2> <o-loc-1-3> <o-loc-2-3> <o-loc-3-3> <o-loc-4-3> <o-loc-1-4> <o-loc-2-4> <o-loc-3-4> <o-loc-4-4> <o-task> <o-number-1> <o-number-2> <o-number-3> <o-number-4>)
-   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1 ^value 3 ^section 1)
-   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^row 2 ^column 1 ^value 1 ^section 1)
-   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^row 3 ^column 1 ^value 2 ^section 1)
-   (<o-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^row 4 ^column 1 ^value 4 ^section 1)
-   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^row 1 ^column 2 ^value 4 ^section 2)
-   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^row 2 ^column 2 ^section 2)
-   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2 ^value 1 ^section 3)
-   (<o-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^row 4 ^column 2 ^value 3 ^section 3)
-   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^row 1 ^column 3 ^value 1 ^section 2)
-   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^row 2 ^column 3 ^section 2)
-   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3 ^value 4 ^section 3)
-   (<o-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^row 4 ^column 3 ^value 2 ^section 3)
-   (<o-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^row 1 ^column 4 ^section 4)
-   (<o-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^row 2 ^column 4 ^section 4)
-   (<o-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^row 3 ^column 4 ^value 3 ^section 4)
-   (<o-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^row 4 ^column 4 ^value 1 ^section 4)
+   (<o-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^value 3 ^fixed <o-loc-1-1-fx>)
+   (<o-loc-1-1-fx> ^row 1 ^column 1 ^section 1)
+   (<o-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^value 1 ^fixed <o-loc-2-1-fx>)
+   (<o-loc-2-1-fx> ^row 2 ^column 1 ^section 1)
+   (<o-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^value 2 ^fixed <o-loc-3-1-fx>)
+   (<o-loc-3-1-fx> ^row 3 ^column 1 ^section 1)
+   (<o-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^value 4 ^fixed <o-loc-4-1-fx>)
+   (<o-loc-4-1-fx> ^row 4 ^column 1 ^section 1)
+   (<o-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^value 4 ^fixed <o-loc-1-2-fx>)
+   (<o-loc-1-2-fx> ^row 1 ^column 2 ^section 2)
+   (<o-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^fixed <o-loc-2-2-fx>)
+   (<o-loc-2-2-fx> ^row 2 ^column 2 ^section 2)
+   (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^value 1 ^fixed <o-loc-3-2-fx>)
+   (<o-loc-3-2-fx> ^row 3 ^column 2 ^section 3)
+   (<o-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^value 3 ^fixed <o-loc-4-2-fx>)
+   (<o-loc-4-2-fx> ^row 4 ^column 2 ^section 3)
+   (<o-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^value 1 ^fixed <o-loc-1-3-fx>)
+   (<o-loc-1-3-fx> ^row 1 ^column 3 ^section 2)
+   (<o-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^fixed <o-loc-2-3-fx>)
+   (<o-loc-2-3-fx> ^row 2 ^column 3 ^section 2)
+   (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^value 4 ^fixed <o-loc-3-3-fx>)
+   (<o-loc-3-3-fx> ^row 3 ^column 3 ^section 3)
+   (<o-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^value 2 ^fixed <o-loc-4-3-fx>)
+   (<o-loc-4-3-fx> ^row 4 ^column 3 ^section 3)
+   (<o-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^fixed <o-loc-1-4-fx>)
+   (<o-loc-1-4-fx> ^row 1 ^column 4 ^section 4)
+   (<o-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^fixed <o-loc-2-4-fx>)
+   (<o-loc-2-4-fx> ^row 2 ^column 4 ^section 4)
+   (<o-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^value 3 ^fixed <o-loc-3-4-fx>)
+   (<o-loc-3-4-fx> ^row 3 ^column 4 ^section 4)
+   (<o-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^value 1 ^fixed <o-loc-4-4-fx>)
+   (<o-loc-4-4-fx> ^row 4 ^column 4 ^section 4)
    (<o-task> ^object-handle task ^anchored true ^type task)
-   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
-   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
-   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
-   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1 ^static true)
+   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2 ^static true)
+   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3 ^static true)
+   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4 ^static true)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
    (<d1-o> ^object-handle task ^goal-met true)
@@ -130,8 +150,7 @@ sp {jigsawdoku-sudoku*propose*write
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of write (look-ahead): the location has the value; it is no longer empty.
 sp {jigsawdoku-sudoku*apply*write*internal
@@ -168,8 +187,8 @@ sp {jigsawdoku-sudoku*elaborate*failure*same-row-value
    (state <s> ^problem-space.name jigsawdoku-sudoku ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1> <l2>)
-   (<l1> ^type location ^row <a> ^value <v> ^object-handle $ <h1>)
-   (<l2> ^type location ^row <a> ^value <v> ^object-handle { <> <h1> })
+   (<l1> ^type location ^fixed.row <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^fixed.row <a> ^value <v> ^object-handle { <> <h1> })
 -->
    (<s> ^failure <ds>)
 }
@@ -178,8 +197,8 @@ sp {jigsawdoku-sudoku*elaborate*failure*same-column-value
    (state <s> ^problem-space.name jigsawdoku-sudoku ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1> <l2>)
-   (<l1> ^type location ^column <a> ^value <v> ^object-handle $ <h1>)
-   (<l2> ^type location ^column <a> ^value <v> ^object-handle { <> <h1> })
+   (<l1> ^type location ^fixed.column <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^fixed.column <a> ^value <v> ^object-handle { <> <h1> })
 -->
    (<s> ^failure <ds>)
 }
@@ -188,8 +207,8 @@ sp {jigsawdoku-sudoku*elaborate*failure*same-section-value
    (state <s> ^problem-space.name jigsawdoku-sudoku ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <l1> <l2>)
-   (<l1> ^type location ^section <a> ^value <v> ^object-handle $ <h1>)
-   (<l2> ^type location ^section <a> ^value <v> ^object-handle { <> <h1> })
+   (<l1> ^type location ^fixed.section <a> ^value <v> ^object-handle $ <h1>)
+   (<l2> ^type location ^fixed.section <a> ^value <v> ^object-handle { <> <h1> })
 -->
    (<s> ^failure <ds>)
 }

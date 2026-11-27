@@ -1,0 +1,2335 @@
+{
+  "format": "worldspec-1",
+  "name": "missionaries-cannibals",
+  "title": "Missionaries and cannibals (families, from English)",
+  "statements": [
+    [
+      1,
+      "Three missionaries and three cannibals stand on the left bank of a river with a rowing boat."
+    ],
+    [
+      2,
+      "The boat carries one or two people and never crosses empty."
+    ],
+    [
+      3,
+      "If, on either bank, the cannibals ever outnumber the missionaries who are there, the missionaries are eaten."
+    ],
+    [
+      4,
+      "A bank with no missionaries is safe."
+    ],
+    [
+      5,
+      "The goal is to get all six people to the right bank."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-MC1",
+      "kind": "intent",
+      "text": "The three missionaries are interchangeable, and so are the three cannibals, so the state is how many of each are on each bank. Four group objects (the missionaries and the cannibals on the left and on the right bank, side relation to their bank) are at a number object (zero to three, with a value). The boat is at a bank; the two banks have a static other relation both ways.",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-MC2",
+      "kind": "intent",
+      "text": "\"carries one or two people and never crosses empty\": five crossing operators, one for each mix of one or two people (one or two missionaries, one or two cannibals, one of each). A crossing moves the boat to the other bank and moves the people from the group on the boat's bank to the group of the same role on the other bank.",
+      "stmts": [
+        2
+      ]
+    },
+    {
+      "id": "A-MC3",
+      "kind": "intent",
+      "text": "WorldSpec has no subtraction, so the counts are number objects linked by static one-less(n, n - 1) and two-less(n, n - 2) relations; a crossing is legal only when the starting group has enough people (the relation exists for its number).",
+      "stmts": [
+        2
+      ]
+    },
+    {
+      "id": "A-MC4",
+      "kind": "intent",
+      "text": "\"cannibals outnumber the missionaries\", with no missionaries safe: a losing state is a bank whose missionaries number more than zero and fewer than its cannibals. \"ever\": wherever it arises, in the real world or in look-ahead.",
+      "stmts": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "A-MC5",
+      "kind": "intent",
+      "text": "The goal is three missionaries and three cannibals on the right bank.",
+      "stmts": [
+        5
+      ]
+    },
+    {
+      "id": "A-MC6",
+      "kind": "intent",
+      "text": "Search control, not from the English (as for the other WorldSpec river crossings): a look-ahead state that returns to a situation already on its path fails; a situation is the number in each group and where the boat is.",
+      "stmts": []
+    },
+    {
+      "id": "A-MC7",
+      "kind": "intent",
+      "text": "Representation choice (25 Nov 2026): a first version with six person objects stated the losing states with negated conditions (exactly one or two missionaries on a bank); its learned rules dropped the negations and rejected every crossing at the start, and without learning its look-ahead did not finish in 100,000 decisions. Counting the groups needs no negation.",
+      "stmts": [
+        3
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "left",
+      "type": "bank",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "left"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "right",
+      "type": "bank",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "boat",
+      "type": "boat",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "boat"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "zero",
+      "type": "number",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "zero"
+          }
+        ],
+        [
+          "value",
+          {
+            "int": 0
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "one",
+      "type": "number",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "one"
+          }
+        ],
+        [
+          "value",
+          {
+            "int": 1
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "two",
+      "type": "number",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "two"
+          }
+        ],
+        [
+          "value",
+          {
+            "int": 2
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "three",
+      "type": "number",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "three"
+          }
+        ],
+        [
+          "value",
+          {
+            "int": 3
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "left-missionaries",
+      "type": "group",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "left-missionaries"
+          }
+        ],
+        [
+          "role",
+          {
+            "sym": "missionary"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "left-cannibals",
+      "type": "group",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "left-cannibals"
+          }
+        ],
+        [
+          "role",
+          {
+            "sym": "cannibal"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "right-missionaries",
+      "type": "group",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "right-missionaries"
+          }
+        ],
+        [
+          "role",
+          {
+            "sym": "missionary"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "right-cannibals",
+      "type": "group",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "right-cannibals"
+          }
+        ],
+        [
+          "role",
+          {
+            "sym": "cannibal"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "at",
+      [
+        "left-missionaries",
+        "three"
+      ]
+    ],
+    [
+      "at",
+      [
+        "left-cannibals",
+        "three"
+      ]
+    ],
+    [
+      "at",
+      [
+        "right-missionaries",
+        "zero"
+      ]
+    ],
+    [
+      "at",
+      [
+        "right-cannibals",
+        "zero"
+      ]
+    ],
+    [
+      "at",
+      [
+        "boat",
+        "left"
+      ]
+    ],
+    [
+      "other",
+      [
+        "left",
+        "right"
+      ]
+    ],
+    [
+      "other",
+      [
+        "right",
+        "left"
+      ]
+    ],
+    [
+      "side",
+      [
+        "left-missionaries",
+        "left"
+      ]
+    ],
+    [
+      "side",
+      [
+        "left-cannibals",
+        "left"
+      ]
+    ],
+    [
+      "side",
+      [
+        "right-missionaries",
+        "right"
+      ]
+    ],
+    [
+      "side",
+      [
+        "right-cannibals",
+        "right"
+      ]
+    ],
+    [
+      "one-less",
+      [
+        "one",
+        "zero"
+      ]
+    ],
+    [
+      "one-less",
+      [
+        "two",
+        "one"
+      ]
+    ],
+    [
+      "one-less",
+      [
+        "three",
+        "two"
+      ]
+    ],
+    [
+      "two-less",
+      [
+        "two",
+        "zero"
+      ]
+    ],
+    [
+      "two-less",
+      [
+        "three",
+        "one"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "cross-one-missionary",
+      "params": [
+        [
+          "to",
+          "bank"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "other",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mn"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mn"
+            },
+            {
+              "var": "mn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mk1"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mold"
+            },
+            {
+              "var": "mnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mtnew"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mtnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "One missionary rows the boat to the "
+        },
+        {
+          "handle": "to"
+        },
+        {
+          "text": " bank"
+        }
+      ]
+    },
+    {
+      "name": "cross-two-missionaries",
+      "params": [
+        [
+          "to",
+          "bank"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "other",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mn"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "mn"
+            },
+            {
+              "var": "mn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "mk1"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "mold"
+            },
+            {
+              "var": "mnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "mtnew"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mtnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Two missionaries row the boat to the "
+        },
+        {
+          "handle": "to"
+        },
+        {
+          "text": " bank"
+        }
+      ]
+    },
+    {
+      "name": "cross-one-cannibal",
+      "params": [
+        [
+          "to",
+          "bank"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "other",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cn"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "cn"
+            },
+            {
+              "var": "cn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "ck1"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "cold"
+            },
+            {
+              "var": "cnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "ctnew"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "cnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "ctnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "One cannibal rows the boat to the "
+        },
+        {
+          "handle": "to"
+        },
+        {
+          "text": " bank"
+        }
+      ]
+    },
+    {
+      "name": "cross-two-cannibals",
+      "params": [
+        [
+          "to",
+          "bank"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "other",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cn"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "cn"
+            },
+            {
+              "var": "cn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "ck1"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "cold"
+            },
+            {
+              "var": "cnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        },
+        {
+          "rel": "two-less",
+          "args": [
+            {
+              "var": "ctnew"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "cnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "ctnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Two cannibals row the boat to the "
+        },
+        {
+          "handle": "to"
+        },
+        {
+          "text": " bank"
+        }
+      ]
+    },
+    {
+      "name": "cross-missionary-and-cannibal",
+      "params": [
+        [
+          "to",
+          "bank"
+        ]
+      ],
+      "stmts": [
+        2
+      ],
+      "pre": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "other",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mn"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mn"
+            },
+            {
+              "var": "mn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mk1"
+            },
+            {
+              "var": "mk"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cn"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "cn"
+            },
+            {
+              "var": "cn1"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "ck1"
+            },
+            {
+              "var": "ck"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bt",
+          "type": "boat"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mf",
+          "type": "group"
+        },
+        {
+          "has": "mf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "mt",
+          "type": "group"
+        },
+        {
+          "has": "mt",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "missionary"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mold"
+            },
+            {
+              "var": "mnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "mtnew"
+            },
+            {
+              "var": "mtold"
+            }
+          ]
+        },
+        {
+          "obj": "cf",
+          "type": "group"
+        },
+        {
+          "has": "cf",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        },
+        {
+          "obj": "ct",
+          "type": "group"
+        },
+        {
+          "has": "ct",
+          "prop": "role",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "cannibal"
+            }
+          }
+        },
+        {
+          "rel": "side",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "cold"
+            },
+            {
+              "var": "cnew"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        },
+        {
+          "rel": "one-less",
+          "args": [
+            {
+              "var": "ctnew"
+            },
+            {
+              "var": "ctold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mf"
+            },
+            {
+              "var": "mold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "mt"
+            },
+            {
+              "var": "mtold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "mtnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "cf"
+            },
+            {
+              "var": "cold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "cnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "ct"
+            },
+            {
+              "var": "ctold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "ctnew"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bt"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "A missionary and a cannibal row the boat to the "
+        },
+        {
+          "handle": "to"
+        },
+        {
+          "text": " bank"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "g",
+        "type": "group"
+      },
+      {
+        "rel": "side",
+        "args": [
+          {
+            "var": "g"
+          },
+          {
+            "h": "right"
+          }
+        ]
+      },
+      {
+        "has": "g",
+        "prop": "role",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "missionary"
+          }
+        }
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "var": "g"
+          },
+          {
+            "var": "n"
+          }
+        ]
+      },
+      {
+        "has": "n",
+        "prop": "value",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "int": 3
+          }
+        }
+      },
+      {
+        "obj": "h",
+        "type": "group"
+      },
+      {
+        "rel": "side",
+        "args": [
+          {
+            "var": "h"
+          },
+          {
+            "h": "right"
+          }
+        ]
+      },
+      {
+        "has": "h",
+        "prop": "role",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "cannibal"
+          }
+        }
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "var": "h"
+          },
+          {
+            "var": "k"
+          }
+        ]
+      },
+      {
+        "has": "k",
+        "prop": "value",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "int": 3
+          }
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    5
+  ],
+  "failures": [
+    {
+      "name": "missionaries-eaten",
+      "stmts": [
+        3,
+        4
+      ],
+      "cond": {
+        "ex": [
+          {
+            "obj": "g",
+            "type": "group"
+          },
+          {
+            "has": "g",
+            "prop": "role",
+            "cmp": "eq",
+            "rhs": {
+              "val": {
+                "sym": "missionary"
+              }
+            }
+          },
+          {
+            "rel": "side",
+            "args": [
+              {
+                "var": "g"
+              },
+              {
+                "var": "k"
+              }
+            ]
+          },
+          {
+            "obj": "h",
+            "type": "group"
+          },
+          {
+            "has": "h",
+            "prop": "role",
+            "cmp": "eq",
+            "rhs": {
+              "val": {
+                "sym": "cannibal"
+              }
+            }
+          },
+          {
+            "rel": "side",
+            "args": [
+              {
+                "var": "h"
+              },
+              {
+                "var": "k"
+              }
+            ]
+          },
+          {
+            "rel": "at",
+            "args": [
+              {
+                "var": "g"
+              },
+              {
+                "var": "n"
+              }
+            ]
+          },
+          {
+            "rel": "at",
+            "args": [
+              {
+                "var": "h"
+              },
+              {
+                "var": "c"
+              }
+            ]
+          },
+          {
+            "has": "n",
+            "prop": "value",
+            "cmp": "gt",
+            "rhs": {
+              "val": {
+                "int": 0
+              }
+            }
+          },
+          {
+            "has": "c",
+            "prop": "value",
+            "cmp": "gt",
+            "rhs": {
+              "prop": [
+                "n",
+                "value"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "repeatControl": {
+    "rel": "at",
+    "types": [
+      "group",
+      "boat"
+    ]
+  }
+}

@@ -13,6 +13,12 @@
 ##     applies to blocks as well as locations (A-H1).
 ##   - larger than is expanded in place: the destination's volume is more than the block's (A-H2).
 ##   - The goal is ^goal-met true on the task object when two different green locations are clear (A-H3).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 8
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute clear 3
+
 
 ## Propose initialize-tower-of-hanoi-4 when its conditions below hold.
 sp {tower-of-hanoi-4*propose*initialize-tower-of-hanoi-4
@@ -28,13 +34,13 @@ sp {tower-of-hanoi-4*apply*initialize-tower-of-hanoi-4
 -->
    (<s> ^name tower-of-hanoi-4 ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color green ^volume 5)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color green ^volume 5)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^volume 5)
-   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^size tiny ^volume 1)
-   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^size small ^volume 2)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^size medium ^volume 3)
-   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^size large ^volume 4)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color green ^volume 5 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color green ^volume 5 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^volume 5 ^static true)
+   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^size tiny ^volume 1 ^static true)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^size small ^volume 2 ^static true)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^size medium ^volume 3 ^static true)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^size large ^volume 4 ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -127,8 +133,7 @@ sp {tower-of-hanoi-4*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {tower-of-hanoi-4*apply*move*internal

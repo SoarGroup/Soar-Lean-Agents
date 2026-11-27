@@ -8,6 +8,10 @@
   L3-012  each rule, or each group of rules for the same operator or purpose, is preceded by an English
           #-comment.
   L3-039 / L3-083  agents that learn with RL do not put an indifferent preference in their proposals.
+  L9-011 (27 Nov 2026)  an operator with no preconditions is proposed with ^pre-conditions-satisfied true
+          instead of an empty ^desireds (^desired-count 0), which two library rules turned into the same result two
+          elaboration waves later. Not done in an agent where some rule tests an operator's ^desireds, since that rule
+          could add preconditions to the same operator.
 
 Usage (inside a generator):   text = convpass.apply(text, rl=False)
          or on files:          python3 convpass.py [--rl] FILE.soar ...   (rewrites the files in place)
@@ -164,6 +168,36 @@ def group_key(r):
     return f[2] if len(f) > 2 else rule_name(r)
 
 
+def tests_operator_desireds(rules):
+    """True when some rule's conditions test ^desireds (or a path through it) on anything but a state."""
+    for _, r in rules:
+        lhs = r.partition('-->')[0]
+        states = set(re.findall(r'\(state\s+(<[\w-]+>)', lhs))
+        for m in re.finditer(r'\((<[\w-]+>)([^()]*)\)', lhs):
+            if m.group(1) not in states and re.search(r'\^(?:[\w-]+\.)*desireds\b', m.group(2)): return True
+        for m in re.finditer(r'\(state\s+<[\w-]+>([^()]*)\)', lhs):
+            if re.search(r'\^[\w.-]*\.desireds\b', m.group(1)): return True
+    return False
+
+
+def no_precondition_form(r):
+    """L9-011: in a proposal, ^desireds <pre> whose structure is only (<pre> ^desired-count 0) becomes
+    ^pre-conditions-satisfied true."""
+    lhs, arrow, rhs = r.partition('-->')
+    if not arrow: return r
+    done = set()
+    while True:
+        m = next((m for m in re.finditer(r'\n[ \t]*\((<[\w-]+>)\s+\^desired-count\s+0\s*\)', rhs)
+                  if m.group(1) not in done), None)
+        if not m: break
+        pre = m.group(1); done.add(pre)
+        rest = rhs[:m.start()] + rhs[m.end():]
+        if len(re.findall(re.escape(pre) + r'(?=[\s)])', rest)) != 1 or re.search(re.escape(pre), lhs): continue
+        if not re.search(r'\^desireds\s+' + re.escape(pre) + r'(?=[\s)])', rest): continue
+        rhs = re.sub(r'\^desireds\s+' + re.escape(pre) + r'(?=[\s)])', '^pre-conditions-satisfied true', rest)
+    return lhs + arrow + rhs
+
+
 def apply_files(texts, rl=False):
     """texts: {fname: text} for one agent (all its rule files). Returns {fname: new_text}, notes."""
     rules = [(fn, r) for fn, t in texts.items() for _, r in split_rules(t) if r]
@@ -182,6 +216,7 @@ def apply_files(texts, rl=False):
         if p and rule_name(r).split('*')[1:2] == ['propose']:
             for o in op_names_proposed(r):
                 op_ps.setdefault(o, set()).update(p)
+    no_pre = not tests_operator_desireds(rules)
     notes = []
     out = {}
     for fn, t in texts.items():
@@ -222,6 +257,8 @@ def apply_files(texts, rl=False):
                     r = add_ps(r, set(ps))
                 else:
                     notes.append(f'{fn}: {n}: no problem space found')
+            if no_pre and func == 'propose':
+                r = no_precondition_form(r)
             if rl and func == 'propose':
                 r = re.sub(r'(\^operator\s+<[\w-]+>\s*\+)\s*=(?=[\s)])', r'\1', r)
             g = group_key(r)

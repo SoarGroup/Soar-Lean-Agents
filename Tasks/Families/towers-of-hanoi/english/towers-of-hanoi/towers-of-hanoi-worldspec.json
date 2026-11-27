@@ -1,0 +1,419 @@
+{
+  "format": "worldspec-1",
+  "name": "towers-of-hanoi",
+  "title": "Tower of Hanoi (families, from English)",
+  "statements": [
+    [
+      1,
+      "There are three pegs, A, B and C, and three disks of different sizes, all on peg A, largest at the bottom."
+    ],
+    [
+      2,
+      "Move one disk at a time, taking only the top disk of a peg."
+    ],
+    [
+      3,
+      "A disk is placed on an empty peg or on a larger disk; a disk may never rest on a smaller one."
+    ],
+    [
+      4,
+      "The goal is to move the whole stack to another peg."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-TH1",
+      "kind": "intent",
+      "text": "Each disk (small, medium, large) has a size (1, 2, 3) and an on relation to the peg it is on; the order within a peg follows from the sizes, since a disk never rests on a smaller one.",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-TH2",
+      "kind": "intent",
+      "text": "\"the top disk of a peg\": the smallest disk on its peg (no smaller disk on the same peg), a derived relation top(disk, peg).",
+      "stmts": [
+        2
+      ]
+    },
+    {
+      "id": "A-TH3",
+      "kind": "intent",
+      "text": "\"an empty peg or a larger disk\": the target peg has no disk smaller than the moved one (its top disk, if any, is larger), a derived relation can-take(peg, disk). Negations stay in derived relations, which the operators test positively (W-CHK-009).",
+      "stmts": [
+        3
+      ]
+    },
+    {
+      "id": "A-TH4",
+      "kind": "intent",
+      "text": "\"another peg\": peg C, read from the original agent's initialize rules (the English does not name it; JL allowed reading initial states there).",
+      "stmts": [
+        4
+      ]
+    },
+    {
+      "id": "A-TH5",
+      "kind": "intent",
+      "text": "Search control, not from the English (as for the other WorldSpec search tasks): a look-ahead state that returns to a situation already on its path fails; a situation is where each disk is.",
+      "stmts": []
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "a",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c",
+      "type": "peg",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "small",
+      "type": "disk",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "small"
+          }
+        ],
+        [
+          "size",
+          {
+            "int": 1
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "medium",
+      "type": "disk",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "medium"
+          }
+        ],
+        [
+          "size",
+          {
+            "int": 2
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "large",
+      "type": "disk",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "large"
+          }
+        ],
+        [
+          "size",
+          {
+            "int": 3
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "on",
+      [
+        "small",
+        "a"
+      ]
+    ],
+    [
+      "on",
+      [
+        "medium",
+        "a"
+      ]
+    ],
+    [
+      "on",
+      [
+        "large",
+        "a"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "move-disk",
+      "params": [
+        [
+          "d",
+          "disk"
+        ],
+        [
+          "to",
+          "peg"
+        ]
+      ],
+      "stmts": [
+        2,
+        3
+      ],
+      "pre": [
+        {
+          "rel": "top",
+          "args": [
+            {
+              "var": "d"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "can-take",
+          "args": [
+            {
+              "var": "to"
+            },
+            {
+              "var": "d"
+            }
+          ]
+        },
+        {
+          "distinct": [
+            "from",
+            "to"
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "d"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "on",
+          "args": [
+            {
+              "var": "d"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Move disk "
+        },
+        {
+          "handle": "d"
+        },
+        {
+          "text": " to peg "
+        },
+        {
+          "handle": "to"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "all": {
+      "outer": [],
+      "var": "x",
+      "type": "disk",
+      "filter": [],
+      "body": [
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "x"
+            },
+            {
+              "h": "c"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "goalStmts": [
+    4
+  ],
+  "failures": [],
+  "derived": [
+    {
+      "name": "top",
+      "vars": [
+        "d",
+        "p"
+      ],
+      "defn": [
+        {
+          "obj": "d",
+          "type": "disk"
+        },
+        {
+          "rel": "on",
+          "args": [
+            {
+              "var": "d"
+            },
+            {
+              "var": "p"
+            }
+          ]
+        },
+        {
+          "none": [
+            {
+              "obj": "e",
+              "type": "disk"
+            },
+            {
+              "rel": "on",
+              "args": [
+                {
+                  "var": "e"
+                },
+                {
+                  "var": "p"
+                }
+              ]
+            },
+            {
+              "has": "e",
+              "prop": "size",
+              "cmp": "lt",
+              "rhs": {
+                "prop": [
+                  "d",
+                  "size"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        2
+      ]
+    },
+    {
+      "name": "can-take",
+      "vars": [
+        "q",
+        "d"
+      ],
+      "defn": [
+        {
+          "obj": "q",
+          "type": "peg"
+        },
+        {
+          "obj": "d",
+          "type": "disk"
+        },
+        {
+          "none": [
+            {
+              "obj": "f",
+              "type": "disk"
+            },
+            {
+              "rel": "on",
+              "args": [
+                {
+                  "var": "f"
+                },
+                {
+                  "var": "q"
+                }
+              ]
+            },
+            {
+              "has": "f",
+              "prop": "size",
+              "cmp": "lt",
+              "rhs": {
+                "prop": [
+                  "d",
+                  "size"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        3
+      ]
+    }
+  ],
+  "repeatControl": {
+    "rel": "on",
+    "types": [
+      "disk"
+    ]
+  }
+}

@@ -1,4 +1,156 @@
-# SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 24 November 2026)
+# SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 27 November 2026)
+
+## Release of 27 November 2026 (`SoarLean-2026-11-27-release.zip`, for library v2.48)
+
+Joins `SoarLean-2026-11-26-release.zip` with the generator changes of 26-27 November (the `^fixed` candidate of
+26 November, `Soar-library-dev/candidates/SoarLean-fixed-candidate`, is merged and superseded). Paths A (Lean) and B
+(Python) changed together.
+- **Static objects and shared relations** (World-Conventions L7-028). An object of the initial world that no rule other
+  than the initialize rule changes gets `^static true`; a relation no rule changes whose arguments are all static is
+  declared with `^share-relation` in place of `^copy-relation`. WorldSpec: `spec_backend.static_info`,
+  `Compile.lean Task.staticInfo`. Families: `Family/Task.lean staticInfo`, `markStatic`. Generators that write Soar
+  directly (Rosie, worldgen, English-world agents): new `worldgen/static_pass.py` (`mark_static`), called by `wg`.
+- **`^fixed` substructure** (L7-017 to L7-024; criteria in L7-022). With look-ahead, a type that some rule changes and
+  that has at least 3 constant properties no rule writes keeps them under `^fixed`, which look-ahead copies share; rules
+  read them as `^fixed.<p>`. A property name is fixed on every type that has it or on none; properties a desired tests
+  stay flat; no `^fixed` when a rule tests the type's properties through a variable or disjunctive attribute
+  (`^<a>`, `^<< a b >>`; added 27 Nov after the regenerated three-wizards agent failed, `static_pass._varattr_types`,
+  `Family/Task.lean varAttrTypes`). Look-ahead detection: `static_pass.has_lookahead`, Lean `hasLookahead`.
+- **Operators without preconditions** (L9-011). Proposed with `^pre-conditions-satisfied true` in place of an empty
+  `^desireds` structure (`convpass.no_precondition_form`, Lean `noPreconditionForm`), unless a rule tests the operator's
+  `^desireds` (`tests_operator_desireds`). `agentgen/tools/convpass.py` is the worldgen copy.
+
+Checked 27 November 2026 (Lean 4.35.0, `cmcsoar-release-2026-11-14` beside `agentgen`, Soar 9.6.6, library v2.48):
+- `lake build agentgen worldcheck rosiegen familygen`: 138 jobs, warnings only.
+- WorldSpec, 12 tasks: paths A and B write the same rules apart from the header; `rosiegen json` equals the Python JSON
+  and the stored JSON. The nine classic-AI rule files change by static marks, shared relations and L9-011 only (none meets the `^fixed` criteria; of the WorldSpec tasks only the KenKen Lean path has `^fixed`).
+- familygen: 67 variants; 306 files unchanged, 167 change by L7-028 and L9-011 only (no family meets the `^fixed`
+  criteria). `Tasks/Families/families-world-lean-2026-11-27.zip`.
+- Rosie (51 folders, with the search-control variants and the Lean paths lean-a and lean-b): 74 of 76 rule files change,
+  by static marks, shared relations, `^fixed` (13 tasks) and L9-011 only. English-world agents: C1 only (artists, mc,
+  wizards, zebra). English family agents (9): static marks and L9-011 only. worldgen gen_*.py: static marks and L9-011
+  (`Soar-library-dev/tools/worldgen-v25.zip`). Shared copies (`wg.py`, `convpass.py`, `static_pass.py`) identical in
+  `SoarLean/worldgen`, `Tasks/From-English/rosie-teaching/tools`, `agentgen/tools` (convpass) and worldgen-v25.
+- Water Jug: `agentgen water-jug-desc`, `world_backend.py`: 33 rules; `check_derived.py` passes; `worldcheck --task`:
+  0 violations. `worldcheck --task` on every regenerated agent: the same violations as the stored agents, none new.
+- Results (`Tasks/Results on library v2.48 (27 Nov 2026).xlsx`): Rosie 124 of 150 runs succeed (v2.47: 121; gained
+  8-men-on-a-raft, lost none); classic AI 21 of 27, tic-tac-toe 10 of 10 and English-world agents 12 of 12, as in v2.47;
+  the regenerated agents give the same results as the stored ones on v2.48. Test set v1.42: no decision changes.
+- Defect found and fixed in this release: the regenerated three-wizards agent eliminated every possible world, because
+  its rules read the colors through variable attributes that did not see them under `^fixed`; the generators now apply
+  L7-022 criterion (4) (no `^fixed` for such a type), and the agent behaves as the stored one.
+- Not done: `rosiegen check` and `rosiegen replay` (WorldSpec descriptions unchanged); the learning on/off comparison.
+
+## Release of 26 November 2026 (`SoarLean-2026-11-26-release.zip`)
+
+WorldSpec only (agentgen/WorldSpec and worldgen/worldspec_py.py, spec_backend.py); learned from the English-derived
+family agents (Tasks/Families/<family>/english/, 25 Nov 2026).
+- **Arithmetic** (JL): right sides `minus`, `times`, `quot` and `rem` beside `plus` (Lean `Rhs`, semantics, JSON,
+  compiler; Python constructors `minus(a, b)`, `times(a, b)`, `quot(a, b)`, `rem(a, b)`). Soar `(- a b)`, `(* a b)`,
+  `(div a b)`, `(mod a b)`; quotient and remainder truncate toward zero, as Soar and Lean `Int.tdiv`/`Int.tmod` do, and
+  have no value when dividing by 0. As before, arithmetic is allowed in effects only.
+- **Path B checks** (`spec_backend.well_formed`, called by `spec_backend.py` and by `worldspec_py.py json`): the checks
+  of Lean `Task.wellFormed` (path A), which path B did not make: negation in compiled conditions (W-CHK-009), effects or
+  reports using a variable not bound by parameters or `bind`, arithmetic in conditions, each-effects, derived relations
+  changed by an operator, evaluation marks, open assumptions, and objects sharing a handle. Found on the English-derived
+  agents: an effect using a precondition-only variable made a new identifier on every firing (the agent looped);
+  negations in losing conditions were dropped from learned rules, which then rejected every operator.
+- **Sense numbers** (Lean `WorldFile.stripSense`, Python `strip_sense`): a trailing `1` is a Rosie sense only after a
+  word of two or more letters (red1, on1, destination1, diagonal-with1); `d1`, `t1`, `c11` keep it. Both paths also
+  reject a world whose objects share a handle (before, `d1` silently became `d`).
+- Regenerated and compared, byte for byte: the 12 WorldSpec tasks (paths A and B), 51 Rosie task folders, 4
+  English-world agents, 67 family variants (familygen), the worldgen gen_*.py task programs against test set v1.41:
+  all identical. The 9 English-derived family agents were rewritten to the checks (Tower of Hanoi and blocks world
+  test derived relations top, can-take and clear; Hello World tests a property's value; water jug uses minus).
+
+## Revision d of 25 November 2026 (`SoarLean-2026-11-25d-release.zip`)
+
+`agentgen/Family/Families/Arithmetic.lean` only (JL: at most 100 arithmetic problems): arithmetic, arithmetic-v5 and
+arithmetic-smem-chunk solve 100 problems instead of 10,000, arithmetic-smem 100 instead of 1,000, arithmetic-smem-learn
+100 instead of 2,000 (the problem object's ^count). The original programs were changed the same way. Both versions now
+solve every seed under chunk never, only and always in at most about 4,300 decisions (caps.json: 10,000).
+Generated variants: Tasks/Families/families-world-lean-2026-11-25c.zip.
+
+## Revision c of 25 November 2026 (`SoarLean-2026-11-25c-release.zip`)
+
+Every generator now writes the matching hints (World-Conventions L11-009) and leaves out redundant object tests (L3-104):
+- `worldgen/wg.py`: `drop_redundant_object_tests` and `match_hints` in `Task.text()` (worldgen and the Rosie generators,
+  which share wg.py); `wg.finish` for generators that write rules without `Task` (the English-world gen.py files).
+- `agentgen/WorldSpec/Compile.lean` and `worldgen/spec_backend.py`: the group-sum rules bind the group through the
+  relation only (paths A and B identical); only color-ken-ken changes (three rules).
+- `agentgen/Family/Task.lean`: relation conditions with several values on one attribute (`^at <rt> <rk>`) now count,
+  as in wg.py; 87 rule files of the 67 variants change (families-world-lean-2026-11-25b.zip).
+- Checked: wg.py's pass applied to the 25 November family variants gives exactly familygen's output (406 files).
+  Regenerated: 71 Rosie rule files (20 object tests left out, in 8 logic puzzles), 4 English-world agents (an `object`
+  hint only), 12 WorldSpec tasks; every changed file differs from the stored one only by these two changes.
+- Not regenerated here: the worldgen gen_*.py task programs and test set copies (LeanBuild/SoarLean/worldgen is not
+  connected to this session); they change by the same two edits when next generated, with the test set re-baselined.
+
+## Revision b of 25 November 2026 (`SoarLean-2026-11-25b-release.zip`)
+
+familygen only (agentgen/Family/Task.lean, FamilyGen.lean); WorldSpec unchanged from the morning release.
+- `Prod.dropRedundantObjectTests` (World-Conventions L3-104): a rule that binds an object as an argument of a relation
+  it tests on the world no longer also tests `(<w> ^objects.object <x>)`. 82 rule files of the 67 variants change.
+- `Variant.matchHints` (World-Conventions L11-009): `_firstload.soar` ends with `production optimize-attribute` for
+  `object` and for every attribute a rule adds to `<w>`, sized from the initialize rule (values on that one identifier,
+  at least 2).
+- Families, seeds 1-3, cap 3,000 (knights 40,000): seeds solved unchanged under chunk never, only and always (171, 174,
+  168). Leaving the tests out alone changes no decision. With both, 47 of 67 variants are identical under each setting;
+  the 20 that change are eight-puzzle (2), kenken (16) and knights (2), the same under all three settings (firing order,
+  not learning). kenken-6-2 takes more decisions (1,343 / 1,485 / 975 vs 735 / 862 / 1,096; 46 s vs 27 s CPU),
+  knights-6 22 s vs 10 s CPU with the same decisions, knights-8 58 s vs 76 s. The declarations without L3-104 made the
+  6x6 KenKen variants 15-70 times slower (the in-tuple declaration moved the drop-tuple join onto ^objects.object).
+- wg.py (worldgen, Rosie, English-world) is unchanged: held for a decision on how to choose the declarations.
+- Generated variants: Tasks/Families/families-world-lean-2026-11-25.zip.
+
+## Release of 25 November 2026 (`SoarLean-2026-11-25-release.zip`, for library v2.47)
+
+Joins `SoarLean-2026-11-24b-release.zip` with one change: matching hints for learned rules (World-Conventions L11-009,
+accepted by JL on 25 Nov 2026; To-do row 44).
+- `agentgen/WorldSpec/Compile.lean` (`matchHints`) and `worldgen/spec_backend.py` (`match_hints`) open the task rules,
+  after the header, with `production optimize-attribute` for `object` (the number of objects) and for every relation
+  of the task (declared, maintained or added by an operator; its number of tuples in the initial world, at least 2).
+  Paths A and B write the same lines. Only these lines change in the 12 WorldSpec tasks.
+- Cause: in Instant Insanity, chunks of 70-80 conditions learned in look-ahead test five `^orient` tuples and 13
+  `^object` links; without hints the reorderer joins those many-valued conditions before the handle tests, and one
+  run passes 5.5 GB. With the hints, `chunk only` (the library default): 3/3 seeds solve (5,170 / 5,367 / 5,358
+  decisions, about 225 MB); `chunk never` unchanged (18,874 / 18,692 / 19,208).
+- Not yet in wg.py (worldgen, Rosie, English-world) or the family generators.
+
+## Revision b of the release of 24 November 2026 (`SoarLean-2026-11-24b-release.zip`, for library v2.47)
+
+Joins `SoarLean-2026-11-24-release.zip` with one change: generated search control for slot-filling tasks
+(World-Conventions L21-001, accepted by JL on 24 Nov 2026).
+- `agentgen/WorldSpec/SlotOrder.lean` (new): `Task.slots?` recognizes, from the description alone, a set of slots each
+  filled once with commuting fills: a maintained "unfilled" relation; fill operators whose only effects are the fill
+  and its removal and whose other preconditions read no slot; existential losing conditions; a universal goal over the
+  slots. `Task.withSlotOrder` adds a static chain `<M>-next`, a relation `<M>-first`, a test of it in each fill
+  proposal and effects that move it, so only the first unfilled slot (in the order of the initial world) is
+  proposed. The file header gives the argument that no solution is lost (not yet a Lean theorem).
+- `Compile.lean` (path A) applies it and writes a comment after the assumption ledger; `worldgen/spec_backend.py`
+  (path B: `slots`, `with_slot_order`) does the same, so both paths still write the same rules.
+- `Types.lean`: `Task.slotOrder` (default true; `false` turns the order off, to compare runs). `Json.lean` exports
+  `slotOrder: false` only when it is off; `worldgen/worldspec_py.py` reads `slot_order=False` and prints
+  `slotOrder := false`. The JSON of every existing task is unchanged.
+- `Proofs.lean`: `kenken_slots` and `instantInsanity_slots` (recognized) and the `_noSlots` theorems for the other ten
+  tasks, all by `decide`.
+- `WorldSpec/Tasks/InstantInsanity.lean`: the cube order (assumption A-II2) removed from the description; the order
+  now comes from the generators.
+
+Checked 24 November 2026 (Lean 4.35.0, `cmcsoar-release-2026-11-14` beside `agentgen`, Soar 9.6.6 / kernel 9.6.50,
+library v2.47):
+- `lake build agentgen worldcheck rosiegen familygen`: 138 jobs, warnings only; every theorem in `Proofs.lean` proved.
+  Agent, World and Family import nothing from WorldSpec, so `agentgen`, `worldcheck` and `familygen` are unchanged.
+- WorldSpec, all 12 tasks: paths A and B write the same rules apart from the header (bridge-and-torch also differs by
+  its one comment line, as before). Rules unchanged byte for byte for the ten tasks without slots. JSON unchanged for
+  every task except Instant Insanity, whose description changed; there `rosiegen json` equals the Python JSON.
+- KenKen (Lean paths A and B, regenerated): 73 / 73 / 81 decisions on seeds 1-3 (459 / 473 / 459 before); same plan
+  on every seed; `rosiegen replay` accepts all three; the semantics and Soar agree on the four example states.
+- Instant Insanity (regenerated, learning off): 18,874 / 18,692 / 19,208 decisions (old rules 19,608 / 19,588 /
+  20,093); `rosiegen replay` and `worldspec_py.py replay` accept all three runs; the semantics and Soar agree on the
+  three example states. With learning on, the old and the new rules both exceed the workspace's 8 GB on v2.47.
+- Not rerun: familygen output and the Water Jug commands (their sources are unchanged); the Python generators that do
+  not use WorldSpec.
 
 ## Release of 24 November 2026 (`SoarLean-2026-11-24-release.zip`, for library v2.47)
 

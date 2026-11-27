@@ -1,0 +1,15 @@
+Eight puzzle: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/eight-puzzle/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. A 3 x 3 tray holds eight numbered tiles and one empty square.
+ 2. A tile next to the empty square (left, right, above or below, not diagonally) may slide into it, leaving its own square empty.
+ 3. Tiles may not be lifted out.
+ 4. The goal is to slide tiles until they match the target arrangement.
+
+Initial state not in the English, read from the original eight-puzzle agent's initialize rules (allowed by JL,
+25 Nov 2026). Rows top to bottom, 0 is the empty square:
+  start   2 1 7 / 8 6 0 / 3 4 5
+  target  1 8 7 / 2 0 6 / 3 4 5
+Source of the task: classic sliding-tile puzzle.
+Kind of agent: state-space search.

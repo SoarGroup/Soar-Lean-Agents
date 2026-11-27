@@ -18,6 +18,14 @@
 ##   - The goal ("all the blocks are on a red location") is expanded over the blocks of the world file (A-F3).
 ## Search settings: ^iterative-step tie-impasse, chosen by the P6 probe (probe_settings.py, 16 Nov 2026, library
 ## v2.34, seeds 1-3): same 3-move plans as operator depth with fewer decisions (probe.json).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 9
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute apart-1 6
+production optimize-attribute apart-2 4
+production optimize-attribute apart-3 2
+
 
 ## Propose initialize-king-stacked-frogs when its conditions below hold.
 sp {king-stacked-frogs*propose*initialize-king-stacked-frogs
@@ -33,14 +41,18 @@ sp {king-stacked-frogs*apply*initialize-king-stacked-frogs
 -->
    (<s> ^name king-stacked-frogs ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^x 1 ^y 1 ^color red ^block-count 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^x 2 ^y 1 ^block-count 1)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^x 3 ^y 1 ^block-count 1)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^x 4 ^y 1 ^block-count 1)
-   (<o-block-5> ^object-handle block-5 ^anchored true ^type block)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block)
-   (<o-block-7> ^object-handle block-7 ^anchored true ^type block)
-   (<o-block-8> ^object-handle block-8 ^anchored true ^type block)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^block-count 1 ^fixed <o-location-1-fx>)
+   (<o-location-1-fx> ^x 1 ^y 1 ^color red)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^block-count 1 ^fixed <o-location-2-fx>)
+   (<o-location-2-fx> ^x 2 ^y 1)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^block-count 1 ^fixed <o-location-3-fx>)
+   (<o-location-3-fx> ^x 3 ^y 1)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^block-count 1 ^fixed <o-location-4-fx>)
+   (<o-location-4-fx> ^x 4 ^y 1)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^static true)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^static true)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^static true)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -148,8 +160,7 @@ sp {king-stacked-frogs*propose*move*1-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {king-stacked-frogs*propose*move*2-blocks
    (state <s> ^problem-space.name king-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -162,8 +173,7 @@ sp {king-stacked-frogs*propose*move*2-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {king-stacked-frogs*propose*move*3-blocks
    (state <s> ^problem-space.name king-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -176,8 +186,7 @@ sp {king-stacked-frogs*propose*move*3-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {king-stacked-frogs*propose*move*4-blocks
    (state <s> ^problem-space.name king-stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -190,8 +199,7 @@ sp {king-stacked-frogs*propose*move*4-blocks
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <c> ^argument2 <l> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {king-stacked-frogs*apply*move*internal*blocks
@@ -296,19 +304,19 @@ sp {king-stacked-frogs*elaborate*goal*on-red-location
    (<objs> ^object <t> <b-block-5> <l-block-5> <b-block-6> <l-block-6> <b-block-7> <l-block-7> <b-block-8> <l-block-8>)
    (<t> ^type task)
    (<b-block-5> ^object-handle block-5)
-   (<l-block-5> ^type location ^color red)
+   (<l-block-5> ^type location ^fixed.color red)
    (<w> ^on <on-block-5>)
    (<on-block-5> ^argument1 <b-block-5> ^argument2 <l-block-5>)
    (<b-block-6> ^object-handle block-6)
-   (<l-block-6> ^type location ^color red)
+   (<l-block-6> ^type location ^fixed.color red)
    (<w> ^on <on-block-6>)
    (<on-block-6> ^argument1 <b-block-6> ^argument2 <l-block-6>)
    (<b-block-7> ^object-handle block-7)
-   (<l-block-7> ^type location ^color red)
+   (<l-block-7> ^type location ^fixed.color red)
    (<w> ^on <on-block-7>)
    (<on-block-7> ^argument1 <b-block-7> ^argument2 <l-block-7>)
    (<b-block-8> ^object-handle block-8)
-   (<l-block-8> ^type location ^color red)
+   (<l-block-8> ^type location ^fixed.color red)
    (<w> ^on <on-block-8>)
    (<on-block-8> ^argument1 <b-block-8> ^argument2 <l-block-8>)
 -->

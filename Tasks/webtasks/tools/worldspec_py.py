@@ -28,6 +28,14 @@ def V(x): return {'var': x}
 def H(h): return {'h': h}
 def val(x): return {'val': x}
 def plus(a, b): return {'plus': [a, b]}
+def minus(a, b): return {'minus': [a, b]}    # added 26 Nov 2026 (JL): a - b
+def times(a, b): return {'times': [a, b]}    # added 26 Nov 2026 (JL): a * b
+def quot(a, b): return {'quot': [a, b]}      # added 26 Nov 2026: integer quotient, truncating (Soar div)
+def rem(a, b): return {'rem': [a, b]}        # added 26 Nov 2026: remainder, sign of a (Soar mod)
+def _tdiv(i, j): return None if j == 0 else (abs(i) // abs(j)) * (1 if (i >= 0) == (j > 0) else -1)
+def _tmod(i, j): return None if j == 0 else i - j * _tdiv(i, j)
+ARITH = {'plus': lambda i, j: i + j, 'minus': lambda i, j: i - j, 'times': lambda i, j: i * j, 'quot': _tdiv, 'rem': _tmod}
+def arith_op(r): return next((k for k in ARITH if k in r), None)
 def prop(y, q): return {'prop': [y, q]}
 def obj(x, t=None): return {'obj': x, 'type': t}
 def has(x, p, cmp, rhs): return {'has': x, 'prop': p, 'cmp': cmp, 'rhs': rhs}
@@ -59,7 +67,10 @@ def eval_mark(name, op, mark, cond, item='', stmts=()):
     return {'name': name, 'op': op, 'mark': mark, 'cond': list(cond), 'item': item, 'stmts': list(stmts)}
 
 # ---------------------------------------------------------------- world file (WorldFile.lean)
-def strip_sense(s): return s[:-1] if s.endswith('1') else s
+def is_sense_stem(stem): return len(stem) >= 2 and stem[0].isalpha() and all(c.isalpha() or c == '-' for c in stem)
+# Rosie's trailing sense number 1 (red1, on1, destination1). Changed 26 Nov 2026 (as WorldFile.lean): a stem shorter
+# than two letters or with digits keeps its 1 (d1, t1, c11), since stripping it silently renamed or merged objects.
+def strip_sense(s): return s[:-1] if s.endswith('1') and is_sense_stem(s[:-1]) else s
 
 def parse_val(s):
     t = s[:-2] if s.endswith('.0') else s
@@ -130,18 +141,22 @@ def arg_match(b, pairs):
 
 def rhs_val(pre, b, r):
     if 'val' in r: return r['val']
-    if 'plus' in r:
-        a, c = (rhs_val(pre, b, x) for x in r['plus'])
-        return num(a['int'] + c['int']) if a and c and 'int' in a and 'int' in c else None
+    k = arith_op(r)
+    if k:
+        a, c = (rhs_val(pre, b, x) for x in r[k])
+        x = ARITH[k](a['int'], c['int']) if a and c and 'int' in a and 'int' in c else None
+        return None if x is None else num(x)
     return pre.prop(lookup(b, r['prop'][0]), r['prop'][1])
 
 def rhs_vals(st, b, r):
     if 'val' in r: return [(b, r['val'])]
-    if 'plus' in r:
+    k = arith_op(r)
+    if k:
         out = []
-        for b1, v1 in rhs_vals(st, b, r['plus'][0]):
-            for b2, v2 in rhs_vals(st, b1, r['plus'][1]):
-                if 'int' in v1 and 'int' in v2: out.append((b2, num(v1['int'] + v2['int'])))
+        for b1, v1 in rhs_vals(st, b, r[k][0]):
+            for b2, v2 in rhs_vals(st, b1, r[k][1]):
+                x = ARITH[k](v1['int'], v2['int']) if 'int' in v1 and 'int' in v2 else None
+                if x is not None: out.append((b2, num(x)))
         return out
     y, q = r['prop']
     out = []
@@ -310,6 +325,9 @@ def initial(t, world_text):
     objs = [{'handle': t['handle'](o), 'type': next((vstr(v) for k, v in o['attrs'] if k == 'category'), 'object'),
              'props': [(k, v) for k, v in o['attrs'] if k != 'category']} for o in wobjs]
     objs += [{'handle': 'task', 'type': 'task', 'props': []}]
+    hs = [o['handle'] for o in objs]
+    dups = sorted(set(h for h in hs if hs.count(h) > 1))
+    if dups: raise SystemExit(f'worldspec_py: objects share a handle: {dups} (rename them in the world file)')
     rels = [(r, [hmap.get(i, f'unknown-{i}') for i in tup]) for r in t['world_rels'] for tup in wrels.get(r, [])]
     st0 = State(objs, rels)
     maint = [(m['name'], [x]) for m in t['maintained'] for x in members(m, st0)]
@@ -393,7 +411,8 @@ def to_json(t, st):
         **({'loopStart': t['loopStart']} if t.get('loopStart') is not None else {}),
         **({'termination': {'name': t['termination']['name'], 'cond': t['termination']['cond'],
                             'stmts': t['termination'].get('stmts', [])}} if t.get('termination') else {}),
-        **({'repeatCount': t['repeatCount']} if t.get('repeatCount') is not None else {})}
+        **({'repeatCount': t['repeatCount']} if t.get('repeatCount') is not None else {}),
+        **({'slotOrder': False} if t.get('slot_order') is False else {})}
 
 def compare_json(a, b):
     """Compare a rosiegen json export with ours (key order and number formatting aside)."""
@@ -408,7 +427,8 @@ def l_val(v):
 def l_arg(a): return f'.var {ls(a["var"])}' if 'var' in a else f'.h {ls(a["h"])}'
 def l_rhs(r):
     if 'val' in r: return f'(.val {l_val(r["val"])})'
-    if 'plus' in r: return f'(.plus {l_rhs(r["plus"][0])} {l_rhs(r["plus"][1])})'
+    k = arith_op(r)
+    if k: return f'(.{k} {l_rhs(r[k][0])} {l_rhs(r[k][1])})'
     return f'(.prop {ls(r["prop"][0])} {ls(r["prop"][1])})'
 def l_atom(a):
     if 'obj' in a: return f'.obj {ls(a["obj"])} ' + ('none' if a['type'] is None else f'(some {ls(a["type"])})')
@@ -494,6 +514,8 @@ def to_lean(t):
     if t.get('loopStart') is not None: L.append(f'  loopStart := some {t["loopStart"]}')
     if t.get('termination'): L.append('  termination := some ' + l_phase(t['termination']))
     if t.get('repeatCount') is not None: L.append(f'  repeatCount := some {t["repeatCount"]}')
+    # Generated slot order (World-Conventions L21-001) turned off for this description, to compare runs without it.
+    if t.get('slot_order') is False: L.append('  slotOrder := false')
     L += ['', 'end WorldSpec.Tasks', '']
     return '\n'.join(L)
 
@@ -523,7 +545,11 @@ def main(argv):
         open(argv[3], 'w', newline='\n').write(to_lean(t)); print('wrote', argv[3]); return
     st = initial(t, open(argv[3]).read())
     if cmd == 'json':
-        open(argv[4], 'w', newline='\n').write(json.dumps(to_json(t, st), indent=2) + '\n'); print('wrote', argv[4])
+        d = to_json(t, st)
+        # the path B checks (spec_backend.well_formed, as WorldSpec/Check.lean), before anything is written (26 Nov 2026)
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import spec_backend
+        spec_backend.well_formed(d)
+        open(argv[4], 'w', newline='\n').write(json.dumps(d, indent=2) + '\n'); print('wrote', argv[4])
     elif cmd == 'check':
         print(json.dumps({'goal-met': goal_met(t, st), 'failure': failed(t, st), 'maintained-errors': maintained_errors(t, st)}))
     elif cmd == 'explore':

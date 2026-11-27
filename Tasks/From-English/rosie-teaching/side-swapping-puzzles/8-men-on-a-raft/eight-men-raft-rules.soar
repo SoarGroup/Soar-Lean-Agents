@@ -18,6 +18,14 @@
 ##     and a peg is to the left/right of a location when the location it is on is (A-S1).
 ##   - The goal (statement 15) is expanded over the blocks of the world file (A-S2). "The solution has twenty-four steps"
 ##     (statement 11) is checked against the plans, not used.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 18
+production optimize-attribute on 8
+production optimize-attribute below 8
+production optimize-attribute clear 9
+production optimize-attribute left-of 8
+production optimize-attribute right-of 8
+
 
 ## Propose initialize-eight-men-raft when its conditions below hold.
 sp {eight-men-raft*propose*initialize-eight-men-raft
@@ -33,23 +41,23 @@ sp {eight-men-raft*apply*initialize-eight-men-raft
 -->
    (<s> ^name eight-men-raft ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-block-10> <o-block-11> <o-block-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color red ^row 1 ^column 2)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color red ^row 1 ^column 3)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^color red ^row 1 ^column 4)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 1 ^column 5)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^color blue ^row 1 ^column 6)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^color blue ^row 1 ^column 7)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^color blue ^row 1 ^column 8)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^color blue ^row 1 ^column 9)
-   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^color blue)
-   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^color blue)
-   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^color blue)
-   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue)
-   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^color red)
-   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^color red)
-   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^color red)
-   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color red)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color red ^row 1 ^column 2 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color red ^row 1 ^column 3 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^color red ^row 1 ^column 4 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 1 ^column 5 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^color blue ^row 1 ^column 6 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^color blue ^row 1 ^column 7 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^color blue ^row 1 ^column 8 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^color blue ^row 1 ^column 9 ^static true)
+   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^color red ^static true)
+   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^color red ^static true)
+   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^color red ^static true)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color red ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -144,7 +152,7 @@ sp {eight-men-raft*elaborate*problem-space
    (state <s> ^name eight-men-raft)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name eight-men-raft ^copy-relation below ^copy-relation left-of ^copy-relation right-of ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name eight-men-raft ^copy-relation below ^share-relation left-of ^share-relation right-of ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {eight-men-raft*elaborate*problem-space*mea-substate
@@ -204,8 +212,7 @@ sp {eight-men-raft*propose*move*blue-step
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {eight-men-raft*propose*move*red-step
    (state <s> ^problem-space.name eight-men-raft ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -223,8 +230,7 @@ sp {eight-men-raft*propose*move*red-step
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {eight-men-raft*propose*move*red-jump
    (state <s> ^problem-space.name eight-men-raft ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -248,8 +254,7 @@ sp {eight-men-raft*propose*move*red-jump
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {eight-men-raft*propose*move*blue-jump
    (state <s> ^problem-space.name eight-men-raft ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
@@ -273,8 +278,7 @@ sp {eight-men-raft*propose*move*blue-jump
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {eight-men-raft*apply*move*internal

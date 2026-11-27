@@ -1,0 +1,218 @@
+{
+  "format": "worldspec-1",
+  "name": "pyramid",
+  "title": "Pyramid problem (families, from English)",
+  "statements": [
+    [
+      1,
+      "A pyramid problem adds a run of consecutive numbers counting down from a base."
+    ],
+    [
+      2,
+      "The base is the first term, and each term is one less than the one before."
+    ],
+    [
+      3,
+      "The height says how many terms follow the first, so height h gives h + 1 terms."
+    ],
+    [
+      4,
+      "This problem has base 5 and height 10 (5 + 4 + ... + (-5))."
+    ],
+    [
+      5,
+      "The goal is to compute the sum."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-PY1",
+      "kind": "intent",
+      "text": "A problem object holds the next term (starting at the base, 5), the running sum (starting at 0) and the number of terms still to add after the next one (remaining, starting at the height, 10).",
+      "stmts": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": "A-PY2",
+      "kind": "intent",
+      "text": "add-term adds the next term to the sum, lowers the term by 1 and lowers remaining by 1 (adding -1; WorldSpec has no subtraction, so a negative constant is added). It is proposed while remaining is 0 or more, which gives h + 1 terms.",
+      "stmts": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "A-PY3",
+      "kind": "intent",
+      "text": "\"compute the sum\": the goal is that every term has been added (remaining below 0); the sum is then on the problem object (0 for this instance).",
+      "stmts": [
+        5
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "problem",
+      "type": "problem",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "problem"
+          }
+        ],
+        [
+          "term",
+          {
+            "int": 5
+          }
+        ],
+        [
+          "sum",
+          {
+            "int": 0
+          }
+        ],
+        [
+          "remaining",
+          {
+            "int": 10
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "add-term",
+      "params": [],
+      "stmts": [
+        1,
+        2,
+        3
+      ],
+      "pre": [
+        {
+          "obj": "p",
+          "type": "problem"
+        },
+        {
+          "has": "p",
+          "prop": "remaining",
+          "cmp": "ge",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "p",
+          "type": "problem"
+        }
+      ],
+      "effects": [
+        {
+          "update": "p",
+          "prop": "sum",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "p",
+                  "sum"
+                ]
+              },
+              {
+                "prop": [
+                  "p",
+                  "term"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "update": "p",
+          "prop": "term",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "p",
+                  "term"
+                ]
+              },
+              {
+                "val": {
+                  "int": -1
+                }
+              }
+            ]
+          }
+        },
+        {
+          "update": "p",
+          "prop": "remaining",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "p",
+                  "remaining"
+                ]
+              },
+              {
+                "val": {
+                  "int": -1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Add the next term"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "p",
+        "type": "problem"
+      },
+      {
+        "has": "p",
+        "prop": "remaining",
+        "cmp": "lt",
+        "rhs": {
+          "val": {
+            "int": 0
+          }
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    3,
+    5
+  ],
+  "failures": []
+}

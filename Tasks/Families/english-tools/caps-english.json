@@ -1,0 +1,3 @@
+{"about": "Decision caps for the English-derived family agents (Tasks/Families/<family>/english/). Default 3000 as for the families; the search tasks get more: their look-ahead is the library's iterative deepening, which with learning off repeats every shallower search.",
+ "default_cap": 3000, "default_time_limit_s": 1800,
+ "variants": {"counting": {"cap": 5000}, "towers-of-hanoi": {"cap": 100000}, "eight-puzzle": {"cap": 100000}, "water-jug": {"cap": 20000}, "missionaries-cannibals": {"cap": 300000, "time_limit_s": 3600}}}

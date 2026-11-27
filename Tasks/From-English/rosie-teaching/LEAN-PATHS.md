@@ -1,5 +1,19 @@
 # Rosie dialogs to Soar through Lean: path A, path B and the direct agents (16 November 2026)
 
+**25 November 2026: matching hints.** Both paths now open the rules with `production optimize-attribute` lines for
+`object` and every relation, sized from the initial world (World-Conventions L11-009); nothing else changes. The six
+Lean-path agents were regenerated. Library v2.47, seeds 1-3, cap 20,000, learning on (default) / off: KenKen 73, 73,
+81 / unchanged; fox-goose-bean 1,904, 1,591, 2,171 / 6,357, 7,068, 7,997 (paths A and B the same); Tower of Hanoi
+reaches the cap on seeds 1-2 either way and with the rules of 24 November too (seed 3 with learning on: 14,914; 18,180
+before).
+
+**24 November 2026: generated slot order.** The generators of both paths now recognize descriptions that are a set of
+slots filled once each and propose the fills only for the first unfilled slot (World-Conventions L21-001;
+`SoarLean/agentgen/WorldSpec/SlotOrder.lean`). Of the three tasks here only KenKen has that structure: its two
+Lean-path agents were regenerated (73 / 73 / 81 decisions on seeds 1-3, library v2.47, against 459 / 473 / 459 with
+the 18 November rules; same plan on every seed; see `logic-puzzles/kenken/README.md`). Tower of Hanoi and
+fox-goose-bean are unchanged byte for byte.
+
 **Regenerated 18 November 2026.** All three paths were regenerated with the 18 Nov generators (agentgen `soarlean-agentgen-2026-11-18b.zip`, worldgen v22 `wg.py` and `convpass.py`): every rule now tests its state's or problem space's name (L3-005) and every rule group has an English comment (L3-012). Paths A and B still write identical rules apart from the first header line (checked on the initial worlds and on the KenKen fail and final worlds). The results below are as written on 16 November (library v2.37); the 18 Nov runs on library v2.42 are in `../README.md`.
 
 **Runnable.** Three tasks were taken through Lean both ways: Tower of Hanoi (`block-puzzles/tower-of-hanoi`), fox-goose-bean (`river-crossing-puzzles/fox-goose-bean`) and KenKen with color groups (`logic-puzzles/kenken`). Each folder has the two Lean-path agents next to the direct one. All use Soar 9.6.6 and library v2.37.

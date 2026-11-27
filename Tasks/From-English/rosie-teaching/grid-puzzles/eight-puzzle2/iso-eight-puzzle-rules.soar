@@ -13,6 +13,13 @@
 ##     static relation between locations, a block being adjacent to what its location is adjacent to (A-G1); clear is a
 ##     maintained one-argument relation (statement 6).
 ##   - The goal is expanded over the blocks of the world file: every block is on the location with its value (A-G3).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 18
+production optimize-attribute on 8
+production optimize-attribute below 8
+production optimize-attribute clear 9
+production optimize-attribute adjacent 24
+
 
 ## Propose initialize-iso-eight-puzzle when its conditions below hold.
 sp {iso-eight-puzzle*propose*initialize-iso-eight-puzzle
@@ -28,23 +35,23 @@ sp {iso-eight-puzzle*apply*initialize-iso-eight-puzzle
 -->
    (<s> ^name iso-eight-puzzle ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-block-10> <o-block-11> <o-block-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^value 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^value 2)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^value 3)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^value 4)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^value 5)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^value 6)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^value 7)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^value 8)
-   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^value 1)
-   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^value 2)
-   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^value 3)
-   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^value 4)
-   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^value 5)
-   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^value 6)
-   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^value 7)
-   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^value 8)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^value 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^value 2 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^value 3 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^value 4 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^value 5 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^value 6 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^value 7 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^value 8 ^static true)
+   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^value 1 ^static true)
+   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^value 2 ^static true)
+   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^value 3 ^static true)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^value 4 ^static true)
+   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^value 5 ^static true)
+   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^value 6 ^static true)
+   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^value 7 ^static true)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^value 8 ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -155,7 +162,7 @@ sp {iso-eight-puzzle*elaborate*problem-space
    (state <s> ^name iso-eight-puzzle)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name iso-eight-puzzle ^copy-relation below ^copy-relation adjacent ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name iso-eight-puzzle ^copy-relation below ^share-relation adjacent ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {iso-eight-puzzle*elaborate*problem-space*mea-substate
@@ -214,8 +221,7 @@ sp {iso-eight-puzzle*propose*slide-block*adjacent-clear
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name slide-block ^task-operator true ^action-handle slide-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name slide-block ^task-operator true ^action-handle slide-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of slide-block (look-ahead).
 sp {iso-eight-puzzle*apply*slide-block*internal

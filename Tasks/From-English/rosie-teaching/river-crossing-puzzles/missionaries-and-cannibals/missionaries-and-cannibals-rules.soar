@@ -31,6 +31,12 @@
 ##     kinds (in name order; the same kind twice when two of it are on the bank). The boat stays an individual block. An
 ##     environment that moves individual blocks binds a kind to any block of that kind on the bank (the output names the
 ##     kind).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 7
+production optimize-attribute on 2
+production optimize-attribute below 2
+production optimize-attribute opposite 2
+
 
 ## Propose initialize-missionaries-and-cannibals when its conditions below hold.
 sp {missionaries-and-cannibals*propose*initialize-missionaries-and-cannibals
@@ -128,8 +134,7 @@ sp {missionaries-and-cannibals*propose*ferry-one*cannibal
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-cannibal> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 0)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-cannibal> ^argument2 <opp> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 0)
 }
 sp {missionaries-and-cannibals*apply*ferry-one*environment-effect*cannibal
    :o-support
@@ -169,8 +174,7 @@ sp {missionaries-and-cannibals*propose*ferry-one*missionary
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-missionary> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 1)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <k-missionary> ^argument2 <opp> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 1)
 }
 sp {missionaries-and-cannibals*apply*ferry-one*environment-effect*missionary
    :o-support
@@ -255,8 +259,7 @@ sp {missionaries-and-cannibals*propose*ferry-two*cannibal-cannibal
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-cannibal> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 2 ^move-missionary 0)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-cannibal> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-cannibal 2 ^move-missionary 0)
 }
 sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*cannibal-cannibal
    :o-support
@@ -296,8 +299,7 @@ sp {missionaries-and-cannibals*propose*ferry-two*cannibal-missionary
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-missionary> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 1)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-cannibal> ^argument2 <k-missionary> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-cannibal 1 ^move-missionary 1)
 }
 sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*cannibal-missionary
    :o-support
@@ -340,8 +342,7 @@ sp {missionaries-and-cannibals*propose*ferry-two*missionary-missionary
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-missionary> ^argument2 <k-missionary> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 2)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <k-missionary> ^argument2 <k-missionary> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp> ^move-cannibal 0 ^move-missionary 2)
 }
 sp {missionaries-and-cannibals*apply*ferry-two*environment-effect*missionary-missionary
    :o-support

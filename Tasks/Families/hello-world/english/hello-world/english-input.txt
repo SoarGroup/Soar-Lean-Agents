@@ -1,0 +1,8 @@
+Hello World: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/hello-world/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. Write the words "Hello World" once, then stop.
+
+Source of the task: Soar Tutorial Part I (Hello World).
+Kind of agent: one action, no search.

@@ -36,6 +36,9 @@
 ##   possible world with no white spot.
 
 ## Propose initialize-three-wizards when its conditions below hold.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 13
+
 sp {three-wizards*propose*initialize-three-wizards
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -228,8 +231,7 @@ sp {three-wizards*propose*announce*mea
    (<sd-o> ^object-handle king ^answered true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name announce ^task-operator true ^action-handle announce ^super-desired <sd> ^argument1 <wz> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name announce ^task-operator true ^action-handle announce ^super-desired <sd> ^argument1 <wz> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 sp {three-wizards*apply*announce*internal
@@ -273,8 +275,7 @@ sp {three-wizards*propose*remain-silent*mea
    (<sd> ^object.answered true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name remain-silent ^task-operator true ^action-handle remain-silent ^super-desired <sd> ^argument-count 0 ^round <r> ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name remain-silent ^task-operator true ^action-handle remain-silent ^super-desired <sd> ^argument-count 0 ^round <r> ^pre-conditions-satisfied true)
 }
 
 sp {three-wizards*apply*remain-silent*internal

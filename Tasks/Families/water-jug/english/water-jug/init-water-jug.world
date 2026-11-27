@@ -1,0 +1,13 @@
+objid 1
+category jug
+name three-gallon
+capacity 3.0
+amount 0.0
+room 3.0
+
+objid 2
+category jug
+name five-gallon
+capacity 5.0
+amount 0.0
+room 5.0

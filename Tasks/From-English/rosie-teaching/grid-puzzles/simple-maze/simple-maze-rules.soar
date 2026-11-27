@@ -13,6 +13,13 @@
 ##     is a static relation between locations (A-G1); clear is a maintained one-argument relation (statement 6). The black
 ##     blocks are walls only in that they stand on locations, which are then not clear.
 ##   - The goal: a blue block is on a blue location.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 17
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute clear 12
+production optimize-attribute adjacent 34
+
 
 ## Propose initialize-simple-maze when its conditions below hold.
 sp {simple-maze*propose*initialize-simple-maze
@@ -28,22 +35,22 @@ sp {simple-maze*apply*initialize-simple-maze
 -->
    (<s> ^name simple-maze ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 2 ^column 1)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 2 ^column 2)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 3)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^row 3 ^column 1)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 3 ^column 2)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^row 3 ^column 3)
-   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^color blue ^row 1 ^column 4)
-   (<o-location-11> ^object-handle location-11 ^anchored true ^type location ^row 2 ^column 4)
-   (<o-location-12> ^object-handle location-12 ^anchored true ^type location ^row 3 ^column 4)
-   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue)
-   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^color black)
-   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^color black)
-   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^color black)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 2 ^column 1 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 2 ^column 2 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 3 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^row 3 ^column 1 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 3 ^column 2 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^row 3 ^column 3 ^static true)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^color blue ^row 1 ^column 4 ^static true)
+   (<o-location-11> ^object-handle location-11 ^anchored true ^type location ^row 2 ^column 4 ^static true)
+   (<o-location-12> ^object-handle location-12 ^anchored true ^type location ^row 3 ^column 4 ^static true)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-14> ^object-handle block-14 ^anchored true ^type block ^color black ^static true)
+   (<o-block-15> ^object-handle block-15 ^anchored true ^type block ^color black ^static true)
+   (<o-block-16> ^object-handle block-16 ^anchored true ^type block ^color black ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -164,7 +171,7 @@ sp {simple-maze*elaborate*problem-space
    (state <s> ^name simple-maze)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name simple-maze ^copy-relation below ^copy-relation adjacent ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name simple-maze ^copy-relation below ^share-relation adjacent ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {simple-maze*elaborate*problem-space*mea-substate
@@ -224,8 +231,7 @@ sp {simple-maze*propose*block-step*adjacent-clear
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name block-step ^task-operator true ^action-handle block-step ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name block-step ^task-operator true ^action-handle block-step ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of block-step (look-ahead).
 sp {simple-maze*apply*block-step*internal

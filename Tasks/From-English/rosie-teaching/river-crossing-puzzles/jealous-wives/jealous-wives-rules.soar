@@ -29,6 +29,12 @@
 ##     carries the label of the situation it produces (^result), the task object the label of the current one (^situation),
 ##     and the look-ahead application records both on the history object (^visited). Real moves (JL, 16 Nov 2026, as in
 ##     mc-world): a real move back to a situation already visited is worst (the top state records ^real-visited).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 11
+production optimize-attribute on 7
+production optimize-attribute below 7
+production optimize-attribute opposite 2
+
 
 ## Propose initialize-jealous-wives when its conditions below hold.
 sp {jealous-wives*propose*initialize-jealous-wives
@@ -44,15 +50,15 @@ sp {jealous-wives*apply*initialize-jealous-wives
 -->
    (<s> ^name jealous-wives ^desireds <ds>)
    (<objs> ^object <o-bank-1> <o-bank-2> <o-woman-smith-3> <o-woman-bale-4> <o-woman-rogers-5> <o-man-smith-6> <o-man-bale-7> <o-man-rogers-8> <o-boat-9> <o-task> <o-history>)
-   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank)
-   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination)
-   (<o-woman-smith-3> ^object-handle woman-smith-3 ^anchored true ^type block ^shape woman ^last-name smith ^index 3 ^label-key pos-3)
-   (<o-woman-bale-4> ^object-handle woman-bale-4 ^anchored true ^type block ^shape woman ^last-name bale ^index 4 ^label-key pos-4)
-   (<o-woman-rogers-5> ^object-handle woman-rogers-5 ^anchored true ^type block ^shape woman ^last-name rogers ^index 5 ^label-key pos-5)
-   (<o-man-smith-6> ^object-handle man-smith-6 ^anchored true ^type block ^shape man ^last-name smith ^index 6 ^label-key pos-6)
-   (<o-man-bale-7> ^object-handle man-bale-7 ^anchored true ^type block ^shape man ^last-name bale ^index 7 ^label-key pos-7)
-   (<o-man-rogers-8> ^object-handle man-rogers-8 ^anchored true ^type block ^shape man ^last-name rogers ^index 8 ^label-key pos-8)
-   (<o-boat-9> ^object-handle boat-9 ^anchored true ^type block ^shape boat ^label-key pos-9)
+   (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank ^static true)
+   (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination ^static true)
+   (<o-woman-smith-3> ^object-handle woman-smith-3 ^anchored true ^type block ^shape woman ^last-name smith ^index 3 ^label-key pos-3 ^static true)
+   (<o-woman-bale-4> ^object-handle woman-bale-4 ^anchored true ^type block ^shape woman ^last-name bale ^index 4 ^label-key pos-4 ^static true)
+   (<o-woman-rogers-5> ^object-handle woman-rogers-5 ^anchored true ^type block ^shape woman ^last-name rogers ^index 5 ^label-key pos-5 ^static true)
+   (<o-man-smith-6> ^object-handle man-smith-6 ^anchored true ^type block ^shape man ^last-name smith ^index 6 ^label-key pos-6 ^static true)
+   (<o-man-bale-7> ^object-handle man-bale-7 ^anchored true ^type block ^shape man ^last-name bale ^index 7 ^label-key pos-7 ^static true)
+   (<o-man-rogers-8> ^object-handle man-rogers-8 ^anchored true ^type block ^shape man ^last-name rogers ^index 8 ^label-key pos-8 ^static true)
+   (<o-boat-9> ^object-handle boat-9 ^anchored true ^type block ^shape boat ^label-key pos-9 ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<o-history> ^object-handle history ^anchored true ^type history)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -155,8 +161,7 @@ sp {jealous-wives*propose*ferry-one
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-one ^task-operator true ^action-handle ferry-one ^argument1 <x> ^argument2 <opp> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp>)
 }
 ## Effect of ferry-one (look-ahead).
 sp {jealous-wives*apply*ferry-one*internal
@@ -231,8 +236,7 @@ sp {jealous-wives*propose*ferry-two
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <x> ^argument2 <y> ^argument-count 2 ^desireds <pre> ^from <cur> ^to <opp>)
-   (<pre> ^desired-count 0)
+   (<op> ^name ferry-two ^task-operator true ^action-handle ferry-two ^argument1 <x> ^argument2 <y> ^argument-count 2 ^pre-conditions-satisfied true ^from <cur> ^to <opp>)
 }
 ## Effect of ferry-two (look-ahead).
 sp {jealous-wives*apply*ferry-two*internal

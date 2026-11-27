@@ -18,6 +18,14 @@
 ##   - Failure: a block is jumpable by another block: the knight's move, a static relation computed as in knight
 ##     swapping (alongside, diagonal-with, near; A-S3).
 ##   - The goal (all blocks are placed) is expanded over the blocks of the world file.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 25
+production optimize-attribute on 7
+production optimize-attribute below 7
+production optimize-attribute clear 17
+production optimize-attribute available 8
+production optimize-attribute jumpable 48
+
 
 ## Propose initialize-n-knights when its conditions below hold.
 sp {n-knights*propose*initialize-n-knights
@@ -33,30 +41,30 @@ sp {n-knights*apply*initialize-n-knights
 -->
    (<s> ^name n-knights ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-location-13> <o-location-14> <o-location-15> <o-location-16> <o-block-17> <o-block-18> <o-block-19> <o-block-20> <o-block-21> <o-block-22> <o-block-23> <o-block-24> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 2 ^column 1)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 3 ^column 1)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 4 ^column 1)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 1 ^column 2)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 2)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^row 3 ^column 2)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 4 ^column 2)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^row 1 ^column 3)
-   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^row 2 ^column 3)
-   (<o-location-11> ^object-handle location-11 ^anchored true ^type location ^row 3 ^column 3)
-   (<o-location-12> ^object-handle location-12 ^anchored true ^type location ^row 4 ^column 3)
-   (<o-location-13> ^object-handle location-13 ^anchored true ^type location ^row 1 ^column 4)
-   (<o-location-14> ^object-handle location-14 ^anchored true ^type location ^row 2 ^column 4)
-   (<o-location-15> ^object-handle location-15 ^anchored true ^type location ^row 3 ^column 4)
-   (<o-location-16> ^object-handle location-16 ^anchored true ^type location ^row 4 ^column 4)
-   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color blue)
-   (<o-block-18> ^object-handle block-18 ^anchored true ^type block ^color blue)
-   (<o-block-19> ^object-handle block-19 ^anchored true ^type block ^color blue)
-   (<o-block-20> ^object-handle block-20 ^anchored true ^type block ^color blue)
-   (<o-block-21> ^object-handle block-21 ^anchored true ^type block ^color blue)
-   (<o-block-22> ^object-handle block-22 ^anchored true ^type block ^color blue)
-   (<o-block-23> ^object-handle block-23 ^anchored true ^type block ^color blue)
-   (<o-block-24> ^object-handle block-24 ^anchored true ^type block ^color blue)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 2 ^column 1 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 3 ^column 1 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 4 ^column 1 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 1 ^column 2 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 2 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^row 3 ^column 2 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 4 ^column 2 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^row 1 ^column 3 ^static true)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^row 2 ^column 3 ^static true)
+   (<o-location-11> ^object-handle location-11 ^anchored true ^type location ^row 3 ^column 3 ^static true)
+   (<o-location-12> ^object-handle location-12 ^anchored true ^type location ^row 4 ^column 3 ^static true)
+   (<o-location-13> ^object-handle location-13 ^anchored true ^type location ^row 1 ^column 4 ^static true)
+   (<o-location-14> ^object-handle location-14 ^anchored true ^type location ^row 2 ^column 4 ^static true)
+   (<o-location-15> ^object-handle location-15 ^anchored true ^type location ^row 3 ^column 4 ^static true)
+   (<o-location-16> ^object-handle location-16 ^anchored true ^type location ^row 4 ^column 4 ^static true)
+   (<o-block-17> ^object-handle block-17 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-18> ^object-handle block-18 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-19> ^object-handle block-19 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-20> ^object-handle block-20 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-21> ^object-handle block-21 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-22> ^object-handle block-22 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-23> ^object-handle block-23 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-24> ^object-handle block-24 ^anchored true ^type block ^color blue ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -243,7 +251,7 @@ sp {n-knights*elaborate*problem-space
    (state <s> ^name n-knights)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name n-knights ^copy-relation below ^copy-relation jumpable ^copy-relation clear ^copy-relation available ^dont-copy-object-attribute goal-met)
+   (<p> ^name n-knights ^copy-relation below ^share-relation jumpable ^copy-relation clear ^copy-relation available ^dont-copy-object-attribute goal-met)
 }
 
 sp {n-knights*elaborate*problem-space*mea-substate
@@ -302,8 +310,7 @@ sp {n-knights*propose*place-block
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name place-block ^task-operator true ^action-handle place-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name place-block ^task-operator true ^action-handle place-block ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of place-block (look-ahead).
 sp {n-knights*apply*place-block*internal*from-block

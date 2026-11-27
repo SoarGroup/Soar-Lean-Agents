@@ -1,6 +1,6 @@
 import sys as _sys, os as _os
 _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'rosie-teaching', 'tools'))
-import convpass   # 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
+import wg, convpass   # wg.finish: World-Conventions L3-104, L11-009; 18 Nov 2026 conventions: problem-space test (L3-005), group comments (L3-012)
 import os
 import itertools
 W=["wizard-1","wizard-2","wizard-3"]
@@ -321,7 +321,7 @@ sp {three-wizards*apply*remain-silent*environment-effect*rule-out
    (write |  round | (+ <r> 1) |: ruled out | <ph> |, where | <i> | would have known his spot| (crlf))
 }
 """)
-open("three-wizards-rules.soar","w").write(convpass.apply("".join(R)))
+open("three-wizards-rules.soar","w").write(wg.finish(convpass.apply("".join(R))))
 open("three-wizards.soar","w").write("""# Loads the shared Soar library from the repository (Soar/soar-library), then the task rules.
 # The path assumes this folder is unpacked in its place in Soar-Lean-Agents; set SOAR_LIBRARY
 # when running gen.py to write another path.

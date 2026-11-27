@@ -1,0 +1,13 @@
+Tower of Hanoi: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/towers-of-hanoi/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. There are three pegs, A, B and C, and three disks of different sizes, all on peg A, largest at the bottom.
+ 2. Move one disk at a time, taking only the top disk of a peg.
+ 3. A disk is placed on an empty peg or on a larger disk; a disk may never rest on a smaller one.
+ 4. The goal is to move the whole stack to another peg.
+
+Initial state not in the English, read from the original agent's initialize rules (allowed by JL, 25 Nov 2026):
+the target peg is C.
+Source of the task: classic puzzle (Lucas 1883).
+Kind of agent: state-space search.

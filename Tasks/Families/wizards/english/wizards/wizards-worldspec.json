@@ -1,0 +1,1343 @@
+{
+  "format": "worldspec-1",
+  "name": "wizards",
+  "title": "Three wizards (families, from English)",
+  "statements": [
+    [
+      1,
+      "Three wizards, A, B and C, sit where each can see the others but not himself."
+    ],
+    [
+      2,
+      "Each has a spot on his forehead that is either white or black."
+    ],
+    [
+      3,
+      "They are told that at least one spot is white."
+    ],
+    [
+      4,
+      "They are asked in turn, A, then B, then C, whether they know the colour of their own spot."
+    ],
+    [
+      5,
+      "Each can reason about what the others would have concluded from what they see and from the answers so far."
+    ],
+    [
+      6,
+      "In this instance B and C have white spots and A has a black spot."
+    ],
+    [
+      7,
+      "The goal is that a wizard correctly states the colour of his own spot."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-WZ1",
+      "kind": "intent",
+      "text": "The eight possible patterns of spots are world objects (w-bww: A black, B white, C white); spot(c, w, colour) gives each wizard's colour in each world; view-mate(c, w, w2) holds when w2 differs from w only in c's own spot (what c cannot see). The actual world is w-bww.",
+      "stmts": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "A-WZ2",
+      "kind": "intent",
+      "text": "\"B and C start marked, A unmarked\" in the description is read as B and C white and A black (marked = the colour the announcement is about).",
+      "stmts": [
+        6
+      ]
+    },
+    {
+      "id": "A-WZ3",
+      "kind": "intent",
+      "text": "Knowledge is explicit: knows-at(c, w, r) holds when, in world w at turn r, no world c cannot tell from w is still possible. Derived relations use negation only in their definitions; operators test them positively.",
+      "stmts": [
+        1,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "A-WZ4",
+      "kind": "intent",
+      "text": "The announcement and each turn are operators that rule out worlds (out-at(w, turn)). A world is live at turn r if it was not ruled out at an earlier turn. A stage number keeps the order; turn objects carry their number and asks(turn, wizard) says who is asked (A, B, C in that order).",
+      "stmts": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "A-WZ5",
+      "kind": "intent",
+      "text": "A turn records the asked wizard's answer in the actual world: if he knows, he states his colour (says(c, colour), the colour of his spot in the actual world, so it is correct). Every world where he would have answered differently is ruled out, since all hear the answer.",
+      "stmts": [
+        4,
+        5,
+        7
+      ]
+    },
+    {
+      "id": "A-WZ6",
+      "kind": "intent",
+      "text": "The goal is that some wizard has stated his colour. With A black, B and C white, A and B do not know and C states white at the third turn.",
+      "stmts": [
+        7
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "a",
+      "type": "wizard",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "a"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "b",
+      "type": "wizard",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "b"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "c",
+      "type": "wizard",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "c"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "white",
+      "type": "colour",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "white"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "black",
+      "type": "colour",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "black"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-www",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-www"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-wwb",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-wwb"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-wbw",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-wbw"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-wbb",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-wbb"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-bww",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-bww"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-bwb",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-bwb"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-bbw",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-bbw"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "w-bbb",
+      "type": "world",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "w-bbb"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "told",
+      "type": "turn",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "told"
+          }
+        ],
+        [
+          "n",
+          {
+            "int": 0
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "turn-a",
+      "type": "turn",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "turn-a"
+          }
+        ],
+        [
+          "n",
+          {
+            "int": 1
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "turn-b",
+      "type": "turn",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "turn-b"
+          }
+        ],
+        [
+          "n",
+          {
+            "int": 2
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "turn-c",
+      "type": "turn",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "turn-c"
+          }
+        ],
+        [
+          "n",
+          {
+            "int": 3
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "talk",
+      "type": "stage",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "talk"
+          }
+        ],
+        [
+          "step",
+          {
+            "int": 0
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "spot",
+      [
+        "a",
+        "w-www",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-www",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-www",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-wwb",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-wwb",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-wwb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-wbw",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-wbw",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-wbw",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-wbb",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-wbb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-wbb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-bww",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-bww",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-bww",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-bwb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-bwb",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-bwb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-bbw",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-bbw",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-bbw",
+        "white"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "a",
+        "w-bbb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "b",
+        "w-bbb",
+        "black"
+      ]
+    ],
+    [
+      "spot",
+      [
+        "c",
+        "w-bbb",
+        "black"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-www",
+        "w-bww"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-wwb",
+        "w-bwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-wbw",
+        "w-bbw"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-wbb",
+        "w-bbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-bww",
+        "w-www"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-bwb",
+        "w-wwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-bbw",
+        "w-wbw"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "a",
+        "w-bbb",
+        "w-wbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-www",
+        "w-wbw"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-wwb",
+        "w-wbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-wbw",
+        "w-www"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-wbb",
+        "w-wwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-bww",
+        "w-bbw"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-bwb",
+        "w-bbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-bbw",
+        "w-bww"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "b",
+        "w-bbb",
+        "w-bwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-www",
+        "w-wwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-wwb",
+        "w-www"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-wbw",
+        "w-wbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-wbb",
+        "w-wbw"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-bww",
+        "w-bwb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-bwb",
+        "w-bww"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-bbw",
+        "w-bbb"
+      ]
+    ],
+    [
+      "view-mate",
+      [
+        "c",
+        "w-bbb",
+        "w-bbw"
+      ]
+    ],
+    [
+      "actual",
+      [
+        "w-bww"
+      ]
+    ],
+    [
+      "asks",
+      [
+        "turn-a",
+        "a"
+      ]
+    ],
+    [
+      "asks",
+      [
+        "turn-b",
+        "b"
+      ]
+    ],
+    [
+      "asks",
+      [
+        "turn-c",
+        "c"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "tell",
+      "monotonic": true,
+      "params": [
+        [
+          "t",
+          "stage"
+        ]
+      ],
+      "stmts": [
+        3
+      ],
+      "pre": [
+        {
+          "has": "t",
+          "prop": "step",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "bind": [],
+      "effects": [
+        {
+          "each": [
+            {
+              "rel": "all-black",
+              "args": [
+                {
+                  "var": "pw"
+                }
+              ]
+            }
+          ],
+          "eff": {
+            "add": "out-at",
+            "args": [
+              {
+                "var": "pw"
+              },
+              {
+                "h": "told"
+              }
+            ]
+          }
+        },
+        {
+          "update": "t",
+          "prop": "step",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "t",
+                  "step"
+                ]
+              },
+              {
+                "val": {
+                  "int": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Told: at least one spot is white"
+        }
+      ]
+    },
+    {
+      "name": "ask",
+      "monotonic": true,
+      "params": [
+        [
+          "r",
+          "turn"
+        ]
+      ],
+      "stmts": [
+        4,
+        5,
+        7
+      ],
+      "pre": [
+        {
+          "obj": "t",
+          "type": "stage"
+        },
+        {
+          "has": "t",
+          "prop": "step",
+          "cmp": "eq",
+          "rhs": {
+            "prop": [
+              "r",
+              "n"
+            ]
+          }
+        },
+        {
+          "has": "r",
+          "prop": "n",
+          "cmp": "gt",
+          "rhs": {
+            "val": {
+              "int": 0
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "t",
+          "type": "stage"
+        }
+      ],
+      "effects": [
+        {
+          "each": [
+            {
+              "rel": "actual",
+              "args": [
+                {
+                  "var": "wa"
+                }
+              ]
+            },
+            {
+              "rel": "asks",
+              "args": [
+                {
+                  "var": "r"
+                },
+                {
+                  "var": "c"
+                }
+              ]
+            },
+            {
+              "rel": "knows-at",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "wa"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            },
+            {
+              "rel": "spot",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "wa"
+                },
+                {
+                  "var": "col"
+                }
+              ]
+            }
+          ],
+          "eff": {
+            "add": "says",
+            "args": [
+              {
+                "var": "c"
+              },
+              {
+                "var": "col"
+              }
+            ]
+          }
+        },
+        {
+          "each": [
+            {
+              "rel": "answer-differs",
+              "args": [
+                {
+                  "var": "pw"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            }
+          ],
+          "eff": {
+            "add": "out-at",
+            "args": [
+              {
+                "var": "pw"
+              },
+              {
+                "var": "r"
+              }
+            ]
+          }
+        },
+        {
+          "each": [
+            {
+              "rel": "answer-differs-too",
+              "args": [
+                {
+                  "var": "pw"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            }
+          ],
+          "eff": {
+            "add": "out-at",
+            "args": [
+              {
+                "var": "pw"
+              },
+              {
+                "var": "r"
+              }
+            ]
+          }
+        },
+        {
+          "update": "t",
+          "prop": "step",
+          "rhs": {
+            "plus": [
+              {
+                "prop": [
+                  "t",
+                  "step"
+                ]
+              },
+              {
+                "val": {
+                  "int": 1
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Ask, turn "
+        },
+        {
+          "prop": [
+            "r",
+            "n"
+          ]
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "says",
+        "args": [
+          {
+            "var": "c"
+          },
+          {
+            "var": "col"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    7
+  ],
+  "failures": [],
+  "derived": [
+    {
+      "name": "all-black",
+      "vars": [
+        "pw"
+      ],
+      "defn": [
+        {
+          "obj": "pw",
+          "type": "world"
+        },
+        {
+          "none": [
+            {
+              "rel": "spot",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "pw"
+                },
+                {
+                  "h": "white"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        3
+      ]
+    },
+    {
+      "name": "live-at",
+      "vars": [
+        "pw",
+        "r"
+      ],
+      "defn": [
+        {
+          "obj": "pw",
+          "type": "world"
+        },
+        {
+          "obj": "r",
+          "type": "turn"
+        },
+        {
+          "none": [
+            {
+              "rel": "out-at",
+              "args": [
+                {
+                  "var": "pw"
+                },
+                {
+                  "var": "earlier"
+                }
+              ]
+            },
+            {
+              "has": "earlier",
+              "prop": "n",
+              "cmp": "lt",
+              "rhs": {
+                "prop": [
+                  "r",
+                  "n"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "knows-at",
+      "vars": [
+        "c",
+        "pw",
+        "r"
+      ],
+      "defn": [
+        {
+          "obj": "c",
+          "type": "wizard"
+        },
+        {
+          "rel": "live-at",
+          "args": [
+            {
+              "var": "pw"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        },
+        {
+          "none": [
+            {
+              "rel": "view-mate",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "pw"
+                },
+                {
+                  "var": "w2"
+                }
+              ]
+            },
+            {
+              "rel": "live-at",
+              "args": [
+                {
+                  "var": "w2"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        1,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "answer-differs",
+      "vars": [
+        "pw",
+        "r"
+      ],
+      "defn": [
+        {
+          "rel": "live-at",
+          "args": [
+            {
+              "var": "pw"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        },
+        {
+          "rel": "asks",
+          "args": [
+            {
+              "var": "r"
+            },
+            {
+              "var": "c"
+            }
+          ]
+        },
+        {
+          "rel": "actual",
+          "args": [
+            {
+              "var": "wa"
+            }
+          ]
+        },
+        {
+          "rel": "knows-at",
+          "args": [
+            {
+              "var": "c"
+            },
+            {
+              "var": "wa"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        },
+        {
+          "none": [
+            {
+              "rel": "knows-at",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "pw"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        4,
+        5
+      ]
+    },
+    {
+      "name": "answer-differs-too",
+      "vars": [
+        "pw",
+        "r"
+      ],
+      "defn": [
+        {
+          "rel": "live-at",
+          "args": [
+            {
+              "var": "pw"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        },
+        {
+          "rel": "asks",
+          "args": [
+            {
+              "var": "r"
+            },
+            {
+              "var": "c"
+            }
+          ]
+        },
+        {
+          "rel": "actual",
+          "args": [
+            {
+              "var": "wa"
+            }
+          ]
+        },
+        {
+          "rel": "knows-at",
+          "args": [
+            {
+              "var": "c"
+            },
+            {
+              "var": "pw"
+            },
+            {
+              "var": "r"
+            }
+          ]
+        },
+        {
+          "none": [
+            {
+              "rel": "knows-at",
+              "args": [
+                {
+                  "var": "c"
+                },
+                {
+                  "var": "wa"
+                },
+                {
+                  "var": "r"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "stmts": [
+        4,
+        5
+      ]
+    }
+  ]
+}

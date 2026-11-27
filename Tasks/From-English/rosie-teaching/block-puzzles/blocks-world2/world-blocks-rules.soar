@@ -11,6 +11,12 @@
 ##   - clear is a maintained one-argument relation, for blocks and locations (A-H1).
 ##   - The goal is ^goal-met true on the task object when some blue block is on some purple block and the same blue
 ##     block is below some yellow block.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 7
+production optimize-attribute on 3
+production optimize-attribute below 3
+production optimize-attribute clear 3
+
 
 ## Propose initialize-world-blocks when its conditions below hold.
 sp {world-blocks*propose*initialize-world-blocks
@@ -26,12 +32,12 @@ sp {world-blocks*apply*initialize-world-blocks
 -->
    (<s> ^name world-blocks ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-block-4> <o-block-5> <o-block-6> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location)
-   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^color blue)
-   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color purple)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color yellow)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^static true)
+   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^color purple ^static true)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^color yellow ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -118,8 +124,7 @@ sp {world-blocks*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {world-blocks*apply*move*internal

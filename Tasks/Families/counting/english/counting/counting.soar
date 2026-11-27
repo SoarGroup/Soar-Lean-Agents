@@ -1,0 +1,5 @@
+## counting (from English): loads the Soar library and the generated rules.
+pushd "../../../../../Soar/soar-library"
+source soar-library.soar
+popd
+source counting-rules.soar

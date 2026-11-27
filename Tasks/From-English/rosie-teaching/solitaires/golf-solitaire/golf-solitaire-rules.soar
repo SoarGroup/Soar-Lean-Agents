@@ -22,6 +22,12 @@
 ##     leaves becomes clear only when no other block is on it (a negated condition in the applications; A-P4).
 ##   - The goal (statement 15) is expanded over the blocks of the world file. "The solution has nine steps" (statement 11)
 ##     is checked against the plans, not used.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 11
+production optimize-attribute on 6
+production optimize-attribute below 6
+production optimize-attribute clear 4
+
 
 ## Propose initialize-golf-solitaire when its conditions below hold.
 sp {golf-solitaire*propose*initialize-golf-solitaire
@@ -37,16 +43,25 @@ sp {golf-solitaire*apply*initialize-golf-solitaire
 -->
    (<s> ^name golf-solitaire ^desireds <ds>)
    (<objs> ^object <o-block-1> <o-block-2> <o-block-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-location-10> <o-task>)
-   (<o-block-1> ^object-handle block-1 ^anchored true ^type block ^value 2 ^position 0 ^value-plus-1 3 ^value-minus-1 1)
-   (<o-block-2> ^object-handle block-2 ^anchored true ^type block ^value 4 ^position 0 ^value-plus-1 5 ^value-minus-1 3)
-   (<o-block-3> ^object-handle block-3 ^anchored true ^type block ^value 5 ^position 0 ^value-plus-1 6 ^value-minus-1 4)
-   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^value 1 ^position 0 ^value-plus-1 2 ^value-minus-1 0)
-   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^value 3 ^position 0 ^value-plus-1 4 ^value-minus-1 2)
-   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^value 5 ^position 0 ^value-plus-1 6 ^value-minus-1 4)
-   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^value 4 ^position 0 ^value-plus-1 5 ^value-minus-1 3)
-   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^value 4 ^position 0 ^value-plus-1 5 ^value-minus-1 3)
-   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^value 3 ^position 0 ^value-plus-1 4 ^value-minus-1 2)
-   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^name garbage ^position 1)
+   (<o-block-1> ^object-handle block-1 ^anchored true ^type block ^position 0 ^fixed <o-block-1-fx>)
+   (<o-block-1-fx> ^value 2 ^value-plus-1 3 ^value-minus-1 1)
+   (<o-block-2> ^object-handle block-2 ^anchored true ^type block ^position 0 ^fixed <o-block-2-fx>)
+   (<o-block-2-fx> ^value 4 ^value-plus-1 5 ^value-minus-1 3)
+   (<o-block-3> ^object-handle block-3 ^anchored true ^type block ^position 0 ^fixed <o-block-3-fx>)
+   (<o-block-3-fx> ^value 5 ^value-plus-1 6 ^value-minus-1 4)
+   (<o-block-4> ^object-handle block-4 ^anchored true ^type block ^position 0 ^fixed <o-block-4-fx>)
+   (<o-block-4-fx> ^value 1 ^value-plus-1 2 ^value-minus-1 0)
+   (<o-block-5> ^object-handle block-5 ^anchored true ^type block ^position 0 ^fixed <o-block-5-fx>)
+   (<o-block-5-fx> ^value 3 ^value-plus-1 4 ^value-minus-1 2)
+   (<o-block-6> ^object-handle block-6 ^anchored true ^type block ^position 0 ^fixed <o-block-6-fx>)
+   (<o-block-6-fx> ^value 5 ^value-plus-1 6 ^value-minus-1 4)
+   (<o-block-7> ^object-handle block-7 ^anchored true ^type block ^position 0 ^fixed <o-block-7-fx>)
+   (<o-block-7-fx> ^value 4 ^value-plus-1 5 ^value-minus-1 3)
+   (<o-block-8> ^object-handle block-8 ^anchored true ^type block ^position 0 ^fixed <o-block-8-fx>)
+   (<o-block-8-fx> ^value 4 ^value-plus-1 5 ^value-minus-1 3)
+   (<o-block-9> ^object-handle block-9 ^anchored true ^type block ^position 0 ^fixed <o-block-9-fx>)
+   (<o-block-9-fx> ^value 3 ^value-plus-1 4 ^value-minus-1 2)
+   (<o-location-10> ^object-handle location-10 ^anchored true ^type location ^name garbage ^position 1 ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -139,7 +154,7 @@ sp {golf-solitaire*propose*move*onto-garbage
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^value <v> ^object-handle $ <bh>)
+   (<b> ^type block ^position 0 ^fixed.value <v> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
    (<d> ^type location ^name garbage ^object-handle $ <dh>)
@@ -148,40 +163,37 @@ sp {golf-solitaire*propose*move*onto-garbage
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {golf-solitaire*propose*move*onto-top*one-less
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^value-plus-1 <tv> ^object-handle $ <bh>)
+   (<b> ^type block ^position 0 ^fixed.value-plus-1 <tv> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
-   (<d> ^type block ^position 1 ^value <tv> ^object-handle $ <dh>)
+   (<d> ^type block ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
    (<w> ^clear <clear-d>)
    (<clear-d> ^argument1 <d>)
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 sp {golf-solitaire*propose*move*onto-top*one-more
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
    (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^value-minus-1 <tv> ^object-handle $ <bh>)
+   (<b> ^type block ^position 0 ^fixed.value-minus-1 <tv> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
-   (<d> ^type block ^position 1 ^value <tv> ^object-handle $ <dh>)
+   (<d> ^type block ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
    (<w> ^clear <clear-d>)
    (<clear-d> ^argument1 <d>)
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {golf-solitaire*apply*move*internal*from-block-freed

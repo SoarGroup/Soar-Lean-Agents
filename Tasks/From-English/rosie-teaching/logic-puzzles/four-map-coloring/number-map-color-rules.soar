@@ -15,6 +15,11 @@
 ## Translation (tools/rosie-language.md gives the general reading; the assumption ledger is in README.md):
 ##   - "an object that is next to the location": the near relation of the world file (A-L2).
 ##   - Operator write (argument1 = the location, argument2 = number-k for k from 1 to 4).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 14
+production optimize-attribute empty 3
+production optimize-attribute near 40
+
 
 ## Propose initialize-number-map-color when its conditions below hold.
 sp {number-map-color*propose*initialize-number-map-color
@@ -40,10 +45,10 @@ sp {number-map-color*apply*initialize-number-map-color
    (<o-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2)
    (<o-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3)
    (<o-task> ^object-handle task ^anchored true ^type task)
-   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
-   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
-   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
-   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<o-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1 ^static true)
+   (<o-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2 ^static true)
+   (<o-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3 ^static true)
+   (<o-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4 ^static true)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
    (<d1-o> ^object-handle task ^goal-met true)
@@ -196,8 +201,7 @@ sp {number-map-color*propose*write
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of write (look-ahead): the location has the value; it is no longer empty.
 sp {number-map-color*apply*write*internal

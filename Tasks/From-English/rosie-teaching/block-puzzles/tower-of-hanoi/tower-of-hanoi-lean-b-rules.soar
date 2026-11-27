@@ -12,6 +12,12 @@
 ##   A-H3: "two clear green locations": two different green locations, both clear.
 ##   A-H4: Moving X onto Y: X's on relation and the matching below relation now name Y; the object X left becomes clear.
 ##   A-H5: The action has no name in the dialog; it is called move.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 7
+production optimize-attribute on 3
+production optimize-attribute below 3
+production optimize-attribute clear 3
+
 
 ## Propose initialize-tower-of-hanoi when its conditions below hold.
 sp {tower-of-hanoi*propose*initialize-tower-of-hanoi

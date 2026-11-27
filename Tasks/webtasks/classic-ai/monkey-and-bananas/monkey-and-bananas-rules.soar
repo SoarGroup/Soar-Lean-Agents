@@ -16,6 +16,12 @@
 ##   A-MB2: The floor is an object; being on the floor or on the box is an on relation from the monkey.
 ##   A-MB3: "has the bananas" is a holds relation from the monkey to the bananas, added by grasp.
 ##   A-MB4: The actions are named go, push, climb-up, climb-down and grasp.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 8
+production optimize-attribute at 3
+production optimize-attribute on 2
+production optimize-attribute holds 2
+
 
 ## Propose initialize-monkey-and-bananas when its conditions below hold.
 sp {monkey-and-bananas*propose*initialize-monkey-and-bananas
@@ -31,13 +37,13 @@ sp {monkey-and-bananas*apply*initialize-monkey-and-bananas
 -->
    (<s> ^name monkey-and-bananas ^desireds <ds>)
    (<objs> ^object <k-place-a> <k-place-b> <k-place-c> <k-monkey> <k-box> <k-bananas> <k-floor> <k-task>)
-   (<k-place-a> ^object-handle place-a ^anchored true ^type location ^name place-a)
-   (<k-place-b> ^object-handle place-b ^anchored true ^type location ^name place-b)
-   (<k-place-c> ^object-handle place-c ^anchored true ^type location ^name place-c)
-   (<k-monkey> ^object-handle monkey ^anchored true ^type animal ^name monkey)
-   (<k-box> ^object-handle box ^anchored true ^type box ^name box)
-   (<k-bananas> ^object-handle bananas ^anchored true ^type food ^name bananas)
-   (<k-floor> ^object-handle floor ^anchored true ^type floor ^name floor)
+   (<k-place-a> ^object-handle place-a ^anchored true ^type location ^name place-a ^static true)
+   (<k-place-b> ^object-handle place-b ^anchored true ^type location ^name place-b ^static true)
+   (<k-place-c> ^object-handle place-c ^anchored true ^type location ^name place-c ^static true)
+   (<k-monkey> ^object-handle monkey ^anchored true ^type animal ^name monkey ^static true)
+   (<k-box> ^object-handle box ^anchored true ^type box ^name box ^static true)
+   (<k-bananas> ^object-handle bananas ^anchored true ^type food ^name bananas ^static true)
+   (<k-floor> ^object-handle floor ^anchored true ^type floor ^name floor ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -120,8 +126,7 @@ sp {monkey-and-bananas*propose*go
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name go ^task-operator true ^action-handle go ^argument1 <to> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name go ^task-operator true ^action-handle go ^argument1 <to> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of go (look-ahead).
@@ -179,8 +184,7 @@ sp {monkey-and-bananas*propose*push
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name push ^task-operator true ^action-handle push ^argument1 <to> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name push ^task-operator true ^action-handle push ^argument1 <to> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of push (look-ahead).
@@ -245,8 +249,7 @@ sp {monkey-and-bananas*propose*climb-up
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name climb-up ^task-operator true ^action-handle climb-up ^argument1 <bx> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name climb-up ^task-operator true ^action-handle climb-up ^argument1 <bx> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of climb-up (look-ahead).
@@ -301,8 +304,7 @@ sp {monkey-and-bananas*propose*climb-down
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name climb-down ^task-operator true ^action-handle climb-down ^argument1 <f> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name climb-down ^task-operator true ^action-handle climb-down ^argument1 <f> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of climb-down (look-ahead).
@@ -361,8 +363,7 @@ sp {monkey-and-bananas*propose*grasp
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name grasp ^task-operator true ^action-handle grasp ^argument1 <fd> ^argument-count 1 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name grasp ^task-operator true ^action-handle grasp ^argument1 <fd> ^argument-count 1 ^pre-conditions-satisfied true)
 }
 
 ## Effect of grasp (look-ahead).

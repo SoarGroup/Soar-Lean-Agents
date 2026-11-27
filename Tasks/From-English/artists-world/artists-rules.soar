@@ -20,7 +20,7 @@
 ##   - Look-ahead does not return to a situation already visited on the simulated path. A real
 ##     crossing back to a situation already visited for real is only a last resort (worst
 ##     preference), so the agent prefers progress but can still back out of a dead end.
-##   - Number of pairs: 2 (regenerate with: python3 gen.py <n>).
+##   - Number of pairs: 3 (regenerate with: python3 gen.py <n>).
 ##
 ## World: banks left/right; boat (^side; ^visited labels in look-ahead); artist-i
 ## (^manager-handle manager-i) and manager-i, each with ^side. Goal: one desired, the left bank ^empty true.
@@ -32,6 +32,9 @@
 ## as they are applied.
 
 ## Propose initialize-artists when its conditions below hold.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 9
+
 sp {artists*propose*initialize-artists
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -55,18 +58,20 @@ sp {artists*apply*initialize-artists
    (<w> ^objects <objs>)
 -->
    (<s> ^name artists ^desireds <ds>)
-   (<objs> ^object <left> <right> <boat> <artist-1> <artist-2> <manager-1> <manager-2>)
+   (<objs> ^object <left> <right> <boat> <artist-1> <artist-2> <artist-3> <manager-1> <manager-2> <manager-3>)
    (<left> ^object-handle left ^anchored true ^type bank)
    (<right> ^object-handle right ^anchored true ^type bank)
    (<boat> ^object-handle boat ^anchored true ^type boat ^side left)
    (<artist-1> ^object-handle artist-1 ^anchored true ^type person ^role artist ^number 1 ^side left ^manager-handle manager-1)
    (<artist-2> ^object-handle artist-2 ^anchored true ^type person ^role artist ^number 2 ^side left ^manager-handle manager-2)
-   (<manager-1> ^object-handle manager-1 ^anchored true ^type person ^role manager ^number 3 ^side left)
-   (<manager-2> ^object-handle manager-2 ^anchored true ^type person ^role manager ^number 4 ^side left)
+   (<artist-3> ^object-handle artist-3 ^anchored true ^type person ^role artist ^number 3 ^side left ^manager-handle manager-3)
+   (<manager-1> ^object-handle manager-1 ^anchored true ^type person ^role manager ^number 4 ^side left)
+   (<manager-2> ^object-handle manager-2 ^anchored true ^type person ^role manager ^number 5 ^side left)
+   (<manager-3> ^object-handle manager-3 ^anchored true ^type person ^role manager ^number 6 ^side left)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
    (<d1-o> ^object-handle left ^empty true)
-   (write |2 artists and 2 managers on the left bank; the boat holds two.| (crlf))
+   (write |3 artists and 3 managers on the left bank; the boat holds two.| (crlf))
 }
 
 ## Elaborate top state environment none: adds ^environment.
@@ -143,8 +148,7 @@ sp {artists*propose*cross*one*mea
 -->
    (<s> ^operator <op> +)
    (<op> ^name cross ^task-operator true ^action-handle cross ^super-desired <sd> ^argument1 <p> ^argument-count 1
-         ^moves <p> ^from <fh> ^to <th> ^text <ph> ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^moves <p> ^from <fh> ^to <th> ^text <ph> ^pre-conditions-satisfied true)
 }
 
 sp {artists*propose*cross*two*mea
@@ -159,8 +163,7 @@ sp {artists*propose*cross*two*mea
 -->
    (<s> ^operator <op> +)
    (<op> ^name cross ^task-operator true ^action-handle cross ^super-desired <sd> ^argument1 <p1> ^argument2 <p2> ^argument-count 2
-         ^moves <p1> <p2> ^from <fh> ^to <th> ^text (concat <h1> | and | <h2>) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^moves <p1> <p2> ^from <fh> ^to <th> ^text (concat <h1> | and | <h2>) ^pre-conditions-satisfied true)
 }
 
 ## Where each person would be after the crossing. The predictions are kept on the state, not on
@@ -203,13 +206,17 @@ sp {artists*elaborate*operator*result-label
          ^result <r0>
          ^result <r1>
          ^result <r2>
-         ^result <r3>)
+         ^result <r3>
+         ^result <r4>
+         ^result <r5>)
    (<r0> ^handle artist-1 ^side <s0>)
    (<r1> ^handle artist-2 ^side <s1>)
-   (<r2> ^handle manager-1 ^side <s2>)
-   (<r3> ^handle manager-2 ^side <s3>)
+   (<r2> ^handle artist-3 ^side <s2>)
+   (<r3> ^handle manager-1 ^side <s3>)
+   (<r4> ^handle manager-2 ^side <s4>)
+   (<r5> ^handle manager-3 ^side <s5>)
 -->
-   (<pr> ^label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |-| <th>))
+   (<pr> ^label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |.| <s4> |.| <s5> |-| <th>))
 }
 
 ## Reject a crossing that leaves an artist with another manager and without their own.
@@ -264,11 +271,15 @@ sp {artists*elaborate*state*situation-label
    (<objs> ^object <q1>)
    (<q1> ^object-handle artist-2 ^side <s1>)
    (<objs> ^object <q2>)
-   (<q2> ^object-handle manager-1 ^side <s2>)
+   (<q2> ^object-handle artist-3 ^side <s2>)
    (<objs> ^object <q3>)
-   (<q3> ^object-handle manager-2 ^side <s3>)
+   (<q3> ^object-handle manager-1 ^side <s3>)
+   (<objs> ^object <q4>)
+   (<q4> ^object-handle manager-2 ^side <s4>)
+   (<objs> ^object <q5>)
+   (<q5> ^object-handle manager-3 ^side <s5>)
 -->
-   (<s> ^situation-label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |-| <b>))
+   (<s> ^situation-label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |.| <s4> |.| <s5> |-| <b>))
 }
 
 ## Apply cross in problem space artists (boat): changes ^side.
@@ -306,6 +317,29 @@ sp {artists*prefer*cross*real-visited*worst
    (<pr> ^operator <op> ^label <l>)
 -->
    (<s> ^operator <op> <)
+}
+
+## The shortest crossing sequence (11 crossings for three pairs) is longer than the library's
+## default look-ahead limit of 7 tie levels, so this task raises the limit for its top-level
+## selection to 4N-1.
+sp {artists*propose*raise-max-evaluation-depth
+   (state <s> ^name selection ^top-selection true ^superstate.name artists ^max-evaluation-depth 7)
+-->
+   (<s> ^operator <o> + >)
+   (<o> ^name raise-max-evaluation-depth)
+}
+
+sp {artists*prefer*raise-max-evaluation-depth
+   (state <s> ^name selection ^operator <o> + ^operator { <x> <> <o> } +)
+   (<o> ^name raise-max-evaluation-depth)
+-->
+   (<s> ^operator <o> > <x>)
+}
+
+sp {artists*apply*raise-max-evaluation-depth
+   (state <s> ^operator.name raise-max-evaluation-depth ^max-evaluation-depth 7)
+-->
+   (<s> ^max-evaluation-depth 7 - 11)
 }
 
 ## Report real crossings only (the top state); look-ahead crossings are not printed.

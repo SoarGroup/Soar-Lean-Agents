@@ -1,0 +1,12 @@
+Missionaries and cannibals: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/missionaries-cannibals/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. Three missionaries and three cannibals stand on the left bank of a river with a rowing boat.
+ 2. The boat carries one or two people and never crosses empty.
+ 3. If, on either bank, the cannibals ever outnumber the missionaries who are there, the missionaries are eaten.
+ 4. A bank with no missionaries is safe.
+ 5. The goal is to get all six people to the right bank.
+
+Source of the task: classic river-crossing puzzle.
+Kind of agent: state-space search.

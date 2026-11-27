@@ -1,0 +1,769 @@
+{
+  "format": "worldspec-1",
+  "name": "eight-puzzle",
+  "title": "Eight puzzle (families, from English)",
+  "statements": [
+    [
+      1,
+      "A 3 x 3 tray holds eight numbered tiles and one empty square."
+    ],
+    [
+      2,
+      "A tile next to the empty square (left, right, above or below, not diagonally) may slide into it, leaving its own square empty."
+    ],
+    [
+      3,
+      "Tiles may not be lifted out."
+    ],
+    [
+      4,
+      "The goal is to slide tiles until they match the target arrangement."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-EP1",
+      "kind": "intent",
+      "text": "Nine square objects with names by position (top-left ... bottom-right) and a static next-to relation between squares that share a side, both ways (\"not diagonally\").",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-EP2",
+      "kind": "intent",
+      "text": "The empty square is marked by a blank object that is at a square like a tile, so a slide swaps the squares of a tile and the blank. Tiles are named one ... eight.",
+      "stmts": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "A-EP3",
+      "kind": "intent",
+      "text": "\"may not be lifted out\": slide is the only operator.",
+      "stmts": [
+        3
+      ]
+    },
+    {
+      "id": "A-EP4",
+      "kind": "intent",
+      "text": "The start and target arrangements are not in the English; they were read from the original agent's initialize rules (JL allowed this). The goal names the square of every tile and of the blank.",
+      "stmts": [
+        4
+      ]
+    },
+    {
+      "id": "A-EP5",
+      "kind": "intent",
+      "text": "Search control, not from the English (as for the other WorldSpec search tasks): a look-ahead state that returns to a situation already on its path fails; a situation is where each tile and the blank are.",
+      "stmts": []
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "top-left",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "top-left"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "top-middle",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "top-middle"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "top-right",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "top-right"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "middle-left",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "middle-left"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "center",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "center"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "middle-right",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "middle-right"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "bottom-left",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "bottom-left"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "bottom-middle",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "bottom-middle"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "bottom-right",
+      "type": "square",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "bottom-right"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "one",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "one"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "two",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "two"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "three",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "three"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "four",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "four"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "five",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "five"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "six",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "six"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "seven",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "seven"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "eight",
+      "type": "tile",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "eight"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "blank",
+      "type": "blank",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "blank"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [
+    [
+      "at",
+      [
+        "two",
+        "top-left"
+      ]
+    ],
+    [
+      "at",
+      [
+        "one",
+        "top-middle"
+      ]
+    ],
+    [
+      "at",
+      [
+        "seven",
+        "top-right"
+      ]
+    ],
+    [
+      "at",
+      [
+        "eight",
+        "middle-left"
+      ]
+    ],
+    [
+      "at",
+      [
+        "six",
+        "center"
+      ]
+    ],
+    [
+      "at",
+      [
+        "blank",
+        "middle-right"
+      ]
+    ],
+    [
+      "at",
+      [
+        "three",
+        "bottom-left"
+      ]
+    ],
+    [
+      "at",
+      [
+        "four",
+        "bottom-middle"
+      ]
+    ],
+    [
+      "at",
+      [
+        "five",
+        "bottom-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-left",
+        "top-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-left",
+        "middle-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-middle",
+        "top-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-middle",
+        "center"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-middle",
+        "top-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-right",
+        "middle-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "top-right",
+        "top-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-left",
+        "center"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-left",
+        "bottom-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-left",
+        "top-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "center",
+        "middle-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "center",
+        "bottom-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "center",
+        "middle-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "center",
+        "top-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-right",
+        "bottom-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-right",
+        "center"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "middle-right",
+        "top-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-left",
+        "bottom-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-left",
+        "middle-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-middle",
+        "bottom-right"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-middle",
+        "bottom-left"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-middle",
+        "center"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-right",
+        "bottom-middle"
+      ]
+    ],
+    [
+      "next-to",
+      [
+        "bottom-right",
+        "middle-right"
+      ]
+    ]
+  ],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "slide",
+      "params": [
+        [
+          "t",
+          "tile"
+        ],
+        [
+          "to",
+          "square"
+        ]
+      ],
+      "stmts": [
+        2,
+        3
+      ],
+      "pre": [
+        {
+          "obj": "bl",
+          "type": "blank"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bl"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "t"
+            },
+            {
+              "var": "from"
+            }
+          ]
+        },
+        {
+          "rel": "next-to",
+          "args": [
+            {
+              "var": "from"
+            },
+            {
+              "var": "to"
+            }
+          ]
+        }
+      ],
+      "bind": [
+        {
+          "obj": "bl",
+          "type": "blank"
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "t"
+            },
+            {
+              "var": "old"
+            }
+          ]
+        },
+        {
+          "rel": "at",
+          "args": [
+            {
+              "var": "bl"
+            },
+            {
+              "var": "bold"
+            }
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "t"
+            },
+            {
+              "var": "old"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "to"
+          }
+        },
+        {
+          "change": "at",
+          "args": [
+            {
+              "var": "bl"
+            },
+            {
+              "var": "bold"
+            }
+          ],
+          "pos": 2,
+          "to": {
+            "var": "old"
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Slide tile "
+        },
+        {
+          "handle": "t"
+        },
+        {
+          "text": " into "
+        },
+        {
+          "handle": "to"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "one"
+          },
+          {
+            "h": "top-left"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "eight"
+          },
+          {
+            "h": "top-middle"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "seven"
+          },
+          {
+            "h": "top-right"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "two"
+          },
+          {
+            "h": "middle-left"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "blank"
+          },
+          {
+            "h": "center"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "six"
+          },
+          {
+            "h": "middle-right"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "three"
+          },
+          {
+            "h": "bottom-left"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "four"
+          },
+          {
+            "h": "bottom-middle"
+          }
+        ]
+      },
+      {
+        "rel": "at",
+        "args": [
+          {
+            "h": "five"
+          },
+          {
+            "h": "bottom-right"
+          }
+        ]
+      }
+    ]
+  },
+  "goalStmts": [
+    4
+  ],
+  "failures": [],
+  "repeatControl": {
+    "rel": "at",
+    "types": [
+      "tile",
+      "blank"
+    ]
+  }
+}

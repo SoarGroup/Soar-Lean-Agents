@@ -27,7 +27,7 @@ These statements define the problem: initial state, legal actions, goal, losing 
 | Losing | `If C then you lose.` | `^failure`; losing takes precedence over the goal |
 | Solution length | `The solution has N steps.` | look-ahead depth limit max(12, N) (L16-045) |
 
-WorldSpec adds forms that Rosie does not teach: derived relations recomputed each state ("Albert does not know"), sums over groups, effects over every match ("every date in that month is ruled out"), updates ("add the time of the crossing to the elapsed time"), a step cost per operator, and monotonic operators (their effect follows from the state and is never undone, L15-027).
+WorldSpec adds forms that Rosie does not teach: derived relations recomputed each state ("Albert does not know"), sums over groups, effects over every match ("every date in that month is ruled out"), updates with arithmetic on integers ("add the time of the crossing to the elapsed time"; `plus`, `minus`, `times`, and `quot` and `rem` for the integer quotient and remainder, since 26 Nov 2026), computed in effects only (a condition cannot compute; keep a value it needs, such as the room left in a jug, as a property and update it), a step cost per operator, and monotonic operators (their effect follows from the state and is never undone, L15-027).
 
 Generated automatically, not stated: objects that nothing in the task tells apart (same category and attributes, never named, never related to one another) are kept as counts per place, `^<kind>-count` (L7-027). Missionaries and cannibals is the example.
 
@@ -102,6 +102,8 @@ Settings that differ from the library defaults are written as `^flag-override` o
 - Rosie "There is N." answers fix the number of action instances.
 - Readings the English left open are recorded in each task's README (assumption ledger); gaps are raised with the user before generation.
 - Each generator reproduces its stored agents byte for byte before a release.
+- WorldSpec descriptions are checked for well-formedness on both paths (Lean `Task.wellFormed`; Python `spec_backend.well_formed`, run by `worldspec_py.py json` and by `spec_backend.py`, since 26 Nov 2026): no negation in a compiled condition (operator conditions, losing conditions, goal; put "nothing is on it" in a derived relation and test that, W-CHK-009), effects and reports use only parameters and variables bound by the operator's `bind` (a variable known only in its preconditions would be a new identifier on every firing), no arithmetic in a condition, no open gap in the assumption ledger, and no two objects with one handle.
+- World files: a trailing `1` is read as a Rosie sense number only after a word of two or more letters (`red1`, `on1`, `destination1`); names such as `d1`, `t1`, `c11` keep it (26 Nov 2026; before, `d1` silently became `d`).
 
 ## Further reading
 

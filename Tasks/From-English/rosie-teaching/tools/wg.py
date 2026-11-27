@@ -70,6 +70,93 @@ def apply_output_form(text, task, form):
             f"   (<s> ^environment-output-map <m>)\n   (<m> " + '\n        '.join(body) + ")\n}\n")
     return text + rule
 
+def _top_conds(lhs):
+    """Spans (start, end) of the top-level positive conditions of a left-hand side (negated ones skipped)."""
+    out, i, depth, start, neg = [], 0, 0, None, False
+    while i < len(lhs):
+        c = lhs[i]
+        if c in '({':
+            if depth == 0: start, neg = i, (i > 0 and lhs[i-1] == '-')
+            depth += 1
+        elif c in ')}':
+            depth -= 1
+            if depth == 0 and start is not None:
+                if not neg and lhs[start] == '(': out.append((start, i + 1))
+                start = None
+        i += 1
+    return out
+
+def drop_redundant_object_tests(text):
+    """World-Conventions L3-104, as familygen's Prod.dropRedundantObjectTests: in each rule, a test
+    (<w> ^objects.object <x>) is left out when <x> is also bound as an argument of a relation (<w> ^rel <r>)
+    (<r> ^argumentN <x>) in the same rule. Top-level positive conditions only."""
+    def fix(m):
+        name, body = m.group(1), m.group(2)
+        if '-->' not in body: return m.group(0)
+        lhs, rhs = body.split('-->', 1)
+        spans = _top_conds(lhs)
+        conds = [lhs[a:b] for a, b in spans]
+        idv = lambda c: (re.match(r'\((?:state\s+)?(<[^>]+>)', c) or [None, None])[1]
+        worlds = {idv(c) for c in conds if re.search(r'\^objects\.object\s', c)}
+        red = {}
+        for w in worlds:
+            vals = lambda c, pat: [v for a, vs in re.findall(pat + r'((?:\s+(?:\{[^}]*\}|<[^>]+>))+)', c)
+                                   for v in re.findall(r'\{[^}]*\}|<[^>]+>', vs) if v.startswith('<')]
+            rels = {v for c in conds if idv(c) == w for v in vals(c, r'\^(?!objects\b)([\w-]+)')}
+            red[w] = {x for c in conds if idv(c) in rels for x in vals(c, r'\^(argument\d+)')}
+        if not any(red.values()): return m.group(0)
+        new = lhs
+        for (a, b) in reversed(spans):
+            c = lhs[a:b]; w = idv(c)
+            if w not in red or not red[w]: continue
+            def strip(mm):
+                vs = [v for v in re.findall(r'\{[^}]*\}|<[^>]+>', mm.group(2)) if v not in red[w]]
+                return (mm.group(1) + '^objects.object ' + ' '.join(vs)) if vs else ''
+            c2 = re.sub(r'(\s*)\^objects\.object((?:\s+(?:\{[^}]*\}|<[^>]+>))+)', strip, c)
+            if c2 == c: continue
+            # the attribute removed was the first on its identifier: the next one moves up beside it
+            c2 = re.sub(r'^\((<[^>]+>)\s*\n\s*\^', r'(\1 ^', c2)
+            if re.fullmatch(r'\((?:state\s+)?<[^>]+>\s*\)', c2):
+                # nothing left: drop the condition and the line it stood on
+                ls = new.rfind('\n', 0, a); new = new[:ls if ls >= 0 else a] + new[b:]
+            else:
+                new = new[:a] + c2 + new[b:]
+        return f'sp {{{name}\n{new}-->{rhs}}}'
+    return re.sub(r'(?ms)^sp \{(\S+)\n(.*?)^\}', fix, text)
+
+def match_hints(text):
+    """Matching hints for learned rules (World-Conventions L11-009, L3-095), as WorldSpec's matchHints: production
+    optimize-attribute for ^object (the objects of the initial world) and for every attribute a rule adds to the world
+    <w> (relations and the like; its number of values in the initialize rule, at least 2). Read from the rules
+    themselves, so every generator built on Task gets them; they change condition order only, never what matches."""
+    rules = re.findall(r'(?ms)^sp \{(\S+)\n(.*?)^\}', text)
+    init = next((b for n, b in rules if '*apply*initialize-' in n), '')
+    m = re.search(r'\^object ((?:<[^>]+>\s*)+)', init)
+    n_obj = len(re.findall(r'<[^>]+>', m.group(1))) if m else 0
+    names, count = [], {}
+    for n, b in rules:
+        rhs = b.split('-->', 1)[1] if '-->' in b else ''
+        for clause in re.findall(r'\(<w>([^()]*)\)', rhs):
+            for a, vals in re.findall(r'\^([\w.-]+)((?:\s+[^\s^]+)+)', clause):
+                vs = [v for v in vals.split() if v not in ('+', '-')]
+                if '-' in vals.split() or not vs or a == 'objects': continue
+                if a not in names: names.append(a)
+                if b is init: count[a] = count.get(a, 0) + len(vs)
+    if not n_obj and not names: return ''
+    out = '## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.\n'
+    out += f'production optimize-attribute object {max(n_obj, 2)}\n'
+    for a in names: out += f'production optimize-attribute {a} {max(count.get(a, 0), 2)}\n'
+    return out + '\n'
+
+def finish(text):
+    """L3-104 and L11-009 for generators that write rules without Task (the English-world gen.py files): leave out
+    redundant object tests, then put the matching hints after the leading comment lines."""
+    t = drop_redundant_object_tests(text)
+    import static_pass   # L7-028 candidate: static objects and shared relations
+    t = static_pass.mark_static({'rules': t})[0]['rules']
+    m = re.match(r'(?:#[^\n]*\n|\s*\n)*', t)
+    return t[:m.end()] + match_hints(t) + t[m.end():]
+
 class Task:
     def __init__(s, name, desc, layout='flat', static=(), strategy='iterative-deepening', derived=(), literal_handles=True):
         s.name, s.desc, s.layout, s.static, s.strategy = name, desc, layout, set(static), strategy
@@ -86,6 +173,15 @@ class Task:
         # Output form the environment takes (World-Conventions L10-018); None = the default ^perform-action form,
         # written exactly as before. Also from the environment variable WG_OUTPUT (JSON), so every gen_*.py takes it.
         s.output = json.loads(os.environ['WG_OUTPUT']) if os.environ.get('WG_OUTPUT') else None
+        # Matching hints for learned rules (World-Conventions L11-009): production optimize-attribute lines after the
+        # header (match_hints). False leaves them out, to compare runs.
+        s.match_hints = True
+        # Static objects and shared relations (World-Conventions L7-028, candidate 26 Nov 2026; static_pass.py).
+        # False leaves them out (for a library without static sharing).
+        s.static_sharing = True
+        # Fixed properties under ^fixed (L7-029 candidate, 26 Nov 2026) only with look-ahead: None decides from the
+        # proposals (static_pass.has_lookahead), True or False says so.
+        s.lookahead = None
     def add(s, text): s.parts.append(text.strip('\n') + '\n')
     # ---- attribute access
     def lhs_attr(s, attr, val, in_static=None):
@@ -332,4 +428,10 @@ sp {{{n}*propose*{opname}
         import check_derived
         _, bad = check_derived.check(t)
         assert not bad, f'{s.name}: derived object attributes not declared (Task(derived=[...])): {bad}'
+        t = drop_redundant_object_tests(t)
+        if s.static_sharing and s.layout == 'flat':
+            import static_pass
+            t = static_pass.mark_static({'rules': t}, s.lookahead)[0]['rules']
+        h = s.header()
+        if s.match_hints and t.startswith(h): t = h + match_hints(t) + t[len(h):]
         return t

@@ -1,0 +1,12 @@
+Pyramid: English input (written 25 November 2026 by Claude, supervised by John E. Laird, from
+Tasks/Families/pyramid/human-description.md; no Soar rules of the family were read)
+
+Statements, numbered (the input to formalization):
+ 1. A pyramid problem adds a run of consecutive numbers counting down from a base.
+ 2. The base is the first term, and each term is one less than the one before.
+ 3. The height says how many terms follow the first, so height h gives h + 1 terms.
+ 4. This problem has base 5 and height 10 (5 + 4 + ... + (-5)).
+ 5. The goal is to compute the sum.
+
+Source of the task: pyramid problems (Anderson's group, ACT-R and fMRI studies).
+Kind of agent: repeated arithmetic step, no search.

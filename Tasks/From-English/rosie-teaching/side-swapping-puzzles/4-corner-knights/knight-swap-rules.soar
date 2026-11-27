@@ -14,6 +14,13 @@
 ##   - clear is a maintained one-argument relation (statement 5).
 ##   - The goal (statement 11) is expanded over the blocks of the world file (A-S2). "The solution has four steps" (statement 7)
 ##     is checked against the plans, not used.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 14
+production optimize-attribute on 4
+production optimize-attribute below 4
+production optimize-attribute clear 9
+production optimize-attribute jumpable 16
+
 
 ## Propose initialize-knight-swap when its conditions below hold.
 sp {knight-swap*propose*initialize-knight-swap
@@ -29,19 +36,19 @@ sp {knight-swap*apply*initialize-knight-swap
 -->
    (<s> ^name knight-swap ^desireds <ds>)
    (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-block-10> <o-block-11> <o-block-12> <o-block-13> <o-task>)
-   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color blue ^row 1 ^column 1)
-   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2)
-   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^row 1 ^column 3)
-   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 2 ^column 1)
-   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 2 ^column 2)
-   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 3)
-   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^color red ^row 3 ^column 1)
-   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 3 ^column 2)
-   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^color red ^row 3 ^column 3)
-   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^color red)
-   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^color red)
-   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^color blue)
-   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue)
+   (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color blue ^row 1 ^column 1 ^static true)
+   (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2 ^static true)
+   (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^row 1 ^column 3 ^static true)
+   (<o-location-4> ^object-handle location-4 ^anchored true ^type location ^row 2 ^column 1 ^static true)
+   (<o-location-5> ^object-handle location-5 ^anchored true ^type location ^row 2 ^column 2 ^static true)
+   (<o-location-6> ^object-handle location-6 ^anchored true ^type location ^row 2 ^column 3 ^static true)
+   (<o-location-7> ^object-handle location-7 ^anchored true ^type location ^color red ^row 3 ^column 1 ^static true)
+   (<o-location-8> ^object-handle location-8 ^anchored true ^type location ^row 3 ^column 2 ^static true)
+   (<o-location-9> ^object-handle location-9 ^anchored true ^type location ^color red ^row 3 ^column 3 ^static true)
+   (<o-block-10> ^object-handle block-10 ^anchored true ^type block ^color red ^static true)
+   (<o-block-11> ^object-handle block-11 ^anchored true ^type block ^color red ^static true)
+   (<o-block-12> ^object-handle block-12 ^anchored true ^type block ^color blue ^static true)
+   (<o-block-13> ^object-handle block-13 ^anchored true ^type block ^color blue ^static true)
    (<o-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -120,7 +127,7 @@ sp {knight-swap*elaborate*problem-space
    (state <s> ^name knight-swap)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name knight-swap ^copy-relation below ^copy-relation jumpable ^copy-relation clear ^dont-copy-object-attribute goal-met)
+   (<p> ^name knight-swap ^copy-relation below ^share-relation jumpable ^copy-relation clear ^dont-copy-object-attribute goal-met)
 }
 
 sp {knight-swap*elaborate*problem-space*mea-substate
@@ -179,8 +186,7 @@ sp {knight-swap*propose*move*jump
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 ## Effect of move (look-ahead).
 sp {knight-swap*apply*move*internal

@@ -1,0 +1,9 @@
+hello-world hello-world
+counting counting
+pyramid pyramid
+towers-of-hanoi towers-of-hanoi
+blocks-world blocks-world
+eight-puzzle eight-puzzle
+water-jug water-jug
+missionaries-cannibals missionaries-cannibals
+wizards wizards

@@ -38,9 +38,10 @@
     {
       "id": "A-II2",
       "kind": "intent",
-      "text": "\"stack in a column\": cubes are placed one at a time in the order 1, 2, 3, 4, each on the one before; cube 1 goes on the ground, which counts as placed from the start.",
+      "text": "\"stack in a column\": where a cube is in the column does not matter (the goal and the losing conditions depend only on the colours each cube shows on the four sides), so placing a cube is choosing its orientation; cubes are placed one at a time, in any order. Until 24 Nov 2026 this entry fixed the order 1, 2, 3, 4 in the description; the generators now supply an order as search control (World-Conventions L21-001).",
       "stmts": [
-        3
+        3,
+        5
       ]
     },
     {
@@ -54,30 +55,6 @@
   ],
   "flags": [],
   "objects": [
-    {
-      "handle": "ground",
-      "type": "ground",
-      "props": [
-        [
-          "name",
-          {
-            "sym": "ground"
-          }
-        ]
-      ]
-    },
-    {
-      "handle": "ground-pose",
-      "type": "pose",
-      "props": [
-        [
-          "name",
-          {
-            "sym": "ground-pose"
-          }
-        ]
-      ]
-    },
     {
       "handle": "cube-a",
       "type": "cube",
@@ -3230,41 +3207,6 @@
       ]
     ],
     [
-      "prev",
-      [
-        "cube-a",
-        "ground"
-      ]
-    ],
-    [
-      "prev",
-      [
-        "cube-b",
-        "cube-a"
-      ]
-    ],
-    [
-      "prev",
-      [
-        "cube-c",
-        "cube-b"
-      ]
-    ],
-    [
-      "prev",
-      [
-        "cube-d",
-        "cube-c"
-      ]
-    ],
-    [
-      "placed",
-      [
-        "ground",
-        "ground-pose"
-      ]
-    ],
-    [
       "unplaced",
       [
         "cube-a"
@@ -3354,28 +3296,6 @@
             },
             {
               "var": "c"
-            }
-          ]
-        },
-        {
-          "rel": "prev",
-          "args": [
-            {
-              "var": "c"
-            },
-            {
-              "var": "q"
-            }
-          ]
-        },
-        {
-          "rel": "placed",
-          "args": [
-            {
-              "var": "q"
-            },
-            {
-              "var": "r"
             }
           ]
         }

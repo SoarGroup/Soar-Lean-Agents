@@ -1,0 +1,1 @@
+{"outcome": "success", "decisions": 5170, "actions": [["place", "cube-a", "a-o4x"], ["place", "cube-b", "b-o0x"], ["place", "cube-c", "c-o5x"], ["place", "cube-d", "d-o11x"]], "n_actions": 4, "seconds": 1642.1, "cpu": "1605.749"}

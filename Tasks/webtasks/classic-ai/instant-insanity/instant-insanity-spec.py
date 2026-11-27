@@ -13,11 +13,11 @@ TASK = task(
     (3, 'You stack the four cubes in a column, each turned any way you like.'),
     (4, 'The column has four sides: front, back, left and right.'),
     (5, 'The goal is that each of the four sides of the column shows four different colours.')],
-  world_rels=['orient', 'prev', 'placed'],
+  world_rels=['orient', 'placed'],
   maintained=[dict(name='unplaced', var='x', stmts=[3], defn=[obj('x', 'cube'), none(rel('placed', V('x'), V('y')))])],
   ops=[
     dict(name='place', params=[('c', 'cube'), ('o', 'orientation')], stmts=[3, 4],
-         pre=[rel('unplaced', V('c')), rel('orient', V('o'), V('c')), rel('prev', V('c'), V('q')), rel('placed', V('q'), V('r'))],
+         pre=[rel('unplaced', V('c')), rel('orient', V('o'), V('c'))],
          bind=[],
          effects=[e_add('placed', V('c'), V('o')), e_del('unplaced', V('c'))],
          report=[text('Place '), handle('c'), text(' turned as '), handle('o')])],
@@ -25,5 +25,5 @@ TASK = task(
   failures=[clash(s) for s in ('front', 'back', 'left', 'right')],
   assumptions=[
     dict(id='A-II1', kind='intent', stmts=[2, 3, 4], text='"turned any way you like": each cube has one orientation object per distinct assignment of colours to the four sides (front, back, left, right); the top and bottom faces do not matter. Cube 1 has 24, cubes 2 to 4 have 16 (each has a pair of equal colours).'),
-    dict(id='A-II2', kind='intent', stmts=[3], text='"stack in a column": cubes are placed one at a time in the order 1, 2, 3, 4, each on the one before; cube 1 goes on the ground, which counts as placed from the start.'),
+    dict(id='A-II2', kind='intent', stmts=[3, 5], text='"stack in a column": where a cube is in the column does not matter (the goal and the losing conditions depend only on the colours each cube shows on the four sides), so placing a cube is choosing its orientation; cubes are placed one at a time, in any order. Until 24 Nov 2026 this entry fixed the order 1, 2, 3, 4 in the description; the generators now supply an order as search control (World-Conventions L21-001).'),
     dict(id='A-II3', kind='intent', stmts=[5], text='"four different colours" on a side: two placed cubes showing the same colour on the same side is a losing state, so a partial column that cannot be completed is cut off at once.')])

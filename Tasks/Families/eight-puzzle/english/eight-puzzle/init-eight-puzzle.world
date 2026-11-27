@@ -1,0 +1,108 @@
+objid 1
+category square
+name top-left
+
+objid 2
+category square
+name top-middle
+
+objid 3
+category square
+name top-right
+
+objid 4
+category square
+name middle-left
+
+objid 5
+category square
+name center
+
+objid 6
+category square
+name middle-right
+
+objid 7
+category square
+name bottom-left
+
+objid 8
+category square
+name bottom-middle
+
+objid 9
+category square
+name bottom-right
+
+objid 10
+category tile
+name one
+
+objid 11
+category tile
+name two
+
+objid 12
+category tile
+name three
+
+objid 13
+category tile
+name four
+
+objid 14
+category tile
+name five
+
+objid 15
+category tile
+name six
+
+objid 16
+category tile
+name seven
+
+objid 17
+category tile
+name eight
+
+objid 18
+category blank
+name blank
+
+predicate at
+11 1
+10 2
+16 3
+17 4
+15 5
+18 6
+12 7
+13 8
+14 9
+
+predicate next-to
+1 2
+1 4
+2 3
+2 5
+2 1
+3 6
+3 2
+4 5
+4 7
+4 1
+5 6
+5 8
+5 4
+5 2
+6 9
+6 5
+6 3
+7 8
+7 4
+8 9
+8 7
+8 5
+9 8
+9 6

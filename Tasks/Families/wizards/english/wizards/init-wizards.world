@@ -1,0 +1,136 @@
+objid 1
+category wizard
+name a
+
+objid 2
+category wizard
+name b
+
+objid 3
+category wizard
+name c
+
+objid 4
+category colour
+name white
+
+objid 5
+category colour
+name black
+
+objid 6
+category world
+name w-www
+
+objid 7
+category world
+name w-wwb
+
+objid 8
+category world
+name w-wbw
+
+objid 9
+category world
+name w-wbb
+
+objid 10
+category world
+name w-bww
+
+objid 11
+category world
+name w-bwb
+
+objid 12
+category world
+name w-bbw
+
+objid 13
+category world
+name w-bbb
+
+objid 14
+category turn
+name told
+n 0.0
+
+objid 15
+category turn
+name turn-a
+n 1.0
+
+objid 16
+category turn
+name turn-b
+n 2.0
+
+objid 17
+category turn
+name turn-c
+n 3.0
+
+objid 18
+category stage
+name talk
+step 0.0
+
+predicate spot
+1 6 4
+2 6 4
+3 6 4
+1 7 4
+2 7 4
+3 7 5
+1 8 4
+2 8 5
+3 8 4
+1 9 4
+2 9 5
+3 9 5
+1 10 5
+2 10 4
+3 10 4
+1 11 5
+2 11 4
+3 11 5
+1 12 5
+2 12 5
+3 12 4
+1 13 5
+2 13 5
+3 13 5
+
+predicate view-mate
+1 6 10
+1 7 11
+1 8 12
+1 9 13
+1 10 6
+1 11 7
+1 12 8
+1 13 9
+2 6 8
+2 7 9
+2 8 6
+2 9 7
+2 10 12
+2 11 13
+2 12 10
+2 13 11
+3 6 7
+3 7 6
+3 8 9
+3 9 8
+3 10 11
+3 11 10
+3 12 13
+3 13 12
+
+predicate actual
+10
+
+predicate asks
+15 1
+16 2
+17 3

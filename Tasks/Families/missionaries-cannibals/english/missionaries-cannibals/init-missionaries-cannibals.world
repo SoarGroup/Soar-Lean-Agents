@@ -1,0 +1,77 @@
+objid 1
+category bank
+name left
+
+objid 2
+category bank
+name right
+
+objid 3
+category boat
+name boat
+
+objid 4
+category number
+name zero
+value 0.0
+
+objid 5
+category number
+name one
+value 1.0
+
+objid 6
+category number
+name two
+value 2.0
+
+objid 7
+category number
+name three
+value 3.0
+
+objid 8
+category group
+name left-missionaries
+role missionary
+
+objid 9
+category group
+name left-cannibals
+role cannibal
+
+objid 10
+category group
+name right-missionaries
+role missionary
+
+objid 11
+category group
+name right-cannibals
+role cannibal
+
+predicate at
+8 7
+9 7
+10 4
+11 4
+3 1
+
+predicate other
+1 2
+2 1
+
+predicate side
+8 1
+9 1
+10 2
+11 2
+
+predicate one-less
+5 4
+6 5
+7 6
+
+predicate two-less
+6 4
+7 5

@@ -1,0 +1,127 @@
+{
+  "format": "worldspec-1",
+  "name": "hello-world",
+  "title": "Hello World (families, from English)",
+  "statements": [
+    [
+      1,
+      "Write the words \"Hello World\" once, then stop."
+    ]
+  ],
+  "assumptions": [
+    {
+      "id": "A-HW1",
+      "kind": "intent",
+      "text": "Writing is an action of the agent (a perform-action command); its report prints \"Hello World\".",
+      "stmts": [
+        1
+      ]
+    },
+    {
+      "id": "A-HW2",
+      "kind": "intent",
+      "text": "\"once, then stop\": a page object records what is written on it (nothing at the start); the operator needs a page with nothing written, and the goal is a page with the words, so the agent writes once and the task ends. (A test that the page lacks the property is a negation, which the compiled conditions may not contain, W-CHK-009.)",
+      "stmts": [
+        1
+      ]
+    }
+  ],
+  "flags": [],
+  "objects": [
+    {
+      "handle": "page",
+      "type": "page",
+      "props": [
+        [
+          "name",
+          {
+            "sym": "page"
+          }
+        ],
+        [
+          "written",
+          {
+            "sym": "nothing"
+          }
+        ]
+      ]
+    },
+    {
+      "handle": "task",
+      "type": "task",
+      "props": []
+    }
+  ],
+  "relations": [],
+  "maintained": [],
+  "sums": [],
+  "ops": [
+    {
+      "name": "write-hello-world",
+      "params": [],
+      "stmts": [
+        1
+      ],
+      "pre": [
+        {
+          "obj": "p",
+          "type": "page"
+        },
+        {
+          "has": "p",
+          "prop": "written",
+          "cmp": "eq",
+          "rhs": {
+            "val": {
+              "sym": "nothing"
+            }
+          }
+        }
+      ],
+      "bind": [
+        {
+          "obj": "p",
+          "type": "page"
+        }
+      ],
+      "effects": [
+        {
+          "update": "p",
+          "prop": "written",
+          "rhs": {
+            "val": {
+              "sym": "hello-world"
+            }
+          }
+        }
+      ],
+      "report": [
+        {
+          "text": "Hello World"
+        }
+      ]
+    }
+  ],
+  "goal": {
+    "ex": [
+      {
+        "obj": "p",
+        "type": "page"
+      },
+      {
+        "has": "p",
+        "prop": "written",
+        "cmp": "eq",
+        "rhs": {
+          "val": {
+            "sym": "hello-world"
+          }
+        }
+      }
+    ]
+  },
+  "goalStmts": [
+    1
+  ],
+  "failures": []
+}

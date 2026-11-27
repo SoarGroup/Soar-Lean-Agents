@@ -30,6 +30,9 @@
 ##   Clue 1 is the structure itself (five houses).
 
 ## Propose initialize-zebra when its conditions below hold.
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute object 50
+
 sp {zebra*propose*initialize-zebra
    (state <s> ^superstate nil ^world <w> -^name)
 -->
@@ -260,8 +263,7 @@ sp {zebra*propose*eliminate*position
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |).|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |).|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*same*x
@@ -275,8 +277,7 @@ sp {zebra*propose*eliminate*same*x
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and house | <p> | cannot be | <x> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and house | <p> | cannot be | <x> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*same*y
@@ -290,8 +291,7 @@ sp {zebra*propose*eliminate*same*y
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and house | <p> | cannot be | <y> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and house | <p> | cannot be | <y> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*left-of*x
@@ -306,8 +306,7 @@ sp {zebra*propose*eliminate*left-of*x
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and the house to its right cannot be | <y> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and the house to its right cannot be | <y> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*left-of*x*edge
@@ -321,8 +320,7 @@ sp {zebra*propose*eliminate*left-of*x*edge
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and it has no house to its right.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and it has no house to its right.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*left-of*y
@@ -337,8 +335,7 @@ sp {zebra*propose*eliminate*left-of*y
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and the house to its left cannot be | <x> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and the house to its left cannot be | <x> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*left-of*y*edge
@@ -352,8 +349,7 @@ sp {zebra*propose*eliminate*left-of*y*edge
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and it has no house to its left.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and it has no house to its left.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*next-to*x
@@ -370,8 +366,7 @@ sp {zebra*propose*eliminate*next-to*x
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and no neighbour of house | <p> | can be | <o> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and no neighbour of house | <p> | can be | <o> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*next-to*y
@@ -388,8 +383,7 @@ sp {zebra*propose*eliminate*next-to*y
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and no neighbour of house | <p> | can be | <o> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: clue | <n> | (| <t> |) and no neighbour of house | <p> | can be | <o> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*naked-single
@@ -404,8 +398,7 @@ sp {zebra*propose*eliminate*naked-single
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: house | <q> | can only be | <e> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: house | <q> | can only be | <e> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*propose*eliminate*hidden-single
@@ -422,8 +415,7 @@ sp {zebra*propose*eliminate*hidden-single
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
          ^argument1 <e> ^argument-count 1 ^house-handle <hh> ^value <e>
-         ^reason (concat |House | <p> | is not | <e> |: only house | <p> | can be | <v> |.|) ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^reason (concat |House | <p> | is not | <e> |: only house | <p> | can be | <v> |.|) ^pre-conditions-satisfied true)
 }
 
 sp {zebra*apply*eliminate
@@ -468,8 +460,7 @@ sp {zebra*propose*assign
 -->
    (<s> ^operator <op> +)
    (<op> ^name assign ^task-operator true ^action-handle assign ^super-desired <sd>
-         ^argument1 <v> ^argument-count 1 ^house-handle <hh> ^position <p> ^group <c> ^value <v> ^desireds <pre>)
-   (<pre> ^desired-count 0)
+         ^argument1 <v> ^argument-count 1 ^house-handle <hh> ^position <p> ^group <c> ^value <v> ^pre-conditions-satisfied true)
 }
 
 sp {zebra*apply*assign

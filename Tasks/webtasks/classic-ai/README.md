@@ -1,5 +1,26 @@
 # Classic AI and cognitive tasks: English to Soar through Lean (16 November 2026)
 
+## 25 November 2026: matching hints for learned rules (World-Conventions L11-009)
+
+The WorldSpec generators (SoarLean release of 25 November 2026) open every task's rules with
+`production optimize-attribute` lines for `object` and for each relation, sized from the initial world; nothing else
+changes. All nine tasks here were regenerated. Instant Insanity now solves with learning on (the library default):
+5,170 / 5,367 / 5,358 decisions on seeds 1-3, under about 225 MB (see `instant-insanity/README.md`). Library v2.47,
+cap 20,000, seeds 1-3, learning on / off: cheryls-birthday 15 / 15 on every seed; muddy-children 15 / 15;
+guard-tour 32, 32, 38 / 32, 32, 38; guard-patrol 57, 57, 63 / 99, 87, 99; monkey-and-bananas 638, 381, 521 /
+1,445, 781, 1,131; vacuum-world 56, 56, 91 / 68, 68, 97; tower-of-london 5,525, 2,569, 8,897 / 7,348, 5,042, 9,999.
+bridge-and-torch reaches the 20,000 cap on every seed either way, as the rules of 24 November do.
+
+## 24 November 2026: generated slot order (World-Conventions L21-001)
+
+The WorldSpec generators (SoarLean release of 24 November 2026, revision b) now propose the fills of a description
+that is a set of slots filled once each only for the first unfilled slot. Of the nine described tasks only Instant
+Insanity has that structure; its hand-written cube order (assumption A-II2) was removed from the description, since
+the generators now supply it. Its rules were regenerated (see `instant-insanity/README.md`: 18,874 / 18,692 / 19,208
+decisions on seeds 1-3 with learning off, library v2.47, against 19,608 / 19,588 / 20,093 for the old rules). The
+other eight tasks' rules are unchanged byte for byte. With learning on (the library default), Instant Insanity, with
+the old rules and the new, exceeds the workspace's 8 GB on v2.47.
+
 ## Regenerated 21 November 2026 (library v2.45, SoarLean release revision b)
 
 The seven described tasks were regenerated with `SoarLean-2026-11-21b-release.zip` and run on library v2.45. The release of 21 November lacked the WorldSpec extensions made for these tasks (they were on a separate 16 November line); revision b merges them, and path A now writes the problem-space test on `each` and derived-relation rules as path B does. For every task: `rosiegen json` equals the Python JSON, paths A and B give identical rules, the semantics and Soar agree on all 22 example states, and `rosiegen replay` accepts every new run. The rule changes are the 18 November conventions only (problem-space tests, group comments, `^unachieved-desireds true`); rule counts are unchanged.
