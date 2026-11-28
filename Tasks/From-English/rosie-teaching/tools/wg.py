@@ -124,6 +124,21 @@ def drop_redundant_object_tests(text):
         return f'sp {{{name}\n{new}-->{rhs}}}'
     return re.sub(r'(?ms)^sp \{(\S+)\n(.*?)^\}', fix, text)
 
+def hint_blocked_attrs(text):
+    """Attributes the rules use on identifiers other than an objects set <objs> (and not as ^objects.T), as
+    Compile.lean hintBlockedAttrs: a type whose name is also such an attribute gets no matching hint (L7-029, L11-009),
+    since the hint is per attribute name and would also reorder those other conditions (zebra-world: ^value on marks)."""
+    out = set()
+    for piece in text.split('(')[1:]:
+        toks = piece.split(')')[0].split()
+        if toks[:1] == ['state']: toks = toks[1:]
+        if toks[:1] == ['<objs>']: continue
+        for tk in toks:
+            if tk.startswith('^'):
+                segs = tk[1:].split('.')
+                out.update(sg for sg, prev in zip(segs, [''] + segs) if prev != 'objects')
+    return out
+
 def match_hints(text):
     """Matching hints for learned rules (World-Conventions L11-009, L3-095), as WorldSpec's matchHints: production
     optimize-attribute for ^object (the objects of the initial world) and for every attribute a rule adds to the world
@@ -131,8 +146,13 @@ def match_hints(text):
     themselves, so every generator built on Task gets them; they change condition order only, never what matches."""
     rules = re.findall(r'(?ms)^sp \{(\S+)\n(.*?)^\}', text)
     init = next((b for n, b in rules if '*apply*initialize-' in n), '')
-    m = re.search(r'\^object ((?:<[^>]+>\s*)+)', init)
-    n_obj = len(re.findall(r'<[^>]+>', m.group(1))) if m else 0
+    objs_vars = set(re.findall(r'\^objects\s+(<[^>]+>)', init))
+    by_type = {}
+    for v, body in re.findall(r'\((<[^>]+>)([^()]*)\)', init.split('-->', 1)[1] if '-->' in init else ''):
+        if v not in objs_vars: continue
+        for a, vals in re.findall(r'\^([\w-]+)((?:\s+<[^>]+>)+)', body):
+            by_type[a] = by_type.get(a, 0) + len(re.findall(r'<[^>]+>', vals))
+    n_obj = sum(by_type.values())
     names, count = [], {}
     for n, b in rules:
         rhs = b.split('-->', 1)[1] if '-->' in b else ''
@@ -144,7 +164,12 @@ def match_hints(text):
                 if b is init: count[a] = count.get(a, 0) + len(vs)
     if not n_obj and not names: return ''
     out = '## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.\n'
-    out += f'production optimize-attribute object {max(n_obj, 2)}\n'
+    # each type set as large as all the objects (as ^object in v2.48); types used as other attributes get none
+    blocked = hint_blocked_attrs(text)
+    for a in by_type:
+        if a != 'object' and a not in blocked: out += f'production optimize-attribute {a} {max(n_obj, 2)}\n'
+    # ^object holds every object (the library adds the typed ones; L7-029), sized as in v2.48
+    if n_obj: out += f'production optimize-attribute object {max(n_obj, 2)}\n'
     for a in names: out += f'production optimize-attribute {a} {max(count.get(a, 0), 2)}\n'
     return out + '\n'
 
@@ -154,6 +179,8 @@ def finish(text):
     t = drop_redundant_object_tests(text)
     import static_pass   # L7-028 candidate: static objects and shared relations
     t = static_pass.mark_static({'rules': t})[0]['rules']
+    import type_pass     # L7-029 candidate: objects held under their type
+    t = type_pass.apply(t)
     m = re.match(r'(?:#[^\n]*\n|\s*\n)*', t)
     return t[:m.end()] + match_hints(t) + t[m.end():]
 
@@ -179,6 +206,7 @@ class Task:
         # Static objects and shared relations (World-Conventions L7-028, candidate 26 Nov 2026; static_pass.py).
         # False leaves them out (for a library without static sharing).
         s.static_sharing = True
+        s.type_attribute = True     # L7-029 candidate (v2.49): objects held under their type; False keeps ^object
         # Fixed properties under ^fixed (L7-029 candidate, 26 Nov 2026) only with look-ahead: None decides from the
         # proposals (static_pass.has_lookahead), True or False says so.
         s.lookahead = None
@@ -432,6 +460,9 @@ sp {{{n}*propose*{opname}
         if s.static_sharing and s.layout == 'flat':
             import static_pass
             t = static_pass.mark_static({'rules': t}, s.lookahead)[0]['rules']
+        if s.type_attribute:
+            import type_pass     # L7-029 candidate: objects held under their type
+            t = type_pass.apply(t)
         h = s.header()
         if s.match_hints and t.startswith(h): t = h + match_hints(t) + t[len(h):]
         return t

@@ -1,5 +1,30 @@
 # SoarLean: agentgen, the World library, worldcheck, rosiegen and familygen (release of 27 November 2026)
 
+## Candidate of 27 November 2026 on git branch type-attribute (for library v2.49 candidate; not released)
+
+Typed objects also held under their type (World-Conventions L7-029, JL 27 Nov 2026; To-do row 15): the generators write a
+world's typed objects in the set of their type, (<objs> ^block <A> <B> ^table <T>), keep each object's ^type, and put an
+object with no type under ^object; the library adds every typed object to ^objects.object as well, so ^object holds every
+object as in v2.48. A rule finds an object of a known type as ^objects.T <x> without testing (<x> ^type T), and tests
+^objects.object where it does not know the type; no generated rule tests an object set through a variable attribute
+(Soar cannot index one). Types come from ^type tests, constant handles, operator arguments, WorldSpec parameter types and
+universal-goal expansions; an untyped relation argument has no object-set test (L3-104). Matching hints (L11-009): each
+type set and ^object sized by the number of objects; a type whose name is also another attribute gets none.
+- Python text generators (Rosie gen.py, worldgen gen_*.py, English-world gen.py): `worldgen/type_pass.py`, the last step
+  of `wg.Task.text` and `wg.finish` (`Task.type_attribute`, default True). Types are read per scope: the top-level
+  conditions, each negated conjunction with its own; a negated single condition gives no type and keeps its ^type test.
+  `wg.hint_blocked_attrs` finds the types that get no hint.
+- WorldSpec, paths A and B together: `Compile.lean` (`scanTypes`, `tattr`, `objSet`, `hintBlockedAttrs`, `matchHints`)
+  and `spec_backend.py` (`CS.scan`, `tattr`, `obj_set`, `HTYPE`, `match_hints`) declare each object variable under the
+  type its rule gives it; paths A and B identical on all 12 tasks (path A with agentgen/tools/convpass.py, as before).
+- familygen: `Family/Task.lean` `typeAttr` (operator argument types from the proposals; L3-104 for untyped relation
+  arguments), applied in `Variant.render` after the static marks and L9-011; `Variant.matchHints` per type.
+- Library v2.49 candidate (Soar/soar-library on the branch): selection-world*elaborate*world*objects*object; look-ahead
+  copies through ^object as in v2.48, each copy joining its type set as its attributes are copied; each copy writes its
+  own copy-map entry; relations are copied through the copy map as in v2.48 (static objects map to themselves).
+  Variants tried and measured on 27 Nov (type sets only with variable-attribute, type-specific or $-marked copy rules, a
+  ^typed-object index) are in the library's CHANGES.md.
+
 ## Release of 27 November 2026 (`SoarLean-2026-11-27-release.zip`, for library v2.48)
 
 Joins `SoarLean-2026-11-26-release.zip` with the generator changes of 26-27 November (the `^fixed` candidate of

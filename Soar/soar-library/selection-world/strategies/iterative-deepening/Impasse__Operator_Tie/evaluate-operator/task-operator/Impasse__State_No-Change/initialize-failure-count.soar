@@ -40,7 +40,9 @@ sp {selection-world*apply*initialize-failure-evaluation
    :default
    (state <s> ^operator.name initialize-failure-evaluation
               ^quiescence t
+              ^superstate <la>
               ^selection-superstate <sss>)
+   (<la> -^random-continuation true)
    (<sss> ^operator.evaluation <evaluation>
          -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
          -^evaluation.failure-cutoff true)
@@ -48,6 +50,27 @@ sp {selection-world*apply*initialize-failure-evaluation
 -->
    (log 1 (crlf) |Exhaustion Failure operator: | <evaluation>)
    (<evaluation> ^symbolic-value failure)
+}
+
+## v2.49 (JL 28 Nov 2026; World-Conventions L4-004; Soar - To-do row 3): a dead end in a look-ahead state that has continued at
+## random (^random-continuation true, soar-base/simple.soar) shows only that one random path ends there, so the evaluation is
+## depth-exceeded, marked ^random-failure true, as for
+## a failure found in such a state (selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*failure*random-continuation).
+sp {selection-world*apply*initialize-failure-evaluation*random-continuation
+   :default
+   (state <s> ^operator.name initialize-failure-evaluation
+              ^quiescence t
+              ^superstate <la>
+              ^selection-superstate <sss>)
+   (<la> ^random-continuation true)
+   (<sss> ^operator.evaluation <evaluation>
+         -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+         -^evaluation.failure-cutoff true)
+   (<evaluation> ^lower-bound $ <lower-bound>)
+-->
+   (log 1 (crlf) |Dead end after a random continuation: | <evaluation>)
+   (<evaluation> ^symbolic-value depth-exceeded
+                 ^random-failure true)
 }
 
 ## Apply initialize-failure-evaluation -> sets symbolic-value.
@@ -74,8 +97,11 @@ sp {selection-world*apply*initialize-failure-evaluation2
    :default
    (state <s> ^operator.name initialize-failure-evaluation
               ^quiescence t
+              ^superstate <la>
               ^selection-superstate <sss>)
-   (<sss> -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
+   (<la> -^random-continuation true)   # v2.49: not after a random continuation (L4-004), here or in the state above
+   (<sss> -^superstate.random-continuation true
+          -^evaluation.symbolic-value << depth-exhaustion depth-exceeded >>
          -^evaluation.failure-cutoff true
            ^operator.evaluation <current>
            ^selection-superstate <ssss>)

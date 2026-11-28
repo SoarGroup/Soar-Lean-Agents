@@ -27,6 +27,11 @@
 ##     environment that moves individual blocks binds a kind to any block of that kind on the bank (the output names the
 ##     kind).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 7
+production optimize-attribute block 7
+production optimize-attribute kind 7
+production optimize-attribute task 7
+production optimize-attribute history 7
 production optimize-attribute object 7
 production optimize-attribute on 2
 production optimize-attribute below 2
@@ -46,7 +51,7 @@ sp {family-cross*apply*initialize-family-cross
    (<w> ^objects <objs>)
 -->
    (<s> ^name family-cross ^desireds <ds>)
-   (<objs> ^object <o-bank-1> <o-bank-2> <o-boat-7> <o-adult> <o-child> <o-task> <o-history>)
+   (<objs> ^location <o-bank-1> <o-bank-2> ^block <o-boat-7> ^kind <o-adult> <o-child> ^task <o-task> ^history <o-history>)
    (<o-bank-1> ^object-handle bank-1 ^anchored true ^type location ^shape bank ^adult-count 2 ^child-count 2)
    (<o-bank-2> ^object-handle bank-2 ^anchored true ^type location ^shape bank ^name destination ^adult-count 0 ^child-count 0)
    (<o-boat-7> ^object-handle boat-7 ^anchored true ^type block ^shape boat)
@@ -118,11 +123,10 @@ sp {family-cross*elaborate*state*unachieved*object-property
 sp {family-cross*propose*ferry-two-children*child-child
    (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <cur> <opp> <k-child>)
-   (<boat> ^type block ^shape boat)
-   (<cur> ^type location ^child-count >= 2)
-   (<opp> ^type location)
-   (<k-child> ^type kind ^object-handle child)
+   (<objs> ^block <boat> ^location <cur> <opp> ^kind <k-child>)
+   (<boat> ^shape boat)
+   (<cur> ^child-count >= 2)
+   (<k-child> ^object-handle child)
    (<w> ^below <bb> ^opposite <op-r>)
    (<bb> ^argument1 <cur> ^argument2 <boat>)
    (<op-r> ^argument1 <opp>)
@@ -136,8 +140,8 @@ sp {family-cross*apply*ferry-two-children*environment-effect*child-child
    (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-two-children ^status complete ^argument1 child ^argument2 child -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^block <boat>)
+   (<boat> ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
@@ -159,8 +163,8 @@ sp {family-cross*apply*ferry-two-children*internal*boat
    (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ferry-two-children ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^block <boat>)
+   (<boat> ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
@@ -202,11 +206,10 @@ sp {family-cross*apply*ferry-two-children*internal*count*child
 sp {family-cross*propose*ferry-one*adult
    (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <cur> <opp> <k-adult>)
-   (<boat> ^type block ^shape boat)
-   (<cur> ^type location ^adult-count >= 1)
-   (<opp> ^type location)
-   (<k-adult> ^type kind ^object-handle adult)
+   (<objs> ^block <boat> ^location <cur> <opp> ^kind <k-adult>)
+   (<boat> ^shape boat)
+   (<cur> ^adult-count >= 1)
+   (<k-adult> ^object-handle adult)
    (<w> ^below <bb> ^opposite <op-r>)
    (<bb> ^argument1 <cur> ^argument2 <boat>)
    (<op-r> ^argument1 <opp>)
@@ -220,8 +223,8 @@ sp {family-cross*apply*ferry-one*environment-effect*adult
    (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-one ^status complete ^argument1 adult ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^block <boat> ^location <d>)
+   (<boat> ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
@@ -242,11 +245,10 @@ sp {family-cross*apply*ferry-one*environment-effect*adult
 sp {family-cross*propose*ferry-one*child
    (state <s> ^problem-space.name family-cross ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <cur> <opp> <k-child>)
-   (<boat> ^type block ^shape boat)
-   (<cur> ^type location ^child-count >= 1)
-   (<opp> ^type location)
-   (<k-child> ^type kind ^object-handle child)
+   (<objs> ^block <boat> ^location <cur> <opp> ^kind <k-child>)
+   (<boat> ^shape boat)
+   (<cur> ^child-count >= 1)
+   (<k-child> ^object-handle child)
    (<w> ^below <bb> ^opposite <op-r>)
    (<bb> ^argument1 <cur> ^argument2 <boat>)
    (<op-r> ^argument1 <opp>)
@@ -260,8 +262,8 @@ sp {family-cross*apply*ferry-one*environment-effect*child
    (state <s> ^problem-space.name family-cross ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ferry-one ^status complete ^argument1 child ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^block <boat> ^location <d>)
+   (<boat> ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
@@ -284,8 +286,8 @@ sp {family-cross*apply*ferry-one*internal*boat
    (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ferry-one ^pre-conditions-satisfied true ^from.object-handle $ <oldh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <d>)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^block <boat>)
+   (<boat> ^shape boat)
    (<w> ^on <rb> ^below <bb> ^opposite <od>)
    (<rb> ^argument1 <boat> ^argument2 <old>)
    (<bb> ^argument1 <old> ^argument2 <boat>)
@@ -406,9 +408,8 @@ sp {family-cross*elaborate*operator*result
 sp {family-cross*elaborate*situation
    (state <s> ^problem-space.name family-cross ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^on <rb>)
-   (<objs> ^object <t> <boat> <bank-bank-1> <bank-bank-2>)
-   (<t> ^type task)
-   (<boat> ^type block ^shape boat)
+   (<objs> ^task <t> ^block <boat> ^location <bank-bank-1> <bank-bank-2>)
+   (<boat> ^shape boat)
    (<rb> ^argument1 <boat> ^argument2 <bb>)
    (<bb> ^object-handle $ <boat-bank>)
    (<bank-bank-1> ^object-handle bank-1 ^adult-count <bank-1-adult> ^child-count <bank-1-child>)
@@ -420,8 +421,8 @@ sp {family-cross*elaborate*situation
 ## In look-ahead, reject an operator whose result is a situation already on the path.
 sp {family-cross*reject*operator*repeated-situation
    (state <s> ^problem-space.name family-cross ^internal-actions true ^operator <op> + ^world <w>)
-   (<w> ^objects.object <hist>)
-   (<hist> ^type history ^visited <l>)
+   (<w> ^objects.history <hist>)
+   (<hist> ^visited <l>)
    (<op> ^task-operator true ^result <l>)
 -->
    (<s> ^operator <op> -)
@@ -436,8 +437,8 @@ sp {family-cross*reject*operator*repeated-situation
 sp {family-cross*apply*operator*record-real-move
    (state <s> ^problem-space.name family-cross ^superstate nil ^operator <op> ^world <w>)
    (<op> ^task-operator true)
-   (<w> ^objects.object <t>)
-   (<t> ^type task ^situation <sit>)
+   (<w> ^objects.task <t>)
+   (<t> ^situation <sit>)
 -->
    (<s> ^real-visited <sit>)
 }
@@ -454,9 +455,8 @@ sp {family-cross*apply*operator*record-path
    (state <s> ^problem-space.name family-cross ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^result <r>)
    (<w> ^objects <objs>)
-   (<objs> ^object <hist> <t>)
-   (<hist> ^type history)
-   (<t> ^type task ^situation <sit>)
+   (<objs> ^history <hist> ^task <t>)
+   (<t> ^situation <sit>)
 -->
    (<hist> ^visited <r> <sit>)
 }
@@ -464,10 +464,9 @@ sp {family-cross*apply*operator*record-path
 sp {family-cross*elaborate*goal*all-crossed
    (state <s> ^problem-space.name family-cross ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^on <rb>)
-   (<objs> ^object <t> <dest> <boat>)
-   (<t> ^type task)
-   (<boat> ^type block ^shape boat)
-   (<dest> ^type location ^name destination ^adult-count 2 ^child-count 2)
+   (<objs> ^task <t> ^location <dest> ^block <boat>)
+   (<boat> ^shape boat)
+   (<dest> ^name destination ^adult-count 2 ^child-count 2)
    (<rb> ^argument1 <boat> ^argument2 <dest>)
 -->
    (<t> ^goal-met true)

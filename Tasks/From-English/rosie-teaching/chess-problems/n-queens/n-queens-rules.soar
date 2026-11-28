@@ -23,6 +23,9 @@
 ##     of the columns (in size; A-C3), a static relation cross-diagonal.
 ##   - The goal (all blocks are placed) is expanded over the blocks of the world file.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 21
+production optimize-attribute block 21
+production optimize-attribute task 21
 production optimize-attribute object 21
 production optimize-attribute on 3
 production optimize-attribute below 3
@@ -44,7 +47,7 @@ sp {n-queens*apply*initialize-n-queens
    (<w> ^objects <objs>)
 -->
    (<s> ^name n-queens ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-location-13> <o-location-14> <o-location-15> <o-location-16> <o-block-17> <o-block-18> <o-block-19> <o-block-20> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-location-13> <o-location-14> <o-location-15> <o-location-16> ^block <o-block-17> <o-block-18> <o-block-19> <o-block-20> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 2 ^column 1 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 3 ^column 1 ^static true)
@@ -290,9 +293,9 @@ sp {n-queens*elaborate*state*unachieved*object-property
 sp {n-queens*propose*place-block
    (state <s> ^problem-space.name n-queens ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<w> ^available <av>)
    (<av> ^argument1 <b>)
    (<w> ^clear <clear-b>)
@@ -309,7 +312,7 @@ sp {n-queens*apply*place-block*internal*from-block
    (state <s> ^problem-space.name n-queens ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name place-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd> ^available <av>)
@@ -331,7 +334,7 @@ sp {n-queens*apply*place-block*environment-effect*from-block
    (state <s> ^problem-space.name n-queens ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name place-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd> ^available <av>)
@@ -353,7 +356,7 @@ sp {n-queens*apply*place-block*internal*from-nothing
    (state <s> ^problem-space.name n-queens ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name place-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd> ^available <av>)
@@ -373,7 +376,7 @@ sp {n-queens*apply*place-block*environment-effect*from-nothing
    (state <s> ^problem-space.name n-queens ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name place-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd> ^available <av>)
@@ -392,9 +395,9 @@ sp {n-queens*apply*place-block*environment-effect*from-nothing
 sp {n-queens*elaborate*failure*placed-same-row
    (state <s> ^problem-space.name n-queens ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b1> <b2> <l1> <l2>)
-   (<b1> ^type block ^object-handle $ <h1>)
-   (<b2> ^type block ^object-handle { <> <h1> })
+   (<objs> ^block <b1> <b2>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle { <> <h1> })
    (<w> ^on <on-1>)
    (<on-1> ^argument1 <b1> ^argument2 <l1>)
    (<w> ^on <on-2>)
@@ -408,9 +411,9 @@ sp {n-queens*elaborate*failure*placed-same-row
 sp {n-queens*elaborate*failure*place-same-col
    (state <s> ^problem-space.name n-queens ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b1> <b2> <l1> <l2>)
-   (<b1> ^type block ^object-handle $ <h1>)
-   (<b2> ^type block ^object-handle { <> <h1> })
+   (<objs> ^block <b1> <b2>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle { <> <h1> })
    (<w> ^on <on-1>)
    (<on-1> ^argument1 <b1> ^argument2 <l1>)
    (<w> ^on <on-2>)
@@ -424,9 +427,9 @@ sp {n-queens*elaborate*failure*place-same-col
 sp {n-queens*elaborate*failure*place-same-diag
    (state <s> ^problem-space.name n-queens ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b1> <b2> <l1> <l2>)
-   (<b1> ^type block ^object-handle $ <h1>)
-   (<b2> ^type block ^object-handle { <> <h1> })
+   (<objs> ^block <b1> <b2>)
+   (<b1> ^object-handle $ <h1>)
+   (<b2> ^object-handle { <> <h1> })
    (<w> ^on <on-1>)
    (<on-1> ^argument1 <b1> ^argument2 <l1>)
    (<w> ^on <on-2>)
@@ -440,22 +443,17 @@ sp {n-queens*elaborate*failure*place-same-diag
 sp {n-queens*elaborate*goal*all-placed
    (state <s> ^problem-space.name n-queens ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-block-17> <l-block-17> <b-block-18> <l-block-18> <b-block-19> <l-block-19> <b-block-20> <l-block-20>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-block-17> ^location <l-block-17> ^block <b-block-18> ^location <l-block-18> ^block <b-block-19> ^location <l-block-19> ^block <b-block-20> ^location <l-block-20>)
    (<b-block-17> ^object-handle block-17)
-   (<l-block-17> ^type location)
    (<w> ^on <on-block-17>)
    (<on-block-17> ^argument1 <b-block-17> ^argument2 <l-block-17>)
    (<b-block-18> ^object-handle block-18)
-   (<l-block-18> ^type location)
    (<w> ^on <on-block-18>)
    (<on-block-18> ^argument1 <b-block-18> ^argument2 <l-block-18>)
    (<b-block-19> ^object-handle block-19)
-   (<l-block-19> ^type location)
    (<w> ^on <on-block-19>)
    (<on-block-19> ^argument1 <b-block-19> ^argument2 <l-block-19>)
    (<b-block-20> ^object-handle block-20)
-   (<l-block-20> ^type location)
    (<w> ^on <on-block-20>)
    (<on-block-20> ^argument1 <b-block-20> ^argument2 <l-block-20>)
 -->

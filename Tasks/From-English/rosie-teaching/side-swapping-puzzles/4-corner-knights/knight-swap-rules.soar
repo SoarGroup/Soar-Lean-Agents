@@ -15,6 +15,9 @@
 ##   - The goal (statement 11) is expanded over the blocks of the world file (A-S2). "The solution has four steps" (statement 7)
 ##     is checked against the plans, not used.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 14
+production optimize-attribute block 14
+production optimize-attribute task 14
 production optimize-attribute object 14
 production optimize-attribute on 4
 production optimize-attribute below 4
@@ -35,7 +38,7 @@ sp {knight-swap*apply*initialize-knight-swap
    (<w> ^objects <objs>)
 -->
    (<s> ^name knight-swap ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-block-10> <o-block-11> <o-block-12> <o-block-13> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> ^block <o-block-10> <o-block-11> <o-block-12> <o-block-13> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color blue ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^row 1 ^column 3 ^static true)
@@ -174,9 +177,9 @@ sp {knight-swap*elaborate*state*unachieved*object-property
 sp {knight-swap*propose*move*jump
    (state <s> ^problem-space.name knight-swap ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
    (<w> ^jumpable <jumpable-d>)
@@ -193,7 +196,7 @@ sp {knight-swap*apply*move*internal
    (state <s> ^problem-space.name knight-swap ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -213,7 +216,7 @@ sp {knight-swap*apply*move*environment-effect
    (state <s> ^problem-space.name knight-swap ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -232,22 +235,21 @@ sp {knight-swap*apply*move*environment-effect
 sp {knight-swap*elaborate*goal*colors-matched
    (state <s> ^problem-space.name knight-swap ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-block-10> <l-block-10> <b-block-11> <l-block-11> <b-block-12> <l-block-12> <b-block-13> <l-block-13>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-block-10> ^location <l-block-10> ^block <b-block-11> ^location <l-block-11> ^block <b-block-12> ^location <l-block-12> ^block <b-block-13> ^location <l-block-13>)
    (<b-block-10> ^object-handle block-10)
-   (<l-block-10> ^type location ^color red)
+   (<l-block-10> ^color red)
    (<w> ^on <on-block-10>)
    (<on-block-10> ^argument1 <b-block-10> ^argument2 <l-block-10>)
    (<b-block-11> ^object-handle block-11)
-   (<l-block-11> ^type location ^color red)
+   (<l-block-11> ^color red)
    (<w> ^on <on-block-11>)
    (<on-block-11> ^argument1 <b-block-11> ^argument2 <l-block-11>)
    (<b-block-12> ^object-handle block-12)
-   (<l-block-12> ^type location ^color blue)
+   (<l-block-12> ^color blue)
    (<w> ^on <on-block-12>)
    (<on-block-12> ^argument1 <b-block-12> ^argument2 <l-block-12>)
    (<b-block-13> ^object-handle block-13)
-   (<l-block-13> ^type location ^color blue)
+   (<l-block-13> ^color blue)
    (<w> ^on <on-block-13>)
    (<on-block-13> ^argument1 <b-block-13> ^argument2 <l-block-13>)
 -->

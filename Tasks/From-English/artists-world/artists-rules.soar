@@ -33,6 +33,9 @@
 
 ## Propose initialize-artists when its conditions below hold.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute bank 9
+production optimize-attribute boat 9
+production optimize-attribute person 9
 production optimize-attribute object 9
 
 sp {artists*propose*initialize-artists
@@ -58,7 +61,7 @@ sp {artists*apply*initialize-artists
    (<w> ^objects <objs>)
 -->
    (<s> ^name artists ^desireds <ds>)
-   (<objs> ^object <left> <right> <boat> <artist-1> <artist-2> <artist-3> <manager-1> <manager-2> <manager-3>)
+   (<objs> ^bank <left> <right> ^boat <boat> ^person <artist-1> <artist-2> <artist-3> <manager-1> <manager-2> <manager-3>)
    (<left> ^object-handle left ^anchored true ^type bank)
    (<right> ^object-handle right ^anchored true ^type bank)
    (<boat> ^object-handle boat ^anchored true ^type boat ^side left)
@@ -102,10 +105,10 @@ sp {artists*elaborate*flags
 sp {artists*elaborate*world*bank*empty
    (state <s> ^problem-space.name artists ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <b>)
-   (<b> ^type bank ^object-handle <h>)
-  -{(<objs> ^object <p>)
-    (<p> ^type person ^side <h>)}
+   (<objs> ^bank <b>)
+   (<b> ^object-handle <h>)
+  -{(<objs> ^person <p>)
+    (<p> ^side <h>)}
 -->
    (<b> ^empty true)
 }
@@ -140,10 +143,10 @@ sp {artists*elaborate*state*unachieved*object-property
 sp {artists*propose*cross*one*mea
    (state <s> ^problem-space.name artists ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <p> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<p> ^type person ^side <fh> ^object-handle <ph>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> })
+   (<objs> ^boat <boat> ^person <p> ^bank <to>)
+   (<boat> ^side <fh>)
+   (<p> ^side <fh> ^object-handle <ph>)
+   (<to> ^object-handle { <th> <> <fh> })
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -154,11 +157,11 @@ sp {artists*propose*cross*one*mea
 sp {artists*propose*cross*two*mea
    (state <s> ^problem-space.name artists ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <p1> <p2> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<p1> ^type person ^side <fh> ^number <n1> ^object-handle <h1>)
-   (<p2> ^type person ^side <fh> ^number > <n1> ^object-handle <h2>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> })
+   (<objs> ^boat <boat> ^person <p1> <p2> ^bank <to>)
+   (<boat> ^side <fh>)
+   (<p1> ^side <fh> ^number <n1> ^object-handle <h1>)
+   (<p2> ^side <fh> ^number > <n1> ^object-handle <h2>)
+   (<to> ^object-handle { <th> <> <fh> })
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -191,8 +194,8 @@ sp {artists*elaborate*operator*result*stays
    (state <s> ^problem-space.name artists ^operator <op> + ^prediction <pr> ^world <w>)
    (<pr> ^operator <op>)
    (<op> ^name cross)
-   (<w> ^anchored-world true ^objects.object <p>)
-   (<p> ^type person ^object-handle <h> ^side <side>)
+   (<w> ^anchored-world true ^objects.person <p>)
+   (<p> ^object-handle <h> ^side <side>)
   -(<op> ^moves.object-handle <h>)
 -->
    (<pr> ^result <r>)
@@ -241,8 +244,8 @@ sp {artists*reject*cross*artist-unprotected
 ## path.
 sp {artists*reject*cross*visited
    (state <s> ^problem-space.name artists ^operator <op> + ^world <w> -^superstate nil)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^visited <l>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^visited <l>)
    (<op> ^name cross)
    (<s> ^prediction <pr>)
    (<pr> ^operator <op> ^label <l>)
@@ -264,19 +267,19 @@ sp {artists*apply*cross*person
 sp {artists*elaborate*state*situation-label
    (state <s> ^problem-space.name artists ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat>)
-   (<boat> ^type boat ^side <b>)
-   (<objs> ^object <q0>)
+   (<objs> ^boat <boat>)
+   (<boat> ^side <b>)
+   (<objs> ^person <q0>)
    (<q0> ^object-handle artist-1 ^side <s0>)
-   (<objs> ^object <q1>)
+   (<objs> ^person <q1>)
    (<q1> ^object-handle artist-2 ^side <s1>)
-   (<objs> ^object <q2>)
+   (<objs> ^person <q2>)
    (<q2> ^object-handle artist-3 ^side <s2>)
-   (<objs> ^object <q3>)
+   (<objs> ^person <q3>)
    (<q3> ^object-handle manager-1 ^side <s3>)
-   (<objs> ^object <q4>)
+   (<objs> ^person <q4>)
    (<q4> ^object-handle manager-2 ^side <s4>)
-   (<objs> ^object <q5>)
+   (<objs> ^person <q5>)
    (<q5> ^object-handle manager-3 ^side <s5>)
 -->
    (<s> ^situation-label (concat <s0> |.| <s1> |.| <s2> |.| <s3> |.| <s4> |.| <s5> |-| <b>))
@@ -286,8 +289,8 @@ sp {artists*elaborate*state*situation-label
 sp {artists*apply*cross*boat
    (state <s> ^problem-space.name artists ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh> ^to <th>)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^side <fh>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^side <fh>)
 -->
    (<boat> ^side <fh> - <th>)
 }
@@ -295,8 +298,8 @@ sp {artists*apply*cross*boat
 sp {artists*apply*cross*record-visited*look-ahead
    (state <s> ^problem-space.name artists ^operator <op> ^internal-actions true ^world <w> ^situation-label <l> -^superstate nil)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh>)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^side <fh>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^side <fh>)
 -->
    (<boat> ^visited <l>)
 }
@@ -304,8 +307,8 @@ sp {artists*apply*cross*record-visited*look-ahead
 sp {artists*apply*cross*record-visited*real
    (state <s> ^problem-space.name artists ^operator <op> ^world <w> ^situation-label <l> ^superstate nil)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh>)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^side <fh>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^side <fh>)
 -->
    (<s> ^real-visited <l>)
 }
@@ -346,8 +349,8 @@ sp {artists*apply*raise-max-evaluation-depth
 sp {artists*apply*cross*report
    (state <s> ^problem-space.name artists ^superstate nil ^operator <op> ^world <w>)
    (<op> ^name cross ^pre-conditions-satisfied true ^from <fh> ^to <th> ^text <t>)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^side <fh>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^side <fh>)
 -->
    (write |Crossing: | <t> | row from the | <fh> | bank to the | <th> | bank.| (crlf))
 }
@@ -355,7 +358,7 @@ sp {artists*apply*cross*report
 ## Done: everyone is across.
 sp {artists*elaborate*top-state*done
    (state <s> ^superstate nil ^name artists ^world <w>)
-   (<w> ^anchored-world true ^objects.object <left>)
+   (<w> ^anchored-world true ^objects.bank <left>)
    (<left> ^object-handle left ^empty true)
 -->
    (write |Everyone is across; no artist was ever left unprotected.| (crlf) |TASK-RESULT: success| (crlf))

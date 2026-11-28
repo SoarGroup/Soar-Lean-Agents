@@ -18,6 +18,9 @@
 ##     locations; a block is to the left/right of a location when the location it is on is (A-S1).
 ##   - The goal (statement 15) is expanded over the blocks of the world file: each block is on a location of its colour (A-S2).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 10
+production optimize-attribute block 10
+production optimize-attribute task 10
 production optimize-attribute object 10
 production optimize-attribute on 4
 production optimize-attribute below 4
@@ -39,7 +42,7 @@ sp {frogs-and-toads*apply*initialize-frogs-and-toads
    (<w> ^objects <objs>)
 -->
    (<s> ^name frogs-and-toads ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> ^block <o-block-6> <o-block-7> <o-block-8> <o-block-9> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color red ^row 1 ^column 2 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
@@ -150,9 +153,9 @@ sp {frogs-and-toads*elaborate*state*unachieved*object-property
 sp {frogs-and-toads*propose*move*toad-step
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<b> ^color blue)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
@@ -168,9 +171,9 @@ sp {frogs-and-toads*propose*move*toad-step
 sp {frogs-and-toads*propose*move*frog-step
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<b> ^color red)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
@@ -186,12 +189,12 @@ sp {frogs-and-toads*propose*move*frog-step
 sp {frogs-and-toads*propose*move*frog-jump
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<b> ^color red)
-   (<objs> ^object <o>)
-   (<o> ^type block ^color blue)
+   (<objs> ^block <o>)
+   (<o> ^color blue)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
    (<w> ^on <on-o>)
@@ -210,12 +213,12 @@ sp {frogs-and-toads*propose*move*frog-jump
 sp {frogs-and-toads*propose*move*toad-jump
    (state <s> ^problem-space.name frogs-and-toads ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<b> ^color blue)
-   (<objs> ^object <o>)
-   (<o> ^type block ^color red)
+   (<objs> ^block <o>)
+   (<o> ^color red)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
    (<w> ^on <on-o>)
@@ -236,7 +239,7 @@ sp {frogs-and-toads*apply*move*internal
    (state <s> ^problem-space.name frogs-and-toads ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -256,7 +259,7 @@ sp {frogs-and-toads*apply*move*environment-effect
    (state <s> ^problem-space.name frogs-and-toads ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -275,22 +278,21 @@ sp {frogs-and-toads*apply*move*environment-effect
 sp {frogs-and-toads*elaborate*goal*colors-matched
    (state <s> ^problem-space.name frogs-and-toads ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-block-6> <l-block-6> <b-block-7> <l-block-7> <b-block-8> <l-block-8> <b-block-9> <l-block-9>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-block-6> ^location <l-block-6> ^block <b-block-7> ^location <l-block-7> ^block <b-block-8> ^location <l-block-8> ^block <b-block-9> ^location <l-block-9>)
    (<b-block-6> ^object-handle block-6)
-   (<l-block-6> ^type location ^color blue)
+   (<l-block-6> ^color blue)
    (<w> ^on <on-block-6>)
    (<on-block-6> ^argument1 <b-block-6> ^argument2 <l-block-6>)
    (<b-block-7> ^object-handle block-7)
-   (<l-block-7> ^type location ^color blue)
+   (<l-block-7> ^color blue)
    (<w> ^on <on-block-7>)
    (<on-block-7> ^argument1 <b-block-7> ^argument2 <l-block-7>)
    (<b-block-8> ^object-handle block-8)
-   (<l-block-8> ^type location ^color red)
+   (<l-block-8> ^color red)
    (<w> ^on <on-block-8>)
    (<on-block-8> ^argument1 <b-block-8> ^argument2 <l-block-8>)
    (<b-block-9> ^object-handle block-9)
-   (<l-block-9> ^type location ^color red)
+   (<l-block-9> ^color red)
    (<w> ^on <on-block-9>)
    (<on-block-9> ^argument1 <b-block-9> ^argument2 <l-block-9>)
 -->

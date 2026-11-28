@@ -8,6 +8,8 @@
 ##   A-CT1: A counter object holds the current number (count, starting at 0) and the target (100).
 ##   A-CT2: "one at a time": each count-up action adds 1 to the count; it is proposed only while the count is below the target, and the goal is a count equal to the target.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute counter 2
+production optimize-attribute task 2
 production optimize-attribute object 2
 
 
@@ -24,7 +26,7 @@ sp {counting*apply*initialize-counting
    (<w> ^objects <objs>)
 -->
    (<s> ^name counting ^desireds <ds>)
-   (<objs> ^object <k-counter> <k-task>)
+   (<objs> ^counter <k-counter> ^task <k-task>)
    (<k-counter> ^object-handle counter ^anchored true ^type counter ^name counter ^count 0 ^target 100)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -87,8 +89,7 @@ sp {counting*elaborate*state*unachieved*object-property
 sp {counting*propose*count-up
    (state <s> ^problem-space.name counting ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c>)
-   (<c> ^type counter)
+   (<objs> ^counter <c>)
    (<c> ^target <c-target>)
    (<c> ^count < <c-target>)
    (<ds> ^unachieved-desireds true)
@@ -102,8 +103,7 @@ sp {counting*apply*count-up*internal
    (state <s> ^problem-space.name counting ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name count-up ^pre-conditions-satisfied true )
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c>)
-   (<c> ^type counter)
+   (<objs> ^counter <c>)
    (<c> ^count <c-count>)
 -->
    (<c> ^count <c-count> - (+ <c-count> 1))
@@ -115,8 +115,7 @@ sp {counting*apply*count-up*environment-effect
    (state <s> ^problem-space.name counting ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name count-up ^status complete  -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c>)
-   (<c> ^type counter)
+   (<objs> ^counter <c>)
    (<c> ^count <c-count>)
 -->
    (<c> ^count <c-count> - (+ <c-count> 1))
@@ -128,10 +127,8 @@ sp {counting*apply*count-up*environment-effect
 sp {counting*elaborate*goal
    (state <s> ^problem-space.name counting ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <c>)
-   (<c> ^type counter)
+   (<objs> ^task <task>)
+   (<objs> ^counter <c>)
    (<c> ^target <c-target>)
    (<c> ^count <c-target>)
 -->

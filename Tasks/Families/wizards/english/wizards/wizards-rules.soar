@@ -17,6 +17,11 @@
 ##   A-WZ5: A turn records the asked wizard's answer in the actual world: if he knows, he states his colour (says(c, colour), the colour of his spot in the actual world, so it is correct). Every world where he would have answered differently is ruled out, since all hear the answer.
 ##   A-WZ6: The goal is that some wizard has stated his colour. With A black, B and C white, A and B do not know and C states white at the third turn.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute wizard 19
+production optimize-attribute colour 19
+production optimize-attribute turn 19
+production optimize-attribute stage 19
+production optimize-attribute task 19
 production optimize-attribute object 19
 production optimize-attribute spot 24
 production optimize-attribute view-mate 24
@@ -39,7 +44,7 @@ sp {wizards*apply*initialize-wizards
    (<w> ^objects <objs>)
 -->
    (<s> ^name wizards ^desireds <ds>)
-   (<objs> ^object <k-a> <k-b> <k-c> <k-white> <k-black> <k-w-www> <k-w-wwb> <k-w-wbw> <k-w-wbb> <k-w-bww> <k-w-bwb> <k-w-bbw> <k-w-bbb> <k-told> <k-turn-a> <k-turn-b> <k-turn-c> <k-talk> <k-task>)
+   (<objs> ^wizard <k-a> <k-b> <k-c> ^colour <k-white> <k-black> ^world <k-w-www> <k-w-wwb> <k-w-wbw> <k-w-wbb> <k-w-bww> <k-w-bwb> <k-w-bbw> <k-w-bbb> ^turn <k-told> <k-turn-a> <k-turn-b> <k-turn-c> ^stage <k-talk> ^task <k-task>)
    (<k-a> ^object-handle a ^anchored true ^type wizard ^name a ^static true)
    (<k-b> ^object-handle b ^anchored true ^type wizard ^name b ^static true)
    (<k-c> ^object-handle c ^anchored true ^type wizard ^name c ^static true)
@@ -222,8 +227,7 @@ sp {wizards*elaborate*state*unachieved*object-property
 sp {wizards*propose*tell
    (state <s> ^problem-space.name wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step 0)
    (<ds> ^unachieved-desireds true)
 -->
@@ -236,7 +240,7 @@ sp {wizards*apply*tell*internal
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name tell ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -249,7 +253,7 @@ sp {wizards*apply*tell*environment-effect
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name tell ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -263,11 +267,11 @@ sp {wizards*apply*tell*internal*each1
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name tell ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^all-black <r1>)
    (<r1> ^argument1 <pw>)
-   (<objs> ^object <k-told>)
+   (<objs> ^turn <k-told>)
    (<k-told> ^object-handle told)
 -->
    (<w> ^out-at <new-2>)
@@ -280,11 +284,11 @@ sp {wizards*apply*tell*environment-effect*each1
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name tell ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^all-black <r1>)
    (<r1> ^argument1 <pw>)
-   (<objs> ^object <k-told>)
+   (<objs> ^turn <k-told>)
    (<k-told> ^object-handle told)
 -->
    (<w> ^out-at <new-2>)
@@ -295,10 +299,8 @@ sp {wizards*apply*tell*environment-effect*each1
 sp {wizards*propose*ask
    (state <s> ^problem-space.name wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
-   (<r> ^type turn)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^turn <r>)
+   (<objs> ^stage <t>)
    (<r> ^n <r-n>)
    (<t> ^step <r-n>)
    (<r> ^n > 0)
@@ -313,10 +315,9 @@ sp {wizards*apply*ask*internal
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step <t-step>)
 -->
    (<t> ^step <t-step> - (+ <t-step> 1))
@@ -328,10 +329,9 @@ sp {wizards*apply*ask*environment-effect
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step <t-step>)
    (<r> ^n <r-n>)
 -->
@@ -345,10 +345,9 @@ sp {wizards*apply*ask*internal*each1
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^actual <r1>)
    (<r1> ^argument1 <wa>)
    (<w> ^asks <r2>)
@@ -368,10 +367,9 @@ sp {wizards*apply*ask*environment-effect*each1
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^actual <r1>)
    (<r1> ^argument1 <wa>)
    (<w> ^asks <r2>)
@@ -390,10 +388,9 @@ sp {wizards*apply*ask*internal*each2
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^answer-differs <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
 -->
@@ -407,10 +404,9 @@ sp {wizards*apply*ask*environment-effect*each2
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^answer-differs <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
 -->
@@ -423,10 +419,9 @@ sp {wizards*apply*ask*internal*each3
    (state <s> ^problem-space.name wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name ask ^pre-conditions-satisfied true ^argument1.object-handle $ <r-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^answer-differs-too <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
 -->
@@ -440,10 +435,9 @@ sp {wizards*apply*ask*environment-effect*each3
    (state <s> ^problem-space.name wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name ask ^status complete ^argument1 <r-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <r>)
+   (<objs> ^turn <r>)
    (<r> ^object-handle $ <r-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<w> ^answer-differs-too <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
 -->
@@ -455,9 +449,8 @@ sp {wizards*apply*ask*environment-effect*each3
 sp {wizards*elaborate*derived*all-black
    (state <s> ^problem-space.name wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <pw>)
-   (<pw> ^type world)
-  -{  (<objs> ^object <k-white>)
+   (<objs> ^world <pw>)
+  -{  (<objs> ^colour <k-white>)
   (<k-white> ^object-handle white)
   (<w> ^spot <r1>)
   (<r1> ^argument1 <c> ^argument2 <pw> ^argument3 <k-white>)}
@@ -470,10 +463,8 @@ sp {wizards*elaborate*derived*all-black
 sp {wizards*elaborate*derived*live-at
    (state <s> ^problem-space.name wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <pw>)
-   (<pw> ^type world)
-   (<objs> ^object <r>)
-   (<r> ^type turn)
+   (<objs> ^world <pw>)
+   (<objs> ^turn <r>)
   -{  (<w> ^out-at <r1>)
   (<r1> ^argument1 <pw> ^argument2 <earlier>)
   (<r> ^n <r-n>)
@@ -487,8 +478,7 @@ sp {wizards*elaborate*derived*live-at
 sp {wizards*elaborate*derived*knows-at
    (state <s> ^problem-space.name wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c>)
-   (<c> ^type wizard)
+   (<objs> ^wizard <c>)
    (<w> ^live-at <r1>)
    (<r1> ^argument1 <pw> ^argument2 <r>)
   -{  (<w> ^view-mate <r2>)
@@ -542,8 +532,7 @@ sp {wizards*elaborate*derived*answer-differs-too
 sp {wizards*elaborate*goal
    (state <s> ^problem-space.name wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
+   (<objs> ^task <task>)
    (<w> ^says <r1>)
    (<r1> ^argument1 <c> ^argument2 <col>)
 -->

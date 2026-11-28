@@ -14,6 +14,7 @@
 ##   - larger than is expanded in place: the destination's volume is more than the block's (A-H2).
 ##   - The goal is ^goal-met true on the task object when two different green locations are clear (A-H3).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute task 8
 production optimize-attribute object 8
 production optimize-attribute on 4
 production optimize-attribute below 4
@@ -33,7 +34,7 @@ sp {tower-of-hanoi-4*apply*initialize-tower-of-hanoi-4
    (<w> ^objects <objs>)
 -->
    (<s> ^name tower-of-hanoi-4 ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> ^block <o-block-4> <o-block-5> <o-block-6> <o-block-7> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color green ^volume 5 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color green ^volume 5 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^volume 5 ^static true)
@@ -122,8 +123,8 @@ sp {tower-of-hanoi-4*elaborate*state*unachieved*object-property
 sp {tower-of-hanoi-4*propose*move
    (state <s> ^problem-space.name tower-of-hanoi-4 ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
+   (<objs> ^block <b>)
+   (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cb> <cd>)
    (<cb> ^argument1 <b>)
@@ -140,7 +141,7 @@ sp {tower-of-hanoi-4*apply*move*internal
    (state <s> ^problem-space.name tower-of-hanoi-4 ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -160,7 +161,7 @@ sp {tower-of-hanoi-4*apply*move*environment-effect
    (state <s> ^problem-space.name tower-of-hanoi-4 ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -179,10 +180,9 @@ sp {tower-of-hanoi-4*apply*move*environment-effect
 sp {tower-of-hanoi-4*elaborate*goal*two-clear-green-locations
    (state <s> ^problem-space.name tower-of-hanoi-4 ^world <w>)
    (<w> ^objects <objs> ^clear <c1> <c2>)
-   (<objs> ^object <t> <l1> <l2>)
-   (<t> ^type task)
-   (<l1> ^type location ^color green ^object-handle $ <h1>)
-   (<l2> ^type location ^color green ^object-handle { <> <h1> <h2> })
+   (<objs> ^task <t> ^location <l1> <l2>)
+   (<l1> ^color green ^object-handle $ <h1>)
+   (<l2> ^color green ^object-handle { <> <h1> <h2> })
    (<c1> ^argument1 <l1>)
    (<c2> ^argument1 <l2>)
 -->
@@ -194,16 +194,16 @@ sp {tower-of-hanoi-4*elaborate*goal*two-clear-green-locations
 sp {tower-of-hanoi-4*sc-1*apply*move*last-moved*internal
    (state <s> ^problem-space.name tower-of-hanoi-4 ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh>)
-   (<w> ^anchored-world true ^objects.object <t>)
-   (<t> ^type task ^sc-last-moved { <old> <> <bh> })
+   (<w> ^anchored-world true ^objects.task <t>)
+   (<t> ^sc-last-moved { <old> <> <bh> })
 -->
    (<t> ^sc-last-moved <old> - <bh>)
 }
 sp {tower-of-hanoi-4*sc-1*apply*move*last-moved*internal*first
    (state <s> ^problem-space.name tower-of-hanoi-4 ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh>)
-   (<w> ^anchored-world true ^objects.object <t>)
-   (<t> ^type task -^sc-last-moved)
+   (<w> ^anchored-world true ^objects.task <t>)
+   (<t> -^sc-last-moved)
 -->
    (<t> ^sc-last-moved <bh>)
 }
@@ -211,8 +211,8 @@ sp {tower-of-hanoi-4*sc-1*apply*move*last-moved*environment
 :o-support
    (state <s> ^problem-space.name tower-of-hanoi-4 ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh>)
-   (<w> ^anchored-world true ^objects.object <t>)
-   (<t> ^type task ^sc-last-moved { <old> <> <bh> })
+   (<w> ^anchored-world true ^objects.task <t>)
+   (<t> ^sc-last-moved { <old> <> <bh> })
 -->
    (<t> ^sc-last-moved <old> - <bh>)
 }
@@ -220,8 +220,8 @@ sp {tower-of-hanoi-4*sc-1*apply*move*last-moved*environment*first
 :o-support
    (state <s> ^problem-space.name tower-of-hanoi-4 ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh>)
-   (<w> ^anchored-world true ^objects.object <t>)
-   (<t> ^type task -^sc-last-moved)
+   (<w> ^anchored-world true ^objects.task <t>)
+   (<t> -^sc-last-moved)
 -->
    (<t> ^sc-last-moved <bh>)
 }
@@ -231,11 +231,11 @@ sp {tower-of-hanoi-4*sc-1*compare*move*smallest-twice*reject
    (state <s> ^problem-space.name tower-of-hanoi-4 ^real false ^operator <o> + ^world <w>)
    (<o> ^name move ^argument1.object-handle $ <bh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b>)
-   (<t> ^type task ^sc-last-moved $ <bh>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
+   (<objs> ^task <t> ^block <b>)
+   (<t> ^sc-last-moved $ <bh>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
 -->
    (<s> ^operator <o> -)
 }
@@ -244,9 +244,7 @@ sp {tower-of-hanoi-4*sc-1*compare*move*smallest-twice*reject
 sp {tower-of-hanoi-4*sc-3*elaborate*on-location*direct
    (state <s> ^problem-space.name tower-of-hanoi-4 ^world <w>)
    (<w> ^anchored-world true ^objects <objs> ^on <r>)
-   (<objs> ^object <b> <l>)
-   (<b> ^type block)
-   (<l> ^type location)
+   (<objs> ^block <b> ^location <l>)
    (<r> ^argument1 <b> ^argument2 <l>)
 -->
    (<s> ^sc-on-location <ol>)
@@ -257,8 +255,7 @@ sp {tower-of-hanoi-4*sc-3*elaborate*on-location*stacked
    (state <s> ^problem-space.name tower-of-hanoi-4 ^world <w> ^sc-on-location <ol1>)
    (<ol1> ^block <y> ^location <l>)
    (<w> ^anchored-world true ^objects <objs> ^on <r>)
-   (<objs> ^object <b>)
-   (<b> ^type block)
+   (<objs> ^block <b>)
    (<r> ^argument1 <b> ^argument2 <y>)
 -->
    (<s> ^sc-on-location <ol>)
@@ -269,13 +266,13 @@ sp {tower-of-hanoi-4*sc-3*apply*move*smallest-from*internal
    (state <s> ^problem-space.name tower-of-hanoi-4 ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
+   (<objs> ^task <t> ^block <b>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
    (<s> ^sc-on-location <ol>)
    (<ol> ^block <b> ^location <l>)
-   (<t> ^type task ^sc-smallest-from { <old> <> <l> })
+   (<t> ^sc-smallest-from { <old> <> <l> })
 -->
    (<t> ^sc-smallest-from <old> - <l>)
 }
@@ -283,13 +280,13 @@ sp {tower-of-hanoi-4*sc-3*apply*move*smallest-from*internal*first
    (state <s> ^problem-space.name tower-of-hanoi-4 ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
+   (<objs> ^task <t> ^block <b>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
    (<s> ^sc-on-location <ol>)
    (<ol> ^block <b> ^location <l>)
-   (<t> ^type task -^sc-smallest-from)
+   (<t> -^sc-smallest-from)
 -->
    (<t> ^sc-smallest-from <l>)
 }
@@ -298,14 +295,14 @@ sp {tower-of-hanoi-4*sc-3*apply*move*smallest-from*environment
    (state <s> ^problem-space.name tower-of-hanoi-4 ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
+   (<objs> ^task <t> ^block <b>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
    (<s> ^sc-on-location <ol>)
    (<ol> ^block <b> ^location <l>)
    (<pa> -^sc-from-recorded true)
-   (<t> ^type task ^sc-smallest-from { <old> <> <l> })
+   (<t> ^sc-smallest-from { <old> <> <l> })
 -->
    (<t> ^sc-smallest-from <old> - <l>)
    (<pa> ^sc-from-recorded true)
@@ -315,14 +312,14 @@ sp {tower-of-hanoi-4*sc-3*apply*move*smallest-from*environment*first
    (state <s> ^problem-space.name tower-of-hanoi-4 ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
+   (<objs> ^task <t> ^block <b>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
    (<s> ^sc-on-location <ol>)
    (<ol> ^block <b> ^location <l>)
    (<pa> -^sc-from-recorded true)
-   (<t> ^type task -^sc-smallest-from)
+   (<t> -^sc-smallest-from)
 -->
    (<t> ^sc-smallest-from <l>)
    (<pa> ^sc-from-recorded true)
@@ -333,12 +330,12 @@ sp {tower-of-hanoi-4*sc-3*compare*move*smallest-back*reject*location
    (state <s> ^problem-space.name tower-of-hanoi-4 ^real false ^tried-tied-operator <any> ^operator <o> + ^world <w>)
    (<o> ^name move ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b> <d>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
-   (<d> ^type location ^object-handle $ <dh>)
-   (<t> ^type task ^sc-smallest-from <fl>)
+   (<objs> ^task <t> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
+   (<d> ^object-handle $ <dh>)
+   (<t> ^sc-smallest-from <fl>)
    (<fl> ^object-handle $ <dh>)
 -->
    (<s> ^operator <o> -)
@@ -349,13 +346,13 @@ sp {tower-of-hanoi-4*sc-3*compare*move*smallest-back*reject*block
               ^sc-on-location <ol>)
    (<o> ^name move ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t> <b> <d>)
-   (<b> ^type block ^object-handle $ <bh> ^volume <bv>)
-  -{(<objs> ^object <x>)
-    (<x> ^type block ^volume < <bv>)}
-   (<d> ^type block ^object-handle $ <dh>)
+   (<objs> ^task <t> ^block <b> <d>)
+   (<b> ^object-handle $ <bh> ^volume <bv>)
+  -{(<objs> ^block <x>)
+    (<x> ^volume < <bv>)}
+   (<d> ^object-handle $ <dh>)
    (<ol> ^block <d> ^location <dl>)
-   (<t> ^type task ^sc-smallest-from <fl>)
+   (<t> ^sc-smallest-from <fl>)
    (<fl> ^object-handle $ <flh>)
    (<dl> ^object-handle $ <flh>)
 -->

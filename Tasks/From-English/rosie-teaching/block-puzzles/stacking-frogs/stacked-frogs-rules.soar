@@ -21,6 +21,9 @@
 ## Search settings: ^iterative-step tie-impasse, chosen by the P6 probe (probe_settings.py, 16 Nov 2026, library
 ## v2.34, seeds 1-3): same 3-move plans as operator depth with fewer decisions (probe.json).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 9
+production optimize-attribute block 9
+production optimize-attribute task 9
 production optimize-attribute object 9
 production optimize-attribute on 4
 production optimize-attribute below 4
@@ -43,7 +46,7 @@ sp {stacked-frogs*apply*initialize-stacked-frogs
    (<w> ^objects <objs>)
 -->
    (<s> ^name stacked-frogs ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> ^block <o-block-5> <o-block-6> <o-block-7> <o-block-8> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^x 1 ^y 1 ^block-count 1)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^x 2 ^y 1 ^block-count 1)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^x 3 ^y 1 ^block-count 1)
@@ -159,9 +162,9 @@ sp {stacked-frogs*elaborate*state*unachieved*object-property
 sp {stacked-frogs*propose*move*1-blocks
    (state <s> ^problem-space.name stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
-   (<c> ^type location ^block-count 1 ^object-handle $ <ch>)
-   (<l> ^type location ^object-handle $ <lh>)
+   (<objs> ^location <c> <l>)
+   (<c> ^block-count 1 ^object-handle $ <ch>)
+   (<l> ^object-handle $ <lh>)
    (<w> ^apart-1 <ap>)
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<ds> ^unachieved-desireds true)
@@ -172,9 +175,9 @@ sp {stacked-frogs*propose*move*1-blocks
 sp {stacked-frogs*propose*move*2-blocks
    (state <s> ^problem-space.name stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
-   (<c> ^type location ^block-count 2 ^object-handle $ <ch>)
-   (<l> ^type location ^object-handle $ <lh>)
+   (<objs> ^location <c> <l>)
+   (<c> ^block-count 2 ^object-handle $ <ch>)
+   (<l> ^object-handle $ <lh>)
    (<w> ^apart-2 <ap>)
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<ds> ^unachieved-desireds true)
@@ -185,9 +188,9 @@ sp {stacked-frogs*propose*move*2-blocks
 sp {stacked-frogs*propose*move*3-blocks
    (state <s> ^problem-space.name stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
-   (<c> ^type location ^block-count 3 ^object-handle $ <ch>)
-   (<l> ^type location ^object-handle $ <lh>)
+   (<objs> ^location <c> <l>)
+   (<c> ^block-count 3 ^object-handle $ <ch>)
+   (<l> ^object-handle $ <lh>)
    (<w> ^apart-3 <ap>)
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<ds> ^unachieved-desireds true)
@@ -198,9 +201,9 @@ sp {stacked-frogs*propose*move*3-blocks
 sp {stacked-frogs*propose*move*4-blocks
    (state <s> ^problem-space.name stacked-frogs ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
-   (<c> ^type location ^block-count 4 ^object-handle $ <ch>)
-   (<l> ^type location ^object-handle $ <lh>)
+   (<objs> ^location <c> <l>)
+   (<c> ^block-count 4 ^object-handle $ <ch>)
+   (<l> ^object-handle $ <lh>)
    (<w> ^apart-4 <ap>)
    (<ap> ^argument1 <l> ^argument2 <c>)
    (<ds> ^unachieved-desireds true)
@@ -213,7 +216,7 @@ sp {stacked-frogs*apply*move*internal*blocks
    (state <s> ^problem-space.name stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<w> ^on <r> ^below <bl>)
@@ -230,7 +233,7 @@ sp {stacked-frogs*apply*move*environment-effect*blocks
    (state <s> ^problem-space.name stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<w> ^on <r> ^below <bl>)
@@ -245,7 +248,7 @@ sp {stacked-frogs*apply*move*internal*count-onto-empty
    (state <s> ^problem-space.name stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<c> ^block-count { <k> > 0 })
@@ -266,7 +269,7 @@ sp {stacked-frogs*apply*move*environment-effect*count-onto-empty
    (state <s> ^problem-space.name stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<c> ^block-count { <k> > 0 })
@@ -287,7 +290,7 @@ sp {stacked-frogs*apply*move*internal*count-onto-pile
    (state <s> ^problem-space.name stacked-frogs ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <ch> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<c> ^block-count { <k> > 0 })
@@ -305,7 +308,7 @@ sp {stacked-frogs*apply*move*environment-effect*count-onto-pile
    (state <s> ^problem-space.name stacked-frogs ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <ch> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <c> <l>)
+   (<objs> ^location <c> <l>)
    (<c> ^object-handle $ <ch>)
    (<l> ^object-handle $ <lh>)
    (<c> ^block-count { <k> > 0 })
@@ -322,11 +325,10 @@ sp {stacked-frogs*apply*move*environment-effect*count-onto-pile
 sp {stacked-frogs*elaborate*goal*three-clear
    (state <s> ^problem-space.name stacked-frogs ^world <w>)
    (<w> ^objects <objs> ^clear <c1> <c2> <c3>)
-   (<objs> ^object <t> <l1> <l2> <l3>)
-   (<t> ^type task)
-   (<l1> ^type location ^object-handle $ <h1>)
-   (<l2> ^type location ^object-handle { <> <h1> <h2> })
-   (<l3> ^type location ^object-handle { <> <h1> <> <h2> <h3> })
+   (<objs> ^task <t> ^location <l1> <l2> <l3>)
+   (<l1> ^object-handle $ <h1>)
+   (<l2> ^object-handle { <> <h1> <h2> })
+   (<l3> ^object-handle { <> <h1> <> <h2> <h3> })
    (<c1> ^argument1 <l1>)
    (<c2> ^argument1 <l2>)
    (<c3> ^argument1 <l3>)

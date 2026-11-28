@@ -21,6 +21,8 @@
 
 ## Propose initialize-missionaries-cannibals when its conditions below hold.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute bank 3
+production optimize-attribute boat 3
 production optimize-attribute object 3
 
 sp {missionaries-cannibals*propose*initialize-missionaries-cannibals
@@ -35,7 +37,7 @@ sp {missionaries-cannibals*apply*initialize-missionaries-cannibals
    (<w> ^objects <objs>)
 -->
    (<s> ^name missionaries-cannibals ^desireds <ds> ^load-table <lt>)
-   (<objs> ^object <left> <right> <boat>)
+   (<objs> ^bank <left> <right> ^boat <boat>)
    (<left> ^object-handle left ^anchored true ^type bank ^missionaries 3 ^cannibals 3)
    (<right> ^object-handle right ^anchored true ^type bank ^missionaries 0 ^cannibals 0)
    (<boat> ^object-handle boat ^anchored true ^type boat ^side left ^visited |right-0-0-left-3-3-left|)
@@ -83,8 +85,8 @@ sp {missionaries-cannibals*elaborate*flags
 ## World elaboration: a bank with no one on it is empty.
 sp {missionaries-cannibals*elaborate*world*empty
    (state <s> ^problem-space.name missionaries-cannibals ^world <w>)
-   (<w> ^objects.object <b>)
-   (<b> ^type bank ^missionaries 0 ^cannibals 0)
+   (<w> ^objects.bank <b>)
+   (<b> ^missionaries 0 ^cannibals 0)
 -->
    (<b> ^empty true)
 }
@@ -117,10 +119,10 @@ sp {missionaries-cannibals*elaborate*state*unachieved*object-property
 sp {missionaries-cannibals*propose*cross-1m*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <from> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<from> ^type bank ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
+   (<objs> ^boat <boat> ^bank <from> <to>)
+   (<boat> ^side <fh>)
+   (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
+   (<to> ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -134,10 +136,10 @@ sp {missionaries-cannibals*propose*cross-1m*mea
 sp {missionaries-cannibals*propose*cross-2m*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <from> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<from> ^type bank ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
+   (<objs> ^boat <boat> ^bank <from> <to>)
+   (<boat> ^side <fh>)
+   (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
+   (<to> ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -151,10 +153,10 @@ sp {missionaries-cannibals*propose*cross-2m*mea
 sp {missionaries-cannibals*propose*cross-1c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <from> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<from> ^type bank ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
+   (<objs> ^boat <boat> ^bank <from> <to>)
+   (<boat> ^side <fh>)
+   (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
+   (<to> ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -168,10 +170,10 @@ sp {missionaries-cannibals*propose*cross-1c*mea
 sp {missionaries-cannibals*propose*cross-2c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <from> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<from> ^type bank ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
+   (<objs> ^boat <boat> ^bank <from> <to>)
+   (<boat> ^side <fh>)
+   (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
+   (<to> ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -185,10 +187,10 @@ sp {missionaries-cannibals*propose*cross-2c*mea
 sp {missionaries-cannibals*propose*cross-1m1c*mea
    (state <s> ^problem-space.name missionaries-cannibals ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <boat> <from> <to>)
-   (<boat> ^type boat ^side <fh>)
-   (<from> ^type bank ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
-   (<to> ^type bank ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
+   (<objs> ^boat <boat> ^bank <from> <to>)
+   (<boat> ^side <fh>)
+   (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
+   (<to> ^object-handle { <th> <> <fh> } ^missionaries <tm> ^cannibals <tc>)
    (<ds> ^desired <sd> ^unachieved <sd>)
 -->
    (<s> ^operator <op> +)
@@ -222,8 +224,8 @@ sp {missionaries-cannibals*reject*crossing*unsafe-to-bank
 
 sp {missionaries-cannibals*reject*crossing*already-visited
    (state <s> ^problem-space.name missionaries-cannibals ^operator <op> + ^world <w>)
-   (<w> ^anchored-world true ^objects.object <boat>)
-   (<boat> ^type boat ^visited <l>)
+   (<w> ^anchored-world true ^objects.boat <boat>)
+   (<boat> ^visited <l>)
    (<op> ^task-operator true ^result <l>)
 -->
    (<s> ^operator <op> -)
@@ -235,10 +237,10 @@ sp {missionaries-cannibals*apply*crossing*internal
    (<op> ^task-operator true ^name <n> ^pre-conditions-satisfied true ^m-load <dm> ^c-load <dc> ^result <r>
          ^argument1.object-handle <fh> ^argument2.object-handle <th>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <from> <to> <boat>)
+   (<objs> ^object <from> <to> ^boat <boat>)
    (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
    (<to> ^object-handle <th> ^missionaries <tm> ^cannibals <tc>)
-   (<boat> ^type boat ^side <fh>)
+   (<boat> ^side <fh>)
 -->
    (log 1 (crlf) |Apply | <n> | internal.|)
    (<from> ^missionaries <fm> - (- <fm> <dm>) ^cannibals <fc> - (- <fc> <dc>))
@@ -253,10 +255,10 @@ sp {missionaries-cannibals*apply*crossing*environment-effect
    (<pa> ^name <n> ^status complete ^argument1 <fh> ^argument2 <th> -^effect-applied true)
    (<l> ^name <n> ^missionaries <dm> ^cannibals <dc>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <from> <to> <boat>)
+   (<objs> ^object <from> <to> ^boat <boat>)
    (<from> ^object-handle <fh> ^missionaries <fm> ^cannibals <fc>)
    (<to> ^object-handle <th> ^missionaries <tm> ^cannibals <tc>)
-   (<boat> ^type boat ^side <fh>)
+   (<boat> ^side <fh>)
 -->
    (<from> ^missionaries <fm> - (- <fm> <dm>) ^cannibals <fc> - (- <fc> <dc>))
    (<to> ^missionaries <tm> - (+ <tm> <dm>) ^cannibals <tc> - (+ <tc> <dc>))

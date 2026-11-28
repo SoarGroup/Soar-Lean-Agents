@@ -12,6 +12,9 @@
 ##   - The goal is ^goal-met true on the task object when some blue block is on some purple block and the same blue
 ##     block is below some yellow block.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 7
+production optimize-attribute block 7
+production optimize-attribute task 7
 production optimize-attribute object 7
 production optimize-attribute on 3
 production optimize-attribute below 3
@@ -31,7 +34,7 @@ sp {world-blocks*apply*initialize-world-blocks
    (<w> ^objects <objs>)
 -->
    (<s> ^name world-blocks ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-block-4> <o-block-5> <o-block-6> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> ^block <o-block-4> <o-block-5> <o-block-6> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^static true)
@@ -115,8 +118,8 @@ sp {world-blocks*elaborate*state*unachieved*object-property
 sp {world-blocks*propose*move
    (state <s> ^problem-space.name world-blocks ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
+   (<objs> ^block <b>)
+   (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cb> <cd>)
    (<cb> ^argument1 <b>)
@@ -131,7 +134,7 @@ sp {world-blocks*apply*move*internal
    (state <s> ^problem-space.name world-blocks ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -151,7 +154,7 @@ sp {world-blocks*apply*move*environment-effect
    (state <s> ^problem-space.name world-blocks ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -170,11 +173,10 @@ sp {world-blocks*apply*move*environment-effect
 sp {world-blocks*elaborate*goal*stack
    (state <s> ^problem-space.name world-blocks ^world <w>)
    (<w> ^objects <objs> ^on <r1> ^below <r2>)
-   (<objs> ^object <t> <a> <b> <c>)
-   (<t> ^type task)
-   (<a> ^type block ^color blue)
-   (<b> ^type block ^color purple)
-   (<c> ^type block ^color yellow)
+   (<objs> ^task <t> ^block <a> <b> <c>)
+   (<a> ^color blue)
+   (<b> ^color purple)
+   (<c> ^color yellow)
    (<r1> ^argument1 <a> ^argument2 <b>)
    (<r2> ^argument1 <a> ^argument2 <c>)
 -->

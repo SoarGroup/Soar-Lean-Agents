@@ -7,6 +7,8 @@
 ##   A-HW1: Writing is an action of the agent (a perform-action command); its report prints "Hello World".
 ##   A-HW2: "once, then stop": a page object records what is written on it (nothing at the start); the operator needs a page with nothing written, and the goal is a page with the words, so the agent writes once and the task ends. (A test that the page lacks the property is a negation, which the compiled conditions may not contain, W-CHK-009.)
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute page 2
+production optimize-attribute task 2
 production optimize-attribute object 2
 
 
@@ -23,7 +25,7 @@ sp {hello-world*apply*initialize-hello-world
    (<w> ^objects <objs>)
 -->
    (<s> ^name hello-world ^desireds <ds>)
-   (<objs> ^object <k-page> <k-task>)
+   (<objs> ^page <k-page> ^task <k-task>)
    (<k-page> ^object-handle page ^anchored true ^type page ^name page ^written nothing)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -86,8 +88,7 @@ sp {hello-world*elaborate*state*unachieved*object-property
 sp {hello-world*propose*write-hello-world
    (state <s> ^problem-space.name hello-world ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type page)
+   (<objs> ^page <p>)
    (<p> ^written nothing)
    (<ds> ^unachieved-desireds true)
 -->
@@ -100,8 +101,7 @@ sp {hello-world*apply*write-hello-world*internal
    (state <s> ^problem-space.name hello-world ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name write-hello-world ^pre-conditions-satisfied true )
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type page)
+   (<objs> ^page <p>)
    (<p> ^written <p-written>)
 -->
    (<p> ^written <p-written> - hello-world)
@@ -113,8 +113,7 @@ sp {hello-world*apply*write-hello-world*environment-effect
    (state <s> ^problem-space.name hello-world ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name write-hello-world ^status complete  -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type page)
+   (<objs> ^page <p>)
    (<p> ^written <p-written>)
 -->
    (<p> ^written <p-written> - hello-world)
@@ -126,10 +125,8 @@ sp {hello-world*apply*write-hello-world*environment-effect
 sp {hello-world*elaborate*goal
    (state <s> ^problem-space.name hello-world ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <p>)
-   (<p> ^type page)
+   (<objs> ^task <task>)
+   (<objs> ^page <p>)
    (<p> ^written hello-world)
 -->
    (<task> ^goal-met true)

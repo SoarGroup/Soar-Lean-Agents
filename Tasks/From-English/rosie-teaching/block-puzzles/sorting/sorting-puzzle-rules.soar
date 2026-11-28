@@ -11,6 +11,9 @@
 ##   - The goal ("all the red blocks are on a red location and ...") is expanded over the blocks of the world file: each block
 ##     is on a location of its own color (A-S2). The test is positive.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 10
+production optimize-attribute block 10
+production optimize-attribute task 10
 production optimize-attribute object 10
 production optimize-attribute on 6
 production optimize-attribute below 6
@@ -29,7 +32,7 @@ sp {sorting-puzzle*apply*initialize-sorting-puzzle
    (<w> ^objects <objs>)
 -->
    (<s> ^name sorting-puzzle ^desireds <ds>)
-   (<objs> ^object <o-red-location-1> <o-green-location-2> <o-blue-location-3> <o-red-block-4> <o-green-block-5> <o-blue-block-6> <o-red-block-7> <o-green-block-8> <o-blue-block-9> <o-task>)
+   (<objs> ^location <o-red-location-1> <o-green-location-2> <o-blue-location-3> ^block <o-red-block-4> <o-green-block-5> <o-blue-block-6> <o-red-block-7> <o-green-block-8> <o-blue-block-9> ^task <o-task>)
    (<o-red-location-1> ^object-handle red-location-1 ^anchored true ^type location ^color red ^static true)
    (<o-green-location-2> ^object-handle green-location-2 ^anchored true ^type location ^color green ^static true)
    (<o-blue-location-3> ^object-handle blue-location-3 ^anchored true ^type location ^color blue ^static true)
@@ -122,9 +125,9 @@ sp {sorting-puzzle*elaborate*state*unachieved*object-property
 sp {sorting-puzzle*propose*move
    (state <s> ^problem-space.name sorting-puzzle ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <l>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<l> ^type location ^object-handle $ <lh>)
+   (<objs> ^block <b> ^location <l>)
+   (<b> ^object-handle $ <bh>)
+   (<l> ^object-handle $ <lh>)
    (<w> ^on <r>)
    (<r> ^argument1 <b> ^argument2 { <> <l> <old> })
    (<ds> ^unachieved-desireds true)
@@ -137,7 +140,7 @@ sp {sorting-puzzle*apply*move*internal
    (state <s> ^problem-space.name sorting-puzzle ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <lh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <l>)
+   (<objs> ^block <b> ^location <l>)
    (<b> ^object-handle $ <bh>)
    (<l> ^object-handle $ <lh>)
    (<w> ^on <r> ^below <bl>)
@@ -154,7 +157,7 @@ sp {sorting-puzzle*apply*move*environment-effect
    (state <s> ^problem-space.name sorting-puzzle ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <lh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <l>)
+   (<objs> ^block <b> ^location <l>)
    (<b> ^object-handle $ <bh>)
    (<l> ^object-handle $ <lh>)
    (<w> ^on <r> ^below <bl>)
@@ -170,30 +173,29 @@ sp {sorting-puzzle*apply*move*environment-effect
 sp {sorting-puzzle*elaborate*goal*sorted
    (state <s> ^problem-space.name sorting-puzzle ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-red-block-4> <l-red-block-4> <b-green-block-5> <l-green-block-5> <b-blue-block-6> <l-blue-block-6> <b-red-block-7> <l-red-block-7> <b-green-block-8> <l-green-block-8> <b-blue-block-9> <l-blue-block-9>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-red-block-4> ^location <l-red-block-4> ^block <b-green-block-5> ^location <l-green-block-5> ^block <b-blue-block-6> ^location <l-blue-block-6> ^block <b-red-block-7> ^location <l-red-block-7> ^block <b-green-block-8> ^location <l-green-block-8> ^block <b-blue-block-9> ^location <l-blue-block-9>)
    (<b-red-block-4> ^object-handle red-block-4)
-   (<l-red-block-4> ^type location ^color red)
+   (<l-red-block-4> ^color red)
    (<w> ^on <on-red-block-4>)
    (<on-red-block-4> ^argument1 <b-red-block-4> ^argument2 <l-red-block-4>)
    (<b-green-block-5> ^object-handle green-block-5)
-   (<l-green-block-5> ^type location ^color green)
+   (<l-green-block-5> ^color green)
    (<w> ^on <on-green-block-5>)
    (<on-green-block-5> ^argument1 <b-green-block-5> ^argument2 <l-green-block-5>)
    (<b-blue-block-6> ^object-handle blue-block-6)
-   (<l-blue-block-6> ^type location ^color blue)
+   (<l-blue-block-6> ^color blue)
    (<w> ^on <on-blue-block-6>)
    (<on-blue-block-6> ^argument1 <b-blue-block-6> ^argument2 <l-blue-block-6>)
    (<b-red-block-7> ^object-handle red-block-7)
-   (<l-red-block-7> ^type location ^color red)
+   (<l-red-block-7> ^color red)
    (<w> ^on <on-red-block-7>)
    (<on-red-block-7> ^argument1 <b-red-block-7> ^argument2 <l-red-block-7>)
    (<b-green-block-8> ^object-handle green-block-8)
-   (<l-green-block-8> ^type location ^color green)
+   (<l-green-block-8> ^color green)
    (<w> ^on <on-green-block-8>)
    (<on-green-block-8> ^argument1 <b-green-block-8> ^argument2 <l-green-block-8>)
    (<b-blue-block-9> ^object-handle blue-block-9)
-   (<l-blue-block-9> ^type location ^color blue)
+   (<l-blue-block-9> ^color blue)
    (<w> ^on <on-blue-block-9>)
    (<on-blue-block-9> ^argument1 <b-blue-block-9> ^argument2 <l-blue-block-9>)
 -->

@@ -17,6 +17,9 @@
 ##   A-CB5: "At first I didn't know": rules out dates with a unique day among all ten (already gone after statement 3). "I know now": rules out dates whose day is shared by another date left after statement 3.
 ##   A-CB6: "Then I also know": rules out dates whose month is shared by another date left after statement 4. The answer is the one date left; with more than one left, no answer is proposed.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute date 12
+production optimize-attribute stage 12
+production optimize-attribute task 12
 production optimize-attribute object 12
 production optimize-attribute out3 2
 production optimize-attribute out4 2
@@ -37,7 +40,7 @@ sp {cheryls-birthday*apply*initialize-cheryls-birthday
    (<w> ^objects <objs>)
 -->
    (<s> ^name cheryls-birthday ^desireds <ds>)
-   (<objs> ^object <k-may-15> <k-may-16> <k-may-19> <k-june-17> <k-june-18> <k-july-14> <k-july-16> <k-august-14> <k-august-15> <k-august-17> <k-talk> <k-task>)
+   (<objs> ^date <k-may-15> <k-may-16> <k-may-19> <k-june-17> <k-june-18> <k-july-14> <k-july-16> <k-august-14> <k-august-15> <k-august-17> ^stage <k-talk> ^task <k-task>)
    (<k-may-15> ^object-handle may-15 ^anchored true ^type date ^name may-15 ^month may ^day 15 ^static true)
    (<k-may-16> ^object-handle may-16 ^anchored true ^type date ^name may-16 ^month may ^day 16 ^static true)
    (<k-may-19> ^object-handle may-19 ^anchored true ^type date ^name may-19 ^month may ^day 19 ^static true)
@@ -110,8 +113,7 @@ sp {cheryls-birthday*elaborate*state*unachieved*object-property
 sp {cheryls-birthday*propose*statement-3
    (state <s> ^problem-space.name cheryls-birthday ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step 1)
    (<ds> ^unachieved-desireds true)
 -->
@@ -124,7 +126,7 @@ sp {cheryls-birthday*apply*statement-3*internal
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -137,7 +139,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -151,7 +153,7 @@ sp {cheryls-birthday*apply*statement-3*internal*each1
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^albert-would-know <r1>)
    (<r1> ^argument1 <d>)
@@ -166,7 +168,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect*each1
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^albert-would-know <r1>)
    (<r1> ^argument1 <d>)
@@ -180,7 +182,7 @@ sp {cheryls-birthday*apply*statement-3*internal*each2
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-3 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^bernard-might-know <r1>)
    (<r1> ^argument1 <d>)
@@ -195,7 +197,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect*each2
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-3 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^bernard-might-know <r1>)
    (<r1> ^argument1 <d>)
@@ -208,8 +210,7 @@ sp {cheryls-birthday*apply*statement-3*environment-effect*each2
 sp {cheryls-birthday*propose*statement-4
    (state <s> ^problem-space.name cheryls-birthday ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step 2)
    (<ds> ^unachieved-desireds true)
 -->
@@ -222,7 +223,7 @@ sp {cheryls-birthday*apply*statement-4*internal
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -235,7 +236,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -249,7 +250,7 @@ sp {cheryls-birthday*apply*statement-4*internal*each1
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^left-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -266,7 +267,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect*each1
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^left-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -282,7 +283,7 @@ sp {cheryls-birthday*apply*statement-4*internal*each2
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-4 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^bernard-unsure-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -297,7 +298,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect*each2
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-4 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^bernard-unsure-after-3 <r1>)
    (<r1> ^argument1 <d>)
@@ -310,8 +311,7 @@ sp {cheryls-birthday*apply*statement-4*environment-effect*each2
 sp {cheryls-birthday*propose*statement-5
    (state <s> ^problem-space.name cheryls-birthday ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step 3)
    (<ds> ^unachieved-desireds true)
 -->
@@ -324,7 +324,7 @@ sp {cheryls-birthday*apply*statement-5*internal
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-5 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -337,7 +337,7 @@ sp {cheryls-birthday*apply*statement-5*environment-effect
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-5 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<t> ^step <t-step>)
 -->
@@ -351,7 +351,7 @@ sp {cheryls-birthday*apply*statement-5*internal*each1
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name statement-5 ^pre-conditions-satisfied true ^argument1.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^albert-unsure-after-4 <r1>)
    (<r1> ^argument1 <d>)
@@ -366,7 +366,7 @@ sp {cheryls-birthday*apply*statement-5*environment-effect*each1
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name statement-5 ^status complete ^argument1 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <t>)
+   (<objs> ^stage <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^albert-unsure-after-4 <r1>)
    (<r1> ^argument1 <d>)
@@ -379,10 +379,8 @@ sp {cheryls-birthday*apply*statement-5*environment-effect*each1
 sp {cheryls-birthday*propose*answer
    (state <s> ^problem-space.name cheryls-birthday ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type date)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^date <d>)
+   (<objs> ^stage <t>)
    (<t> ^step 4)
    (<w> ^only-date <r1>)
    (<r1> ^argument1 <d>)
@@ -397,10 +395,9 @@ sp {cheryls-birthday*apply*answer*internal
    (state <s> ^problem-space.name cheryls-birthday ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name answer ^pre-conditions-satisfied true ^argument1.object-handle $ <d-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
+   (<objs> ^date <d>)
    (<d> ^object-handle $ <d-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step <t-step>)
 -->
    (<w> ^answer <new-1>)
@@ -414,10 +411,9 @@ sp {cheryls-birthday*apply*answer*environment-effect
    (state <s> ^problem-space.name cheryls-birthday ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name answer ^status complete ^argument1 <d-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
+   (<objs> ^date <d>)
    (<d> ^object-handle $ <d-h>)
-   (<objs> ^object <t>)
-   (<t> ^type stage)
+   (<objs> ^stage <t>)
    (<t> ^step <t-step>)
    (<d> ^month <d-month>)
    (<d> ^day <d-day>)
@@ -433,11 +429,9 @@ sp {cheryls-birthday*apply*answer*environment-effect
 sp {cheryls-birthday*elaborate*derived*albert-would-know
    (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type date)
-  -{  (<objs> ^object <d2>)
-  (<d2> ^type date)
-  (<objs> ^object { <> <d> <d2> })
+   (<objs> ^date <d>)
+  -{  (<objs> ^date <d2>)
+  (<objs> ^date { <> <d> <d2> })
   (<d> ^month <d-month>)
   (<d2> ^month <d-month>)}
 -->
@@ -449,11 +443,9 @@ sp {cheryls-birthday*elaborate*derived*albert-would-know
 sp {cheryls-birthday*elaborate*derived*bernard-would-know
    (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type date)
-  -{  (<objs> ^object <d2>)
-  (<d2> ^type date)
-  (<objs> ^object { <> <d> <d2> })
+   (<objs> ^date <d>)
+  -{  (<objs> ^date <d2>)
+  (<objs> ^date { <> <d> <d2> })
   (<d> ^day <d-day>)
   (<d2> ^day <d-day>)}
 -->
@@ -465,10 +457,8 @@ sp {cheryls-birthday*elaborate*derived*bernard-would-know
 sp {cheryls-birthday*elaborate*derived*bernard-might-know
    (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type date)
-   (<objs> ^object <d2>)
-   (<d2> ^type date)
+   (<objs> ^date <d>)
+   (<objs> ^date <d2>)
    (<d> ^month <d-month>)
    (<d2> ^month <d-month>)
    (<w> ^bernard-would-know <r1>)
@@ -482,8 +472,7 @@ sp {cheryls-birthday*elaborate*derived*bernard-might-know
 sp {cheryls-birthday*elaborate*derived*left-after-3
    (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type date)
+   (<objs> ^date <d>)
   -{  (<w> ^out3 <r1>)
   (<r1> ^argument1 <d>)}
 -->
@@ -567,8 +556,7 @@ sp {cheryls-birthday*elaborate*derived*only-date
 sp {cheryls-birthday*elaborate*goal
    (state <s> ^problem-space.name cheryls-birthday ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
+   (<objs> ^task <task>)
    (<w> ^answer <r1>)
    (<r1> ^argument1 <x>)
 -->

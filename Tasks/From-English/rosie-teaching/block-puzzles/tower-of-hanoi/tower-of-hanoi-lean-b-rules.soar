@@ -13,6 +13,9 @@
 ##   A-H4: Moving X onto Y: X's on relation and the matching below relation now name Y; the object X left becomes clear.
 ##   A-H5: The action has no name in the dialog; it is called move.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 7
+production optimize-attribute block 7
+production optimize-attribute task 7
 production optimize-attribute object 7
 production optimize-attribute on 3
 production optimize-attribute below 3
@@ -32,13 +35,13 @@ sp {tower-of-hanoi*apply*initialize-tower-of-hanoi
    (<w> ^objects <objs>)
 -->
    (<s> ^name tower-of-hanoi ^desireds <ds>)
-   (<objs> ^object <k-location-1> <k-location-2> <k-location-3> <k-block-4> <k-block-5> <k-block-6> <k-task>)
-   (<k-location-1> ^object-handle location-1 ^anchored true ^type location ^color green ^volume 4)
-   (<k-location-2> ^object-handle location-2 ^anchored true ^type location ^color green ^volume 4)
-   (<k-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^volume 4)
-   (<k-block-4> ^object-handle block-4 ^anchored true ^type block ^size small ^volume 1)
-   (<k-block-5> ^object-handle block-5 ^anchored true ^type block ^size medium ^volume 2)
-   (<k-block-6> ^object-handle block-6 ^anchored true ^type block ^size large ^volume 3)
+   (<objs> ^location <k-location-1> <k-location-2> <k-location-3> ^block <k-block-4> <k-block-5> <k-block-6> ^task <k-task>)
+   (<k-location-1> ^object-handle location-1 ^anchored true ^type location ^color green ^volume 4 ^static true)
+   (<k-location-2> ^object-handle location-2 ^anchored true ^type location ^color green ^volume 4 ^static true)
+   (<k-location-3> ^object-handle location-3 ^anchored true ^type location ^color blue ^volume 4 ^static true)
+   (<k-block-4> ^object-handle block-4 ^anchored true ^type block ^size small ^volume 1 ^static true)
+   (<k-block-5> ^object-handle block-5 ^anchored true ^type block ^size medium ^volume 2 ^static true)
+   (<k-block-6> ^object-handle block-6 ^anchored true ^type block ^size large ^volume 3 ^static true)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
    (<d1> ^object <d1-o>)
@@ -117,8 +120,7 @@ sp {tower-of-hanoi*elaborate*state*unachieved*object-property
 sp {tower-of-hanoi*propose*move
    (state <s> ^problem-space.name tower-of-hanoi ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
-   (<b> ^type block)
+   (<objs> ^block <b>)
    (<objs> ^object <d>)
    (<w> ^clear <r1>)
    (<r1> ^argument1 <b>)
@@ -129,8 +131,7 @@ sp {tower-of-hanoi*propose*move
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name move ^task-operator true ^action-handle move ^argument1 <b> ^argument2 <d> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 
 ## Effect of move (look-ahead).
@@ -138,7 +139,7 @@ sp {tower-of-hanoi*apply*move*internal
    (state <s> ^problem-space.name tower-of-hanoi ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <b-h> ^argument2.object-handle $ <d-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <b-h>)
    (<objs> ^object <d>)
    (<d> ^object-handle $ <d-h>)
@@ -162,7 +163,7 @@ sp {tower-of-hanoi*apply*move*environment-effect
    (state <s> ^problem-space.name tower-of-hanoi ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <b-h> ^argument2 <d-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <b-h>)
    (<objs> ^object <d>)
    (<d> ^object-handle $ <d-h>)
@@ -186,15 +187,12 @@ sp {tower-of-hanoi*apply*move*environment-effect
 sp {tower-of-hanoi*elaborate*goal
    (state <s> ^problem-space.name tower-of-hanoi ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <l1>)
-   (<l1> ^type location)
+   (<objs> ^task <task>)
+   (<objs> ^location <l1>)
    (<l1> ^color green)
-   (<objs> ^object <l2>)
-   (<l2> ^type location)
+   (<objs> ^location <l2>)
    (<l2> ^color green)
-   (<objs> ^object { <> <l1> <l2> })
+   (<objs> ^location { <> <l1> <l2> })
    (<w> ^clear <r1>)
    (<r1> ^argument1 <l1>)
    (<w> ^clear <r2>)

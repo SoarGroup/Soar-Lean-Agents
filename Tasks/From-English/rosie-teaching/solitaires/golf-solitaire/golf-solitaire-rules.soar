@@ -23,6 +23,9 @@
 ##   - The goal (statement 15) is expanded over the blocks of the world file. "The solution has nine steps" (statement 11)
 ##     is checked against the plans, not used.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute block 11
+production optimize-attribute location 11
+production optimize-attribute task 11
 production optimize-attribute object 11
 production optimize-attribute on 6
 production optimize-attribute below 6
@@ -42,7 +45,7 @@ sp {golf-solitaire*apply*initialize-golf-solitaire
    (<w> ^objects <objs>)
 -->
    (<s> ^name golf-solitaire ^desireds <ds>)
-   (<objs> ^object <o-block-1> <o-block-2> <o-block-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> <o-location-10> <o-task>)
+   (<objs> ^block <o-block-1> <o-block-2> <o-block-3> <o-block-4> <o-block-5> <o-block-6> <o-block-7> <o-block-8> <o-block-9> ^location <o-location-10> ^task <o-task>)
    (<o-block-1> ^object-handle block-1 ^anchored true ^type block ^position 0 ^fixed <o-block-1-fx>)
    (<o-block-1-fx> ^value 2 ^value-plus-1 3 ^value-minus-1 1)
    (<o-block-2> ^object-handle block-2 ^anchored true ^type block ^position 0 ^fixed <o-block-2-fx>)
@@ -153,11 +156,11 @@ sp {golf-solitaire*elaborate*state*unachieved*object-property
 sp {golf-solitaire*propose*move*onto-garbage
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^fixed.value <v> ^object-handle $ <bh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^position 0 ^fixed.value <v> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
-   (<d> ^type location ^name garbage ^object-handle $ <dh>)
+   (<d> ^name garbage ^object-handle $ <dh>)
    (<w> ^clear <clear-d>)
    (<clear-d> ^argument1 <d>)
    (<ds> ^unachieved-desireds true)
@@ -168,11 +171,11 @@ sp {golf-solitaire*propose*move*onto-garbage
 sp {golf-solitaire*propose*move*onto-top*one-less
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^fixed.value-plus-1 <tv> ^object-handle $ <bh>)
+   (<objs> ^block <b> <d>)
+   (<b> ^position 0 ^fixed.value-plus-1 <tv> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
-   (<d> ^type block ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
+   (<d> ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
    (<w> ^clear <clear-d>)
    (<clear-d> ^argument1 <d>)
    (<ds> ^unachieved-desireds true)
@@ -183,11 +186,11 @@ sp {golf-solitaire*propose*move*onto-top*one-less
 sp {golf-solitaire*propose*move*onto-top*one-more
    (state <s> ^problem-space.name golf-solitaire ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^position 0 ^fixed.value-minus-1 <tv> ^object-handle $ <bh>)
+   (<objs> ^block <b> <d>)
+   (<b> ^position 0 ^fixed.value-minus-1 <tv> ^object-handle $ <bh>)
    (<w> ^clear <clear-b>)
    (<clear-b> ^argument1 <b>)
-   (<d> ^type block ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
+   (<d> ^position 1 ^fixed.value <tv> ^object-handle $ <dh>)
    (<w> ^clear <clear-d>)
    (<clear-d> ^argument1 <d>)
    (<ds> ^unachieved-desireds true)
@@ -200,7 +203,7 @@ sp {golf-solitaire*apply*move*internal*from-block-freed
    (state <s> ^problem-space.name golf-solitaire ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -224,7 +227,7 @@ sp {golf-solitaire*apply*move*environment-effect*from-block-freed
    (state <s> ^problem-space.name golf-solitaire ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -248,7 +251,7 @@ sp {golf-solitaire*apply*move*internal*from-block-still-covered
    (state <s> ^problem-space.name golf-solitaire ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -270,7 +273,7 @@ sp {golf-solitaire*apply*move*environment-effect*from-block-still-covered
    (state <s> ^problem-space.name golf-solitaire ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -292,7 +295,7 @@ sp {golf-solitaire*apply*move*internal*from-nothing
    (state <s> ^problem-space.name golf-solitaire ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -312,7 +315,7 @@ sp {golf-solitaire*apply*move*environment-effect*from-nothing
    (state <s> ^problem-space.name golf-solitaire ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b>)
    (<b> ^object-handle $ <bh> ^position 0)
    (<d> ^object-handle $ <dh>)
    (<w> ^clear <cd>)
@@ -331,8 +334,7 @@ sp {golf-solitaire*apply*move*environment-effect*from-nothing
 sp {golf-solitaire*elaborate*goal*all-trashed
    (state <s> ^problem-space.name golf-solitaire ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-block-1> <b-block-2> <b-block-3> <b-block-4> <b-block-5> <b-block-6> <b-block-7> <b-block-8> <b-block-9>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-block-1> <b-block-2> <b-block-3> <b-block-4> <b-block-5> <b-block-6> <b-block-7> <b-block-8> <b-block-9>)
    (<b-block-1> ^object-handle block-1 ^position 1)
    (<b-block-2> ^object-handle block-2 ^position 1)
    (<b-block-3> ^object-handle block-3 ^position 1)

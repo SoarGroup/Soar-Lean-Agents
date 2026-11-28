@@ -31,6 +31,9 @@
 
 ## Propose initialize-zebra when its conditions below hold.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute puzzle 50
+production optimize-attribute house 50
+production optimize-attribute clue 50
 production optimize-attribute object 50
 
 sp {zebra*propose*initialize-zebra
@@ -55,7 +58,7 @@ sp {zebra*apply*initialize-zebra
    (<w> ^objects <objs>)
 -->
    (<s> ^name zebra ^desireds <ds>)
-   (<objs> ^object <puzzle> <h1> <h2> <h3> <h4> <h5> <c-color> <v-red> <v-green> <v-white> <v-yellow> <v-blue> <c-nationality> <v-English> <v-Swede> <v-Dane> <v-Norwegian> <v-German> <c-drink> <v-tea> <v-coffee> <v-milk> <v-beer> <v-water> <c-smoke> <v-PallMall> <v-Dunhill> <v-Blends> <v-BlueMaster> <v-Prince> <c-pet> <v-dogs> <v-birds> <v-cats> <v-horses> <v-zebra> <k2> <k3> <k4> <k5> <k6> <k7> <k8> <k9> <k10> <k11> <k12> <k13> <k14> <k15>)
+   (<objs> ^puzzle <puzzle> ^house <h1> <h2> <h3> <h4> <h5> ^category <c-color> ^value <v-red> <v-green> <v-white> <v-yellow> <v-blue> ^category <c-nationality> ^value <v-English> <v-Swede> <v-Dane> <v-Norwegian> <v-German> ^category <c-drink> ^value <v-tea> <v-coffee> <v-milk> <v-beer> <v-water> ^category <c-smoke> ^value <v-PallMall> <v-Dunhill> <v-Blends> <v-BlueMaster> <v-Prince> ^category <c-pet> ^value <v-dogs> <v-birds> <v-cats> <v-horses> <v-zebra> ^clue <k2> <k3> <k4> <k5> <k6> <k7> <k8> <k9> <k10> <k11> <k12> <k13> <k14> <k15>)
    (<puzzle> ^object-handle puzzle ^anchored true ^type puzzle)
    (<h1> ^object-handle house-1 ^anchored true ^type house ^position 1 ^right house-2
            ^candidate |red| |green| |white| |yellow| |blue| |English| |Swede| |Dane| |Norwegian| |German| |tea| |coffee| |milk| |beer| |water| |PallMall| |Dunhill| |Blends| |BlueMaster| |Prince| |dogs| |birds| |cats| |horses| |zebra|)
@@ -172,12 +175,12 @@ sp {zebra*elaborate*state*unachieved*object-property
 sp {zebra*elaborate*single
    (state <s> ^name zebra ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <vo>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <v>)
-   (<vo> ^type value ^name <v> ^group <c>)
+   (<objs> ^house <h> ^value <vo>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <v>)
+   (<vo> ^name <v> ^group <c>)
   -{(<h> ^candidate { <v2> <> <v> })
-    (<objs> ^object <vo2>)
-    (<vo2> ^type value ^name <v2> ^group <c>)}
+    (<objs> ^value <vo2>)
+    (<vo2> ^name <v2> ^group <c>)}
 -->
    (<s> ^single <x>)
    (<x> ^house-handle <hh> ^position <p> ^group <c> ^value <v>)
@@ -187,9 +190,9 @@ sp {zebra*elaborate*single
 sp {zebra*elaborate*open-cell
    (state <s> ^name zebra ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <co>)
-   (<h> ^type house ^object-handle <hh> ^position <p>)
-   (<co> ^type category ^name <c> ^order <k>)
+   (<objs> ^house <h> ^category <co>)
+   (<h> ^object-handle <hh> ^position <p>)
+   (<co> ^name <c> ^order <k>)
   -{(<s> ^single <x>)
     (<x> ^house-handle <hh> ^group <c>)}
 -->
@@ -203,20 +206,18 @@ sp {zebra*elaborate*open-cell
 sp {zebra*elaborate*puzzle*solved
    (state <s> ^name zebra ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <pz>)
-   (<pz> ^type puzzle)
+   (<objs> ^puzzle <pz>)
   -{(<s> ^operator <x> +)
     (<x> ^name eliminate)}
-  -{(<objs> ^object <h> <a> <b>)
-    (<h> ^type house ^candidate <v1> { <v2> <> <v1> })
-    (<a> ^type value ^name <v1> ^group <c>)
-    (<b> ^type value ^name <v2> ^group <c>)}
-  -{(<objs> ^object <h2> <co>)
-    (<h2> ^type house)
-    (<co> ^type category ^name <c2>)
+  -{(<objs> ^house <h> ^value <a> <b>)
+    (<h> ^candidate <v1> { <v2> <> <v1> })
+    (<a> ^name <v1> ^group <c>)
+    (<b> ^name <v2> ^group <c>)}
+  -{(<objs> ^house <h2> ^category <co>)
+    (<co> ^name <c2>)
     -{(<h2> ^candidate <v3>)
-      (<objs> ^object <vo3>)
-      (<vo3> ^type value ^name <v3> ^group <c2>)}}
+      (<objs> ^value <vo3>)
+      (<vo3> ^name <v3> ^group <c2>)}}
 -->
    (<pz> ^solved true)
 }
@@ -225,12 +226,11 @@ sp {zebra*elaborate*puzzle*solved
 sp {zebra*elaborate*failure*empty-cell
    (state <s> ^name zebra ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <co>)
-   (<h> ^type house)
-   (<co> ^type category ^name <c>)
+   (<objs> ^house <h> ^category <co>)
+   (<co> ^name <c>)
   -{(<h> ^candidate <v>)
-    (<objs> ^object <vo>)
-    (<vo> ^type value ^name <v> ^group <c>)}
+    (<objs> ^value <vo>)
+    (<vo> ^name <v> ^group <c>)}
 -->
    (<s> ^failure <ds>)
 }
@@ -238,10 +238,10 @@ sp {zebra*elaborate*failure*empty-cell
 sp {zebra*elaborate*failure*value-without-house
    (state <s> ^name zebra ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <vo>)
-   (<vo> ^type value ^name <v>)
-  -{(<objs> ^object <h>)
-    (<h> ^type house ^candidate <v>)}
+   (<objs> ^value <vo>)
+   (<vo> ^name <v>)
+  -{(<objs> ^house <h>)
+    (<h> ^candidate <v>)}
 -->
    (<s> ^failure <ds>)
 }
@@ -256,9 +256,9 @@ sp {zebra*propose*eliminate*position
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation position ^number <n> ^x <e> ^position <q> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position { <p> <> <q> } ^candidate <e>)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation position ^number <n> ^x <e> ^position <q> ^text <t>)
+   (<h> ^object-handle <hh> ^position { <p> <> <q> } ^candidate <e>)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -270,9 +270,9 @@ sp {zebra*propose*eliminate*same*x
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation same ^number <n> ^x <x> ^y <e> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> -^candidate <x>)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation same ^number <n> ^x <x> ^y <e> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> -^candidate <x>)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -284,9 +284,9 @@ sp {zebra*propose*eliminate*same*y
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation same ^number <n> ^x <e> ^y <y> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> -^candidate <y>)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation same ^number <n> ^x <e> ^y <y> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> -^candidate <y>)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -298,9 +298,9 @@ sp {zebra*propose*eliminate*left-of*x
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h> <r>)
-   (<k> ^type clue ^relation left-of ^number <n> ^x <e> ^y <y> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> ^right <rh>)
+   (<objs> ^clue <k> ^house <h> ^object <r>)
+   (<k> ^relation left-of ^number <n> ^x <e> ^y <y> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> ^right <rh>)
    (<r> ^object-handle <rh> -^candidate <y>)
 -->
    (<s> ^operator <op> + = >)
@@ -313,9 +313,9 @@ sp {zebra*propose*eliminate*left-of*x*edge
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation left-of ^number <n> ^x <e> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> -^right)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation left-of ^number <n> ^x <e> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> -^right)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -327,9 +327,9 @@ sp {zebra*propose*eliminate*left-of*y
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h> <l>)
-   (<k> ^type clue ^relation left-of ^number <n> ^x <x> ^y <e> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> ^left <lh>)
+   (<objs> ^clue <k> ^house <h> ^object <l>)
+   (<k> ^relation left-of ^number <n> ^x <x> ^y <e> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> ^left <lh>)
    (<l> ^object-handle <lh> -^candidate <x>)
 -->
    (<s> ^operator <op> + = >)
@@ -342,9 +342,9 @@ sp {zebra*propose*eliminate*left-of*y*edge
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation left-of ^number <n> ^y <e> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e> -^left)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation left-of ^number <n> ^y <e> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e> -^left)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -356,9 +356,9 @@ sp {zebra*propose*eliminate*next-to*x
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation next-to ^number <n> ^x <e> ^y <o> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e>)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation next-to ^number <n> ^x <e> ^y <o> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e>)
   -{(<h> ^<< left right >> <nh>)
     (<objs> ^object <nb>)
     (<nb> ^object-handle <nh> ^candidate <o>)}
@@ -373,9 +373,9 @@ sp {zebra*propose*eliminate*next-to*y
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <k> <h>)
-   (<k> ^type clue ^relation next-to ^number <n> ^y <e> ^x <o> ^text <t>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <e>)
+   (<objs> ^clue <k> ^house <h>)
+   (<k> ^relation next-to ^number <n> ^y <e> ^x <o> ^text <t>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <e>)
   -{(<h> ^<< left right >> <nh>)
     (<objs> ^object <nb>)
     (<nb> ^object-handle <nh> ^candidate <o>)}
@@ -392,8 +392,8 @@ sp {zebra*propose*eliminate*naked-single
    (<w> ^anchored-world true ^objects <objs>)
    (<s> ^single <x>)
    (<x> ^value <e> ^position <q>)
-   (<objs> ^object <h>)
-   (<h> ^type house ^object-handle <hh> ^position { <p> <> <q> } ^candidate <e>)
+   (<objs> ^house <h>)
+   (<h> ^object-handle <hh> ^position { <p> <> <q> } ^candidate <e>)
 -->
    (<s> ^operator <op> + = >)
    (<op> ^name eliminate ^task-operator true ^action-handle eliminate ^super-desired <sd>
@@ -405,11 +405,11 @@ sp {zebra*propose*eliminate*hidden-single
    (state <s> ^problem-space.name zebra ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <vo> <vo2>)
-   (<h> ^type house ^object-handle <hh> ^position <p> ^candidate <v> { <e> <> <v> })
-   (<vo> ^type value ^name <v> ^group <c>)
-   (<vo2> ^type value ^name <e> ^group <c>)
-  -{(<objs> ^object { <h2> <> <h> })
+   (<objs> ^house <h> ^value <vo> <vo2>)
+   (<h> ^object-handle <hh> ^position <p> ^candidate <v> { <e> <> <v> })
+   (<vo> ^name <v> ^group <c>)
+   (<vo2> ^name <e> ^group <c>)
+  -{(<objs> ^house { <h2> <> <h> })
     (<h2> ^type house ^candidate <v>)}
 -->
    (<s> ^operator <op> + = >)
@@ -454,9 +454,9 @@ sp {zebra*propose*assign
   -{(<s> ^operator <x> +)
     (<x> ^name eliminate)}
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <vo>)
+   (<objs> ^object <h> ^value <vo>)
    (<h> ^object-handle <hh> ^candidate <v>)
-   (<vo> ^type value ^name <v> ^group <c>)
+   (<vo> ^name <v> ^group <c>)
 -->
    (<s> ^operator <op> +)
    (<op> ^name assign ^task-operator true ^action-handle assign ^super-desired <sd>
@@ -467,9 +467,9 @@ sp {zebra*apply*assign
    (state <s> ^problem-space.name zebra ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name assign ^pre-conditions-satisfied true ^house-handle <hh> ^group <c> ^value <v>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <vo>)
+   (<objs> ^object <h> ^value <vo>)
    (<h> ^object-handle <hh> ^candidate <v> { <e> <> <v> })
-   (<vo> ^type value ^name <e> ^group <c>)
+   (<vo> ^name <e> ^group <c>)
 -->
    (<h> ^candidate <e> -)
 }
@@ -478,9 +478,9 @@ sp {zebra*apply*assign*report
    (state <s> ^problem-space.name zebra ^superstate nil ^operator <op> ^world <w>)
    (<op> ^name assign ^pre-conditions-satisfied true ^house-handle <hh> ^position <p> ^group <c> ^value <v>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <h> <vo>)
+   (<objs> ^object <h> ^value <vo>)
    (<h> ^object-handle <hh> ^candidate <v> { <e> <> <v> })
-   (<vo> ^type value ^name <e> ^group <c>)
+   (<vo> ^name <e> ^group <c>)
 -->
    (write (crlf) |  Branch: house | <p> |, | <c> | = | <v> |. Look-ahead found that this choice leads to a complete solution.| (crlf))
 }
@@ -492,8 +492,8 @@ sp {zebra*apply*assign*report
 ## Elaborate mark red present: adds ^house-handle, ^mark, ^text, ^value.
 sp {zebra*elaborate*mark*red*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |red|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |red|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |red| ^text |red |)
@@ -501,8 +501,8 @@ sp {zebra*elaborate*mark*red*present
 
 sp {zebra*elaborate*mark*red*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |red|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |red|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |red| ^text ||)
@@ -510,8 +510,8 @@ sp {zebra*elaborate*mark*red*absent
 
 sp {zebra*elaborate*mark*green*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |green|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |green|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |green| ^text |green |)
@@ -519,8 +519,8 @@ sp {zebra*elaborate*mark*green*present
 
 sp {zebra*elaborate*mark*green*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |green|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |green|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |green| ^text ||)
@@ -528,8 +528,8 @@ sp {zebra*elaborate*mark*green*absent
 
 sp {zebra*elaborate*mark*white*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |white|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |white|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |white| ^text |white |)
@@ -537,8 +537,8 @@ sp {zebra*elaborate*mark*white*present
 
 sp {zebra*elaborate*mark*white*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |white|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |white|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |white| ^text ||)
@@ -546,8 +546,8 @@ sp {zebra*elaborate*mark*white*absent
 
 sp {zebra*elaborate*mark*yellow*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |yellow|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |yellow|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |yellow| ^text |yellow |)
@@ -555,8 +555,8 @@ sp {zebra*elaborate*mark*yellow*present
 
 sp {zebra*elaborate*mark*yellow*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |yellow|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |yellow|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |yellow| ^text ||)
@@ -564,8 +564,8 @@ sp {zebra*elaborate*mark*yellow*absent
 
 sp {zebra*elaborate*mark*blue*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |blue|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |blue|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |blue| ^text |blue |)
@@ -573,8 +573,8 @@ sp {zebra*elaborate*mark*blue*present
 
 sp {zebra*elaborate*mark*blue*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |blue|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |blue|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |blue| ^text ||)
@@ -582,8 +582,8 @@ sp {zebra*elaborate*mark*blue*absent
 
 sp {zebra*elaborate*mark*English*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |English|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |English|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |English| ^text |English |)
@@ -591,8 +591,8 @@ sp {zebra*elaborate*mark*English*present
 
 sp {zebra*elaborate*mark*English*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |English|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |English|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |English| ^text ||)
@@ -600,8 +600,8 @@ sp {zebra*elaborate*mark*English*absent
 
 sp {zebra*elaborate*mark*Swede*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Swede|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Swede|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Swede| ^text |Swede |)
@@ -609,8 +609,8 @@ sp {zebra*elaborate*mark*Swede*present
 
 sp {zebra*elaborate*mark*Swede*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Swede|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Swede|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Swede| ^text ||)
@@ -618,8 +618,8 @@ sp {zebra*elaborate*mark*Swede*absent
 
 sp {zebra*elaborate*mark*Dane*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Dane|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Dane|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Dane| ^text |Dane |)
@@ -627,8 +627,8 @@ sp {zebra*elaborate*mark*Dane*present
 
 sp {zebra*elaborate*mark*Dane*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Dane|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Dane|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Dane| ^text ||)
@@ -636,8 +636,8 @@ sp {zebra*elaborate*mark*Dane*absent
 
 sp {zebra*elaborate*mark*Norwegian*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Norwegian|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Norwegian|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Norwegian| ^text |Norwegian |)
@@ -645,8 +645,8 @@ sp {zebra*elaborate*mark*Norwegian*present
 
 sp {zebra*elaborate*mark*Norwegian*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Norwegian|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Norwegian|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Norwegian| ^text ||)
@@ -654,8 +654,8 @@ sp {zebra*elaborate*mark*Norwegian*absent
 
 sp {zebra*elaborate*mark*German*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |German|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |German|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |German| ^text |German |)
@@ -663,8 +663,8 @@ sp {zebra*elaborate*mark*German*present
 
 sp {zebra*elaborate*mark*German*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |German|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |German|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |German| ^text ||)
@@ -672,8 +672,8 @@ sp {zebra*elaborate*mark*German*absent
 
 sp {zebra*elaborate*mark*tea*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |tea|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |tea|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |tea| ^text |tea |)
@@ -681,8 +681,8 @@ sp {zebra*elaborate*mark*tea*present
 
 sp {zebra*elaborate*mark*tea*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |tea|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |tea|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |tea| ^text ||)
@@ -690,8 +690,8 @@ sp {zebra*elaborate*mark*tea*absent
 
 sp {zebra*elaborate*mark*coffee*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |coffee|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |coffee|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |coffee| ^text |coffee |)
@@ -699,8 +699,8 @@ sp {zebra*elaborate*mark*coffee*present
 
 sp {zebra*elaborate*mark*coffee*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |coffee|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |coffee|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |coffee| ^text ||)
@@ -708,8 +708,8 @@ sp {zebra*elaborate*mark*coffee*absent
 
 sp {zebra*elaborate*mark*milk*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |milk|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |milk|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |milk| ^text |milk |)
@@ -717,8 +717,8 @@ sp {zebra*elaborate*mark*milk*present
 
 sp {zebra*elaborate*mark*milk*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |milk|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |milk|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |milk| ^text ||)
@@ -726,8 +726,8 @@ sp {zebra*elaborate*mark*milk*absent
 
 sp {zebra*elaborate*mark*beer*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |beer|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |beer|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |beer| ^text |beer |)
@@ -735,8 +735,8 @@ sp {zebra*elaborate*mark*beer*present
 
 sp {zebra*elaborate*mark*beer*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |beer|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |beer|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |beer| ^text ||)
@@ -744,8 +744,8 @@ sp {zebra*elaborate*mark*beer*absent
 
 sp {zebra*elaborate*mark*water*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |water|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |water|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |water| ^text |water |)
@@ -753,8 +753,8 @@ sp {zebra*elaborate*mark*water*present
 
 sp {zebra*elaborate*mark*water*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |water|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |water|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |water| ^text ||)
@@ -762,8 +762,8 @@ sp {zebra*elaborate*mark*water*absent
 
 sp {zebra*elaborate*mark*PallMall*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |PallMall|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |PallMall|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |PallMall| ^text |PallMall |)
@@ -771,8 +771,8 @@ sp {zebra*elaborate*mark*PallMall*present
 
 sp {zebra*elaborate*mark*PallMall*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |PallMall|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |PallMall|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |PallMall| ^text ||)
@@ -780,8 +780,8 @@ sp {zebra*elaborate*mark*PallMall*absent
 
 sp {zebra*elaborate*mark*Dunhill*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Dunhill|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Dunhill|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Dunhill| ^text |Dunhill |)
@@ -789,8 +789,8 @@ sp {zebra*elaborate*mark*Dunhill*present
 
 sp {zebra*elaborate*mark*Dunhill*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Dunhill|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Dunhill|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Dunhill| ^text ||)
@@ -798,8 +798,8 @@ sp {zebra*elaborate*mark*Dunhill*absent
 
 sp {zebra*elaborate*mark*Blends*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Blends|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Blends|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Blends| ^text |Blends |)
@@ -807,8 +807,8 @@ sp {zebra*elaborate*mark*Blends*present
 
 sp {zebra*elaborate*mark*Blends*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Blends|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Blends|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Blends| ^text ||)
@@ -816,8 +816,8 @@ sp {zebra*elaborate*mark*Blends*absent
 
 sp {zebra*elaborate*mark*BlueMaster*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |BlueMaster|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |BlueMaster|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |BlueMaster| ^text |BlueMaster |)
@@ -825,8 +825,8 @@ sp {zebra*elaborate*mark*BlueMaster*present
 
 sp {zebra*elaborate*mark*BlueMaster*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |BlueMaster|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |BlueMaster|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |BlueMaster| ^text ||)
@@ -834,8 +834,8 @@ sp {zebra*elaborate*mark*BlueMaster*absent
 
 sp {zebra*elaborate*mark*Prince*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |Prince|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |Prince|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Prince| ^text |Prince |)
@@ -843,8 +843,8 @@ sp {zebra*elaborate*mark*Prince*present
 
 sp {zebra*elaborate*mark*Prince*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |Prince|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |Prince|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |Prince| ^text ||)
@@ -852,8 +852,8 @@ sp {zebra*elaborate*mark*Prince*absent
 
 sp {zebra*elaborate*mark*dogs*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |dogs|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |dogs|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |dogs| ^text |dogs |)
@@ -861,8 +861,8 @@ sp {zebra*elaborate*mark*dogs*present
 
 sp {zebra*elaborate*mark*dogs*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |dogs|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |dogs|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |dogs| ^text ||)
@@ -870,8 +870,8 @@ sp {zebra*elaborate*mark*dogs*absent
 
 sp {zebra*elaborate*mark*birds*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |birds|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |birds|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |birds| ^text |birds |)
@@ -879,8 +879,8 @@ sp {zebra*elaborate*mark*birds*present
 
 sp {zebra*elaborate*mark*birds*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |birds|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |birds|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |birds| ^text ||)
@@ -888,8 +888,8 @@ sp {zebra*elaborate*mark*birds*absent
 
 sp {zebra*elaborate*mark*cats*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |cats|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |cats|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |cats| ^text |cats |)
@@ -897,8 +897,8 @@ sp {zebra*elaborate*mark*cats*present
 
 sp {zebra*elaborate*mark*cats*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |cats|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |cats|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |cats| ^text ||)
@@ -906,8 +906,8 @@ sp {zebra*elaborate*mark*cats*absent
 
 sp {zebra*elaborate*mark*horses*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |horses|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |horses|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |horses| ^text |horses |)
@@ -915,8 +915,8 @@ sp {zebra*elaborate*mark*horses*present
 
 sp {zebra*elaborate*mark*horses*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |horses|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |horses|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |horses| ^text ||)
@@ -924,8 +924,8 @@ sp {zebra*elaborate*mark*horses*absent
 
 sp {zebra*elaborate*mark*zebra*present
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> ^candidate |zebra|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> ^candidate |zebra|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |zebra| ^text |zebra |)
@@ -933,8 +933,8 @@ sp {zebra*elaborate*mark*zebra*present
 
 sp {zebra*elaborate*mark*zebra*absent
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <h>)
-   (<h> ^type house ^object-handle <hh> -^candidate |zebra|)
+   (<w> ^anchored-world true ^objects.house <h>)
+   (<h> ^object-handle <hh> -^candidate |zebra|)
 -->
    (<s> ^mark <m>)
    (<m> ^house-handle <hh> ^value |zebra| ^text ||)
@@ -1242,8 +1242,8 @@ sp {zebra*apply*print-matrix
 ## Report once the puzzle is solved (an operator, so the matrix text has settled).
 sp {zebra*propose*report-solution
    (state <s> ^superstate nil ^name zebra ^world <w>)
-   (<w> ^anchored-world true ^objects.object <pz>)
-   (<pz> ^type puzzle ^solved true)
+   (<w> ^anchored-world true ^objects.puzzle <pz>)
+   (<pz> ^solved true)
 -->
    (<s> ^operator <op> + >)
    (<op> ^name report-solution ^task-operator false)
@@ -1259,12 +1259,12 @@ sp {zebra*prefer*report-solution
 sp {zebra*apply*report-solution
    (state <s> ^problem-space.name zebra ^operator.name report-solution ^matrix-text <m> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <pz> <hw> <hz> <nw> <nz>)
-   (<pz> ^type puzzle ^solved true)
-   (<hw> ^type house ^candidate |water| <nwn> ^position <pw>)
-   (<nw> ^type value ^group nationality ^name <nwn> ^label <lw>)
-   (<hz> ^type house ^candidate |zebra| <nzn> ^position <pzz>)
-   (<nz> ^type value ^group nationality ^name <nzn> ^label <lz>)
+   (<objs> ^puzzle <pz> ^house <hw> <hz> ^value <nw> <nz>)
+   (<pz> ^solved true)
+   (<hw> ^candidate |water| <nwn> ^position <pw>)
+   (<nw> ^group nationality ^name <nwn> ^label <lw>)
+   (<hz> ^candidate |zebra| <nzn> ^position <pzz>)
+   (<nz> ^group nationality ^name <nzn> ^label <lz>)
 -->
    (write (crlf) |Solved. Final matrix:| (crlf) <m> (crlf)
           |1. Who drinks water? The | <lw> | (house | <pw> |).| (crlf)

@@ -80,11 +80,15 @@ sp {soar-base*compare*default*select*indifferent-and-worst*tied
 ## look-ahead state is broken at random as in a real state, so the look-ahead goes on past the depth limit. Any plan is acceptable
 ## there, and this finds one much faster (artists-2: 82-283 instead of 4,028-4,408 decisions). With a cost metric or optimize true the
 ## search stays sound (row 29 repair): the tie rule above applies only in real states.
+## v2.49: the rule also tests (<s1> ^random-continuation true), so the o-supported marker below is set first. Without that test
+## the tie was broken in the propose phase, before the apply phase in which the marker can fire, and the marker never fired:
+## failures on random paths came back as real failures (Soar - To-do row 3: Rosie suko seed 1 lost its four correct first moves).
 sp {soar-base*compare*default*select*indifferent-and-worst*tied*look-ahead*no-cost
    "Indifferent an operator in a look-ahead state if it leads to a tie that can not be resolved (no cost metric, optimize false)."
    :default
    (state <s1> ^operator <o> +
                ^real false
+               ^random-continuation true
                ^flags <f>)
    (<f> ^cost-metric none
         ^optimize false)

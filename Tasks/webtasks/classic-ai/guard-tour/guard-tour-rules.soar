@@ -10,6 +10,9 @@
 ##   A-G1: "neighbouring": a static next relation between A and B and between B and C, both ways.
 ##   A-G2: The three stages are phases in order (L8-026); the goal field holds the last phase (used by the semantics checks).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute square 5
+production optimize-attribute agent 5
+production optimize-attribute task 5
 production optimize-attribute object 5
 production optimize-attribute at 2
 production optimize-attribute next 4
@@ -28,7 +31,7 @@ sp {guard-tour*apply*initialize-guard-tour
    (<w> ^objects <objs>)
 -->
    (<s> ^name guard-tour ^desireds <ds>)
-   (<objs> ^object <k-a> <k-b> <k-c> <k-guard> <k-task>)
+   (<objs> ^square <k-a> <k-b> <k-c> ^agent <k-guard> ^task <k-task>)
    (<k-a> ^object-handle a ^anchored true ^type square ^name a ^static true)
    (<k-b> ^object-handle b ^anchored true ^type square ^name b ^static true)
    (<k-c> ^object-handle c ^anchored true ^type square ^name c ^static true)
@@ -111,10 +114,8 @@ sp {guard-tour*elaborate*state*unachieved*object-property
 sp {guard-tour*propose*move
    (state <s> ^problem-space.name guard-tour ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
-   (<to> ^type square)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
+   (<objs> ^square <to>)
+   (<objs> ^agent <g>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <cur>)
    (<w> ^next <r2>)
@@ -130,10 +131,9 @@ sp {guard-tour*apply*move*internal
    (state <s> ^problem-space.name guard-tour ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
+   (<objs> ^square <to>)
    (<to> ^object-handle $ <to-h>)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
+   (<objs> ^agent <g>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <old>)
 -->
@@ -146,10 +146,9 @@ sp {guard-tour*apply*move*environment-effect
    (state <s> ^problem-space.name guard-tour ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
+   (<objs> ^square <to>)
    (<to> ^object-handle $ <to-h>)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
+   (<objs> ^agent <g>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <old>)
 -->
@@ -162,11 +161,9 @@ sp {guard-tour*apply*move*environment-effect
 sp {guard-tour*elaborate*phase*at-c
    (state <s> ^problem-space.name guard-tour ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
-   (<objs> ^object <k-c>)
+   (<objs> ^task <task>)
+   (<objs> ^agent <g>)
+   (<objs> ^square <k-c>)
    (<k-c> ^object-handle c)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <k-c>)
@@ -178,11 +175,9 @@ sp {guard-tour*elaborate*phase*at-c
 sp {guard-tour*elaborate*phase*at-a
    (state <s> ^problem-space.name guard-tour ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
-   (<objs> ^object <k-a>)
+   (<objs> ^task <task>)
+   (<objs> ^agent <g>)
+   (<objs> ^square <k-a>)
    (<k-a> ^object-handle a)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <k-a>)
@@ -194,11 +189,9 @@ sp {guard-tour*elaborate*phase*at-a
 sp {guard-tour*elaborate*phase*at-b
    (state <s> ^problem-space.name guard-tour ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <g>)
-   (<g> ^type agent)
-   (<objs> ^object <k-b>)
+   (<objs> ^task <task>)
+   (<objs> ^agent <g>)
+   (<objs> ^square <k-b>)
    (<k-b> ^object-handle b)
    (<w> ^at <r1>)
    (<r1> ^argument1 <g> ^argument2 <k-b>)

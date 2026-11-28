@@ -14,6 +14,9 @@
 ##     maintained one-argument relation (statement 6).
 ##   - The goal is expanded over the blocks of the world file: every block is on the location with its color (A-G3).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 12
+production optimize-attribute block 12
+production optimize-attribute task 12
 production optimize-attribute object 12
 production optimize-attribute on 5
 production optimize-attribute below 5
@@ -34,7 +37,7 @@ sp {five-puzzle*apply*initialize-five-puzzle
    (<w> ^objects <objs>)
 -->
    (<s> ^name five-puzzle ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-block-7> <o-block-8> <o-block-9> <o-block-10> <o-block-11> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> ^block <o-block-7> <o-block-8> <o-block-9> <o-block-10> <o-block-11> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^color red ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^color orange ^row 1 ^column 2 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
@@ -165,9 +168,9 @@ sp {five-puzzle*elaborate*state*unachieved*object-property
 sp {five-puzzle*propose*slide-block*adjacent-clear
    (state <s> ^problem-space.name five-puzzle ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
    (<w> ^adjacent <adjacent-d>)
@@ -184,7 +187,7 @@ sp {five-puzzle*apply*slide-block*internal
    (state <s> ^problem-space.name five-puzzle ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name slide-block ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -204,7 +207,7 @@ sp {five-puzzle*apply*slide-block*environment-effect
    (state <s> ^problem-space.name five-puzzle ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name slide-block ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -223,26 +226,25 @@ sp {five-puzzle*apply*slide-block*environment-effect
 sp {five-puzzle*elaborate*goal*all-matched
    (state <s> ^problem-space.name five-puzzle ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b-block-7> <l-block-7> <b-block-8> <l-block-8> <b-block-9> <l-block-9> <b-block-10> <l-block-10> <b-block-11> <l-block-11>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^block <b-block-7> ^location <l-block-7> ^block <b-block-8> ^location <l-block-8> ^block <b-block-9> ^location <l-block-9> ^block <b-block-10> ^location <l-block-10> ^block <b-block-11> ^location <l-block-11>)
    (<b-block-7> ^object-handle block-7)
-   (<l-block-7> ^type location ^color red)
+   (<l-block-7> ^color red)
    (<w> ^on <on-block-7>)
    (<on-block-7> ^argument1 <b-block-7> ^argument2 <l-block-7>)
    (<b-block-8> ^object-handle block-8)
-   (<l-block-8> ^type location ^color orange)
+   (<l-block-8> ^color orange)
    (<w> ^on <on-block-8>)
    (<on-block-8> ^argument1 <b-block-8> ^argument2 <l-block-8>)
    (<b-block-9> ^object-handle block-9)
-   (<l-block-9> ^type location ^color yellow)
+   (<l-block-9> ^color yellow)
    (<w> ^on <on-block-9>)
    (<on-block-9> ^argument1 <b-block-9> ^argument2 <l-block-9>)
    (<b-block-10> ^object-handle block-10)
-   (<l-block-10> ^type location ^color green)
+   (<l-block-10> ^color green)
    (<w> ^on <on-block-10>)
    (<on-block-10> ^argument1 <b-block-10> ^argument2 <l-block-10>)
    (<b-block-11> ^object-handle block-11)
-   (<l-block-11> ^type location ^color blue)
+   (<l-block-11> ^color blue)
    (<w> ^on <on-block-11>)
    (<on-block-11> ^argument1 <b-block-11> ^argument2 <l-block-11>)
 -->

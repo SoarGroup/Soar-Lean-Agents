@@ -12,6 +12,8 @@
 ##   A-PY2: add-term adds the next term to the sum, lowers the term by 1 and lowers remaining by 1 (adding -1; WorldSpec has no subtraction, so a negative constant is added). It is proposed while remaining is 0 or more, which gives h + 1 terms.
 ##   A-PY3: "compute the sum": the goal is that every term has been added (remaining below 0); the sum is then on the problem object (0 for this instance).
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute problem 2
+production optimize-attribute task 2
 production optimize-attribute object 2
 
 
@@ -28,7 +30,7 @@ sp {pyramid*apply*initialize-pyramid
    (<w> ^objects <objs>)
 -->
    (<s> ^name pyramid ^desireds <ds>)
-   (<objs> ^object <k-problem> <k-task>)
+   (<objs> ^problem <k-problem> ^task <k-task>)
    (<k-problem> ^object-handle problem ^anchored true ^type problem ^name problem ^term 5 ^sum 0 ^remaining 10)
    (<k-task> ^object-handle task ^anchored true ^type task)
    (<ds> ^desired-count 1 ^desired <d1>)
@@ -91,8 +93,7 @@ sp {pyramid*elaborate*state*unachieved*object-property
 sp {pyramid*propose*add-term
    (state <s> ^problem-space.name pyramid ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type problem)
+   (<objs> ^problem <p>)
    (<p> ^remaining >= 0)
    (<ds> ^unachieved-desireds true)
 -->
@@ -105,8 +106,7 @@ sp {pyramid*apply*add-term*internal
    (state <s> ^problem-space.name pyramid ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name add-term ^pre-conditions-satisfied true )
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type problem)
+   (<objs> ^problem <p>)
    (<p> ^sum <p-sum>)
    (<p> ^term <p-term>)
    (<p> ^remaining <p-remaining>)
@@ -122,8 +122,7 @@ sp {pyramid*apply*add-term*environment-effect
    (state <s> ^problem-space.name pyramid ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name add-term ^status complete  -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <p>)
-   (<p> ^type problem)
+   (<objs> ^problem <p>)
    (<p> ^sum <p-sum>)
    (<p> ^term <p-term>)
    (<p> ^remaining <p-remaining>)
@@ -139,10 +138,8 @@ sp {pyramid*apply*add-term*environment-effect
 sp {pyramid*elaborate*goal
    (state <s> ^problem-space.name pyramid ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <p>)
-   (<p> ^type problem)
+   (<objs> ^task <task>)
+   (<objs> ^problem <p>)
    (<p> ^remaining < 0)
 -->
    (<task> ^goal-met true)

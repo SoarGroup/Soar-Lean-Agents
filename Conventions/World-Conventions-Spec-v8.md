@@ -1,6 +1,6 @@
 # World conventions for Soar programs, version 6
 
-Generated 27 November 2026, 10:36 by `gen_spec.py` from `World-Conventions-v6.xlsx` (608 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
+Generated 28 November 2026, 11:56 by `gen_spec.py` from `World-Conventions-v6.xlsx` (609 rows). Do not edit by hand: change the workbook and rebuild. Rows are ordered by level, then by topic in development order, then by ID.
 
 ## Levels
 
@@ -13,7 +13,7 @@ Generated 27 November 2026, 10:36 by `gen_spec.py` from `World-Conventions-v6.xl
 | [L4 Default rules](#l4-default-rules) | 9 | Conventions set by the default rules of soar-base (loaded with the shared library). |
 | [L5 Selection space (classic)](#l5-selection-space-classic) | 10 | Conventions of the classic selection space that selection-world keeps. |
 | [L6 Program organization](#l6-program-organization) | 10 | Library conventions for naming, files, flags and constants. |
-| [L7 World state](#l7-world-state) | 27 | The world representation every agent-world program shares: ^world, objects and relations. |
+| [L7 World state](#l7-world-state) | 28 | The world representation every agent-world program shares: ^world, objects and relations. |
 | [L8 Desireds](#l8-desireds) | 29 | How goals are represented as desireds, and the library's bookkeeping for them. |
 | [L9 Operators](#l9-operators) | 27 | Task, composite and non-task operators. |
 | [L10 Application and output](#l10-application-and-output) | 12 | Internal and external operator application, output commands and events. |
@@ -3009,7 +3009,7 @@ preferences I3 move --names
 
 ### Rule form
 
-**L3-104** (Requirement, status: Accepted Evening 25 Nov 2026: in all generators (JL: release and regenerate everything). Rosie: 20 object tests left out in 8 logic puzzles (kakuro, color-ken-ken, ken-ken, killer-sudoku, shuffle, sujiko, suko, survo); WorldSpec: the three color-ken-ken group-sum rules; families: 87 rule files (relation tests with several values on one attribute now count too).) — A rule that binds an object as an argument of a relation it tests on the world, (<w> ^rel <r>) (<r> ^argument1 <x>), does not also test (<w> ^objects.object <x>). The object test adds nothing to what the rule matches and only offers Soar's reorderer a join of the world's objects with one another. The generators leave such tests out: familygen (Prod.dropRedundantObjectTests), wg.py (drop_redundant_object_tests, used by worldgen, the Rosie generators and, through wg.finish, the English-world generators) and WorldSpec (the group-sum rules, paths A and B).
+**L3-104** (Requirement, status: Accepted Evening 25 Nov 2026: in all generators (JL: release and regenerate everything). Rosie: 20 object tests left out in 8 logic puzzles (kakuro, color-ken-ken, ken-ken, killer-sudoku, shuffle, sujiko, suko, survo); WorldSpec: the three color-ken-ken group-sum rules; families: 87 rule files (relation tests with several values on one attribute now count too).) — A rule that binds an object as an argument of a relation it tests on the world, (<w> ^rel <r>) (<r> ^argument1 <x>), does not also test (<w> ^objects.<type> <x>) or (<w> ^objects.object <x>). The object test adds nothing to what the rule matches and only offers Soar's reorderer a join of the world's objects with one another. The generators leave such tests out: familygen (Prod.dropRedundantObjectTests), wg.py (drop_redundant_object_tests, used by worldgen, the Rosie generators and, through wg.finish, the English-world generators) and WorldSpec (the group-sum rules, paths A and B).
 
 *Rationale:* The library copies relations into look-ahead worlds through the copy map (selection-world*elaborate*evaluate-operator*default-state-copy-relation*declared), so a relation's arguments are always objects of the world that holds the relation. The redundant test makes the rule's cost depend on condition order: in kenken drop-tuple, ^objects.object <t> <x> joined before ^in-tuple ranges over 392 x 392 objects.
 
@@ -3128,7 +3128,7 @@ sp {top-state*propose*wait (state <s> ^attribute state ^choices none -^operator.
 
 ### Selection space
 
-**L4-004** (Library definition, formerly EVA-011) — With the default rules (simple.soar), an operator whose tie substate reaches a state no-change with nothing proposed gets indifferent and worst preferences; one whose conflict substate does gets rejected. In the world library the tie rule applies in real states (^real true) and, in look-ahead states (^real false), only when the task has no cost metric and does not optimize (^flags.cost-metric none, ^flags.optimize false): there the look-ahead goes on past the depth limit with a random choice. With a cost metric or optimize true, a look-ahead tie that cannot be resolved returns depth-exhaustion instead (iterative deepening). A look-ahead state that continues at random is marked (^random-continuation true); a failure found in it afterwards (partial-failure, exhaustion-failure, failure, prohibit-failure, constraint-failure) is passed back as depth-exceeded, since it shows only that one random path failed; a success is passed back as usual.
+**L4-004** (Library definition, formerly EVA-011) — With the default rules (simple.soar), an operator whose tie substate reaches a state no-change with nothing proposed gets indifferent and worst preferences; one whose conflict substate does gets rejected. In the world library the tie rule applies in real states (^real true) and, in look-ahead states (^real false), only when the task has no cost metric and does not optimize (^flags.cost-metric none, ^flags.optimize false): there the look-ahead goes on past the depth limit with a random choice. With a cost metric or optimize true, a look-ahead tie that cannot be resolved returns depth-exhaustion instead (iterative deepening). A look-ahead state that continues at random is marked (^random-continuation true); a failure found in it afterwards (partial-failure, exhaustion-failure, failure, prohibit-failure, constraint-failure) is passed back as depth-exceeded, since it shows only that one random path failed; a success is passed back as usual. The mark is set before the tie is broken (v2.49: the look-ahead tie rule tests it), and a dead end reached after it (a state no-change with nothing proposed) is likewise depth-exceeded, not failure; such evaluations are marked ^random-failure true, which no rule uses (a preference against them was tried and dropped, 28 Nov 2026).
 
 *Rationale:* Breaks ties and conflicts the agent has no knowledge for. In look-ahead, random continuation finds some plan quickly where any plan is acceptable; where cost matters it would charge a random path to the evaluated operator.
 
@@ -3463,7 +3463,7 @@ The world representation every agent-world program shares: ^world, objects and r
 
 *Source:* agent-world/elaborations/_all.soar:agent-world*elaborate*real
 
-**L7-005** (Requirement, formerly W-WLD-005) — A world is the value of ^world on a state. It holds only the task situation: objects (^objects.object), relation objects, and a few other attributes (^time, ^future-event, ^info, ^path-cost). State-control structure is not part of the world.
+**L7-005** (Requirement, formerly W-WLD-005) — A world is the value of ^world on a state. It holds only the task situation: objects (^objects.object and the type sets ^objects.<type>, L7-029), relation objects, and a few other attributes (^time, ^future-event, ^info, ^path-cost). State-control structure is not part of the world.
 
 *Rationale:* The world is the problem-space state that look-ahead copies and evaluates.
 
@@ -3724,13 +3724,13 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JEL, 19 Nov 2026
 
-**L7-026** (Library definition) — When look-ahead copies a world, the new world gets ^copy-map with one WME per object whose attribute is the old object and whose value is its copy in the new world. Relation copies find their new arguments in the map.
+**L7-026** (Library definition) — When look-ahead copies a world, the new world gets ^copy-map with one WME per object whose attribute is the old object and whose value is its copy in the new world; the rule that makes the copy writes the entry (v2.49 candidate), and a static object (L7-028) maps to itself. Relation copies find their new arguments in the map.
 
 *Rationale:* Finding the copy of a relation's argument by its handle means searching every new object for each relation (relations x objects partial matches; about 300,000 per copy on KenKen 6-2); the map is joined on its own identifier.
 
 *If violated:* A task rule that tests ^copy-map, or reads world attributes generically, sees identifier-valued attributes.
 
-*Library rules:* selection-world*elaborate*evaluate-operator*copy-map, *copy-map*copied
+*Library rules:* selection-world*elaborate*evaluate-operator*copy-map, *default-state-copy-object (writes the entry; *copy-map*copied before v2.49 candidate), relation-copy *static1/*static2/*static12 variants
 
 *See:* related L7-016
 
@@ -3746,7 +3746,7 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Source:* JL, 24 Nov 2026; Soar – To-do row 48. Generators: Tasks/From-English/rosie-teaching/tools/aggregate.py (detection), rosie_gen.py (RosieTask aggregate=), rosie_river.py (river crossings over counts)
 
-**L7-028** (Requirement, status: Accepted) — An object that no rule other than the initialize rule ever changes (no operator writes any of its attributes) is marked ^static true. The look-ahead copy does not copy it: the new world's object set holds the same identifier, and the copy map maps it to itself. A relation that no operator changes and whose arguments are all static is declared with (<problem-space> ^share-relation <name>) in place of ^copy-relation, and the new world gets the same relation identifier. The task object is never static, nor is a type whose attributes a sum or count rule maintains. Generators mark both from the operators' effects.
+**L7-028** (Requirement, status: Accepted) — An object that no rule other than the initialize rule ever changes (no operator writes any of its attributes) is marked ^static true. The look-ahead copy does not copy it: the new world's object set holds the same identifier, and the copy map maps it to itself, so relation copies take it as their argument (v2.49 candidate: relation copies that took a static argument directly, with no map entry, were tried and dropped; learned rules then lost that argument's identity). A relation that no operator changes and whose arguments are all static is declared with (<problem-space> ^share-relation <name>) in place of ^copy-relation, and the new world gets the same relation identifier. The task object is never static, nor is a type whose attributes a sum or count rule maintains. Generators mark both from the operators' effects.
 
 *Rationale:* A static object or relation is the same in every look-ahead world, so sharing it saves the copy firings and the copy map's lookups. Instant Insanity: 384 to 134 s without learning, 1,287 to 747 s with it; other WorldSpec tasks 7-32% fewer WME changes; Rosie 876 to 753 s CPU; decisions identical (26 Nov 2026).
 
@@ -3761,11 +3761,32 @@ sp {thor-soar*propose*initialize-thor-soar (state <s> ^superstate nil ^world <wo
 
 *Task supplies:* yes (generators)
 
-*Library rules:* selection-world*elaborate*evaluate-operator*default-state-share-static-object, *copy-map*static, *default-state-share-relation*declared; default-state-copy-object skips ^static true
+*Library rules:* selection-world*elaborate*evaluate-operator*default-state-share-static-object, relation-copy variants *static1, *static2, *static12 (v2.49 candidate; *copy-map*static before), *default-state-share-relation*declared; default-state-copy-object skips ^static true
 
 *See:* related L7-017; L7-026; L14-026
 
 *Source:* JEL, 26 Nov 2026; worldgen spec_backend.static_info, static_pass.mark_static; agentgen Compile.lean Task.staticInfo, Family/Task.lean markStatic
+
+**L7-029** (Requirement) — A world's ^objects.object holds every object. A typed object is also held in the set of its type, ^objects.T, the attribute being the object's ^type: (<objs> ^object <A> <B> <T> ^block <A> <B> ^table <T>). Objects keep their ^type attribute. Programs write the type sets (an object with no type under ^object only); the library adds each typed object to ^object (selection-world*elaborate*world*objects*object). A rule finds an object of a known type through its type set, (<w> ^objects.block <b>), and does not also test (<b> ^type block). The type is known from a ^type test, from a constant handle of an initial object, from an operator argument whose proposals give it one type (also through an output command's argument handle), from a WorldSpec parameter type, or from the type a universal condition is expanded over (types per scope: a negated single condition gives no type and keeps its ^type test). An untyped object the rule also binds as a relation argument has no object-set test (L3-104). Otherwise the rule tests ^objects.object. No rule tests the object sets through a variable attribute, (<objs> ^<T> <x>): Soar cannot index such a condition, so every working-memory change activates it. The library reaches objects through ^object; a look-ahead copy joins ^object at once and the set of its type in the same elaboration as its attributes are copied, so a rule that reaches objects through a type set never sees a copy without its attributes.
+
+*Rationale:* A rule then matches only the objects of the type it needs, instead of every world object followed by a ^type test (kenken-6-2 prototype: CPU 43.7 to 19.4 s over seeds 1-3). Keeping ^object for every object lets the library, and every rule learned in a look-ahead, reach objects through a constant attribute: the variants that held objects only under their type needed variable-attribute copy rules and were 1.6-3.8 times slower with learning (Sujiko, 600 decisions: v2.48 19.7 s; type sets only 26-63 s; this form 16-18 s; 27 Nov 2026).
+
+*If violated:* A rule that tests (<objs> ^<T> <x>) is unindexed and slows every agent that loads it; a rule that reaches look-ahead copies through ^object without a ^type test can match a copy before its attributes are copied (v2.48 behaviour); an object written under a type other than its ^type is missed by rules that test that type
+
+*Example:*
+
+```
+(<objs> ^location <l1> <l2> ^block <b4> ^task <t>)
+(<w> ^objects.block <b>) (<b> ^object-handle $ <bh>)
+```
+
+*Task supplies:* yes (generators)
+
+*Library rules:* selection-world*elaborate*evaluate-operator*default-state-copy-object, *share-static-object, default-state-copy-object also writes the copy-map entry (copy-map*copied folded in), static objects have no map entry (relation copies take them as themselves), copy-attributes, future-event and property-change copies; agent-world achieved-desireds and achieved-desired-operators; count-object; failure grounding (ground-wme*object): all match ^objects.<obj-type>; object-world find-object proposals and applications (find-object.soar, find-object-direct.soar)
+
+*See:* related L7-005; L7-012; L3-104; L7-028; L11-009
+
+*Source:* JEL, 27 Nov 2026 (To-do row 15); worldgen type_pass.py (Rosie, worldgen, English-world), spec_backend.py and Compile.lean (WorldSpec, declObj under the type), Family/Task.lean typeAttr (familygen); library v2.49 candidate
 
 ### Relations
 
@@ -4734,7 +4755,7 @@ sp {blocks-world*model*unknown (state <s> ^operator <m> ^quiescence t) (<m> ^nam
 
 *Source:* JL decision, 25 Nov 2026; analysis of blocks-world-epmem with chunk always (families run on library v2.47)
 
-**L11-009** (Requirement, status: Accepted 25 Nov 2026 (afternoon): familygen too (JL: both, with L3-104). Families, chunk only, seeds 1-3: with the declarations alone the 6x6 KenKen variants became 15-70 times slower (the in-tuple declaration made the reorderer join ^objects.object <t> <x> first in drop-tuple); with L3-104 as well, 174 of 174 seeds solve (as before), kenken-6-1 4.0 s, knights-8 58 s CPU (75 s before), knights-6 22 s (10 s), kenken-6-2 more decisions (1,343 / 1,485 / 975 vs 735 / 862 / 1,096). Instant Insanity: the orient declaration alone solves seed 1 (5,219 decisions); the object declaration alone does not. wg.py held for a decision on how to choose the declarations. Evening 25 Nov 2026 (JL): released in wg.py as well, with L3-104, so every generator writes them.) — Generated task rules declare every many-valued attribute of the world before any chunk is learned: production optimize-attribute (alias multi-attributes) for ^object, sized by the number of objects, and for every relation of the task (declared, maintained, or added by an operator), sized by its number of tuples in the initial world, at least 2. The WorldSpec generators write these lines after the header (WorldSpec/Compile.lean, matchHints; worldgen/spec_backend.py, match_hints); paths A and B write the same lines. familygen writes the same lines at the end of each variant's _firstload.soar (Variant.matchHints), together with L3-104. wg.py writes them too (match_hints, read from the generated rules), and wg.finish adds them to the English-world rules.
+**L11-009** (Requirement, status: Accepted 25 Nov 2026 (afternoon): familygen too (JL: both, with L3-104). Families, chunk only, seeds 1-3: with the declarations alone the 6x6 KenKen variants became 15-70 times slower (the in-tuple declaration made the reorderer join ^objects.object <t> <x> first in drop-tuple); with L3-104 as well, 174 of 174 seeds solve (as before), kenken-6-1 4.0 s, knights-8 58 s CPU (75 s before), knights-6 22 s (10 s), kenken-6-2 more decisions (1,343 / 1,485 / 975 vs 735 / 862 / 1,096). Instant Insanity: the orient declaration alone solves seed 1 (5,219 decisions); the object declaration alone does not. wg.py held for a decision on how to choose the declarations. Evening 25 Nov 2026 (JL): released in wg.py as well, with L3-104, so every generator writes them.) — Generated task rules declare every many-valued attribute of the world before any chunk is learned: production optimize-attribute (alias multi-attributes) for ^object and for each type set ^T (L7-029), each sized by the number of objects (a type whose name is also used as another attribute gets none: the hint is per attribute name and would reorder those conditions too; zebra-world: ^value on its marks), and for every relation of the task (declared, maintained, or added by an operator), sized by its number of tuples in the initial world, at least 2. The WorldSpec generators write these lines after the header (WorldSpec/Compile.lean, matchHints; worldgen/spec_backend.py, match_hints); paths A and B write the same lines. familygen writes the same lines at the end of each variant's _firstload.soar (Variant.matchHints), together with L3-104. wg.py writes them too (match_hints, read from the generated rules), and wg.finish adds them to the English-world rules.
 
 *Rationale:* Chunks learned in look-ahead test several values of one attribute at once (several relation tuples, many ^object links). Without a hint the reorderer assumes one value per attribute and can join those conditions before the constant tests that narrow them, so the partial matches of one chunk can exhaust memory. The declaration changes condition order only, never what matches; it applies to rules loaded after it, which includes every chunk, so it may follow the library.
 

@@ -37,6 +37,8 @@
 
 ## Propose initialize-three-wizards when its conditions below hold.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute king 13
+production optimize-attribute clock 13
 production optimize-attribute object 13
 
 sp {three-wizards*propose*initialize-three-wizards
@@ -51,7 +53,7 @@ sp {three-wizards*apply*initialize-three-wizards
    (<w> ^objects <objs>)
 -->
    (<s> ^name three-wizards ^desireds <ds>)
-   (<objs> ^object <wizard-1> <wizard-2> <wizard-3> <king> <clock> <pw-white-white-white> <pw-white-white-black> <pw-white-black-white> <pw-white-black-black> <pw-black-white-white> <pw-black-white-black> <pw-black-black-white> <pw-black-black-black>)
+   (<objs> ^wizard <wizard-1> <wizard-2> <wizard-3> ^king <king> ^clock <clock> ^possible-world <pw-white-white-white> <pw-white-white-black> <pw-white-black-white> <pw-white-black-black> <pw-black-white-white> <pw-black-white-black> <pw-black-black-white> <pw-black-black-black>)
    (<wizard-1> ^object-handle wizard-1 ^anchored true ^type wizard ^spot white)
    (<wizard-2> ^object-handle wizard-2 ^anchored true ^type wizard ^spot white)
    (<wizard-3> ^object-handle wizard-3 ^anchored true ^type wizard ^spot white)
@@ -125,11 +127,11 @@ sp {three-wizards*elaborate*state*unachieved*object-property
 sp {three-wizards*elaborate*state*uncertain
    (state <s> ^problem-space.name three-wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <wi> <wj> <wk> <pw> { <pw2> <> <pw> })
-   (<wi> ^type wizard ^object-handle <i>)
-   (<wj> ^type wizard ^object-handle { <j> <> <i> })
-   (<wk> ^type wizard ^object-handle { <k> <> <i> <> <j> })
-   (<pw> ^type possible-world -^eliminated true ^<i> <ci> ^<j> <cj> ^<k> <ck>)
+   (<objs> ^wizard <wi> <wj> <wk> ^possible-world <pw> { <pw2> <> <pw> })
+   (<wi> ^object-handle <i>)
+   (<wj> ^object-handle { <j> <> <i> })
+   (<wk> ^object-handle { <k> <> <i> <> <j> })
+   (<pw> -^eliminated true ^<i> <ci> ^<j> <cj> ^<k> <ck>)
    (<pw2> ^type possible-world -^eliminated true ^<i> <> <ci> ^<j> <cj> ^<k> <ck>)
 -->
    (<s> ^uncertain <u>)
@@ -139,9 +141,9 @@ sp {three-wizards*elaborate*state*uncertain
 sp {three-wizards*elaborate*state*knows
    (state <s> ^problem-space.name three-wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <wi> <pw>)
-   (<wi> ^type wizard ^object-handle <i>)
-   (<pw> ^type possible-world -^eliminated true)
+   (<objs> ^wizard <wi> ^possible-world <pw>)
+   (<wi> ^object-handle <i>)
+   (<pw> -^eliminated true)
   -{(<s> ^uncertain <u>)
     (<u> ^possible-world <pw> ^wizard <i>)}
 -->
@@ -152,17 +154,16 @@ sp {three-wizards*elaborate*state*knows
 sp {three-wizards*elaborate*state*not-actual
    (state <s> ^problem-space.name three-wizards ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <wi> <pw>)
-   (<wi> ^type wizard ^object-handle <i> ^spot <c>)
-   (<pw> ^type possible-world ^<i> <> <c>)
+   (<objs> ^wizard <wi> ^possible-world <pw>)
+   (<wi> ^object-handle <i> ^spot <c>)
+   (<pw> ^<i> <> <c>)
 -->
    (<s> ^not-actual <pw>)
 }
 
 sp {three-wizards*elaborate*state*actual
    (state <s> ^problem-space.name three-wizards ^world <w>)
-   (<w> ^anchored-world true ^objects.object <pw>)
-   (<pw> ^type possible-world)
+   (<w> ^anchored-world true ^objects.possible-world <pw>)
   -(<s> ^not-actual <pw>)
 -->
    (<s> ^actual <pw>)
@@ -173,8 +174,8 @@ sp {three-wizards*elaborate*state*actual
 sp {three-wizards*elaborate*world*knows-spot
    (state <s> ^problem-space.name three-wizards ^world <w> ^actual <pw> ^knows <k>)
    (<k> ^possible-world <pw> ^wizard <i>)
-   (<w> ^anchored-world true ^objects.object <wi>)
-   (<wi> ^type wizard ^object-handle <i>)
+   (<w> ^anchored-world true ^objects.wizard <wi>)
+   (<wi> ^object-handle <i>)
 -->
    (<wi> ^knows-spot true)
 }
@@ -192,8 +193,8 @@ sp {three-wizards*elaborate*state*silence-informative
 ## Propose king-announces in problem space three-wizards when its conditions below hold.
 sp {three-wizards*propose*king-announces
    (state <s> ^problem-space.name three-wizards ^superstate nil ^world <w>)
-   (<w> ^anchored-world true ^objects.object <king>)
-   (<king> ^type king -^at-least-one-white true)
+   (<w> ^anchored-world true ^objects.king <king>)
+   (<king> -^at-least-one-white true)
 -->
    (<s> ^operator <o> + >)
    (<o> ^name king-announces ^task-operator false)
@@ -201,8 +202,7 @@ sp {three-wizards*propose*king-announces
 
 sp {three-wizards*apply*king-announces
    (state <s> ^problem-space.name three-wizards ^operator.name king-announces ^world <w>)
-   (<w> ^anchored-world true ^objects.object <king>)
-   (<king> ^type king)
+   (<w> ^anchored-world true ^objects.king <king>)
 -->
    (<king> ^at-least-one-white true)
    (write |King: at least one of your spots is white.| (crlf))
@@ -210,8 +210,8 @@ sp {three-wizards*apply*king-announces
 
 sp {three-wizards*apply*king-announces*rule-out
    (state <s> ^problem-space.name three-wizards ^operator.name king-announces ^world <w>)
-   (<w> ^anchored-world true ^objects.object <pw>)
-   (<pw> ^type possible-world -^eliminated true)
+   (<w> ^anchored-world true ^objects.possible-world <pw>)
+   (<pw> -^eliminated true)
   -(<pw> ^<< wizard-1 wizard-2 wizard-3 >> white)
 -->
    (<pw> ^eliminated true)
@@ -223,9 +223,9 @@ sp {three-wizards*apply*king-announces*rule-out
 sp {three-wizards*propose*announce*mea
    (state <s> ^problem-space.name three-wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <wz> <king>)
-   (<wz> ^type wizard ^object-handle <h> ^knows-spot true)
-   (<king> ^type king ^at-least-one-white true)
+   (<objs> ^wizard <wz> ^king <king>)
+   (<wz> ^object-handle <h> ^knows-spot true)
+   (<king> ^at-least-one-white true)
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<sd> ^object <sd-o>)
    (<sd-o> ^object-handle king ^answered true)
@@ -238,8 +238,7 @@ sp {three-wizards*apply*announce*internal
    (state <s> ^problem-space.name three-wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name announce ^pre-conditions-satisfied true ^argument1.object-handle <h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <king>)
-   (<king> ^type king)
+   (<objs> ^king <king>)
 -->
    (log 1 (crlf) |Apply announce internal: | <h>)
    (<king> ^answered true)
@@ -250,9 +249,8 @@ sp {three-wizards*apply*announce*environment-effect
    (state <s> ^problem-space.name three-wizards ^superstate nil ^world <w> ^actual <pw> ^io.output-link.perform-action <pa>)
    (<pa> ^name announce ^status complete ^argument1 <h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <king> <clock>)
-   (<king> ^type king)
-   (<clock> ^type clock ^round <r>)
+   (<objs> ^king <king> ^clock <clock>)
+   (<clock> ^round <r>)
    (<pw> ^<h> <c>)
 -->
    (<pa> ^effect-applied true)
@@ -266,11 +264,11 @@ sp {three-wizards*apply*announce*environment-effect
 sp {three-wizards*propose*remain-silent*mea
    (state <s> ^problem-space.name three-wizards ^flags.mea-operator-selection true ^world <w> ^desireds <ds> ^silence-informative true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <clock> <king>)
-   (<clock> ^type clock ^round <r>)
-   (<king> ^type king ^at-least-one-white true)
-  -{(<objs> ^object <wz>)
-    (<wz> ^type wizard ^knows-spot true)}
+   (<objs> ^clock <clock> ^king <king>)
+   (<clock> ^round <r>)
+   (<king> ^at-least-one-white true)
+  -{(<objs> ^wizard <wz>)
+    (<wz> ^knows-spot true)}
    (<ds> ^desired <sd> ^unachieved <sd>)
    (<sd> ^object.answered true)
 -->
@@ -281,8 +279,8 @@ sp {three-wizards*propose*remain-silent*mea
 sp {three-wizards*apply*remain-silent*internal
    (state <s> ^problem-space.name three-wizards ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^name remain-silent ^pre-conditions-satisfied true ^round <r>)
-   (<w> ^anchored-world true ^objects.object <clock>)
-   (<clock> ^type clock ^round <r>)
+   (<w> ^anchored-world true ^objects.clock <clock>)
+   (<clock> ^round <r>)
 -->
    (log 1 (crlf) |Apply remain-silent internal: round | (+ <r> 1))
    (<clock> ^round <r> - (+ <r> 1))
@@ -291,8 +289,8 @@ sp {three-wizards*apply*remain-silent*internal
 sp {three-wizards*apply*remain-silent*internal*rule-out
    (state <s> ^problem-space.name three-wizards ^operator <op> ^internal-actions true ^world <w> ^knows.possible-world <pw>)
    (<op> ^name remain-silent ^pre-conditions-satisfied true ^round <r>)
-   (<w> ^anchored-world true ^objects.object <clock>)
-   (<clock> ^type clock ^round <r>)
+   (<w> ^anchored-world true ^objects.clock <clock>)
+   (<clock> ^round <r>)
 -->
    (<pw> ^eliminated true)
 }
@@ -301,8 +299,8 @@ sp {three-wizards*apply*remain-silent*environment-effect
    :o-support
    (state <s> ^problem-space.name three-wizards ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name remain-silent ^status complete -^effect-applied true)
-   (<w> ^anchored-world true ^objects.object <clock>)
-   (<clock> ^type clock ^round <r>)
+   (<w> ^anchored-world true ^objects.clock <clock>)
+   (<clock> ^round <r>)
 -->
    (<pa> ^effect-applied true)
    (<clock> ^round <r> - (+ <r> 1))
@@ -315,8 +313,8 @@ sp {three-wizards*apply*remain-silent*environment-effect*rule-out
    (<pa> ^name remain-silent ^status complete -^effect-applied true)
    (<k> ^possible-world <pw> ^wizard <i>)
    (<pw> ^object-handle <ph>)
-   (<w> ^objects.object <clock>)
-   (<clock> ^type clock ^round <r>)
+   (<w> ^objects.clock <clock>)
+   (<clock> ^round <r>)
 -->
    (<pw> ^eliminated true)
    (write |  round | (+ <r> 1) |: ruled out | <ph> |, where | <i> | would have known his spot| (crlf))

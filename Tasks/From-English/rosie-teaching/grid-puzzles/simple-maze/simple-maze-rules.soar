@@ -14,6 +14,9 @@
 ##     blocks are walls only in that they stand on locations, which are then not clear.
 ##   - The goal: a blue block is on a blue location.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 17
+production optimize-attribute block 17
+production optimize-attribute task 17
 production optimize-attribute object 17
 production optimize-attribute on 4
 production optimize-attribute below 4
@@ -34,7 +37,7 @@ sp {simple-maze*apply*initialize-simple-maze
    (<w> ^objects <objs>)
 -->
    (<s> ^name simple-maze ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> ^block <o-block-13> <o-block-14> <o-block-15> <o-block-16> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
@@ -218,9 +221,9 @@ sp {simple-maze*elaborate*state*unachieved*object-property
 sp {simple-maze*propose*block-step*adjacent-clear
    (state <s> ^problem-space.name simple-maze ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<b> ^color blue)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
@@ -238,7 +241,7 @@ sp {simple-maze*apply*block-step*internal
    (state <s> ^problem-space.name simple-maze ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name block-step ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -258,7 +261,7 @@ sp {simple-maze*apply*block-step*environment-effect
    (state <s> ^problem-space.name simple-maze ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name block-step ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
+   (<objs> ^block <b> ^location <d>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
    (<w> ^on <r> ^below <bl> ^clear <cd>)
@@ -277,10 +280,9 @@ sp {simple-maze*apply*block-step*environment-effect
 sp {simple-maze*elaborate*goal*blue-matched
    (state <s> ^problem-space.name simple-maze ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <b0> <l0>)
-   (<t> ^type task)
-   (<b0> ^type block ^color blue)
-   (<l0> ^type location ^color blue)
+   (<objs> ^task <t> ^block <b0> ^location <l0>)
+   (<b0> ^color blue)
+   (<l0> ^color blue)
    (<w> ^on <on-0>)
    (<on-0> ^argument1 <b0> ^argument2 <l0>)
 -->

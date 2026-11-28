@@ -140,23 +140,64 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-steps*zero
 -->
    (<new-world> ^parent-steps 0)}
 
+## Object sets (v2.49 candidate, World-Conventions L7-029): ^objects.object holds every object of a world, and a typed object is
+## also in the set of its type, ^objects.T, with ^type T. Programs write the type sets; this rule adds each typed object to
+## ^object, so every library rule reaches objects through the constant attribute ^object (indexed by Soar) as in v2.48, and a
+## rule learned in a look-ahead tests (<objs> ^object <x>), never the unindexed (<objs> ^<T> <x>). Agents in the legacy layout
+## (every object under ^objects.object, no type sets) are unchanged. The rule matches only in the state that holds the world, not
+## in substates that share their superstate's world (arithmetic-solve-problem: 14,832 firings in 273 decisions otherwise).
+sp {selection-world*elaborate*world*objects*object
+   :default
+   (state <s> ^world <w>
+             -^superstate.world <w>)
+   (<w> ^objects <objs>)
+   (<objs> ^<obj-type> <o>)
+   (<o> ^type <obj-type>)
+-->
+   (<objs> ^object <o>)}
+
 ## Elaborate evaluate-operator default-state-copy-object -> sets object, object-handle, duplicate-of.
+## The copy writes its own copy-map entry (v2.49 candidate; v2.45-v2.48: copy-map*copied).
 sp {selection-world*elaborate*evaluate-operator*default-state-copy-object
    :default
    (state <s> ^deep-copy-world true
               ^world <new-world>)
    (<new-world> ^objects <new-objects>
+                ^copy-map <map>
                 ^duplicate-of.objects.object <old-object>)
    (<old-object> ^object-handle <handle>
                 -^static true)
 -->
    (<new-objects> ^object <new-object>)
    (<new-object> ^object-handle <handle>
-                 ^duplicate-of <old-object>)}
+                 ^duplicate-of <old-object>)
+   (<map> ^<old-object> <new-object>)}
+
+## A typed copy joins the set of its type in the same elaboration as its attributes are copied (v2.49 candidate, L7-029), so a
+## rule that reaches objects through a type set (^objects.T) never sees a copy without its attributes. In v2.48 such rules
+## tested ^type, which arrived with the other attributes. The type is read from the object's own ^type, not from the old
+## world's type set: the copy then tests the old object only through ^objects.object, as default-state-copy-object does, so a
+## learned rule has one set condition per object, (<objs> ^object <x>), and (<x> ^type T) (Sujiko with learning, 600
+## decisions: 16 s; 33 s with a second test of the type set). In a look-ahead copy of a world in the legacy layout, an object
+## with ^type T is also put in a T set, which legacy rules do not test.
+sp {selection-world*elaborate*evaluate-operator*default-state-copy-object*type-set
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^objects <new-objects>
+                ^copy-map <map>
+                ^duplicate-of.objects.object <old-object>)
+   (<old-object> ^type <obj-type>)
+   (<map> ^<old-object> <new-object>)
+   (<new-object> ^duplicate-of <old-object>)
+-->
+   (<new-objects> ^<obj-type> <new-object>)}
 
 ## Static objects (v2.48 candidate, World-Conventions L7-028): an object marked ^static true is one no operator changes, so the
-## look-ahead world shares it instead of copying it: the new world's ^objects holds the same identifier, and the copy map maps
-## it to itself, so relations to it are copied with the object itself as their argument.
+## look-ahead world shares it instead of copying it: the new world's ^objects holds the same identifier (in ^object and, if
+## typed, in the set of its type), and copy-map*static maps it to itself, so relations to it are copied with the object itself
+## as their argument (v2.49 candidate: relation-copy variants that took a static argument directly were tried and dropped: learned
+## rules then lost the identity of that argument, English towers-of-hanoi with learning made one move and stopped).
 sp {selection-world*elaborate*evaluate-operator*default-state-share-static-object
    :default
    (state <s> ^deep-copy-world true
@@ -167,15 +208,18 @@ sp {selection-world*elaborate*evaluate-operator*default-state-share-static-objec
 -->
    (<new-objects> ^object <old-object>)}
 
-sp {selection-world*elaborate*evaluate-operator*copy-map*static
+sp {selection-world*elaborate*evaluate-operator*default-state-share-static-object*type-set
    :default
    (state <s> ^deep-copy-world true
               ^world <new-world>)
-   (<new-world> ^copy-map <map>
+   (<new-world> ^objects <new-objects>
                 ^duplicate-of.objects.object <old-object>)
-   (<old-object> ^static true)
+   (<old-object> ^static true
+                 ^type <obj-type>)
 -->
-   (<map> ^<old-object> <old-object>)}
+   (<new-objects> ^<obj-type> <old-object>)}
+
+
 
 ## Copy map (v2.45): ^copy-map on the new world has one WME per object, whose attribute is the old object and whose value is
 ## the object's copy in the new world (L7-026). Relation copies look up their arguments here: the
@@ -189,15 +233,7 @@ sp {selection-world*elaborate*evaluate-operator*copy-map
 -->
    (<new-world> ^copy-map <map>)}
 
-sp {selection-world*elaborate*evaluate-operator*copy-map*copied
-   :default
-   (state <s> ^deep-copy-world true
-              ^world <new-world>)
-   (<new-world> ^copy-map <map>
-                ^objects.object <new-object>)
-   (<new-object> ^duplicate-of <old-object>)
--->
-   (<map> ^<old-object> <new-object>)}
+## copy-map*copied (v2.45-v2.48) is folded into default-state-copy-object (v2.49 candidate): the copy writes its own map entry.
 
 ## Elaborate evaluate-operator default-state-copy-object-attributes.
 ## Careful on copying ones that are elaborations. So issues here
@@ -222,6 +258,17 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-object-attrib
   -(<new-object> ^anchored <> <value>)  ## MEans can only have one value... Will get overflow if two values
 -->
    (<new-object> ^anchored <value>)}
+
+## Static objects map to themselves (v2.48, L7-026, L7-028).
+sp {selection-world*elaborate*evaluate-operator*copy-map*static
+   :default
+   (state <s> ^deep-copy-world true
+              ^world <new-world>)
+   (<new-world> ^copy-map <map>
+                ^duplicate-of.objects.object <old-object>)
+   (<old-object> ^static true)
+-->
+   (<map> ^<old-object> <old-object>)}
 
 ## Relation copies (v2.45). A relation is copied with its arguments looked up in the copy map (L7-026).
 ## above
@@ -301,6 +348,7 @@ sp {selection-world*elaborate*evaluate-operator*default-state-copy-relation*decl
                           ^argument1 <new-argument1>
                           ^argument2 <new-argument2>)
 }
+
 
 ## Shared relation (v2.48 candidate, L7-028): a relation the task declares with (<problem-space> ^share-relation <name>) is
 ## one no operator changes, between static objects; the look-ahead world gets the same relation identifier, not a copy.
@@ -621,7 +669,9 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*fai
    (<evaluation> ^symbolic-value <svalue>)}
 
 
-## A failure after a random continuation is passed back as depth-exceeded (no information about the evaluated operator).
+## A failure after a random continuation is passed back as depth-exceeded (it does not show that the evaluated operator fails).
+## v2.49: the evaluation is also marked ^random-failure true (no rule uses the mark; a preference against marked evaluations was
+## tried on 28 Nov 2026 and dropped: Rosie suko seed 3 and sujiko seed 2 lost again, as before the v2.49 marker repair).
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*failure*random-continuation
    :default
    (state <s> ^quiescence t   # no chunk (as for the other depth-exceeded results)
@@ -635,7 +685,8 @@ sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*fai
                      ^evaluation <evaluation>)
    (<evaluation> ^desireds <desireds>)
 -->
-   (<evaluation> ^symbolic-value depth-exceeded)}
+   (<evaluation> ^symbolic-value depth-exceeded
+                 ^random-failure true)}
 
 ## Apply evaluate-operator -> sets symbolic-va.
 sp {selection-world*apply*evaluate-operator*symbolic-evaluation*from-subgoal*success

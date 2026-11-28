@@ -13,6 +13,9 @@
 ##   A-TH4: "another peg": peg C, read from the original agent's initialize rules (the English does not name it; JL allowed reading initial states there).
 ##   A-TH5: Search control, not from the English (as for the other WorldSpec search tasks): a look-ahead state that returns to a situation already on its path fails; a situation is where each disk is.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute peg 7
+production optimize-attribute disk 7
+production optimize-attribute task 7
 production optimize-attribute object 7
 production optimize-attribute on 3
 
@@ -30,7 +33,7 @@ sp {towers-of-hanoi*apply*initialize-towers-of-hanoi
    (<w> ^objects <objs>)
 -->
    (<s> ^name towers-of-hanoi ^desireds <ds>)
-   (<objs> ^object <k-a> <k-b> <k-c> <k-small> <k-medium> <k-large> <k-task>)
+   (<objs> ^peg <k-a> <k-b> <k-c> ^disk <k-small> <k-medium> <k-large> ^task <k-task>)
    (<k-a> ^object-handle a ^anchored true ^type peg ^name a ^static true)
    (<k-b> ^object-handle b ^anchored true ^type peg ^name b ^static true)
    (<k-c> ^object-handle c ^anchored true ^type peg ^name c ^static true)
@@ -103,15 +106,13 @@ sp {towers-of-hanoi*elaborate*state*unachieved*object-property
 sp {towers-of-hanoi*propose*move-disk
    (state <s> ^problem-space.name towers-of-hanoi ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type disk)
-   (<objs> ^object <to>)
-   (<to> ^type peg)
+   (<objs> ^disk <d>)
+   (<objs> ^peg <to>)
    (<w> ^top <r1>)
    (<r1> ^argument1 <d> ^argument2 <from>)
    (<w> ^can-take <r2>)
    (<r2> ^argument1 <to> ^argument2 <d>)
-   (<objs> ^object { <> <from> <to> })
+   (<objs> ^peg { <> <from> <to> })
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
@@ -123,9 +124,9 @@ sp {towers-of-hanoi*apply*move-disk*internal
    (state <s> ^problem-space.name towers-of-hanoi ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move-disk ^pre-conditions-satisfied true ^argument1.object-handle $ <d-h> ^argument2.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
+   (<objs> ^disk <d>)
    (<d> ^object-handle $ <d-h>)
-   (<objs> ^object <to>)
+   (<objs> ^peg <to>)
    (<to> ^object-handle $ <to-h>)
    (<w> ^on <r1>)
    (<r1> ^argument1 <d> ^argument2 <old>)
@@ -139,9 +140,9 @@ sp {towers-of-hanoi*apply*move-disk*environment-effect
    (state <s> ^problem-space.name towers-of-hanoi ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move-disk ^status complete ^argument1 <d-h> ^argument2 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
+   (<objs> ^disk <d>)
    (<d> ^object-handle $ <d-h>)
-   (<objs> ^object <to>)
+   (<objs> ^peg <to>)
    (<to> ^object-handle $ <to-h>)
    (<w> ^on <r1>)
    (<r1> ^argument1 <d> ^argument2 <old>)
@@ -155,12 +156,10 @@ sp {towers-of-hanoi*apply*move-disk*environment-effect
 sp {towers-of-hanoi*elaborate*derived*top
    (state <s> ^problem-space.name towers-of-hanoi ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <d>)
-   (<d> ^type disk)
+   (<objs> ^disk <d>)
    (<w> ^on <r1>)
    (<r1> ^argument1 <d> ^argument2 <p>)
-  -{  (<objs> ^object <e>)
-  (<e> ^type disk)
+  -{  (<objs> ^disk <e>)
   (<w> ^on <r2>)
   (<r2> ^argument1 <e> ^argument2 <p>)
   (<d> ^size <d-size>)
@@ -174,12 +173,9 @@ sp {towers-of-hanoi*elaborate*derived*top
 sp {towers-of-hanoi*elaborate*derived*can-take
    (state <s> ^problem-space.name towers-of-hanoi ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <q>)
-   (<q> ^type peg)
-   (<objs> ^object <d>)
-   (<d> ^type disk)
-  -{  (<objs> ^object <f>)
-  (<f> ^type disk)
+   (<objs> ^peg <q>)
+   (<objs> ^disk <d>)
+  -{  (<objs> ^disk <f>)
   (<w> ^on <r1>)
   (<r1> ^argument1 <f> ^argument2 <q>)
   (<d> ^size <d-size>)
@@ -193,19 +189,18 @@ sp {towers-of-hanoi*elaborate*derived*can-take
 sp {towers-of-hanoi*elaborate*goal
    (state <s> ^problem-space.name towers-of-hanoi ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <x-small>)
+   (<objs> ^task <task>)
+   (<objs> ^disk <x-small>)
    (<x-small> ^object-handle small)
-   (<objs> ^object <k-c>)
+   (<objs> ^peg <k-c>)
    (<k-c> ^object-handle c)
    (<w> ^on <r1>)
    (<r1> ^argument1 <x-small> ^argument2 <k-c>)
-   (<objs> ^object <x-medium>)
+   (<objs> ^disk <x-medium>)
    (<x-medium> ^object-handle medium)
    (<w> ^on <r2>)
    (<r2> ^argument1 <x-medium> ^argument2 <k-c>)
-   (<objs> ^object <x-large>)
+   (<objs> ^disk <x-large>)
    (<x-large> ^object-handle large)
    (<w> ^on <r3>)
    (<r3> ^argument1 <x-large> ^argument2 <k-c>)

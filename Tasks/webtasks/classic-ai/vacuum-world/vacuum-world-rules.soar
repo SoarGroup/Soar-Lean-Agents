@@ -14,6 +14,9 @@
 ##   A-V3: Suck is proposed only in a dirty square: sucking a clean square changes nothing, so it is never part of a shortest plan.
 ##   A-V4: "as few steps as possible": unit cost per action, read through the library's search settings, not through the rules.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute square 4
+production optimize-attribute agent 4
+production optimize-attribute task 4
 production optimize-attribute object 4
 production optimize-attribute at 2
 production optimize-attribute dirty 2
@@ -34,7 +37,7 @@ sp {vacuum-world*apply*initialize-vacuum-world
    (<w> ^objects <objs>)
 -->
    (<s> ^name vacuum-world ^desireds <ds>)
-   (<objs> ^object <k-left> <k-right> <k-vacuum> <k-task>)
+   (<objs> ^square <k-left> <k-right> ^agent <k-vacuum> ^task <k-task>)
    (<k-left> ^object-handle left ^anchored true ^type square ^name left ^static true)
    (<k-right> ^object-handle right ^anchored true ^type square ^name right ^static true)
    (<k-vacuum> ^object-handle vacuum ^anchored true ^type agent ^name vacuum ^static true)
@@ -108,10 +111,8 @@ sp {vacuum-world*elaborate*state*unachieved*object-property
 sp {vacuum-world*propose*move
    (state <s> ^problem-space.name vacuum-world ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
-   (<to> ^type square)
-   (<objs> ^object <v>)
-   (<v> ^type agent)
+   (<objs> ^square <to>)
+   (<objs> ^agent <v>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <v> ^argument2 <cur>)
    (<w> ^next <r2>)
@@ -127,10 +128,9 @@ sp {vacuum-world*apply*move*internal
    (state <s> ^problem-space.name vacuum-world ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <to-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
+   (<objs> ^square <to>)
    (<to> ^object-handle $ <to-h>)
-   (<objs> ^object <v>)
-   (<v> ^type agent)
+   (<objs> ^agent <v>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <v> ^argument2 <old>)
 -->
@@ -143,10 +143,9 @@ sp {vacuum-world*apply*move*environment-effect
    (state <s> ^problem-space.name vacuum-world ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <to-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <to>)
+   (<objs> ^square <to>)
    (<to> ^object-handle $ <to-h>)
-   (<objs> ^object <v>)
-   (<v> ^type agent)
+   (<objs> ^agent <v>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <v> ^argument2 <old>)
 -->
@@ -159,10 +158,8 @@ sp {vacuum-world*apply*move*environment-effect
 sp {vacuum-world*propose*suck
    (state <s> ^problem-space.name vacuum-world ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <sq>)
-   (<sq> ^type square)
-   (<objs> ^object <v>)
-   (<v> ^type agent)
+   (<objs> ^square <sq>)
+   (<objs> ^agent <v>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <v> ^argument2 <sq>)
    (<w> ^dirty <r2>)
@@ -178,7 +175,7 @@ sp {vacuum-world*apply*suck*internal
    (state <s> ^problem-space.name vacuum-world ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name suck ^pre-conditions-satisfied true ^argument1.object-handle $ <sq-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <sq>)
+   (<objs> ^square <sq>)
    (<sq> ^object-handle $ <sq-h>)
    (<w> ^dirty <e1>)
    (<e1> ^argument1 <sq>)
@@ -194,7 +191,7 @@ sp {vacuum-world*apply*suck*environment-effect
    (state <s> ^problem-space.name vacuum-world ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name suck ^status complete ^argument1 <sq-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <sq>)
+   (<objs> ^square <sq>)
    (<sq> ^object-handle $ <sq-h>)
    (<w> ^dirty <e1>)
    (<e1> ^argument1 <sq>)
@@ -210,13 +207,12 @@ sp {vacuum-world*apply*suck*environment-effect
 sp {vacuum-world*elaborate*goal
    (state <s> ^problem-space.name vacuum-world ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <x-left>)
+   (<objs> ^task <task>)
+   (<objs> ^square <x-left>)
    (<x-left> ^object-handle left)
    (<w> ^clean <r1>)
    (<r1> ^argument1 <x-left>)
-   (<objs> ^object <x-right>)
+   (<objs> ^square <x-right>)
    (<x-right> ^object-handle right)
    (<w> ^clean <r2>)
    (<r2> ^argument1 <x-right>)

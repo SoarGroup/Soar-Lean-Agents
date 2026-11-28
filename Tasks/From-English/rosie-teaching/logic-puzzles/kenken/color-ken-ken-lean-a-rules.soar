@@ -14,6 +14,20 @@
 ##   A-L1: "a location ... a location ... the former ... the latter" are two different locations.
 ##   A-K1: group: the locations with the same color; each must sum to ten when filled.
 ##   A-K2: The action write takes the location and a number object number-1 .. number-4 (operator arguments are objects).
+##
+## Search control generated from the structure of the description (World-Conventions L21-001; not stated in the English):
+##   each location gets exactly one write, and these commute, so write is proposed only for the first location still without one,
+##   in the order of the initial world (empty-first, moved along empty-next).
+## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 25
+production optimize-attribute task 25
+production optimize-attribute group 25
+production optimize-attribute object 25
+production optimize-attribute empty 4
+production optimize-attribute member 16
+production optimize-attribute empty-next 3
+production optimize-attribute empty-first 2
+
 
 ## Propose initialize-color-ken-ken when its conditions below hold.
 sp {color-ken-ken*propose*initialize-color-ken-ken
@@ -28,28 +42,44 @@ sp {color-ken-ken*apply*initialize-color-ken-ken
    (<w> ^objects <objs>)
 -->
    (<s> ^name color-ken-ken ^desireds <ds>)
-   (<objs> ^object <k-loc-1-1> <k-loc-2-1> <k-loc-3-1> <k-loc-4-1> <k-loc-1-2> <k-loc-2-2> <k-loc-3-2> <k-loc-4-2> <k-loc-1-3> <k-loc-2-3> <k-loc-3-3> <k-loc-4-3> <k-loc-1-4> <k-loc-2-4> <k-loc-3-4> <k-loc-4-4> <k-task> <k-number-1> <k-number-2> <k-number-3> <k-number-4> <k-group-blue> <k-group-red> <k-group-green> <k-group-yellow>)
-   (<k-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^row 1 ^column 1 ^value 3 ^color blue)
-   (<k-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^row 2 ^column 1 ^value 1 ^color red)
-   (<k-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^row 3 ^column 1 ^value 2 ^color red)
-   (<k-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^row 4 ^column 1 ^value 4 ^color green)
-   (<k-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^row 1 ^column 2 ^value 4 ^color blue)
-   (<k-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^row 2 ^column 2 ^color red)
-   (<k-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^row 3 ^column 2 ^value 1 ^color red)
-   (<k-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^row 4 ^column 2 ^value 3 ^color green)
-   (<k-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^row 1 ^column 3 ^value 1 ^color blue)
-   (<k-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^row 2 ^column 3 ^color yellow)
-   (<k-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^row 3 ^column 3 ^value 4 ^color red)
-   (<k-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^row 4 ^column 3 ^value 2 ^color green)
-   (<k-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^row 1 ^column 4 ^color blue)
-   (<k-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^row 2 ^column 4 ^color yellow)
-   (<k-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^row 3 ^column 4 ^value 3 ^color yellow)
-   (<k-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^row 4 ^column 4 ^value 1 ^color green)
+   (<objs> ^location <k-loc-1-1> <k-loc-2-1> <k-loc-3-1> <k-loc-4-1> <k-loc-1-2> <k-loc-2-2> <k-loc-3-2> <k-loc-4-2> <k-loc-1-3> <k-loc-2-3> <k-loc-3-3> <k-loc-4-3> <k-loc-1-4> <k-loc-2-4> <k-loc-3-4> <k-loc-4-4> ^task <k-task> ^number <k-number-1> <k-number-2> <k-number-3> <k-number-4> ^group <k-group-blue> <k-group-red> <k-group-green> <k-group-yellow>)
+   (<k-loc-1-1> ^object-handle loc-1-1 ^anchored true ^type location ^value 3 ^fixed <k-loc-1-1-fx>)
+   (<k-loc-1-1-fx> ^row 1 ^column 1 ^color blue)
+   (<k-loc-2-1> ^object-handle loc-2-1 ^anchored true ^type location ^value 1 ^fixed <k-loc-2-1-fx>)
+   (<k-loc-2-1-fx> ^row 2 ^column 1 ^color red)
+   (<k-loc-3-1> ^object-handle loc-3-1 ^anchored true ^type location ^value 2 ^fixed <k-loc-3-1-fx>)
+   (<k-loc-3-1-fx> ^row 3 ^column 1 ^color red)
+   (<k-loc-4-1> ^object-handle loc-4-1 ^anchored true ^type location ^value 4 ^fixed <k-loc-4-1-fx>)
+   (<k-loc-4-1-fx> ^row 4 ^column 1 ^color green)
+   (<k-loc-1-2> ^object-handle loc-1-2 ^anchored true ^type location ^value 4 ^fixed <k-loc-1-2-fx>)
+   (<k-loc-1-2-fx> ^row 1 ^column 2 ^color blue)
+   (<k-loc-2-2> ^object-handle loc-2-2 ^anchored true ^type location ^fixed <k-loc-2-2-fx>)
+   (<k-loc-2-2-fx> ^row 2 ^column 2 ^color red)
+   (<k-loc-3-2> ^object-handle loc-3-2 ^anchored true ^type location ^value 1 ^fixed <k-loc-3-2-fx>)
+   (<k-loc-3-2-fx> ^row 3 ^column 2 ^color red)
+   (<k-loc-4-2> ^object-handle loc-4-2 ^anchored true ^type location ^value 3 ^fixed <k-loc-4-2-fx>)
+   (<k-loc-4-2-fx> ^row 4 ^column 2 ^color green)
+   (<k-loc-1-3> ^object-handle loc-1-3 ^anchored true ^type location ^value 1 ^fixed <k-loc-1-3-fx>)
+   (<k-loc-1-3-fx> ^row 1 ^column 3 ^color blue)
+   (<k-loc-2-3> ^object-handle loc-2-3 ^anchored true ^type location ^fixed <k-loc-2-3-fx>)
+   (<k-loc-2-3-fx> ^row 2 ^column 3 ^color yellow)
+   (<k-loc-3-3> ^object-handle loc-3-3 ^anchored true ^type location ^value 4 ^fixed <k-loc-3-3-fx>)
+   (<k-loc-3-3-fx> ^row 3 ^column 3 ^color red)
+   (<k-loc-4-3> ^object-handle loc-4-3 ^anchored true ^type location ^value 2 ^fixed <k-loc-4-3-fx>)
+   (<k-loc-4-3-fx> ^row 4 ^column 3 ^color green)
+   (<k-loc-1-4> ^object-handle loc-1-4 ^anchored true ^type location ^fixed <k-loc-1-4-fx>)
+   (<k-loc-1-4-fx> ^row 1 ^column 4 ^color blue)
+   (<k-loc-2-4> ^object-handle loc-2-4 ^anchored true ^type location ^fixed <k-loc-2-4-fx>)
+   (<k-loc-2-4-fx> ^row 2 ^column 4 ^color yellow)
+   (<k-loc-3-4> ^object-handle loc-3-4 ^anchored true ^type location ^value 3 ^fixed <k-loc-3-4-fx>)
+   (<k-loc-3-4-fx> ^row 3 ^column 4 ^color yellow)
+   (<k-loc-4-4> ^object-handle loc-4-4 ^anchored true ^type location ^value 1 ^fixed <k-loc-4-4-fx>)
+   (<k-loc-4-4-fx> ^row 4 ^column 4 ^color green)
    (<k-task> ^object-handle task ^anchored true ^type task)
-   (<k-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1)
-   (<k-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2)
-   (<k-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3)
-   (<k-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4)
+   (<k-number-1> ^object-handle number-1 ^anchored true ^type number ^number 1 ^static true)
+   (<k-number-2> ^object-handle number-2 ^anchored true ^type number ^number 2 ^static true)
+   (<k-number-3> ^object-handle number-3 ^anchored true ^type number ^number 3 ^static true)
+   (<k-number-4> ^object-handle number-4 ^anchored true ^type number ^number 4 ^static true)
    (<k-group-blue> ^object-handle group-blue ^anchored true ^type group ^size 4 ^target-value 10)
    (<k-group-red> ^object-handle group-red ^anchored true ^type group ^size 5 ^target-value 10)
    (<k-group-green> ^object-handle group-green ^anchored true ^type group ^size 4 ^target-value 10)
@@ -97,6 +127,14 @@ sp {color-ken-ken*apply*initialize-color-ken-ken
    (<rel-19> ^argument1 <k-group-yellow> ^argument2 <k-loc-2-4>)
    (<w> ^member <rel-20>)
    (<rel-20> ^argument1 <k-group-yellow> ^argument2 <k-loc-3-4>)
+   (<w> ^empty-next <rel-21>)
+   (<rel-21> ^argument1 <k-loc-2-2> ^argument2 <k-loc-2-3>)
+   (<w> ^empty-next <rel-22>)
+   (<rel-22> ^argument1 <k-loc-2-3> ^argument2 <k-loc-1-4>)
+   (<w> ^empty-next <rel-23>)
+   (<rel-23> ^argument1 <k-loc-1-4> ^argument2 <k-loc-2-4>)
+   (<w> ^empty-first <rel-24>)
+   (<rel-24> ^argument1 <k-loc-2-2>)
    (log 1 (crlf) |Initialize color-ken-ken.|)
 }
 
@@ -105,7 +143,7 @@ sp {color-ken-ken*elaborate*problem-space
    (state <s> ^name color-ken-ken)
 -->
    (<s> ^problem-space <p>)
-   (<p> ^name color-ken-ken ^copy-relation empty ^copy-relation member ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
+   (<p> ^name color-ken-ken ^copy-relation empty ^copy-relation member ^copy-relation empty-next ^copy-relation empty-first ^dont-copy-object-attribute goal-met ^dont-copy-object-attribute sum)
 }
 
 sp {color-ken-ken*elaborate*problem-space*mea-substate
@@ -153,17 +191,16 @@ sp {color-ken-ken*elaborate*state*unachieved*object-property
 sp {color-ken-ken*propose*write
    (state <s> ^problem-space.name color-ken-ken ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <l>)
-   (<l> ^type location)
-   (<objs> ^object <n>)
-   (<n> ^type number)
+   (<objs> ^location <l>)
+   (<objs> ^number <n>)
    (<w> ^empty <r1>)
    (<r1> ^argument1 <l>)
+   (<w> ^empty-first <r2>)
+   (<r2> ^argument1 <l>)
    (<ds> ^unachieved-desireds true)
 -->
    (<s> ^operator <op> +)
-   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^desireds <pre>)
-   (<pre> ^desired-count 0)
+   (<op> ^name write ^task-operator true ^action-handle write ^argument1 <l> ^argument2 <n> ^argument-count 2 ^pre-conditions-satisfied true)
 }
 
 ## Effect of write (look-ahead).
@@ -171,16 +208,19 @@ sp {color-ken-ken*apply*write*internal
    (state <s> ^problem-space.name color-ken-ken ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <l-h> ^argument2.object-handle $ <n-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <l>)
+   (<objs> ^location <l>)
    (<l> ^object-handle $ <l-h>)
-   (<objs> ^object <n>)
+   (<objs> ^number <n>)
    (<n> ^object-handle $ <n-h>)
    (<n> ^number <n-number>)
    (<w> ^empty <e1>)
    (<e1> ^argument1 <l>)
+   (<w> ^empty-first <e2>)
+   (<e2> ^argument1 <l>)
 -->
    (<l> ^value <n-number>)
    (<w> ^empty <e1> -)
+   (<w> ^empty-first <e2> -)
 }
 
 ## Effect of a completed write command on the real world (once per command).
@@ -189,24 +229,60 @@ sp {color-ken-ken*apply*write*environment-effect
    (state <s> ^problem-space.name color-ken-ken ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name write ^status complete ^argument1 <l-h> ^argument2 <n-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <l>)
+   (<objs> ^location <l>)
    (<l> ^object-handle $ <l-h>)
-   (<objs> ^object <n>)
+   (<objs> ^number <n>)
    (<n> ^object-handle $ <n-h>)
    (<n> ^number <n-number>)
    (<w> ^empty <e1>)
    (<e1> ^argument1 <l>)
+   (<w> ^empty-first <e2>)
+   (<e2> ^argument1 <l>)
 -->
    (<l> ^value <n-number>)
    (<w> ^empty <e1> -)
+   (<w> ^empty-first <e2> -)
    (<pa> ^effect-applied true)
    (write |Write | <n-number> | on | <l-h> (crlf))
+}
+
+## Effect of write on every match (look-ahead).
+sp {color-ken-ken*apply*write*internal*each1
+   (state <s> ^problem-space.name color-ken-ken ^operator <op> ^internal-actions true ^world <w>)
+   (<op> ^task-operator true ^name write ^pre-conditions-satisfied true ^argument1.object-handle $ <l-h> ^argument2.object-handle $ <n-h>)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^location <l>)
+   (<l> ^object-handle $ <l-h>)
+   (<objs> ^number <n>)
+   (<n> ^object-handle $ <n-h>)
+   (<w> ^empty-next <r1>)
+   (<r1> ^argument1 <l> ^argument2 <nextslot>)
+-->
+   (<w> ^empty-first <new-2>)
+   (<new-2> ^argument1 <nextslot>)
+}
+
+## Effect of a completed write command on every match (real world).
+sp {color-ken-ken*apply*write*environment-effect*each1
+   :o-support
+   (state <s> ^problem-space.name color-ken-ken ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
+   (<pa> ^name write ^status complete ^argument1 <l-h> ^argument2 <n-h> -^effect-applied true)
+   (<w> ^anchored-world true ^objects <objs>)
+   (<objs> ^location <l>)
+   (<l> ^object-handle $ <l-h>)
+   (<objs> ^number <n>)
+   (<n> ^object-handle $ <n-h>)
+   (<w> ^empty-next <r1>)
+   (<r1> ^argument1 <l> ^argument2 <nextslot>)
+-->
+   (<w> ^empty-first <new-2>)
+   (<new-2> ^argument1 <nextslot>)
 }
 
 ## sum of a group of 3, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*3
    (state <s> ^problem-space.name color-ken-ken ^world <w>)
-   (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3>)
+   (<w> ^anchored-world true ^member <r1> <r2> <r3>)
    (<g> ^type group ^size 3)
    (<r1> ^argument1 <g> ^argument2 <m1>)
    (<m1> ^value <v1>)
@@ -221,7 +297,7 @@ sp {color-ken-ken*elaborate*group*sum*3
 ## sum of a group of 4, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*4
    (state <s> ^problem-space.name color-ken-ken ^world <w>)
-   (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3> <r4>)
+   (<w> ^anchored-world true ^member <r1> <r2> <r3> <r4>)
    (<g> ^type group ^size 4)
    (<r1> ^argument1 <g> ^argument2 <m1>)
    (<m1> ^value <v1>)
@@ -238,7 +314,7 @@ sp {color-ken-ken*elaborate*group*sum*4
 ## sum of a group of 5, once every member has value (derived; not copied into look-ahead worlds).
 sp {color-ken-ken*elaborate*group*sum*5
    (state <s> ^problem-space.name color-ken-ken ^world <w>)
-   (<w> ^anchored-world true ^objects.object <g> ^member <r1> <r2> <r3> <r4> <r5>)
+   (<w> ^anchored-world true ^member <r1> <r2> <r3> <r4> <r5>)
    (<g> ^type group ^size 5)
    (<r1> ^argument1 <g> ^argument2 <m1>)
    (<m1> ^value <v1>)
@@ -258,13 +334,11 @@ sp {color-ken-ken*elaborate*group*sum*5
 sp {color-ken-ken*elaborate*failure*same-row-value
    (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <l1>)
-   (<l1> ^type location)
-   (<objs> ^object <l2>)
-   (<l2> ^type location)
-   (<objs> ^object { <> <l1> <l2> })
-   (<l2> ^row <l2-row>)
-   (<l1> ^row <l2-row>)
+   (<objs> ^location <l1>)
+   (<objs> ^location <l2>)
+   (<objs> ^location { <> <l1> <l2> })
+   (<l2> ^fixed.row <l2-row>)
+   (<l1> ^fixed.row <l2-row>)
    (<l2> ^value <l2-value>)
    (<l1> ^value <l2-value>)
 -->
@@ -275,13 +349,11 @@ sp {color-ken-ken*elaborate*failure*same-row-value
 sp {color-ken-ken*elaborate*failure*same-column-value
    (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <l1>)
-   (<l1> ^type location)
-   (<objs> ^object <l2>)
-   (<l2> ^type location)
-   (<objs> ^object { <> <l1> <l2> })
-   (<l2> ^column <l2-column>)
-   (<l1> ^column <l2-column>)
+   (<objs> ^location <l1>)
+   (<objs> ^location <l2>)
+   (<objs> ^location { <> <l1> <l2> })
+   (<l2> ^fixed.column <l2-column>)
+   (<l1> ^fixed.column <l2-column>)
    (<l2> ^value <l2-value>)
    (<l1> ^value <l2-value>)
 -->
@@ -292,8 +364,7 @@ sp {color-ken-ken*elaborate*failure*same-column-value
 sp {color-ken-ken*elaborate*failure*group-sum-constant
    (state <s> ^problem-space.name color-ken-ken ^desireds <ds> ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <g>)
-   (<g> ^type group)
+   (<objs> ^group <g>)
    (<g> ^target-value <g-target-value>)
    (<g> ^sum <> <g-target-value>)
 -->
@@ -304,54 +375,53 @@ sp {color-ken-ken*elaborate*failure*group-sum-constant
 sp {color-ken-ken*elaborate*goal
    (state <s> ^problem-space.name color-ken-ken ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <x-loc-1-1>)
+   (<objs> ^task <task>)
+   (<objs> ^location <x-loc-1-1>)
    (<x-loc-1-1> ^object-handle loc-1-1)
    (<x-loc-1-1> ^value > 0)
-   (<objs> ^object <x-loc-2-1>)
+   (<objs> ^location <x-loc-2-1>)
    (<x-loc-2-1> ^object-handle loc-2-1)
    (<x-loc-2-1> ^value > 0)
-   (<objs> ^object <x-loc-3-1>)
+   (<objs> ^location <x-loc-3-1>)
    (<x-loc-3-1> ^object-handle loc-3-1)
    (<x-loc-3-1> ^value > 0)
-   (<objs> ^object <x-loc-4-1>)
+   (<objs> ^location <x-loc-4-1>)
    (<x-loc-4-1> ^object-handle loc-4-1)
    (<x-loc-4-1> ^value > 0)
-   (<objs> ^object <x-loc-1-2>)
+   (<objs> ^location <x-loc-1-2>)
    (<x-loc-1-2> ^object-handle loc-1-2)
    (<x-loc-1-2> ^value > 0)
-   (<objs> ^object <x-loc-2-2>)
+   (<objs> ^location <x-loc-2-2>)
    (<x-loc-2-2> ^object-handle loc-2-2)
    (<x-loc-2-2> ^value > 0)
-   (<objs> ^object <x-loc-3-2>)
+   (<objs> ^location <x-loc-3-2>)
    (<x-loc-3-2> ^object-handle loc-3-2)
    (<x-loc-3-2> ^value > 0)
-   (<objs> ^object <x-loc-4-2>)
+   (<objs> ^location <x-loc-4-2>)
    (<x-loc-4-2> ^object-handle loc-4-2)
    (<x-loc-4-2> ^value > 0)
-   (<objs> ^object <x-loc-1-3>)
+   (<objs> ^location <x-loc-1-3>)
    (<x-loc-1-3> ^object-handle loc-1-3)
    (<x-loc-1-3> ^value > 0)
-   (<objs> ^object <x-loc-2-3>)
+   (<objs> ^location <x-loc-2-3>)
    (<x-loc-2-3> ^object-handle loc-2-3)
    (<x-loc-2-3> ^value > 0)
-   (<objs> ^object <x-loc-3-3>)
+   (<objs> ^location <x-loc-3-3>)
    (<x-loc-3-3> ^object-handle loc-3-3)
    (<x-loc-3-3> ^value > 0)
-   (<objs> ^object <x-loc-4-3>)
+   (<objs> ^location <x-loc-4-3>)
    (<x-loc-4-3> ^object-handle loc-4-3)
    (<x-loc-4-3> ^value > 0)
-   (<objs> ^object <x-loc-1-4>)
+   (<objs> ^location <x-loc-1-4>)
    (<x-loc-1-4> ^object-handle loc-1-4)
    (<x-loc-1-4> ^value > 0)
-   (<objs> ^object <x-loc-2-4>)
+   (<objs> ^location <x-loc-2-4>)
    (<x-loc-2-4> ^object-handle loc-2-4)
    (<x-loc-2-4> ^value > 0)
-   (<objs> ^object <x-loc-3-4>)
+   (<objs> ^location <x-loc-3-4>)
    (<x-loc-3-4> ^object-handle loc-3-4)
    (<x-loc-3-4> ^value > 0)
-   (<objs> ^object <x-loc-4-4>)
+   (<objs> ^location <x-loc-4-4>)
    (<x-loc-4-4> ^object-handle loc-4-4)
    (<x-loc-4-4> ^value > 0)
 -->

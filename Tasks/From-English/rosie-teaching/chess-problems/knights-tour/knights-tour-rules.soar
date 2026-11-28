@@ -19,6 +19,9 @@
 ##     clear available blue block is its top, found by the applications (A-G4).
 ##   - covered (below an object) is expanded in place; the goal is expanded over the locations of the world file.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute location 25
+production optimize-attribute block 25
+production optimize-attribute task 25
 production optimize-attribute object 25
 production optimize-attribute on 11
 production optimize-attribute below 11
@@ -40,7 +43,7 @@ sp {knights-tour*apply*initialize-knights-tour
    (<w> ^objects <objs>)
 -->
    (<s> ^name knights-tour ^desireds <ds>)
-   (<objs> ^object <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-block-18> <o-block-19> <o-block-20> <o-block-21> <o-block-22> <o-block-23> <o-block-24> <o-task>)
+   (<objs> ^location <o-location-1> <o-location-2> <o-location-3> <o-location-4> <o-location-5> <o-location-6> <o-location-7> <o-location-8> <o-location-9> <o-location-10> <o-location-11> <o-location-12> ^block <o-block-13> <o-block-14> <o-block-15> <o-block-16> <o-block-17> <o-block-18> <o-block-19> <o-block-20> <o-block-21> <o-block-22> <o-block-23> <o-block-24> ^task <o-task>)
    (<o-location-1> ^object-handle location-1 ^anchored true ^type location ^row 1 ^column 1 ^static true)
    (<o-location-2> ^object-handle location-2 ^anchored true ^type location ^row 1 ^column 2 ^static true)
    (<o-location-3> ^object-handle location-3 ^anchored true ^type location ^row 1 ^column 3 ^static true)
@@ -272,9 +275,9 @@ sp {knights-tour*elaborate*state*unachieved*object-property
 sp {knights-tour*propose*tour-move
    (state <s> ^problem-space.name knights-tour ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d>)
-   (<b> ^type block ^color red ^object-handle $ <bh>)
-   (<d> ^type location ^object-handle $ <dh>)
+   (<objs> ^block <b> ^location <d>)
+   (<b> ^color red ^object-handle $ <bh>)
+   (<d> ^object-handle $ <dh>)
    (<w> ^on <on-b>)
    (<on-b> ^argument1 <b> ^argument2 <l1>)
    (<w> ^jumpable <jumpable-d>)
@@ -291,10 +294,10 @@ sp {knights-tour*apply*tour-move*internal*blue-from-block
    (state <s> ^problem-space.name knights-tour ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name tour-move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d> <u>)
+   (<objs> ^block <b> ^location <d> ^block <u>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
-   (<u> ^type block ^color blue)
+   (<u> ^color blue)
    (<w> ^on <r> ^below <bl> ^clear <cd> <cu> ^available <au>)
    (<r> ^argument1 <b> ^argument2 <old>)
    (<bl> ^argument1 <old> ^argument2 <b>)
@@ -319,10 +322,10 @@ sp {knights-tour*apply*tour-move*environment-effect*blue-from-block
    (state <s> ^problem-space.name knights-tour ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name tour-move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d> <u>)
+   (<objs> ^block <b> ^location <d> ^block <u>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
-   (<u> ^type block ^color blue)
+   (<u> ^color blue)
    (<w> ^on <r> ^below <bl> ^clear <cd> <cu> ^available <au>)
    (<r> ^argument1 <b> ^argument2 <old>)
    (<bl> ^argument1 <old> ^argument2 <b>)
@@ -347,10 +350,10 @@ sp {knights-tour*apply*tour-move*internal*blue-from-nothing
    (state <s> ^problem-space.name knights-tour ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name tour-move ^pre-conditions-satisfied true ^argument1.object-handle $ <bh> ^argument2.object-handle $ <dh>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d> <u>)
+   (<objs> ^block <b> ^location <d> ^block <u>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
-   (<u> ^type block ^color blue)
+   (<u> ^color blue)
    (<w> ^on <r> ^below <bl> ^clear <cd> <cu> ^available <au>)
    (<r> ^argument1 <b> ^argument2 <old>)
    (<bl> ^argument1 <old> ^argument2 <b>)
@@ -373,10 +376,10 @@ sp {knights-tour*apply*tour-move*environment-effect*blue-from-nothing
    (state <s> ^problem-space.name knights-tour ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name tour-move ^status complete ^argument1 <bh> ^argument2 <dh> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b> <d> <u>)
+   (<objs> ^block <b> ^location <d> ^block <u>)
    (<b> ^object-handle $ <bh>)
    (<d> ^object-handle $ <dh>)
-   (<u> ^type block ^color blue)
+   (<u> ^color blue)
    (<w> ^on <r> ^below <bl> ^clear <cd> <cu> ^available <au>)
    (<r> ^argument1 <b> ^argument2 <old>)
    (<bl> ^argument1 <old> ^argument2 <b>)
@@ -398,8 +401,7 @@ sp {knights-tour*apply*tour-move*environment-effect*blue-from-nothing
 sp {knights-tour*elaborate*goal*covered
    (state <s> ^problem-space.name knights-tour ^world <w>)
    (<w> ^objects <objs>)
-   (<objs> ^object <t> <l-location-1> <l-location-2> <l-location-3> <l-location-4> <l-location-5> <l-location-6> <l-location-7> <l-location-8> <l-location-9> <l-location-10> <l-location-11> <l-location-12>)
-   (<t> ^type task)
+   (<objs> ^task <t> ^location <l-location-1> <l-location-2> <l-location-3> <l-location-4> <l-location-5> <l-location-6> <l-location-7> <l-location-8> <l-location-9> <l-location-10> <l-location-11> <l-location-12>)
    (<l-location-1> ^object-handle location-1)
    (<w> ^below <bw-location-1>)
    (<bw-location-1> ^argument1 <l-location-1>)

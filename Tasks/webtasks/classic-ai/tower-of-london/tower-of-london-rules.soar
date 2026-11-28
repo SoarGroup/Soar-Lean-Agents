@@ -15,6 +15,13 @@
 ##   A-TL4: "another peg": the target slot is of a different peg than the ball's slot.
 ##   A-TL5: "as few moves as possible": unit cost per move, read through the library's search settings, not through the rules.
 ## Matching hints for learned rules (World-Conventions L3-095, L11-009): many-valued attributes, sized from the initial world.
+production optimize-attribute ball 22
+production optimize-attribute peg 22
+production optimize-attribute floor 22
+production optimize-attribute base 22
+production optimize-attribute slot 22
+production optimize-attribute cap 22
+production optimize-attribute task 22
 production optimize-attribute object 22
 production optimize-attribute over 9
 production optimize-attribute of 6
@@ -35,7 +42,7 @@ sp {tower-of-london*apply*initialize-tower-of-london
    (<w> ^objects <objs>)
 -->
    (<s> ^name tower-of-london ^desireds <ds>)
-   (<objs> ^object <k-red-ball> <k-green-ball> <k-blue-ball> <k-peg-a> <k-a-floor> <k-a-base> <k-a-low> <k-a-mid> <k-a-top> <k-a-cap> <k-peg-b> <k-b-floor> <k-b-base> <k-b-low> <k-b-top> <k-b-cap> <k-peg-c> <k-c-floor> <k-c-base> <k-c-low> <k-c-cap> <k-task>)
+   (<objs> ^ball <k-red-ball> <k-green-ball> <k-blue-ball> ^peg <k-peg-a> <k-peg-b> <k-peg-c> ^floor <k-a-floor> <k-b-floor> <k-c-floor> ^base <k-a-base> <k-b-base> <k-c-base> ^slot <k-a-low> <k-a-mid> <k-a-top> <k-b-low> <k-b-top> <k-c-low> ^cap <k-a-cap> <k-b-cap> <k-c-cap> ^task <k-task>)
    (<k-red-ball> ^object-handle red-ball ^anchored true ^type ball ^name red-ball ^color red ^static true)
    (<k-green-ball> ^object-handle green-ball ^anchored true ^type ball ^name green-ball ^color green ^static true)
    (<k-blue-ball> ^object-handle blue-ball ^anchored true ^type ball ^name blue-ball ^color blue ^static true)
@@ -171,10 +178,8 @@ sp {tower-of-london*elaborate*state*unachieved*object-property
 sp {tower-of-london*propose*move
    (state <s> ^problem-space.name tower-of-london ^flags.mea-operator-selection true ^world <w> ^desireds <ds>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
-   (<b> ^type ball)
-   (<objs> ^object <t>)
-   (<t> ^type slot)
+   (<objs> ^ball <b>)
+   (<objs> ^slot <t>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <b> ^argument2 <src>)
    (<w> ^over <r2>)
@@ -203,9 +208,9 @@ sp {tower-of-london*apply*move*internal
    (state <s> ^problem-space.name tower-of-london ^operator <op> ^internal-actions true ^world <w>)
    (<op> ^task-operator true ^name move ^pre-conditions-satisfied true ^argument1.object-handle $ <b-h> ^argument2.object-handle $ <t-h>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
+   (<objs> ^ball <b>)
    (<b> ^object-handle $ <b-h>)
-   (<objs> ^object <t>)
+   (<objs> ^slot <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <b> ^argument2 <old>)
@@ -224,9 +229,9 @@ sp {tower-of-london*apply*move*environment-effect
    (state <s> ^problem-space.name tower-of-london ^superstate nil ^world <w> ^io.output-link.perform-action <pa>)
    (<pa> ^name move ^status complete ^argument1 <b-h> ^argument2 <t-h> -^effect-applied true)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <b>)
+   (<objs> ^ball <b>)
    (<b> ^object-handle $ <b-h>)
-   (<objs> ^object <t>)
+   (<objs> ^slot <t>)
    (<t> ^object-handle $ <t-h>)
    (<w> ^at <r1>)
    (<r1> ^argument1 <b> ^argument2 <old>)
@@ -245,23 +250,22 @@ sp {tower-of-london*apply*move*environment-effect
 sp {tower-of-london*elaborate*goal
    (state <s> ^problem-space.name tower-of-london ^world <w>)
    (<w> ^anchored-world true ^objects <objs>)
-   (<objs> ^object <task>)
-   (<task> ^type task)
-   (<objs> ^object <k-blue-ball>)
+   (<objs> ^task <task>)
+   (<objs> ^ball <k-blue-ball>)
    (<k-blue-ball> ^object-handle blue-ball)
-   (<objs> ^object <k-a-low>)
+   (<objs> ^slot <k-a-low>)
    (<k-a-low> ^object-handle a-low)
    (<w> ^at <r1>)
    (<r1> ^argument1 <k-blue-ball> ^argument2 <k-a-low>)
-   (<objs> ^object <k-red-ball>)
+   (<objs> ^ball <k-red-ball>)
    (<k-red-ball> ^object-handle red-ball)
-   (<objs> ^object <k-a-mid>)
+   (<objs> ^slot <k-a-mid>)
    (<k-a-mid> ^object-handle a-mid)
    (<w> ^at <r2>)
    (<r2> ^argument1 <k-red-ball> ^argument2 <k-a-mid>)
-   (<objs> ^object <k-green-ball>)
+   (<objs> ^ball <k-green-ball>)
    (<k-green-ball> ^object-handle green-ball)
-   (<objs> ^object <k-b-low>)
+   (<objs> ^slot <k-b-low>)
    (<k-b-low> ^object-handle b-low)
    (<w> ^at <r3>)
    (<r3> ^argument1 <k-green-ball> ^argument2 <k-b-low>)
